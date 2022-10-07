@@ -37,28 +37,31 @@ namespace MyCar.Server.Controllers
         public async Task<ActionResult<int>> Post([FromBody] CarApi value)
         {
 
-            var newOrderOut = (Car)value;
-            dbContext.Cars.Add(newOrderOut);
+            var newCar = (Car)value;
+            dbContext.Cars.Add(newCar);
             await dbContext.SaveChangesAsync();
-            var productOrderOuts = value.CharacteristicCars.Select(s => (CharacteristicCar)s);
-            await dbContext.CharacteristicCars.AddRangeAsync(productOrderOuts.Select(s => new CharacteristicCar
+            var cross = value.CharacteristicCars.Select(s => (CharacteristicCar)s);
+            await dbContext.CharacteristicCars.AddRangeAsync(cross.Select(s => new CharacteristicCar
             {
-
+                CarId = newCar.Id,
+                CharacteristicId = s.CharacteristicId,
+                CharacteristicValue = s.CharacteristicValue
             }));
-
             await dbContext.SaveChangesAsync();
-            return Ok(newOrderOut.Id);
+            return Ok(newCar.Id);
         }
+
 
         // PUT api/<CarController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] CarApi carApi)
+        public async Task<ActionResult> Put(int id, [FromBody] CarApi editOrderOut)
         {
-            var result = await dbContext.Cars.FindAsync(id);
-            if (result == null)
+
+            var oldOrderOut = await dbContext.Cars.FindAsync(id);
+            if (oldOrderOut == null)
                 return NotFound();
-            var car = (Car)carApi;
-            dbContext.Entry(result).CurrentValues.SetValues(car);
+            Car newOrderOut = (Car)editOrderOut;
+            dbContext.Entry(oldOrderOut).CurrentValues.SetValues(newOrderOut);
             await dbContext.SaveChangesAsync();
             return Ok();
         }

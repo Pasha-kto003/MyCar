@@ -1,0 +1,351 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+namespace MyCar.Server.DB
+{
+    public partial class MyCar_DBContext : DbContext
+    {
+        public MyCar_DBContext()
+        {
+        }
+
+        public MyCar_DBContext(DbContextOptions<MyCar_DBContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<ActionType> ActionTypes { get; set; } = null!;
+        public virtual DbSet<BodyType> BodyTypes { get; set; } = null!;
+        public virtual DbSet<Car> Cars { get; set; } = null!;
+        public virtual DbSet<CarOrderIn> CarOrderIns { get; set; } = null!;
+        public virtual DbSet<CarOrderOut> CarOrderOuts { get; set; } = null!;
+        public virtual DbSet<Characteristic> Characteristics { get; set; } = null!;
+        public virtual DbSet<CharacteristicCar> CharacteristicCars { get; set; } = null!;
+        public virtual DbSet<Equipment> Equipment { get; set; } = null!;
+        public virtual DbSet<MarkCar> MarkCars { get; set; } = null!;
+        public virtual DbSet<Model> Models { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
+        public virtual DbSet<OrderOut> OrderOuts { get; set; } = null!;
+        public virtual DbSet<Passport> Passports { get; set; } = null!;
+        public virtual DbSet<Status> Statuses { get; set; } = null!;
+        public virtual DbSet<Unit> Units { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserType> UserTypes { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ActionType>(entity =>
+            {
+                entity.ToTable("ActionType");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.ActionTypeName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<BodyType>(entity =>
+            {
+                entity.ToTable("BodyType");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.TypeName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Car>(entity =>
+            {
+                entity.ToTable("Car");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Articul).HasMaxLength(50);
+
+                entity.Property(e => e.CarPrice).HasColumnType("money");
+
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.Cars)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .HasConstraintName("FK_Car_Equipment");
+
+                entity.HasOne(d => d.Model)
+                    .WithMany(p => p.Cars)
+                    .HasForeignKey(d => d.ModelId)
+                    .HasConstraintName("FK_Car_Model");
+
+                entity.HasOne(d => d.Type)
+                    .WithMany(p => p.Cars)
+                    .HasForeignKey(d => d.TypeId)
+                    .HasConstraintName("FK_Car_BodyType");
+            });
+
+            modelBuilder.Entity<CarOrderIn>(entity =>
+            {
+                entity.ToTable("CarOrderIn");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Price).HasColumnType("money");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.CarOrderIns)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK_CarOrderIn_Order");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.CarOrderIns)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_CarOrderIn_Car");
+            });
+
+            modelBuilder.Entity<CarOrderOut>(entity =>
+            {
+                entity.HasKey(e => new { e.CarOrderInId, e.OrderOutId });
+
+                entity.ToTable("CarOrderOut");
+
+                entity.Property(e => e.Price).HasColumnType("money");
+
+                entity.HasOne(d => d.CarOrderIn)
+                    .WithMany(p => p.CarOrderOuts)
+                    .HasForeignKey(d => d.CarOrderInId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CarOrderOut_CarOrderIn");
+
+                entity.HasOne(d => d.OrderOut)
+                    .WithMany(p => p.CarOrderOuts)
+                    .HasForeignKey(d => d.OrderOutId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CarOrderOut_OrderOut");
+            });
+
+            modelBuilder.Entity<Characteristic>(entity =>
+            {
+                entity.ToTable("Characteristic");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.CharacteristicName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Unit)
+                    .WithMany(p => p.Characteristics)
+                    .HasForeignKey(d => d.UnitId)
+                    .HasConstraintName("FK_Characteristic_Unit");
+            });
+
+            modelBuilder.Entity<CharacteristicCar>(entity =>
+            {
+                entity.HasKey(e => new { e.CarId, e.CharacteristicId });
+
+                entity.ToTable("CharacteristicCar");
+
+                entity.Property(e => e.CharacteristicValue).HasMaxLength(50);
+
+                entity.HasOne(d => d.Car)
+                    .WithMany(p => p.CharacteristicCars)
+                    .HasForeignKey(d => d.CarId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CharacteristicCar_Car");
+
+                entity.HasOne(d => d.Characteristic)
+                    .WithMany(p => p.CharacteristicCars)
+                    .HasForeignKey(d => d.CharacteristicId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CharacteristicCar_Characteristic");
+            });
+
+            modelBuilder.Entity<Equipment>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.MinPrice).HasColumnType("money");
+
+                entity.Property(e => e.NameEquipment)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<MarkCar>(entity =>
+            {
+                entity.ToTable("MarkCar");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.MarkName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Model>(entity =>
+            {
+                entity.ToTable("Model");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.ModelName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Mark)
+                    .WithMany(p => p.Models)
+                    .HasForeignKey(d => d.MarkId)
+                    .HasConstraintName("FK_Model_MarkCar");
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("Order");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.DateOfOrder).HasColumnType("date");
+
+                entity.HasOne(d => d.ActionType)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.ActionTypeId)
+                    .HasConstraintName("FK_Order_ActionType");
+
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.ClientId)
+                    .HasConstraintName("FK_Order_User");
+            });
+
+            modelBuilder.Entity<OrderOut>(entity =>
+            {
+                entity.ToTable("OrderOut");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderOuts)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK_OrderOut_Order");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.OrderOuts)
+                    .HasForeignKey(d => d.StatusId)
+                    .HasConstraintName("FK_OrderOut_Status");
+            });
+
+            modelBuilder.Entity<Passport>(entity =>
+            {
+                entity.ToTable("Passport");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.DateEnd).HasColumnType("date");
+
+                entity.Property(e => e.DateStart).HasColumnType("date");
+
+                entity.Property(e => e.Number)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.Seria)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Status>(entity =>
+            {
+                entity.ToTable("Status");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.StatusName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Unit>(entity =>
+            {
+                entity.ToTable("Unit");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.UnitName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("User");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Patronimyc)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Passport)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.PassportId)
+                    .HasConstraintName("FK_User_Passport");
+
+                entity.HasOne(d => d.UserType)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.UserTypeId)
+                    .HasConstraintName("FK_User_UserType");
+            });
+
+            modelBuilder.Entity<UserType>(entity =>
+            {
+                entity.ToTable("UserType");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.TypeName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
+}

@@ -63,12 +63,12 @@ namespace MyCar.Server.Controllers
             Car newOrderOut = (Car)editOrderOut;
             dbContext.Entry(oldOrderOut).CurrentValues.SetValues(newOrderOut);
             await dbContext.SaveChangesAsync();
-            return Ok();
+            return Ok(); //
         }
 
         // DELETE api/<CarController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id) //
+        public async Task<ActionResult> Delete(int id)
         {
             var car = await dbContext.Cars.FindAsync(id);
             if (car == null)

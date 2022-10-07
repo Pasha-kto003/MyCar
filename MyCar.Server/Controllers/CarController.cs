@@ -34,12 +34,20 @@ namespace MyCar.Server.Controllers
 
         // POST api/<CarController>
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] CarApi carApi)
+        public async Task<ActionResult<int>> Post([FromBody] CarApi value)
         {
-            var car = (Car)carApi;
-            await dbContext.Cars.AddAsync(car);
+
+            var newOrderOut = (Car)value;
+            dbContext.Cars.Add(newOrderOut);
             await dbContext.SaveChangesAsync();
-            return Ok(car.Id);
+            var productOrderOuts = value.CharacteristicCars.Select(s => (CharacteristicCar)s);
+            await dbContext.CharacteristicCars.AddRangeAsync(productOrderOuts.Select(s => new CharacteristicCar
+            {
+
+            }));
+
+            await dbContext.SaveChangesAsync();
+            return Ok(newOrderOut.Id);
         }
 
         // PUT api/<CarController>/5

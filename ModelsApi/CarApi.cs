@@ -14,5 +14,7 @@ namespace ModelsApi
         public string? Articul { get; set; }
         public byte[]? PhotoCar { get; set; }
         public decimal? CarPrice { get; set; }
+
+        public List<CharacteristicCarApi> CharacteristicCars { get; set; }
     }
 }

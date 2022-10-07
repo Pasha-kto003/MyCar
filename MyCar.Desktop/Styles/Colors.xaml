@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="ValorantRed">#ff4655</Color>
+    <SolidColorBrush x:Key="ValorantRedBrush" Color="{StaticResource ValorantRed}" />
+
+    <Color x:Key="BackgroundWhite">#efefef</Color>
+    <SolidColorBrush x:Key="BackgroundWhiteBrush" Color="{StaticResource BackgroundWhite}" />
+
+    <Color x:Key="Gray">#7C7B6F</Color>
+    <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource Gray}" />
+
+    <Color x:Key="DarkGray">#3A362E</Color>
+    <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGray}" />
+
+    <Color x:Key="LightGray">#DDCACE</Color>
+    <SolidColorBrush x:Key="LightGrayBrush" Color="{StaticResource LightGray}" />
+
+    <Color x:Key="LightPastelRed">#E9A098</Color>
+    <SolidColorBrush x:Key="LightPastelRedBrush" Color="{StaticResource LightPastelRed}" />
+
+    <Color x:Key="PastelRed">#D45F5F</Color>
+    <SolidColorBrush x:Key="PastelRedBrush" Color="{StaticResource PastelRed}" />
+
+    <Color x:Key="DarkPastelRed">#873A46</Color>
+    <SolidColorBrush x:Key="DarkPastelRedBrush" Color="{StaticResource DarkPastelRed}" />
+
+</ResourceDictionary>

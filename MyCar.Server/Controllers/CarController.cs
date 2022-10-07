@@ -68,7 +68,7 @@ namespace MyCar.Server.Controllers
 
         // DELETE api/<CarController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id) //
         {
             var car = await dbContext.Cars.FindAsync(id);
             if (car == null)

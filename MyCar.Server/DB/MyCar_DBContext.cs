@@ -19,27 +19,25 @@ namespace MyCar.Server.DB
         public virtual DbSet<ActionType> ActionTypes { get; set; } = null!;
         public virtual DbSet<BodyType> BodyTypes { get; set; } = null!;
         public virtual DbSet<Car> Cars { get; set; } = null!;
-        public virtual DbSet<CarOrderIn> CarOrderIns { get; set; } = null!;
-        public virtual DbSet<CarOrderOut> CarOrderOuts { get; set; } = null!;
         public virtual DbSet<Characteristic> Characteristics { get; set; } = null!;
         public virtual DbSet<CharacteristicCar> CharacteristicCars { get; set; } = null!;
         public virtual DbSet<Equipment> Equipment { get; set; } = null!;
         public virtual DbSet<MarkCar> MarkCars { get; set; } = null!;
         public virtual DbSet<Model> Models { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<OrderOut> OrderOuts { get; set; } = null!;
         public virtual DbSet<Passport> Passports { get; set; } = null!;
         public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<Unit> Units { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserType> UserTypes { get; set; } = null!;
+        public virtual DbSet<Warehouse> Warehouses { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Database=MyCar_DB;Trusted_Connection=True; User=dbo");
             }
         }
 
@@ -93,53 +91,11 @@ namespace MyCar.Server.DB
                     .HasConstraintName("FK_Car_BodyType");
             });
 
-            modelBuilder.Entity<CarOrderIn>(entity =>
-            {
-                entity.ToTable("CarOrderIn");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Price).HasColumnType("money");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.CarOrderIns)
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_CarOrderIn_Order");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.CarOrderIns)
-                    .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK_CarOrderIn_Car");
-            });
-
-            modelBuilder.Entity<CarOrderOut>(entity =>
-            {
-                entity.HasKey(e => new { e.CarOrderInId, e.OrderOutId });
-
-                entity.ToTable("CarOrderOut");
-
-                entity.Property(e => e.Price).HasColumnType("money");
-
-                entity.HasOne(d => d.CarOrderIn)
-                    .WithMany(p => p.CarOrderOuts)
-                    .HasForeignKey(d => d.CarOrderInId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CarOrderOut_CarOrderIn");
-
-                entity.HasOne(d => d.OrderOut)
-                    .WithMany(p => p.CarOrderOuts)
-                    .HasForeignKey(d => d.OrderOutId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CarOrderOut_OrderOut");
-            });
-
             modelBuilder.Entity<Characteristic>(entity =>
             {
                 entity.ToTable("Characteristic");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CharacteristicName)
                     .HasMaxLength(50)
@@ -227,23 +183,11 @@ namespace MyCar.Server.DB
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.ClientId)
                     .HasConstraintName("FK_Order_User");
-            });
-
-            modelBuilder.Entity<OrderOut>(entity =>
-            {
-                entity.ToTable("OrderOut");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.OrderOuts)
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_OrderOut_Order");
 
                 entity.HasOne(d => d.Status)
-                    .WithMany(p => p.OrderOuts)
+                    .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StatusId)
-                    .HasConstraintName("FK_OrderOut_Status");
+                    .HasConstraintName("FK_Order_Status");
             });
 
             modelBuilder.Entity<Passport>(entity =>
@@ -258,9 +202,21 @@ namespace MyCar.Server.DB
 
                 entity.Property(e => e.DateStart).HasColumnType("date");
 
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Number)
                     .HasMaxLength(10)
                     .IsFixedLength();
+
+                entity.Property(e => e.Patronymic)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Seria)
                     .HasMaxLength(10)
@@ -299,22 +255,6 @@ namespace MyCar.Server.DB
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FirstName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Password)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Patronimyc)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -334,13 +274,32 @@ namespace MyCar.Server.DB
             {
                 entity.ToTable("UserType");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.TypeName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Warehouse>(entity =>
+            {
+                entity.ToTable("Warehouse");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Discount).HasColumnType("money");
+
+                entity.Property(e => e.Price).HasColumnType("money");
+
+                entity.HasOne(d => d.Car)
+                    .WithMany(p => p.Warehouses)
+                    .HasForeignKey(d => d.CarId)
+                    .HasConstraintName("FK_Warehouse_Car");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.Warehouses)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK_Warehouse_Order");
             });
 
             OnModelCreatingPartial(modelBuilder);

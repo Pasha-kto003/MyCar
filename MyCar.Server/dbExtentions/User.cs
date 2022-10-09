@@ -9,13 +9,11 @@ namespace MyCar.Server.DB
             return new UserApi
             {
                 ID = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Patronimyc = user.Patronimyc,
                 Email = user.Email,
+                SaltHash = user.SaltHash,
                 UserName = user.UserName,
                 PassportId = user.PassportId,
-                Password = user.Password,
+                PasswordHash = user.PasswordHash,
                 UserTypeId = user.UserTypeId
             };
         }
@@ -24,13 +22,11 @@ namespace MyCar.Server.DB
             return new User
             {
                 Id = user.ID,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Patronimyc = user.Patronimyc,
+                SaltHash = user.SaltHash,
                 Email = user.Email,
                 UserName = user.UserName,
                 PassportId = user.PassportId,
-                Password = user.Password,
+                PasswordHash = user.PasswordHash,
                 UserTypeId = user.UserTypeId
             };
         }

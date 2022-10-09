@@ -7,12 +7,12 @@ namespace MyCar.Server.DB
     {
         public Status()
         {
-            OrderOuts = new HashSet<OrderOut>();
+            Orders = new HashSet<Order>();
         }
 
         public int Id { get; set; }
         public string? StatusName { get; set; }
 
-        public virtual ICollection<OrderOut> OrderOuts { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

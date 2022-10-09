@@ -10,7 +10,7 @@
     <Color x:Key="Gray">#7C7B6F</Color>
     <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource Gray}" />
 
-    <Color x:Key="DarkGray">#3A362E</Color>
+    <Color x:Key="DarkGray">#292929</Color>
     <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGray}" />
 
     <Color x:Key="LightGray">#DDCACE</Color>

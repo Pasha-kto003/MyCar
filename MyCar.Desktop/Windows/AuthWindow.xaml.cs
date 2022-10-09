@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyCar.Desktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace MyCar.Desktop.Windows
         public AuthWindow()
         {
             InitializeComponent();
+            DataContext = new AuthViewModel(this);
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

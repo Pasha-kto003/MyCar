@@ -17,7 +17,7 @@ namespace MyCar.Server.Controllers
         }
         // GET: api/<CharacteristicController>
         [HttpGet]
-        public IEnumerable<CharacteristicApi> Get()
+        public IEnumerable<CharacteristicApi> Get() //
         {
             return dbContext.Characteristics.Select(s => (CharacteristicApi)s);
         }

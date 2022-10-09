@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ModelsApi;
+using MyCar.Desktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,10 @@ namespace MyCar.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(UserApi user)
         {
             InitializeComponent();
+            DataContext = new MainViewModel(user);
         }
     }
 }

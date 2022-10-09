@@ -3,7 +3,7 @@
 
     <Style TargetType="{x:Type TextBox}" x:Key="TextBoxLogin" BasedOn="{StaticResource BaseStyle}">
 
-        <Setter Property="FontSize" Value="{StaticResource FontSizeXXLarge}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeXLarge}" />
         <Setter Property="FontFamily" Value="{StaticResource CenturyGothic}" />
         <Setter Property="Padding" Value="10" />
         <Setter Property="Margin" Value="0 5 0 5" />

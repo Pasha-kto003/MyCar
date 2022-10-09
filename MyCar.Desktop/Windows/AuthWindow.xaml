@@ -1,0 +1,69 @@
+﻿<Window x:Class="MyCar.Desktop.Windows.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyCar.Desktop.Windows"
+        mc:Ignorable="d"
+        Title="AuthWindow" Height="500" Width="350"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" 
+        Background="Transparent">
+
+    <Border CornerRadius="10" Background="White" MouseDown="Border_MouseDown">
+        <Grid  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="0 10 10 0">
+                <Button Content="x" Style="{StaticResource WindowCloseButton}"
+                        Width="20" HorizontalAlignment="Right" Command="{Binding CloseWindow}"
+                        
+                        />
+            </StackPanel>
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0 0 0 0" Panel.ZIndex="1">
+                <Ellipse Width="100" Height="100" >
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="/Images/car_256.png" Stretch="UniformToFill" 
+                                 >
+                        </ImageBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+            </StackPanel>
+            <!--<StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0 0 0 0"  >
+                <Ellipse Width="100" Height="100" Fill="white">
+                   
+                </Ellipse>
+
+            </StackPanel>-->
+            <StackPanel Grid.Row="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    TextBlock.TextAlignment="Center">
+
+                <Grid Background="Transparent" 
+                            Width="300"
+                            Margin="0 100 0 0">
+
+                    <StackPanel>
+                        <TextBlock Text="Вход"   Margin="0 0 0 30"
+                               FontSize="{StaticResource FontSizeXXXLarge}" 
+                               FontFamily="{StaticResource CenturyGothic}"
+                               Foreground="{StaticResource ValorantRedBrush}"/>
+
+                        <TextBox Text="{Binding UserName}" Tag="Логин" Style="{StaticResource TextBoxLogin}" />
+
+                        <TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>
+
+                        <Button Content="Войти" Style="{StaticResource ButtonLogin}"
+                             Margin="0 50 0 0" Command="{Binding Login}" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

@@ -15,11 +15,23 @@ namespace MyCar.Server.Controllers
         {
             this.dbContext = dbContext;
         }
+
+        private CarApi CreateCarApi(Car car, List<CharacteristicApi> characteristics)
+        {
+            var result = (CarApi)car;
+            result.Characteristics = characteristics;
+            return result;
+        }
+
         // GET: api/<CarController>
         [HttpGet]
         public IEnumerable<CarApi> Get()
         {
-            return dbContext.Cars.Select(s => (CarApi)s);
+            return dbContext.Cars.ToList().Select(s =>
+            {
+                var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                return CreateCarApi(s, characteristics);
+            });
         }
 
         // GET api/<CarController>/5
@@ -36,7 +48,6 @@ namespace MyCar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] CarApi value)
         {
-
             var newCar = (Car)value;
             dbContext.Cars.Add(newCar);
             await dbContext.SaveChangesAsync();
@@ -51,19 +62,30 @@ namespace MyCar.Server.Controllers
             return Ok(newCar.Id);
         }
 
-
         // PUT api/<CarController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] CarApi editOrderOut)
+        public async Task<ActionResult> Put(int id, [FromBody] CarApi editcar)
         {
-
-            var oldOrderOut = await dbContext.Cars.FindAsync(id);
-            if (oldOrderOut == null)
+            foreach (var characteristics in editcar.Characteristics)
+                if (characteristics.ID == 0)
+                    return BadRequest($"Продукт {characteristics.CharacteristicName} не существует");
+            var car = (Car)editcar;
+            var cross = dbContext.CharacteristicCars.FirstOrDefault(t => t.CarId == car.Id);
+            var oldcar = await dbContext.Cars.FindAsync(id);
+            if (oldcar == null)
                 return NotFound();
-            Car newOrderOut = (Car)editOrderOut;
-            dbContext.Entry(oldOrderOut).CurrentValues.SetValues(newOrderOut);
-            await dbContext.SaveChangesAsync(); //
-            return Ok(); //
+            dbContext.Entry(oldcar).CurrentValues.SetValues(car);
+            var characteristicRemove = dbContext.CharacteristicCars.Where(s => s.CarId == id).ToList();
+            dbContext.CharacteristicCars.RemoveRange(characteristicRemove);
+            var crosses = editcar.CharacteristicCars.Select(s => (CharacteristicCar)s);
+            await dbContext.CharacteristicCars.AddRangeAsync(crosses.Select(s => new CharacteristicCar
+            {
+                CarId = car.Id,
+                CharacteristicId = s.CharacteristicId,
+                CharacteristicValue = s.CharacteristicValue
+            }));
+            await dbContext.SaveChangesAsync();
+            return Ok();
         }
 
         // DELETE api/<CarController>/5

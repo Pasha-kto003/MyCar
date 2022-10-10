@@ -37,15 +37,15 @@ namespace MyCar.Server.Controllers.Jwt
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDto request)
+        public async Task<ActionResult<string>> Login(string password, string login)
         {
-            User user = new User();
-            if (user.UserName != request.Username)
+            var user = dbContext.Users.FirstOrDefault(s => s.UserName == login);
+            if (user.UserName != login)
             {
                 return BadRequest("User Not Found!");
             }
 
-            if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.SaltHash))
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.SaltHash))
             {
                 return BadRequest("Wrong password!");
             }

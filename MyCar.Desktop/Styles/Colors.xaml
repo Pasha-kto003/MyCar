@@ -4,6 +4,12 @@
     <Color x:Key="ValorantRed">#ff4655</Color>
     <SolidColorBrush x:Key="ValorantRedBrush" Color="{StaticResource ValorantRed}" />
 
+    <Color x:Key="VeryLightValorantRed">#FEE1E3</Color>
+    <SolidColorBrush x:Key="VeryLightValorantRedBrush" Color="{StaticResource VeryLightValorantRed}" />
+
+    <Color x:Key="LightValorantRed">#FF99A1</Color>
+    <SolidColorBrush x:Key="LightValorantRedBrush" Color="{StaticResource LightValorantRed}" />
+
     <Color x:Key="BackgroundWhite">#efefef</Color>
     <SolidColorBrush x:Key="BackgroundWhiteBrush" Color="{StaticResource BackgroundWhite}" />
 
@@ -13,7 +19,7 @@
     <Color x:Key="DarkGray">#292929</Color>
     <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGray}" />
 
-    <Color x:Key="LightGray">#DDCACE</Color>
+    <Color x:Key="LightGray">#d3d3d3</Color>
     <SolidColorBrush x:Key="LightGrayBrush" Color="{StaticResource LightGray}" />
 
     <Color x:Key="LightPastelRed">#E9A098</Color>

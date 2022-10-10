@@ -22,10 +22,10 @@ namespace MyCar.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(UserApi user)
+        public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(user);
+            DataContext = new MainViewModel(this);
         }
     }
 }

@@ -15,6 +15,9 @@ namespace MyCar.Server.DB
         public string? Number { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Patronymic { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
     }

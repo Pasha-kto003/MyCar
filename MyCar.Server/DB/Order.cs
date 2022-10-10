@@ -7,18 +7,18 @@ namespace MyCar.Server.DB
     {
         public Order()
         {
-            CarOrderIns = new HashSet<CarOrderIn>();
-            OrderOuts = new HashSet<OrderOut>();
+            Warehouses = new HashSet<Warehouse>();
         }
 
         public int Id { get; set; }
         public DateTime? DateOfOrder { get; set; }
         public int? ClientId { get; set; }
         public int? ActionTypeId { get; set; }
+        public int? StatusId { get; set; }
 
         public virtual ActionType? ActionType { get; set; }
         public virtual User? Client { get; set; }
-        public virtual ICollection<CarOrderIn> CarOrderIns { get; set; }
-        public virtual ICollection<OrderOut> OrderOuts { get; set; }
+        public virtual Status? Status { get; set; }
+        public virtual ICollection<Warehouse> Warehouses { get; set; }
     }
 }

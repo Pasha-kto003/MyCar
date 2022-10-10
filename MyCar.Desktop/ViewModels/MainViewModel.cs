@@ -14,6 +14,7 @@ namespace MyCar.Desktop.ViewModels
     {
         #region Window settings
 
+
         private Window mWindow;
 
         private int mOuterMarginSize = 0;

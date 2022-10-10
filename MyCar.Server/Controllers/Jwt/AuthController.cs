@@ -13,84 +13,88 @@ namespace MyCar.Server.Controllers.Jwt
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly MyCar_DBContext dbContext;
+        
         private readonly IConfiguration _configuration;
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, MyCar_DBContext dbContext)
         {
             _configuration = configuration;
+            this.dbContext = dbContext;
         }
 
-        //[HttpPost("register")]
-        //public async Task<ActionResult<User>> Register(UserDto request)
-        //{
-        //    User user = new User();
-        //    CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> Register(UserDto request)
+        {
+            User user = new User();
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-        //    user.Username = request.Username;
-        //    user.PasswordHash = passwordHash;
-        //    user.PasswordSalt = passwordSalt;
+            user.UserName = request.Username;
+            user.PasswordHash = passwordHash;
+            user.SaltHash = passwordSalt;
+            dbContext.Users.Add(user);
+            dbContext.SaveChanges();
+            return Ok(user);
+        }
 
-        //    return Ok(user);
-        //}
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login(string password, string login)
+        {
+            var user = dbContext.Users.FirstOrDefault(s => s.UserName == login);
+            if (user.UserName != login)
+            {
+                return BadRequest("User Not Found!");
+            }
 
-        //[HttpPost("login")]
-        //public async Task<ActionResult<string>> Login(UserDto request)
-        //{
-        //    User user = new User();
-        //    if (user.Username != request.Username)
-        //    {
-        //        return BadRequest("User Not Found!");
-        //    }
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.SaltHash))
+            {
+                return BadRequest("Wrong password!");
+            }
 
-        //    if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
-        //    {
-        //        return BadRequest("Wrong password!");
-        //    }
+            string token = CreateToken(user);
+            return Ok(token);
+        }
 
-        //    string token = CreateToken(user);
-        //    return Ok(token);
-        //}
+        private string CreateToken(User user)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
 
-        //private string CreateToken(User user)
-        //{
-        //    List<Claim> claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.Name, user.Username)
-        //    };
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSettings:Token").Value));
 
-        //    var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-        //        _configuration.GetSection("AppSettings:Token").Value));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
 
-        //    var token = new JwtSecurityToken(
-        //        claims: claims,
-        //        expires: DateTime.Now.AddDays(1),
-        //        signingCredentials: creds);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-        //    var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
+        }
 
-        //    return jwt;
-        //}
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
 
-        //private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        //{
-        //    using (var hmac = new HMACSHA512())
-        //    {
-        //        passwordSalt = hmac.Key;
-        //        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        //    }
-        //}
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            User user = new User();
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
 
-        //private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        //{
-        //    User user = new User();
-        //    using (var hmac = new HMACSHA512(passwordSalt))
-        //    {
-        //        var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-
-        //        return computedHash.SequenceEqual(passwordHash);
-        //    }
-        //}
+                return computedHash.SequenceEqual(passwordHash);
+            }
+        }
     }
 
 }

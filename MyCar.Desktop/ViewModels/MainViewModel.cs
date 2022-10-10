@@ -11,13 +11,11 @@ namespace MyCar.Desktop.ViewModels
     public class MainViewModel : BaseViewModel
     {
 
-
         public string UserStringTest { get; set; }   
-
 
         public MainViewModel(UserApi user)
         {
-            UserStringTest = user.UserName + user.Password;
+            UserStringTest = user.UserName + user.PasswordHash.ToString();
         }
 
     }

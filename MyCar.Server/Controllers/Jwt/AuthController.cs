@@ -40,6 +40,8 @@ namespace MyCar.Server.Controllers.Jwt
         public async Task<ActionResult<string>> Login(UserDto request)
         {
             User user = new User();
+            user.UserName = request.Username;
+
             if (user.UserName != request.Username)
             {
                 return BadRequest("User Not Found!");
@@ -94,6 +96,12 @@ namespace MyCar.Server.Controllers.Jwt
 
                 return computedHash.SequenceEqual(passwordHash);
             }
+        }
+
+        private async bool FindUser(string username)
+        {
+            result = await dbContext.Users.FindAsync(username);
+            return result;
         }
     }
 

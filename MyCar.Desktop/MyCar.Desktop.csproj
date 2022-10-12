@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ModelsApi\ModelsApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\car_256.png" />
     <Resource Include="Images\car_64px.png" />
     <Resource Include="Images\user_64px.png" />

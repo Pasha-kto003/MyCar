@@ -158,12 +158,12 @@
                 <RadioButton  Height="60"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" IsChecked="True"
                              Style="{StaticResource MenuButtonTheme}"
-                             Command="">
+                             Command="{Binding UserPageCommand}">
                     <RadioButton.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/Images/user_64px.png" Margin="20 0 0 0"/>
                             <TextBlock Text="Пользователи"  VerticalAlignment="Center"
-                                       Margin="10 0 0 0" />
+                                       Margin="10 0 0 0" FontSize="{StaticResource FontSizeXLarge}"/>
                         </StackPanel>
                     </RadioButton.Content>
                 </RadioButton>

@@ -6,12 +6,12 @@
       xmlns:local="clr-namespace:MyCar.Desktop.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="UserPage" Background="#efefef">
+      Title="UserPage" Background="#efefef"  FontFamily="{StaticResource CenturyGothic}">
     <Grid>
         <Grid.RowDefinitions>
         <RowDefinition Height="auto"/>
         <RowDefinition />
-        <RowDefinition Height="40"/>
+        <RowDefinition Height="50"/>
     </Grid.RowDefinitions>
         
     <Grid Grid.Row="0" Background="WhiteSmoke">
@@ -27,26 +27,28 @@
         </StackPanel>
     </Grid>
         
-    <ListView Grid.Row="1" ItemsSource="{Binding Users}" FontSize="16" SelectedItem="{Binding SelectedUser}" >
+    <ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="16" SelectedItem="{Binding SelectedUser}" >
         <ListView.View>
             <GridView>
-                <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding FirstName}"/>
-                <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding LastName}"/>
+                <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding UserName}"/>
+                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}"/>
+                <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Passport.FirstName}"/>
+                <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Passport.LastName}"/>
+                <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding UserType.TypeName}"/>
                 </GridView>
         </ListView.View>
         <ListView.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Удалить" Command="{Binding DeletePhysicalClient}"/>
-                <MenuItem Header="Редактировать" Command="{Binding EditPhysicalClient}"/>
+                <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
+                <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
             </ContextMenu>
         </ListView.ContextMenu>
     </ListView>
 
-    <Grid Background="{StaticResource PastelRedBrush}" Grid.Row="2" >
+    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
         <StackPanel Orientation="Horizontal">
-                <Button Width="auto" Background="Transparent" 
-                        BorderThickness="0" Margin="5,0,0,0"
-                        Command="{Binding AddPhysicalClient}">
+                <Button   Content="Зарегистрировать" Margin="5 0 0 0" Style="{StaticResource AddButton}"
+                        Command="{Binding AddUser}">
                 </Button>
 
         </StackPanel>

@@ -76,7 +76,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand MaximizeCommand { get; set; }
         public CustomCommand CloseCommand { get; set; }
         public CustomCommand MenuCommand { get; set; }
-
+        public CustomCommand UserPageCommand { get; set; }
         public MainViewModel(Window window)
         {
             mWindow = window;
@@ -87,6 +87,9 @@ namespace MyCar.Desktop.ViewModels
             MenuCommand = new CustomCommand(() => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));
 
             CurrentPage = new UserPage();
+
+            UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage());
+
 
             var resizer = new WindowResizer(mWindow);
             resizer.WindowDockChanged += (dock) =>

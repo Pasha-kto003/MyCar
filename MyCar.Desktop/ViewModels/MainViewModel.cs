@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Pages;
 
 namespace MyCar.Desktop.ViewModels
 {
@@ -69,11 +71,12 @@ namespace MyCar.Desktop.ViewModels
 
         #endregion
 
+        public Page CurrentPage { get; set; }
         public CustomCommand MinimizeCommand { get; set; }
         public CustomCommand MaximizeCommand { get; set; }
         public CustomCommand CloseCommand { get; set; }
         public CustomCommand MenuCommand { get; set; }
-
+        public CustomCommand UserPageCommand { get; set; }
         public MainViewModel(Window window)
         {
             mWindow = window;
@@ -82,6 +85,11 @@ namespace MyCar.Desktop.ViewModels
             MaximizeCommand = new CustomCommand(() => mWindow.WindowState ^= WindowState.Maximized);
             CloseCommand = new CustomCommand(() => mWindow.Close());
             MenuCommand = new CustomCommand(() => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));
+
+            CurrentPage = new UserPage();
+
+            UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage());
+
 
             var resizer = new WindowResizer(mWindow);
             resizer.WindowDockChanged += (dock) =>

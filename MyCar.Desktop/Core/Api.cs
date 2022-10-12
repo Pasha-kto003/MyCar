@@ -42,14 +42,14 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<T?> Enter<T>(string UserName, string Password , string controller)
+        public static async Task<UserApi> Enter<UserApi>(string UserName, string Password , string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
             if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
                 //тут хз че в ретерне
-                return default;
+                return default(UserApi);
             string answerText = await answer.Content.ReadAsStringAsync();
-            var result = (T)JsonSerializer.Deserialize(answerText, typeof(T), jsonOptions);
+            var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;
         }
 

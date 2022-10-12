@@ -11,7 +11,7 @@ namespace MyCar.Desktop.Core
 {
     public class Api
     {
-        static HttpClient client = new HttpClient();
+        static HttpClient client = new HttpClient(); //
         static string server = "http://localhost:53349/api/";
         static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {

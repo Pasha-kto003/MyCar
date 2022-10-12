@@ -202,5 +202,7 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
+
+        <Frame Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" Margin="5"/>
     </Grid>
 </Window>

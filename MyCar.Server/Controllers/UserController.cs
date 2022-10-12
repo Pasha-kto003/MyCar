@@ -34,9 +34,9 @@ namespace MyCar.Server.Controllers
         }
 
         [HttpGet("UserName, Password")]
-        public async Task<ActionResult<UserApi>> Enter(string userName, string Password)
+        public async Task<ActionResult<UserApi>> Enter(string userName, byte[] Password)
         {
-            var user = dbContext.Users.FirstOrDefault(s => s.UserName == userName && s.Password == Password);
+            var user = dbContext.Users.FirstOrDefault(s => s.UserName == userName && s.PasswordHash == Password);
             if (user == null)
             {
                 NotFound();
@@ -45,14 +45,13 @@ namespace MyCar.Server.Controllers
         }
 
         [HttpPost("UserName, Password, FirstName, Email")]
-        public async Task<ActionResult<long>> Registration(string UserName, string Password, string Email, string FirstName, int? PassportId)
+        public async Task<ActionResult<long>> Registration(string UserName, byte[] Password, string Email, string FirstName, int? PassportId)
         {
             var newUser = new User();
             await dbContext.SaveChangesAsync();
             newUser.UserName = UserName;
-            newUser.Password = Password;
+            newUser.PasswordHash = Password;
             newUser.Email = Email;
-            newUser.FirstName = FirstName;
             newUser.PassportId = PassportId;
             await dbContext.Users.AddAsync(newUser);
             await dbContext.SaveChangesAsync();
@@ -91,7 +90,8 @@ namespace MyCar.Server.Controllers
         {
             if (type == 1)
             {
-                return dbContext.Users.Where(s => s.Password == text).ToList().Select(s => {
+                return dbContext.Users.Where(s => s.PasswordHash.ToString() == text).ToList().Select(s =>
+                {
                     var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
                     return CreateUserApi(s, passport);
                 });
@@ -105,28 +105,32 @@ namespace MyCar.Server.Controllers
             }
             if (type == 3)
             {
-                return dbContext.Users.Where(s => s.FirstName == text).ToList().Select(s => {
+                return dbContext.Users.Where(s => s.Passport.FirstName == text).ToList().Select(s =>
+                {
                     var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
                     return CreateUserApi(s, passport);
                 });
             }
             if (type == 4)
             {
-                return dbContext.Users.Where(s => s.LastName == text).ToList().Select(s => {
+                return dbContext.Users.Where(s => s.Passport.LastName == text).ToList().Select(s =>
+                {
                     var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
                     return CreateUserApi(s, passport);
                 });
             }
             if (type == 5)
             {
-                return dbContext.Users.Where(s => s.Patronimyc == text).ToList().Select(s => {
+                return dbContext.Users.Where(s => s.Passport.Patronymic == text).ToList().Select(s =>
+                {
                     var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
                     return CreateUserApi(s, passport);
                 });
             }
             //if (type == 6)
             //{
-            //    return dbContext.Users.Where(s => s.Telephone == text).ToList().Select(s => {
+            //    return dbContext.Users.Where(s => s.Telephone == text).ToList().Select(s =>
+            //    {
             //        var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
             //        return CreateUserApi(s, passport);
             //    });

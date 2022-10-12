@@ -12,10 +12,13 @@ namespace MyCar.Server.DB
                 Seria = passport.Seria,
                 Number = passport.Number,
                 DateEnd = passport.DateEnd,
-                DateStart = passport.DateStart
+                DateStart = passport.DateStart,
+                FirstName = passport.FirstName,
+                LastName = passport.LastName,
+                Patronimyc = passport.Patronymic
             };
         }
-        public static explicit operator Passport(PassportApi passport)
+        public static explicit operator Passport(PassportApi passport) //
         {
             return new Passport
             {
@@ -23,7 +26,10 @@ namespace MyCar.Server.DB
                 Seria = passport.Seria,
                 Number = passport.Number,
                 DateEnd = passport.DateEnd,
-                DateStart = passport.DateStart
+                DateStart = passport.DateStart,
+                FirstName = passport.FirstName,
+                LastName = passport.LastName,
+                Patronymic = passport.Patronimyc
             };
         }
     }

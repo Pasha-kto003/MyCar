@@ -7,8 +7,8 @@ namespace MyCar.Server.DB
     {
         public Car()
         {
-            CarOrderIns = new HashSet<CarOrderIn>();
             CharacteristicCars = new HashSet<CharacteristicCar>();
+            Warehouses = new HashSet<Warehouse>();
         }
 
         public int Id { get; set; }
@@ -22,7 +22,7 @@ namespace MyCar.Server.DB
         public virtual Equipment? Equipment { get; set; }
         public virtual Model? Model { get; set; }
         public virtual BodyType? Type { get; set; }
-        public virtual ICollection<CarOrderIn> CarOrderIns { get; set; }
         public virtual ICollection<CharacteristicCar> CharacteristicCars { get; set; }
+        public virtual ICollection<Warehouse> Warehouses { get; set; }
     }
 }

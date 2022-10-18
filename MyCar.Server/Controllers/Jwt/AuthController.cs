@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyCar.Server.DB;
 using MyCar.Server.DTO;
@@ -36,16 +37,20 @@ namespace MyCar.Server.Controllers.Jwt
             return Ok(user);
         }
 
-        [HttpPost("login")]
+        //[HttpPost("login")]
+        [HttpPost("UserName, Password")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
             User user = new User();
             user.UserName = request.Username;
 
-            if (user.UserName != request.Username)
+            if (!FindUser(request.Username))
             {
                 return BadRequest("User Not Found!");
             }
+
+
+            user = await dbContext.Users.FirstOrDefaultAsync(s => s.UserName == request.Username);
 
             if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.SaltHash))
             {
@@ -60,7 +65,8 @@ namespace MyCar.Server.Controllers.Jwt
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName),
+                //new Claim(ClaimTypes.Role, "Admin")
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -98,10 +104,14 @@ namespace MyCar.Server.Controllers.Jwt
             }
         }
 
-        private async bool FindUser(string username)
+        private bool FindUser(string username)
         {
-            result = await dbContext.Users.FindAsync(username);
-            return result;
+            var result =  dbContext.Users.FirstOrDefault(s=> s.UserName == username);
+            if (result == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 

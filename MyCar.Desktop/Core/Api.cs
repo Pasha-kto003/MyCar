@@ -11,7 +11,7 @@ namespace MyCar.Desktop.Core
 {
     public class Api
     {
-        static HttpClient client = new HttpClient();
+        static HttpClient client = new HttpClient(); //
         static string server = "http://localhost:53349/api/";
         static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
@@ -33,14 +33,23 @@ namespace MyCar.Desktop.Core
             var result = (T)JsonSerializer.Deserialize(answerText, typeof(T), jsonOptions);
             return result;
         }
-        public static async Task<T?> Enter<T>(string UserName,string Password , string controller)
+
+        public static async Task<UserApi> SearchAsync<UserApi>(int id, string? text, string controller)
+        {
+            var answer = await client.GetAsync(server + controller + $"/Password, UserName, FirstName, LastName, Patronymic, Telephone, Email?type={id}&text={text}");
+            string answerText = await answer.Content.ReadAsStringAsync();
+            var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
+            return result;
+        }
+
+        public static async Task<UserApi> Enter<UserApi>(string UserName, string Password , string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
             if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
                 //тут хз че в ретерне
-                return default;
+                return default(UserApi);
             string answerText = await answer.Content.ReadAsStringAsync();
-            var result = (T)JsonSerializer.Deserialize(answerText, typeof(T), jsonOptions);
+            var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;
         }
 

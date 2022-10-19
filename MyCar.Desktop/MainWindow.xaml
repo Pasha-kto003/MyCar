@@ -5,8 +5,204 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+       Title="MyCar" Height="720" Width="1280" 
+        WindowStartupLocation="CenterScreen" WindowStyle="None"
+        AllowsTransparency="True" 
+        MinHeight="{Binding WindowMinimumHeight}" MinWidth="{Binding WindowMinimumWidth}">
+    <Window.Resources>
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
+                            <Grid>
+
+                                <Border x:Name="Container"
+                                        Background="#efefef"
+                                        CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
+
+                                <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
+                                    Background="{Binding ForegroundLightBrush, FallbackValue=White}">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
+                                    </Border.Effect>
+                                </Border>
+
+                                <Grid>
+
+                                    <Grid.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Container}" />
+                                    </Grid.OpacityMask>
+
+                                    <Grid.RowDefinitions>
+
+                                        <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=30}" />
+
+                                        <RowDefinition Height="auto" />
+
+                                        <RowDefinition Height="*" />
+
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Column="0" Panel.ZIndex="1">
+
+                                        <Grid.ColumnDefinitions>
+
+                                            <ColumnDefinition Width="Auto" />
+
+                                            <ColumnDefinition Width="*" />
+
+                                            <ColumnDefinition Width="Auto" />
+
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Style="{StaticResource SystemIconButton}"  Command="{Binding MenuCommand}">
+                                            <Image Source="/Images/car_64px.png" Width="25" Height="25"/>
+                                        </Button>
+
+
+                                        <Viewbox Grid.Column="0" Grid.ColumnSpan="3"  Stretch="Uniform">
+                                            <StackPanel>
+                                                <TextBlock FontSize="1" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" >
+
+                                                </TextBlock>
+
+                                            </StackPanel>
+                                        </Viewbox>
+
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0 0 5 0">
+                                            <Button Command="{Binding MinimizeCommand}" Style="{StaticResource WindowControlButton}" Content="_" Width="24" Height="32"/>
+                                            <Button Command="{Binding MaximizeCommand}" Style="{StaticResource WindowControlButton}"  Content="[ ]" FontSize="10" Width="24" Height="32"/>
+                                            <Button Command="{Binding CloseCommand}" Style="{StaticResource WindowCloseButton}" Content="X" Width="24" Height="32"/>
+                                        </StackPanel>
+
+                                    </Grid>
+                                    <Border Grid.Row="1" Height="2" BorderThickness="0 0.4 0 0" >
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1, 0">
+
+                                                <GradientStop Color="#ffffff" Offset="0.0"/>
+                                                <GradientStop Color="#686868" Offset="0.5"/>
+                                                <GradientStop Color="#ffffff" Offset="1.0"/>
+
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0, 1">
+
+                                                <GradientStop Color="#fafafa" Offset="0.0"/>
+                                                <GradientStop Color="#ffffff" Offset="1.0"/>
+
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </Border>
+                                    <Border Grid.Row="2" Padding="{Binding InnerContentPadding}">
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </Border>
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"
+            CaptionHeight="{Binding TitleHeight}"
+            CornerRadius="0"
+            GlassFrameThickness="0"
+            />
+    </WindowChrome.WindowChrome>
     <Grid>
-        <TextBlock Text="{Binding UserStringTest}" Height="30" Width="400"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Background="white" >
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <Rectangle  Width="70" Height="70" RadiusX="15" RadiusY="15" Margin="10" >
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/user_64px.png" Stretch="UniformToFill" >
+                        </ImageBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="Имя Фамилия" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
+                       FontSize="{StaticResource FontSizeXLarge}" Foreground="{StaticResource DarkGrayBrush}"  />
+            </StackPanel>
+            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Fill="Gray" Height="0.5" Width="220"/>
+        </Grid>
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Width="1" BorderThickness="0.4 0 0 0" >
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0, 1">
+                    <GradientStop Color="#ffffff" Offset="0.0"/>
+                    <GradientStop Color="{StaticResource DarkGray}" Offset="0.5"/>
+                    <GradientStop Color="#ffffff" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" Opacity="0.5" />
+            </Border.Effect>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <StackPanel Margin="0,20,0,0">
+                <RadioButton  Height="60"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" IsChecked="True"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding UserPageCommand}">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Images/user_64px.png" Margin="20 0 0 0"/>
+                            <TextBlock Text="Пользователи"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" FontSize="{StaticResource FontSizeXLarge}"/>
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton  Height="60"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Images/user_64px.png" Margin="20 0 0 0"/>
+                            <TextBlock Text="Пользователи"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton  Height="60"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Images/user_64px.png" Margin="20 0 0 0"/>
+                            <TextBlock Text="Пользователи"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Column="2"  Grid.Row="0" Grid.RowSpan="2" CornerRadius="0 0 5 0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0, 1">
+                    <GradientStop Color="#ffffff" Offset="0.0"/>
+                    <GradientStop Color="{StaticResource VeryLightValorantRed}" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <Frame Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" Margin="5"/>
     </Grid>
 </Window>

@@ -1,5 +1,4 @@
-﻿using ModelsApi;
-using MyCar.Desktop.ViewModels;
+﻿using MyCar.Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop
+namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для UserPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class UserPage : Page
     {
-        public MainWindow()
+        public UserPage()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(this);
+            DataContext = new UserViewModel(); 
         }
     }
 }

@@ -39,7 +39,7 @@ namespace MyCar.Desktop.ViewModels
 
         private async Task Enter()
         {
-            User = await Api.Enter<UserApi>(UserName,Password,"User");
+            User = await Api.Enter<UserApi>(UserName, Password, "Jwt/Auth");
         }
 
     }

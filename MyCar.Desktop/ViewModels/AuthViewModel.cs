@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Windows;
 
 namespace MyCar.Desktop.ViewModels
 {
@@ -33,13 +34,19 @@ namespace MyCar.Desktop.ViewModels
 
             Login = new CustomCommand(() => {
                 Task.Run(Enter);
-
+                if(User != null)
+                {
+                    MainWindow testWindow = new MainWindow();
+                    testWindow.ShowDialog();
+                }
+                
             });
         }
 
         private async Task Enter()
         {
-            User = await Api.Enter<UserApi>(UserName, Password, "Jwt/Auth");
+            User = await Api.Enter<UserApi>(UserName, Password, "Auth");
+            
         }
 
     }

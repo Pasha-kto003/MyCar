@@ -16,10 +16,27 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
 
-        private CarApi CreateCarApi(Car car, List<CharacteristicApi> characteristics)
+        private CarApi CreateCar(Car car, List<CharacteristicApi> characteristics)
         {
             var result = (CarApi)car;
             result.Characteristics = characteristics;
+            return result;
+        }
+
+        private CarApi CreateCarApi(Car car, List<CharacteristicApi> characteristics, Model model)
+        {
+            var result = (CarApi)car;
+            result.Characteristics = characteristics;
+            result.Model = (ModelApi)model;
+            return result;
+        }
+
+        private CarApi GetMarkApi(Car car, List<CharacteristicApi> characteristics, Model model, MarkCar mark)
+        {
+            var result = (CarApi)car;
+            result.Characteristics = characteristics;
+            result.Model = (ModelApi)model;
+            result.Model.MarkCar = (MarkCarApi)mark;
             return result;
         }
 
@@ -30,7 +47,9 @@ namespace MyCar.Server.Controllers
             return dbContext.Cars.ToList().Select(s =>
             {
                 var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
-                return CreateCarApi(s, characteristics);
+                var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+                var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+                return GetMarkApi(s, characteristics, model, mark);
             });
         }
 
@@ -38,13 +57,56 @@ namespace MyCar.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CarApi>> Get(int id)
         {
-            var result = await dbContext.Cars.FindAsync(id);
-            if (result == null)
-                return NotFound();
-            return Ok((CarApi)result);
+            var car = await dbContext.Cars.FindAsync(id);
+            var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+            var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
+            return CreateCarApi(car, characteristics, model);
         }
 
-        // POST api/<CarController>
+        [HttpGet("ModelName, MarkName, Articul, CarPrice")]
+        public IEnumerable<CarApi> SearchByUser(int type, string text)
+        {
+            if(type == 1)
+            {
+                return dbContext.Cars.Where(s => s.Articul == text).ToList().Select(t=> (CarApi)t);
+            }
+            if(type == 2)
+            {
+                return dbContext.Cars.Where(s=> s.Model.ModelName == text).ToList().Select(s => {
+                    var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    var model = dbContext.Models.FirstOrDefault(t => t.ModelName == text);
+                    return CreateCarApi(s, characteristics, model);
+                });
+            }
+            if(type == 3)
+            {
+                return dbContext.Cars.Where(s => s.Model.Mark.MarkName == text).ToList().Select(s => {
+                    var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    var mark = dbContext.MarkCars.FirstOrDefault(m=> m.MarkName == text);
+                    var model = dbContext.Models.FirstOrDefault(i => i.MarkId == mark.Id);
+                    return GetMarkApi(s, characteristics, model, mark);
+                });
+            }
+            if(type == 4)
+            {
+                return dbContext.Cars.Where(s => s.CarPrice.ToString() == text).ToList().Select(s => {
+                    var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+                    var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+                    return GetMarkApi(s, characteristics, model, mark);
+                });
+            }
+            else
+            {
+                return dbContext.Cars.ToList().Select(s => {
+                    var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+                    var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+                    return GetMarkApi(s, characteristics, model, mark);
+                });
+            }
+        }
+            // POST api/<CarController>
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] CarApi value)
         {

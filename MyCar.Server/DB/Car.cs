@@ -16,7 +16,7 @@ namespace MyCar.Server.DB
         public int? TypeId { get; set; }
         public int? EquipmentId { get; set; }
         public string? Articul { get; set; }
-        public byte[]? PhotoCar { get; set; }
+        public string? PhotoCar { get; set; }
         public decimal? CarPrice { get; set; }
 
         public virtual Equipment? Equipment { get; set; }

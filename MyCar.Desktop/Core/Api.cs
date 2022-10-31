@@ -42,9 +42,9 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<UserApi> SearchAsync<UserApi>(string type, string? text, string controller)
+        public static async Task<UserApi> SearchAsync<UserApi>(int id, string? text, string controller)
         {
-            var answer = await client.GetAsync(server + controller + $"/Password, UserName, FirstName, LastName, Patronymic, Telephone, Email?type={type}&text={text}");
+            var answer = await client.GetAsync(server + controller + $"/Password, UserName, FirstName, LastName, Patronymic, Telephone, Email?type={id}&text={text}");
             string answerText = await answer.Content.ReadAsStringAsync();
             var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;

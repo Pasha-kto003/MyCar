@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MyCar.Desktop.ViewModels
 {
@@ -17,7 +18,7 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 searchText = value;
-                Search();
+                //Search();
             }
         }
         public List<string> SearchType { get; set; }
@@ -28,7 +29,6 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 selectedSearchType = value;
-                Search();
             }
         }
 
@@ -40,47 +40,145 @@ namespace MyCar.Desktop.ViewModels
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public UserApi SelectedUser { get; set; }   
 
-
+        public CustomCommand SearchStart { get; set; }
 
         public UserViewModel()
         {
             Task.Run(GetUserList);
  
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email", "Тип" });
+            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email", "Тип", "Отменить" });
             selectedSearchType = SearchType.First();
-            
 
+            SearchStart = new CustomCommand(() =>
+            {
+                if (SelectedSearchType == "Логин" && SearchText != "")
+                {
+                    int i = 1;
+                    Search(i, SearchText);
+                    Users = searchResult;
+                    if (Users == null)
+                    {
+                        MessageBox.Show("Пользователь не найден");
+                        SearchText = "";
+                        SignalChanged("SearchText");
+                        GetUserList();
+                        Users = FullUsers;
+                        SignalChanged("Users");
+                    }
+                }
+                else if (SelectedSearchType == "Фамилия")
+                {
+                    int i = 3;
+                    Search(i, SearchText);
+                    Users = searchResult;
+                    if (Users == null)
+                    {
+                        MessageBox.Show("Пользователь не найден");
+                        SearchText = "";
+                        SignalChanged("SearchText");
+                        GetUserList();
+                        Users = FullUsers;
+                        SignalChanged("Users");
+                    }
+                }
+                else if (SelectedSearchType == "Email")
+                {
+                    int i = 5;
+                    Search(i, SearchText);
+                    Users = searchResult;
+                    if (Users == null)
+                    {
+                        MessageBox.Show("Пользователь не найден");
+                        SearchText = "";
+                        SignalChanged("SearchText");
+                        GetUserList();
+                        Users = FullUsers;
+                        SignalChanged("Users");
+                    }
+                }
+            });
 
         }
-        private void Search()
+
+        public async Task Search(int id, string? text)
         {
-            var search = SearchText.ToLower();
-
             if (SelectedSearchType == "Логин")
-                searchResult = FullUsers
-                    .Where(c => c.UserName.ToLower().Contains(search)).ToList();
+            {
+                id = 1;
+                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+                searchResult = usersSearch;
+                Users = searchResult;
+                SignalChanged("Users");
+            }
             else if (SelectedSearchType == "Фамилия")
-                searchResult = FullUsers
-                    .Where(c => c.Passport.LastName.ToString().Contains(search)).ToList();
+            {
+                id = 3;
+                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+                searchResult = usersSearch;
+                Users = searchResult;
+                SignalChanged("Users");
+            }
             else if (SelectedSearchType == "Email")
-                searchResult = FullUsers
-                    .Where(c => c.Email.ToString().Contains(search)).ToList();
+            {
+                id = 5;
+                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+                searchResult = usersSearch;
+                Users = searchResult;
+                SignalChanged("Users");
+            }
             else if (SelectedSearchType == "Тип")
-                searchResult = FullUsers
-                    .Where(c => c.UserType.TypeName.ToString().Contains(search)).ToList();
-            UpdateList();
+            {
+                id = 3;
+                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+                searchResult = usersSearch;
+                Users = searchResult;
+                SignalChanged("Users");
+            }
+            else if (SelectedSearchType == "Отменить")
+            {
+                var users = await Api.GetListAsync<List<UserApi>>("User");
+                searchResult = users;
+                Users = searchResult;
+                SignalChanged("Users");
+            }
         }
+
+        //private void Search()
+        //{
+        //    var search = SearchText.ToLower();
+
+        //    if (SelectedSearchType == "Логин")
+        //        searchResult = FullUsers
+        //            .Where(c => c.UserName.ToLower().Contains(search)).ToList();
+        //    else if (SelectedSearchType == "Фамилия")
+        //        searchResult = FullUsers
+        //            .Where(c => c.Passport.LastName.ToString().Contains(search)).ToList();
+        //    else if (SelectedSearchType == "Email")
+        //        searchResult = FullUsers
+        //            .Where(c => c.Email.ToString().Contains(search)).ToList();
+        //    else if (SelectedSearchType == "Тип")
+        //        searchResult = FullUsers
+        //            .Where(c => c.UserType.TypeName.ToString().Contains(search)).ToList();
+        //    UpdateList();
+        //}
+
         private void UpdateList()
         {
             Users = searchResult;
         }
+
         private async Task GetUserList()
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
             UserTypes = await Api.GetListAsync<List<UserTypeApi>>("UserType");
             Passports = await Api.GetListAsync<List<PassportApi>>("Passport");
             FullUsers = Users;
+            foreach(var user in Users)
+            {
+                user.UserType = UserTypes.FirstOrDefault(s => s.ID == user.UserTypeId);
+                user.Passport = Passports.FirstOrDefault(s => s.ID == user.PassportId);
+            }
             SignalChanged(nameof(Users));
         }
 

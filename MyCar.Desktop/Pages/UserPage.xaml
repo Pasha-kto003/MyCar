@@ -24,6 +24,9 @@
                 <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
                 <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
             </StackPanel>
+            <StackPanel>
+                <Button Content="Совершить поиск" Command="{Binding SearchStart}" Width="200" Height="30" Margin="20 25 0 0"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
         

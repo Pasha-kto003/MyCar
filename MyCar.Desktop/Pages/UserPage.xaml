@@ -20,11 +20,14 @@
                 <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
                 <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
             </StackPanel>
-                <StackPanel>
-                    <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
-                </StackPanel>
+            <StackPanel>
+                <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
+                <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
             </StackPanel>
+            <StackPanel>
+                <Button Content="Совершить поиск" Command="{Binding SearchStart}" Width="200" Height="30" Margin="20 25 0 0"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
         
     <ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="16" SelectedItem="{Binding SelectedUser}" >

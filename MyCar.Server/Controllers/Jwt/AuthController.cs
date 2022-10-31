@@ -38,29 +38,28 @@ namespace MyCar.Server.Controllers.Jwt
         }
 
         //[HttpPost("login")]
-        [HttpPost("UserName, Password")]
-        public async Task<ActionResult<string>> Login(UserDto request)
+        [HttpGet("UserName, Password")]
+        public async Task<ActionResult<User>> Login(string userName, string Password)//UserDto request
         {
             User user = new User();
-            user.UserName = request.Username;
+            user.UserName = userName;
 
-            if (!FindUser(request.Username))
+            if (!FindUser(userName))
             {
                 return BadRequest("User Not Found!");
             }
 
 
-            user = await dbContext.Users.FirstOrDefaultAsync(s => s.UserName == request.Username);
+            user = await dbContext.Users.FirstOrDefaultAsync(s => s.UserName == userName);
 
-            if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.SaltHash))
+            if (!VerifyPasswordHash(Password, user.PasswordHash, user.SaltHash))
             {
                 return BadRequest("Wrong password!");
             }
 
             string token = CreateToken(user);
-            return Ok(token);
+            return user; //user or token
         }
-
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>

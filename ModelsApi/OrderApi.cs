@@ -12,5 +12,8 @@ namespace ModelsApi
         public int? ClientId { get; set; }
         public int? ActionTypeId { get; set; }
         public int? StatusId { get; set; }
+
+        public List<WareHouseApi> WareHouses { get; set; }
+        public List<CarApi> Cars { get; set; }
     }
 }

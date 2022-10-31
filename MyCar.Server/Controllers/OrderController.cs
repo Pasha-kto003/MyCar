@@ -15,37 +15,54 @@ namespace MyCar.Server.Controllers
         {
             this.dbContext = dbContext;
         }
-        
+
+        private OrderApi CreateOrderApi(Order orderIn, List<CarApi> cars)
+        {
+            var result = (OrderApi)orderIn;
+            result.Cars = cars;
+            return result;
+        }
+
         // GET: api/<OrderController>
         [HttpGet]
-        //public IEnumerable<OrderApi> Get()
-        //{
-        //    return 
-        //}
+        public IEnumerable<OrderApi> Get()
+        {
+            return dbContext.Orders.ToList().Select(s =>
+            {
+                var warehouses = dbContext.Warehouses.Where(t => t.OrderId == s.Id).Select(t => (CarApi)t.Car).ToList();
+                return CreateOrderApi(s, warehouses);
+            });
+        }
 
         // GET api/<OrderController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<OrderApi>> Get(int id)
         {
-            return "value";
+            var order = await dbContext.Orders.FindAsync(id);
+            var products = dbContext.Warehouses.Where(t => t.OrderId == id).Select(t => (CarApi)t.Car).ToList();
+            return CreateOrderApi(order, products);
         }
 
         // POST api/<OrderController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<int>> Post([FromBody] OrderApi newOrder)
         {
-        }
-
-        // PUT api/<OrderController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<OrderController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            foreach (var products in newOrder.Cars)
+                if (products.ID == 0)
+                    return BadRequest($"{products.ModelId} не существует");
+            var order = (Order)newOrder;
+            await dbContext.Orders.AddAsync(order);
+            await dbContext.SaveChangesAsync();
+            await dbContext.Warehouses.AddRangeAsync(newOrder.WareHouses.Select(s => new Warehouse
+            {
+                OrderId = order.Id,
+                CarId = s.CarId,
+                CountChange = s.CountChange,
+                Discount = s.Discount,
+                Price = s.Price
+            }));
+            await dbContext.SaveChangesAsync();
+            return Ok(order.Id);
         }
     }
 }

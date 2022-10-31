@@ -75,6 +75,8 @@ namespace MyCar.Server.DB
 
                 entity.Property(e => e.CarPrice).HasColumnType("money");
 
+                entity.Property(e => e.PhotoCar).IsUnicode(false);
+
                 entity.HasOne(d => d.Equipment)
                     .WithMany(p => p.Cars)
                     .HasForeignKey(d => d.EquipmentId)

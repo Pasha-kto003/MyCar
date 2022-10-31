@@ -12,7 +12,7 @@ namespace MyCar.Desktop.Core
     public class Api
     {
         static HttpClient client = new HttpClient(); //
-        static string server = "http://localhost:53349/api/";
+        static string server = "http://localhost:5243/api/";
         static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -34,6 +34,14 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
+        public static async Task<CarApi> SearchCarAsync<CarApi>(int id, string? text, string controller)
+        {
+            var answer = await client.GetAsync(server + controller + $"/ModelName, MarkName, Articul, CarPrice?type={id}&text={text}");
+            string answerText = await answer.Content.ReadAsStringAsync();
+            var result = (CarApi)JsonSerializer.Deserialize(answerText, typeof(CarApi), jsonOptions);
+            return result;
+        }
+
         public static async Task<UserApi> SearchAsync<UserApi>(int id, string? text, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/Password, UserName, FirstName, LastName, Patronymic, Telephone, Email?type={id}&text={text}");
@@ -42,7 +50,7 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<UserApi> Enter<UserApi>(string UserName, string Password , string controller)
+        public static async Task<UserApi> Enter<UserApi>(string UserName, string Password, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
             if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)

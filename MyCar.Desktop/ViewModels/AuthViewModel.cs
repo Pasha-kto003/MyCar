@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using ModelsApi;
@@ -32,12 +33,13 @@ namespace MyCar.Desktop.ViewModels
             });
 
 
-            Login = new CustomCommand(() => {
-                Task.Run(Enter);
+            Login = new CustomCommand(async () => {
+                await Task.Run(Enter);
                 if(User != null)
                 {
-                    MainWindow testWindow = new MainWindow();
-                    testWindow.ShowDialog();
+                    MainWindow testWindow = new MainWindow(User);
+                    testWindow.Show();
+                    mWindow.Close();
                 }
                 
             });

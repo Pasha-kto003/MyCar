@@ -85,59 +85,16 @@ namespace MyCar.Server.Controllers
             return CreateUserApi(client, passport);
         }
 
-        //[HttpGet("Password, UserName, FirstName, LastName, Patronymic, Telephone, Email")]
-        //public IEnumerable<UserApi> SearchByUser(int type, string text)
-        //{
-        //    if (type == 1)
-        //    {
-        //        return dbContext.Users.Where(s => s.UserName.ToLower().Contains(text)).ToList().Select(s => {
-        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-        //            return CreateUserApi(s, passport);
-        //        });
-        //    }
-        //    if (type == 2)
-        //    {
-        //        return dbContext.Users.Where(s => s.Passport.FirstName.ToLower().Contains(text)).ToList().Select(s =>
-        //        {
-        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-        //            return CreateUserApi(s, passport);
-        //        });
-        //    }
-        //    if (type == 3)
-        //    {
-        //        return dbContext.Users.Where(s => s.Passport.LastName.ToLower().Contains(text)).ToList().Select(s =>
-        //        {
-        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-        //            return CreateUserApi(s, passport);
-        //        });
-        //    }
-        //    if (type == 4)
-        //    {
-        //        return dbContext.Users.Where(s => s.Passport.Patronymic.ToLower().Contains(text)).ToList().Select(s =>
-        //        {
-        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-        //            return CreateUserApi(s, passport);
-        //        });
-        //    }
-        //    if (type == 5)
-        //    {
-        //        return dbContext.Users.Where(s => s.Email.ToLower().Contains(text)).ToList().Select(s => {
-        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-        //            return CreateUserApi(s, passport);
-        //        });
-        //    }
-        //    else
-        //    {
-        //        return dbContext.Users.ToList().Select(s => {
-        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-        //            return CreateUserApi(s, passport);
-        //        });
-        //    }
-        //}
-
-        [HttpGet("Password, UserName, FirstName, LastName, Patronymic, Telephone, Email")]
+        [HttpGet("Type, Text")]
         public IEnumerable<UserApi> SearchByUser(string type, string text)
         {
+            if (text == "")
+            {
+                return dbContext.Users.ToList().Select(s => {
+                    var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
+                    return CreateUserApi(s, passport);
+                });
+            }
             switch (type)
             {
                 case "Логин":

@@ -27,8 +27,8 @@
           
         </StackPanel>
     </Grid>
-        
-    <ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="16" SelectedItem="{Binding SelectedUser}" >
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="{StaticResource FontSizeXXLarge}" SelectedItem="{Binding SelectedUser}" >
         <ListView.View>
             <GridView>
                 <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding UserName}"/>

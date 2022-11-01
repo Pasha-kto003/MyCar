@@ -18,7 +18,7 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 searchText = value;
-                //Search();
+                Search();
             }
         }
         public List<string> SearchType { get; set; }
@@ -29,6 +29,7 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 selectedSearchType = value;
+                Search();
             }
         }
 
@@ -50,118 +51,109 @@ namespace MyCar.Desktop.ViewModels
             SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email", "Тип", "Отменить" });
             selectedSearchType = SearchType.First();
 
-            SearchStart = new CustomCommand(() =>
-            {
-                if (SelectedSearchType == "Логин" && SearchText != "")
-                {
-                    int i = 1;
-                    Search(i, SearchText);
-                    Users = searchResult;
-                    if (Users == null)
-                    {
-                        MessageBox.Show("Пользователь не найден");
-                        SearchText = "";
-                        SignalChanged("SearchText");
-                        GetUserList();
-                        Users = FullUsers;
-                        SignalChanged("Users");
-                    }
-                }
-                else if (SelectedSearchType == "Фамилия")
-                {
-                    int i = 3;
-                    Search(i, SearchText);
-                    Users = searchResult;
-                    if (Users == null)
-                    {
-                        MessageBox.Show("Пользователь не найден");
-                        SearchText = "";
-                        SignalChanged("SearchText");
-                        GetUserList();
-                        Users = FullUsers;
-                        SignalChanged("Users");
-                    }
-                }
-                else if (SelectedSearchType == "Email")
-                {
-                    int i = 5;
-                    Search(i, SearchText);
-                    Users = searchResult;
-                    if (Users == null)
-                    {
-                        MessageBox.Show("Пользователь не найден");
-                        SearchText = "";
-                        SignalChanged("SearchText");
-                        GetUserList();
-                        Users = FullUsers;
-                        SignalChanged("Users");
-                    }
-                }
-            });
+            Search();
+
+            //SearchStart = new CustomCommand(() =>
+            //{
+            //    if (SelectedSearchType == "Логин" && SearchText != "")
+            //    {
+            //        int i = 1;
+            //        Search(i, SearchText);
+            //        Users = searchResult;
+            //        if (Users == null)
+            //        {
+            //            MessageBox.Show("Пользователь не найден");
+            //            SearchText = "";
+            //            SignalChanged("SearchText");
+            //            GetUserList();
+            //            Users = FullUsers;
+            //            SignalChanged("Users");
+            //        }
+            //    }
+            //    else if (SelectedSearchType == "Фамилия")
+            //    {
+            //        int i = 3;
+            //        Search(i, SearchText);
+            //        Users = searchResult;
+            //        if (Users == null)
+            //        {
+            //            MessageBox.Show("Пользователь не найден");
+            //            SearchText = "";
+            //            SignalChanged("SearchText");
+            //            GetUserList();
+            //            Users = FullUsers;
+            //            SignalChanged("Users");
+            //        }
+            //    }
+            //    else if (SelectedSearchType == "Email")
+            //    {
+            //        int i = 5;
+            //        Search(i, SearchText);
+            //        Users = searchResult;
+            //        if (Users == null)
+            //        {
+            //            MessageBox.Show("Пользователь не найден");
+            //            SearchText = "";
+            //            SignalChanged("SearchText");
+            //            GetUserList();
+            //            Users = FullUsers;
+            //            SignalChanged("Users");
+            //        }
+            //    }
+            //});
 
         }
 
-        public async Task Search(int id, string? text)
-        {
-            if (SelectedSearchType == "Логин")
-            {
-                id = 1;
-                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
-                searchResult = usersSearch;
-                Users = searchResult;
-                SignalChanged("Users");
-            }
-            else if (SelectedSearchType == "Фамилия")
-            {
-                id = 3;
-                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
-                searchResult = usersSearch;
-                Users = searchResult;
-                SignalChanged("Users");
-            }
-            else if (SelectedSearchType == "Email")
-            {
-                id = 5;
-                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
-                searchResult = usersSearch;
-                Users = searchResult;
-                SignalChanged("Users");
-            }
-            else if (SelectedSearchType == "Тип")
-            {
-                id = 3;
-                var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
-                searchResult = usersSearch;
-                Users = searchResult;
-                SignalChanged("Users");
-            }
-            else if (SelectedSearchType == "Отменить")
-            {
-                var users = await Api.GetListAsync<List<UserApi>>("User");
-                searchResult = users;
-                Users = searchResult;
-                SignalChanged("Users");
-            }
-        }
-
-        //private void Search()
+        //public async Task Search(int id, string? text)
         //{
-        //    var search = SearchText.ToLower();
-
         //    if (SelectedSearchType == "Логин")
-        //        searchResult = FullUsers
-        //            .Where(c => c.UserName.ToLower().Contains(search)).ToList();
+        //    {
+        //        id = 1;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
         //    else if (SelectedSearchType == "Фамилия")
-        //        searchResult = FullUsers
-        //            .Where(c => c.Passport.LastName.ToString().Contains(search)).ToList();
+        //    {
+        //        id = 3;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
         //    else if (SelectedSearchType == "Email")
-        //        searchResult = FullUsers
-        //            .Where(c => c.Email.ToString().Contains(search)).ToList();
+        //    {
+        //        id = 5;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
         //    else if (SelectedSearchType == "Тип")
-        //        searchResult = FullUsers
-        //            .Where(c => c.UserType.TypeName.ToString().Contains(search)).ToList();
-        //    UpdateList();
+        //    {
+        //        id = 3;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
+        //    else if (SelectedSearchType == "Отменить")
+        //    {
+        //        var users = await Api.GetListAsync<List<UserApi>>("User");
+        //        searchResult = users;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
         //}
+
+        public async Task Search()
+        {
+            var search = SearchText.ToLower();
+            searchResult = await Api.SearchAsync<List<UserApi>>(SelectedSearchType, search, "User");
+            UpdateList();
+
+        }
 
         private void UpdateList()
         {

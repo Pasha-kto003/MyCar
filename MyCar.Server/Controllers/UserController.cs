@@ -85,7 +85,7 @@ namespace MyCar.Server.Controllers
             return CreateUserApi(client, passport);
         }
 
-        [HttpGet("Type, Text")]
+[HttpGet("Type, Text")]
         public IEnumerable<UserApi> SearchByUser(string type, string text)
         {
             if (text == "")

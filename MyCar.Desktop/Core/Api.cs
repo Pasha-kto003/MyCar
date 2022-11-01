@@ -42,7 +42,7 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<UserApi> SearchAsync<UserApi>(string type, string text, string controller)
+ public static async Task<UserApi> SearchAsync<UserApi>(string type, string text, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/Type, Text?type={type}&text={text}");
             string answerText = await answer.Content.ReadAsStringAsync();

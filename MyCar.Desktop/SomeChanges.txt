@@ -1,0 +1,281 @@
+﻿        //[HttpGet("Password, UserName, FirstName, LastName, Patronymic, Telephone, Email")]
+        //public IEnumerable<UserApi> SearchByUser(int type, string text)
+        //{
+        //    if (type == 1)
+        //    {
+        //        return dbContext.Users.Where(s => s.UserName.ToLower().Contains(text)).ToList().Select(s => {
+        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
+        //            return CreateUserApi(s, passport);
+        //        });
+        //    }
+        //    if (type == 2)
+        //    {
+        //        return dbContext.Users.Where(s => s.Passport.FirstName.ToLower().Contains(text)).ToList().Select(s =>
+        //        {
+        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
+        //            return CreateUserApi(s, passport);
+        //        });
+        //    }
+        //    if (type == 3)
+        //    {
+        //        return dbContext.Users.Where(s => s.Passport.LastName.ToLower().Contains(text)).ToList().Select(s =>
+        //        {
+        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
+        //            return CreateUserApi(s, passport);
+        //        });
+        //    }
+        //    if (type == 4)
+        //    {
+        //        return dbContext.Users.Where(s => s.Passport.Patronymic.ToLower().Contains(text)).ToList().Select(s =>
+        //        {
+        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
+        //            return CreateUserApi(s, passport);
+        //        });
+        //    }
+        //    if (type == 5)
+        //    {
+        //        return dbContext.Users.Where(s => s.Email.ToLower().Contains(text)).ToList().Select(s => {
+        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
+        //            return CreateUserApi(s, passport);
+        //        });
+        //    }
+        //    else
+        //    {
+        //        return dbContext.Users.ToList().Select(s => {
+        //            var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
+        //            return CreateUserApi(s, passport);
+        //        });
+        //    }
+        //}
+
+        //public async Task Search(int id, string? text)
+        //{
+        //    if (SelectedSearchType == "Логин")
+        //    {
+        //        id = 1;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
+        //    else if (SelectedSearchType == "Фамилия")
+        //    {
+        //        id = 3;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
+        //    else if (SelectedSearchType == "Email")
+        //    {
+        //        id = 5;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
+        //    else if (SelectedSearchType == "Тип")
+        //    {
+        //        id = 3;
+        //        var usersSearch = await Api.SearchAsync<List<UserApi>>(id, text, "User");
+        //        searchResult = usersSearch;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
+        //    else if (SelectedSearchType == "Отменить")
+        //    {
+        //        var users = await Api.GetListAsync<List<UserApi>>("User");
+        //        searchResult = users;
+        //        Users = searchResult;
+        //        SignalChanged("Users");
+        //    }
+        //}
+
+            //SearchStart = new CustomCommand(() =>
+            //{
+            //    if (SelectedSearchType == "Логин" && SearchText != "")
+            //    {
+            //        int i = 1;
+            //        Search(i, SearchText);
+            //        Users = searchResult;
+            //        if (Users == null)
+            //        {
+            //            MessageBox.Show("Пользователь не найден");
+            //            SearchText = "";
+            //            SignalChanged("SearchText");
+            //            GetUserList();
+            //            Users = FullUsers;
+            //            SignalChanged("Users");
+            //        }
+            //    }
+            //    else if (SelectedSearchType == "Фамилия")
+            //    {
+            //        int i = 3;
+            //        Search(i, SearchText);
+            //        Users = searchResult;
+            //        if (Users == null)
+            //        {
+            //            MessageBox.Show("Пользователь не найден");
+            //            SearchText = "";
+            //            SignalChanged("SearchText");
+            //            GetUserList();
+            //            Users = FullUsers;
+            //            SignalChanged("Users");
+            //        }
+            //    }
+            //    else if (SelectedSearchType == "Email")
+            //    {
+            //        int i = 5;
+            //        Search(i, SearchText);
+            //        Users = searchResult;
+            //        if (Users == null)
+            //        {
+            //            MessageBox.Show("Пользователь не найден");
+            //            SearchText = "";
+            //            SignalChanged("SearchText");
+            //            GetUserList();
+            //            Users = FullUsers;
+            //            SignalChanged("Users");
+            //        }
+            //    }
+            //});
+
+        [HttpGet("UserName, Password")]
+        public async Task<ActionResult<UserApi>> Enter(string userName, byte[] Password)
+        {
+            var user = dbContext.Users.FirstOrDefault(s => s.UserName == userName && s.PasswordHash == Password);
+            if (user == null)
+            {
+                NotFound();
+            }
+            return (UserApi)user;
+        }
+
+        [HttpPost("UserName, Password, FirstName, Email")]
+        public async Task<ActionResult<long>> Registration(string UserName, byte[] Password, string Email, string FirstName, int? PassportId)
+        {
+            var newUser = new User();
+            await dbContext.SaveChangesAsync();
+            newUser.UserName = UserName;
+            newUser.PasswordHash = Password;
+            newUser.Email = Email;
+            newUser.PassportId = PassportId;
+            await dbContext.Users.AddAsync(newUser);
+            await dbContext.SaveChangesAsync();
+            return Ok(newUser.Id);
+        }
+
+        var passport = new Passport();
+        dbContext.Passports.Add(passport);
+        dbContext.SaveChanges();
+        user.PassportId = passport.Id;
+        dbContext.Users.Add(user);
+        dbContext.SaveChanges();
+
+            //if(type == "Артикул")
+            //{
+            //    return dbContext.Cars.Where(s => s.Articul == text).ToList().Select(t=> (CarApi)t);
+            //}
+            //if(type == "Модель")
+            //{
+            //    return dbContext.Cars.Where(s=> s.Model.ModelName == text).ToList().Select(s => {
+            //        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+            //        var model = dbContext.Models.FirstOrDefault(t => t.ModelName == text);
+            //        return CreateCarApi(s, characteristics, model);
+            //    });
+            //}
+            //if(type == "Марка")
+            //{
+            //    return dbContext.Cars.Where(s => s.Model.Mark.MarkName == text).ToList().Select(s => {
+            //        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+            //        var mark = dbContext.MarkCars.FirstOrDefault(m=> m.MarkName == text);
+            //        var model = dbContext.Models.FirstOrDefault(i => i.MarkId == mark.Id);
+            //        return GetMarkApi(s, characteristics, model, mark);
+            //    });
+            //}
+            //if(type == "Цена")
+            //{
+            //    return dbContext.Cars.Where(s => s.CarPrice.ToString() == text).ToList().Select(s => {
+            //        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+            //        var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+            //        var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+            //        return GetMarkApi(s, characteristics, model, mark);
+            //    });
+            //}
+            //else
+            //{
+            //    return dbContext.Cars.ToList().Select(s => {
+            //        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+            //        var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+            //        var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+            //        return GetMarkApi(s, characteristics, model, mark);
+            //    });
+            //}
+
+        [HttpGet("ModelName, MarkName, Articul, CarPrice")]
+        public IEnumerable<CarApi> SearchByCar(string type, string text)
+        {
+            switch (type)
+            {
+                case "Артикул":
+
+                    return dbContext.Cars.Where(s=> s.Articul.Contains(text)).ToList().Select(s =>
+                    {
+                        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                        var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+                        var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+                        return GetMarkApi(s, characteristics, model, mark);
+                    });
+
+                    break;
+                case "Модель":
+
+                    return dbContext.Cars.Where(s => s.Model.ModelName == text).ToList().Select(s => {
+                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                        var model = dbContext.Models.FirstOrDefault(t => t.ModelName == text); 
+                        var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+                        return GetMarkApi(s, characteristics, model, mark);
+                    });
+
+                    break;
+                case "Марка":
+
+                    return dbContext.Cars.Where(s => s.Model.Mark.MarkName == text).ToList().Select(s => {
+                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                        var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+                        var mark = dbContext.MarkCars.FirstOrDefault(i => i.MarkName == text);
+                        return GetMarkApi(s, characteristics, model, mark);
+                    });
+
+                    break;
+
+                case "Цена":
+
+                    return dbContext.Cars.Where(s => s.CarPrice.ToString() == text).ToList().Select(s => {
+                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                        var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+                        var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+                        return GetMarkApi(s, characteristics, model, mark);
+                    });
+                    break;
+
+                default:
+
+                    return dbContext.Cars.ToList().Select(s => {
+                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                        var model = dbContext.Models.FirstOrDefault(t => t.ModelName == text);
+                        var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+                        return GetMarkApi(s, characteristics, model, mark);
+                    });
+                    break;
+            }
+        }
+
+        
+        //public static async Task<CarApi> SearchCarAsync<CarApi>(int id, string? text, string controller)
+        //{
+        //    var answer = await client.GetAsync(server + controller + $"/ModelName, MarkName, Articul, CarPrice?type={id}&text={text}");
+        //    string answerText = await answer.Content.ReadAsStringAsync();
+        //    var result = (CarApi)JsonSerializer.Deserialize(answerText, typeof(CarApi), jsonOptions);
+        //    return result;
+        //}

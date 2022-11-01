@@ -15,17 +15,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop
+namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для CarPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CarPage : Page
     {
-        public MainWindow(UserApi user)
+        public CarPage()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(this, user);
+            DataContext = new CarViewModel();
         }
     }
 }

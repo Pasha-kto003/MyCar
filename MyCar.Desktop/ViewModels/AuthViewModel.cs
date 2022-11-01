@@ -19,8 +19,10 @@ namespace MyCar.Desktop.ViewModels
         public string UserName { get; set; }
 
         public UserApi User { get; set; }
+
         public CustomCommand CloseWindow { get ; set; }
         public CustomCommand Login { get; set; }
+        public CustomCommand Registration { get; set; }
 
         public AuthViewModel(Window window)
         {
@@ -31,12 +33,27 @@ namespace MyCar.Desktop.ViewModels
                 mWindow.Close();
             });
 
+            Registration = new CustomCommand(() =>
+            {
+                RigistrationWindow rigistration = new RigistrationWindow();
+                rigistration.ShowDialog();
+            });
 
-            Login = new CustomCommand(() => {
-                Task.Run(Enter);
-                if(User != null)
+            Login = new CustomCommand( async() => {
+                if (UserName == "" || UserName == null || Password == "" || Password == null)
                 {
-                    MainWindow testWindow = new MainWindow();
+                    MessageBox.Show("Не введен логин или пароль");
+                    return;
+                }
+                await Task.Run(Enter);
+                
+                if(User == null)
+                {
+                    MessageBox.Show($"Пользователь {UserName} не найден");
+                }
+                if(User.UserTypeId == 2)
+                {
+                    MainWindow testWindow = new MainWindow(User);
                     testWindow.ShowDialog();
                 }
                 
@@ -46,7 +63,6 @@ namespace MyCar.Desktop.ViewModels
         private async Task Enter()
         {
             User = await Api.Enter<UserApi>(UserName, Password, "Auth");
-            
         }
 
     }

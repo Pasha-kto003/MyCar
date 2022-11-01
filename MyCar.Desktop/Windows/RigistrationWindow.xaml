@@ -1,17 +1,16 @@
-﻿<Window x:Class="MyCar.Desktop.Windows.AuthWindow"
+﻿<Window x:Class="MyCar.Desktop.Windows.RigistrationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         mc:Ignorable="d"
-        Title="AuthWindow" Height="550" Width="350"
+        Title="RigistrationWindow" Height="600" Width="350"
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" 
         Background="Transparent">
-
     <Border CornerRadius="10" Background="White" MouseDown="Border_MouseDown">
         <Grid  >
             <Grid.RowDefinitions>
@@ -50,7 +49,7 @@
                             Margin="0 100 0 0">
 
                     <StackPanel>
-                        <TextBlock Text="Вход"   Margin="0 0 0 30"
+                        <TextBlock Text="Регистрация"   Margin="0 0 0 30"
                                FontSize="{StaticResource FontSizeXXXLarge}" 
                                FontFamily="{StaticResource CenturyGothic}"
                                Foreground="{StaticResource ValorantRedBrush}"/>
@@ -59,9 +58,7 @@
 
                         <TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>
 
-                        <Button Content="Войти" Style="{StaticResource ButtonLogin}"
-                             Margin="0 50 0 0" Command="{Binding Login}" HorizontalAlignment="Center" />
-
+                        <TextBox Text="{Binding RepeatPassword}" Tag="Повторите пароль" Style="{StaticResource TextBoxLogin}"/>
                         <Button Content="Создать аккаунт" Style="{StaticResource ButtonLogin}"
                              Margin="0 50 0 0" Command="{Binding Registration}" HorizontalAlignment="Center" />
                     </StackPanel>

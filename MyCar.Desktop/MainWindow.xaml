@@ -135,7 +135,7 @@
                         </ImageBrush>
                     </Rectangle.Fill>
                 </Rectangle>
-                <TextBlock Text="Имя Фамилия" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
+                <TextBlock Text="{Binding UserString}" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
                        FontSize="{StaticResource FontSizeXLarge}" Foreground="{StaticResource DarkGrayBrush}"  />
             </StackPanel>
             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Fill="Gray" Height="0.5" Width="220"/>
@@ -170,11 +170,11 @@
                 <RadioButton  Height="60"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
-                             Command="">
+                             Command="{Binding OpenCar}">
                     <RadioButton.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/Images/user_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Пользователи"  VerticalAlignment="Center"
+                            <TextBlock Text="Каталог" FontSize="20"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
                         </StackPanel>
                     </RadioButton.Content>

@@ -34,33 +34,29 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<CarApi> SearchCarAsync<CarApi>(int id, string? text, string controller)
+        public static async Task<T> SearchAsync<T>(string type, string? text, string controller)
         {
-            var answer = await client.GetAsync(server + controller + $"/ModelName, MarkName, Articul, CarPrice?type={id}&text={text}");
+            var answer = await client.GetAsync(server + controller + $"/Type, Text?type={type}&text={text}");
             string answerText = await answer.Content.ReadAsStringAsync();
-            var result = (CarApi)JsonSerializer.Deserialize(answerText, typeof(CarApi), jsonOptions);
-            return result;
-        }
-
-        //public static async Task<UserApi> SearchAsync<UserApi>(int id, string? text, string controller)
-        //{
-        //    var answer = await client.GetAsync(server + controller + $"/Password, UserName, FirstName, LastName, Patronymic, Telephone, Email?type={id}&text={text}");
-        //    string answerText = await answer.Content.ReadAsStringAsync();
-        //    var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
-        //    return result;
-        //}
-
-        public static async Task<UserApi> SearchAsync<UserApi>(string type, string? text, string controller)
-        {
-            var answer = await client.GetAsync(server + controller + $"/Password, UserName, FirstName, LastName, Patronymic, Telephone, Email?type={type}&text={text}");
-            string answerText = await answer.Content.ReadAsStringAsync();
-            var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
+            var result = (T)JsonSerializer.Deserialize(answerText, typeof(T), jsonOptions);
             return result;
         }
 
         public static async Task<UserApi> Enter<UserApi>(string UserName, string Password, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
+            if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
+                //тут хз че в ретерне
+                return default(UserApi);
+            string answerText = await answer.Content.ReadAsStringAsync();
+            var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
+            return result;
+        }
+
+        public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string controller) /*where T : ModelApi.ApiBaseType*/
+        {
+            var str = JsonSerializer.Serialize(value, typeof(UserApi));
+            var answer = await client.PostAsync(server + controller, new StringContent(str, Encoding.UTF8, "application/json"));
             if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
                 //тут хз че в ретерне
                 return default(UserApi);

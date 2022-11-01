@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ModelsApi;
 using MyCar.Server.DB;
 using MyCar.Server.DTO;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,6 +24,13 @@ namespace MyCar.Server.Controllers.Jwt
             this.dbContext = dbContext;
         }
 
+        private UserApi CreateUserApi(User user, Passport passport)
+        {
+            var clientApi = (UserApi)user;
+            clientApi.Passport = (PassportApi)passport;
+            return clientApi;
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
@@ -39,7 +47,7 @@ namespace MyCar.Server.Controllers.Jwt
 
         //[HttpPost("login")]
         [HttpGet("UserName, Password")]
-        public async Task<ActionResult<User>> Login(string userName, string Password)//UserDto request
+        public async Task<ActionResult<UserApi>> Login(string userName, string Password)//UserDto request
         {
             User user = new User();
             user.UserName = userName;
@@ -48,7 +56,7 @@ namespace MyCar.Server.Controllers.Jwt
             {
                 return BadRequest("User Not Found!");
             }
-
+            
 
             user = await dbContext.Users.FirstOrDefaultAsync(s => s.UserName == userName);
 
@@ -58,7 +66,12 @@ namespace MyCar.Server.Controllers.Jwt
             }
 
             string token = CreateToken(user);
-            return user; //user or token
+
+            Passport passport = await dbContext.Passports.FindAsync(user.PassportId);
+            var client = (UserApi)user;
+            client.Passport = (PassportApi)passport;
+            return client;
+            //user or token
         }
         private string CreateToken(User user)
         {

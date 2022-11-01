@@ -1,5 +1,6 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +41,10 @@ namespace MyCar.Desktop.ViewModels
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public UserApi SelectedUser { get; set; }   
 
-        public CustomCommand SearchStart { get; set; }
+       
+        public CustomCommand AddUser { get; set; }
 
+        public CustomCommand EditUser { get; set; }
         public UserViewModel()
         {
             Task.Run(GetUserList);
@@ -50,6 +53,18 @@ namespace MyCar.Desktop.ViewModels
             SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email"});
             selectedSearchType = SearchType.First();
 
+            AddUser = new CustomCommand(() =>
+            {
+                EditUser edituser = new EditUser();
+                edituser.ShowDialog();
+            });
+
+            EditUser = new CustomCommand(() =>
+            {
+                if (SelectedUser == null || SelectedUser.ID == 0) return;
+                EditUser edituser = new EditUser(SelectedUser);
+                edituser.ShowDialog();
+            });
         }
 
         public async Task Search()

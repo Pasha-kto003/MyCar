@@ -15,6 +15,7 @@ namespace MyCar.Desktop.ViewModels
     {
         private Window mWindow;
 
+        public bool LoginIsRunning { get; set; } = false;
         public string Password { get; set; }
 
         public string UserName { get; set; }
@@ -34,8 +35,12 @@ namespace MyCar.Desktop.ViewModels
 
 
             Login = new CustomCommand(async () => {
+                if (LoginIsRunning)
+                    return;
+                LoginIsRunning = true;
                 await Task.Run(Enter);
-                if(User != null)
+                LoginIsRunning = false;
+                if (User != null)
                 {
                     MainWindow testWindow = new MainWindow(User);
                     testWindow.Show();

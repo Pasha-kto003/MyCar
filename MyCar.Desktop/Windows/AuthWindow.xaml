@@ -59,7 +59,7 @@
 
                         <TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>
 
-                        <Button Content="Войти" Style="{StaticResource ButtonLogin}"
+                        <Button  Content="Войти" Style="{StaticResource ButtonLogin}"
                              Margin="0 50 0 0" Command="{Binding Login}" HorizontalAlignment="Center" />
                     </StackPanel>
                 </Grid>

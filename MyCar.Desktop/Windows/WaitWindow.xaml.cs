@@ -23,7 +23,7 @@ namespace MyCar.Desktop.Windows
         public WaitWindow()
         {
             InitializeComponent();
-            DataContext = new WaitViewModel();
+            DataContext = new WaitViewModel(this);
         }
     }
 }

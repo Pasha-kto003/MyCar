@@ -27,7 +27,7 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
-        public WaitViewModel()
+        public WaitViewModel(Window window)
         {
             _time = TimeSpan.FromSeconds(30);
 

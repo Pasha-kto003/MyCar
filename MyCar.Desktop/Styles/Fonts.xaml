@@ -4,7 +4,8 @@
 
     <FontFamily x:Key="CenturyGothic">pack://application;,,,/Fonts/#centurygothic</FontFamily>
     <FontFamily x:Key="CenturyGothicBold">pack://application;,,,/Fonts/#centurygothic_bold</FontFamily>
-
+    <FontFamily x:Key="FontAwesome">pack://application;,,,/Fonts/#fontawesome</FontFamily>
+    
     <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
        
 

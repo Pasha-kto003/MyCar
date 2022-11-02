@@ -19,6 +19,7 @@ namespace MyCar.Desktop.ViewModels
         public string UserName { get; set; }
 
         public UserApi User { get; set; }
+        private int ErrorCount { get; set; }
 
         public CustomCommand CloseWindow { get ; set; }
         public CustomCommand Login { get; set; }
@@ -45,24 +46,37 @@ namespace MyCar.Desktop.ViewModels
                     MessageBox.Show("Не введен логин или пароль");
                     return;
                 }
-                await Task.Run(Enter);
-                
-                if(User == null)
+
+                Task.Run(Enter);
+
+                if (User == null)
                 {
+                    ErrorCount++;
+                    if(ErrorCount == 3)
+                    {
+                        WaitWindow waitWindow = new WaitWindow();
+                        waitWindow.ShowDialog();
+                        mWindow.Close();
+                    }
                     MessageBox.Show($"Пользователь {UserName} не найден");
+                    SignalChanged(nameof(UserName));
+                    SignalChanged(nameof(Password));
+                    return;
                 }
-                if(User.UserTypeId == 2)
+
+                if (User.UserTypeId == 2)
                 {
                     MainWindow testWindow = new MainWindow(User);
                     testWindow.ShowDialog();
+                    mWindow.Close();
                 }
-                
             });
         }
 
         private async Task Enter()
         {
             User = await Api.Enter<UserApi>(UserName, Password, "Auth");
+            
         }
 
     }

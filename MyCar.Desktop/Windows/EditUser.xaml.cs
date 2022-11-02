@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ModelsApi;
+using MyCar.Desktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,12 @@ namespace MyCar.Desktop.Windows
         public EditUser()
         {
             InitializeComponent();
+            DataContext = new EditUserViewModel(null);
+        }
+        public EditUser(UserApi user)
+        {
+            InitializeComponent();
+            DataContext = new EditUserViewModel(user);
         }
     }
 }

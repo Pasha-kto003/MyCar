@@ -15,6 +15,7 @@ namespace MyCar.Desktop.ViewModels
     {
         private Window mWindow;
 
+        public bool LoginIsRunning { get; set; } = false;
         public string Password { get; set; }
 
         public string UserName { get; set; }
@@ -22,7 +23,6 @@ namespace MyCar.Desktop.ViewModels
         public UserApi User { get; set; }
         public CustomCommand CloseWindow { get ; set; }
         public CustomCommand Login { get; set; }
-
         public AuthViewModel(Window window)
         {
             mWindow = window;
@@ -34,21 +34,41 @@ namespace MyCar.Desktop.ViewModels
 
 
             Login = new CustomCommand(async () => {
-                await Task.Run(Enter);
-                if(User != null)
+
+                await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {
-                    MainWindow testWindow = new MainWindow(User);
-                    testWindow.Show();
-                    mWindow.Close();
-                }
-                
+                    Task task = Task.Run(Enter);
+                    await task;
+                    ShowWindow();
+                });
+
             });
         }
 
         private async Task Enter()
         {
             User = await Api.Enter<UserApi>(UserName, Password, "Auth");
-            
+        }
+        private async Task LogIn()
+        {
+
+            await RunCommandAsync(() => this.LoginIsRunning, async () =>
+            {
+               
+                Task task = Task.Run(Enter);
+                task.Wait();
+                ShowWindow();
+               
+            });
+        }
+        private void ShowWindow()
+        {
+            if (User != null && User.ID != 0)
+            {
+                 MainWindow testWindow = new MainWindow(User);
+                 testWindow.Show();
+                 mWindow.Close();
+            }
         }
 
     }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
+        xmlns:core="clr-namespace:MyCar.Desktop.Core"
         mc:Ignorable="d"
         Title="AuthWindow" Height="500" Width="350"
         WindowStyle="None"
@@ -59,8 +60,11 @@
 
                         <TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>
 
-                        <Button Content="Войти" Style="{StaticResource ButtonLogin}"
-                             Margin="0 50 0 0" Command="{Binding Login}" HorizontalAlignment="Center" />
+                        <Button  Content="Войти"
+                             core:IsBusyProperty.Value="{Binding LoginIsRunning}"
+                             Style="{StaticResource ButtonLogin}"
+                             Margin="0 50 0 0"
+                             Command="{Binding Login}" HorizontalAlignment="Center" />
                     </StackPanel>
                 </Grid>
             </StackPanel>

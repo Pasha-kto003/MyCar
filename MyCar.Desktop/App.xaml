@@ -17,7 +17,9 @@
         </Style>
         <Style TargetType="ListViewItem">
             <!--<Setter Property="Background" Value="#FFE0DEDE"/>-->
+            
             <Setter Property="Padding" Value="2"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}"/>
             <Setter Property="BorderBrush" Value="#FF818080"/>
             <Setter Property="BorderThickness" Value="0.1"/>
             <Setter Property="Background" Value="WhiteSmoke"/>

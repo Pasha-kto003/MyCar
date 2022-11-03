@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         mc:Ignorable="d"
-        Title="AuthWindow" Height="550" Width="350"
+        Title="AuthWindow" Height="580" Width="350"
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
@@ -50,13 +50,21 @@
                             Margin="0 100 0 0">
 
                     <StackPanel>
-                        <TextBlock Text="Вход"   Margin="0 0 0 30"
+                        <TextBlock Text="Вход"   Margin="0 0 0 20"
                                FontSize="{StaticResource FontSizeXXXLarge}" 
                                FontFamily="{StaticResource CenturyGothic}"
                                Foreground="{StaticResource ValorantRedBrush}"/>
-
+                        <TextBlock Text="{Binding LoginError}" Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="30"
+                                   FontSize="{StaticResource FontSizeRegular}"
+                                   FontFamily="{StaticResource CenturyGothic}"
+                                   Foreground="{StaticResource ValorantRedBrush}"/>
                         <TextBox Text="{Binding UserName}" Tag="Логин" Style="{StaticResource TextBoxLogin}" />
 
+                        <TextBlock Text="{Binding PasswordError}" Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="30"
+                                   FontSize="{StaticResource FontSizeRegular}"
+                                   FontFamily="{StaticResource CenturyGothic}"
+                                   Foreground="{StaticResource ValorantRedBrush}"/>
+                        
                         <TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>
 
                         <Button Content="Войти" Style="{StaticResource ButtonLogin}"

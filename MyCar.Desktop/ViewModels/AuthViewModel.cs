@@ -15,8 +15,10 @@ namespace MyCar.Desktop.ViewModels
         private Window mWindow;
 
         public string Password { get; set; }
+        public string ErrorPassword { get; set; }
 
         public string UserName { get; set; }
+        public string LoginError { get; set; }
 
         public UserApi User { get; set; }
         private int ErrorCount { get; set; }
@@ -41,16 +43,24 @@ namespace MyCar.Desktop.ViewModels
             });
 
             Login = new CustomCommand( async() => {
-                if (UserName == "" || UserName == null || Password == "" || Password == null)
+                if (UserName == "" || UserName == null)
                 {
-                    MessageBox.Show("Не введен логин или пароль");
-                    return;
+                    LoginError = "Вы не ввели никнейм пользователя!";
+                    SignalChanged(nameof(LoginError));
+                }
+
+                if(Password == "" || Password == null)
+                {
+                    ErrorPassword = "Вы не ввели пароль пользователя!";
+                    SignalChanged(nameof(ErrorPassword));
                 }
 
                 Task.Run(Enter);
 
                 if (User == null)
                 {
+                    LoginError = $"Пользователя {UserName} не существует";
+                    SignalChanged(nameof(LoginError));
                     ErrorCount++;
                     if(ErrorCount == 3)
                     {
@@ -58,7 +68,7 @@ namespace MyCar.Desktop.ViewModels
                         waitWindow.ShowDialog();
                         mWindow.Close();
                     }
-                    MessageBox.Show($"Пользователь {UserName} не найден");
+
                     SignalChanged(nameof(UserName));
                     SignalChanged(nameof(Password));
                     return;

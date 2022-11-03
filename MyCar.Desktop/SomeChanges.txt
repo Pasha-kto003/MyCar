@@ -279,3 +279,17 @@
         //    var result = (CarApi)JsonSerializer.Deserialize(answerText, typeof(CarApi), jsonOptions);
         //    return result;
         //}
+
+
+        // GET: api/<CarController>
+        //[HttpGet]
+        //public IEnumerable<CarApi> Get()
+        //{
+        //    return dbContext.Cars.ToList().Select(s =>
+        //    {
+        //        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+        //        var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
+        //        var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+        //        return GetMarkApi(s, characteristics, model, mark);
+        //    });
+        //}

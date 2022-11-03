@@ -48,7 +48,7 @@
 
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
             <StackPanel Orientation="Horizontal">
-                <Button   Content="+" Margin="5 0 0 0" Style="{StaticResource AddButton}"
+                <Button Content="+" Margin="5 0 0 0" Style="{StaticResource AddButton}"
                         Command="{Binding AddCar}">
                 </Button>
 

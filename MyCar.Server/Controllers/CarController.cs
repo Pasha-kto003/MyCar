@@ -33,16 +33,24 @@ namespace MyCar.Server.Controllers
             return result;
         }
 
-        // GET: api/<CarController>
+        private CarApi GetCross(Car car, List<CharacteristicCarApi> characteristics, Model model, MarkCar mark)
+        {
+            var result = (CarApi)car;
+            result.CharacteristicCars = characteristics;
+            result.Model = (ModelApi)model;
+            result.Model.MarkCar = (MarkCarApi)mark;
+            return result;
+        }
+
         [HttpGet]
-        public IEnumerable<CarApi> Get()
+        public IEnumerable<CarApi> GetCars()
         {
             return dbContext.Cars.ToList().Select(s =>
             {
-                var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicCarApi)t).ToList();
                 var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
                 var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-                return GetMarkApi(s, characteristics, model, mark);
+                return GetCross(s, characteristics, model, mark);
             });
         }
 

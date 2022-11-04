@@ -293,3 +293,14 @@
         //        return GetMarkApi(s, characteristics, model, mark);
         //    });
         //}
+
+        //[HttpGet]
+        //public IEnumerable<CharacteristicCarApi> Get()
+        //{
+        //    return dbContext.CharacteristicCars.Select(t => (CharacteristicCarApi)t).ToList().Select(s => 
+        //    {
+        //        var characteristic = dbContext.Characteristics.FirstOrDefault(c=> c.Id == s.CharacteristicId);
+        //        var unit = dbContext.Units.FirstOrDefault(u=> u.Id == characteristic.UnitId);
+        //        return GetCharacteristicCross(s, characteristic, unit);
+        //    });
+        //}

@@ -11,5 +11,7 @@ namespace ModelsApi
         public int CarId { get; set; }
         public int CharacteristicId { get; set; }
         public string? CharacteristicValue { get; set; }
+
+        public CharacteristicApi Characteristic { get; set; }
     }
 }

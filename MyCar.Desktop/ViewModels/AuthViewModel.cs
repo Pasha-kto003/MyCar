@@ -62,7 +62,7 @@ namespace MyCar.Desktop.ViewModels
                     LoginError = $"Пользователя {UserName} не существует";
                     SignalChanged(nameof(LoginError));
                     ErrorCount++;
-                    if(ErrorCount == 3)
+                    if(ErrorCount == 5)
                     {
                         WaitWindow waitWindow = new WaitWindow();
                         waitWindow.ShowDialog();

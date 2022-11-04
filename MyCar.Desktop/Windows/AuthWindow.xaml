@@ -60,7 +60,7 @@
                                    Foreground="{StaticResource ValorantRedBrush}"/>
                         <TextBox Text="{Binding UserName}" Tag="Логин" Style="{StaticResource TextBoxLogin}" />
 
-                        <TextBlock Text="{Binding PasswordError}" Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="30"
+                        <TextBlock Text="{Binding ErrorPassword}" Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="30"
                                    FontSize="{StaticResource FontSizeRegular}"
                                    FontFamily="{StaticResource CenturyGothic}"
                                    Foreground="{StaticResource ValorantRedBrush}"/>

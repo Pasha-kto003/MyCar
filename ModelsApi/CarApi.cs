@@ -16,6 +16,9 @@ namespace ModelsApi
         public decimal? CarPrice { get; set; }
 
         public ModelApi Model { get; set; }
+        public EquipmentApi Equipment { get; set; }
+        public BodyTypeApi BodyType { get; set; }
+
         public List<CharacteristicCarApi> CharacteristicCars { get; set; }
         public List<CharacteristicApi> Characteristics { get; set; }
     }

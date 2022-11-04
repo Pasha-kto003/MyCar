@@ -10,5 +10,7 @@ namespace ModelsApi
     {
         public string? CharacteristicName { get; set; }
         public int? UnitId { get; set; }
+
+        public UnitApi Unit { get; set; }
     }
 }

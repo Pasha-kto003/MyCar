@@ -16,29 +16,14 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
 
-        private CarApi CreateCarApi(Car car, List<CharacteristicApi> characteristics, Model model)
-        {
-            var result = (CarApi)car;
-            result.Characteristics = characteristics;
-            result.Model = (ModelApi)model;
-            return result;
-        }
-
-        private CarApi GetMarkApi(Car car, List<CharacteristicApi> characteristics, Model model, MarkCar mark)
-        {
-            var result = (CarApi)car;
-            result.Characteristics = characteristics;
-            result.Model = (ModelApi)model;
-            result.Model.MarkCar = (MarkCarApi)mark;
-            return result;
-        }
-
-        private CarApi GetCross(Car car, List<CharacteristicCarApi> characteristics, Model model, MarkCar mark)
+        private CarApi GetCross(Car car, List<CharacteristicCarApi> characteristics, Model model, MarkCar mark, Equipment equipment, BodyType bodyType)
         {
             var result = (CarApi)car;
             result.CharacteristicCars = characteristics;
             result.Model = (ModelApi)model;
             result.Model.MarkCar = (MarkCarApi)mark;
+            result.Equipment = (EquipmentApi)equipment;
+            result.BodyType = (BodyTypeApi)bodyType;
             return result;
         }
 
@@ -50,7 +35,9 @@ namespace MyCar.Server.Controllers
                 var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicCarApi)t).ToList();
                 var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
                 var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-                return GetCross(s, characteristics, model, mark);
+                var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == s.EquipmentId);
+                var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == s.TypeId);
+                return GetCross(s, characteristics, model, mark, equipment, body);
             });
         }
 
@@ -59,9 +46,12 @@ namespace MyCar.Server.Controllers
         public async Task<ActionResult<CarApi>> Get(int id)
         {
             var car = await dbContext.Cars.FindAsync(id);
-            var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+            var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == id).Select(t => (CharacteristicCarApi)t).ToList();
             var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
-            return CreateCarApi(car, characteristics, model);
+            var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+            var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == car.EquipmentId);
+            var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);
+            return GetCross(car, characteristics, model, mark, equipment, body);
         }
 
         [HttpGet("Type, Text")]
@@ -73,51 +63,65 @@ namespace MyCar.Server.Controllers
 
                     return dbContext.Cars.Where(s=> s.Articul.Contains(text)).ToList().Select(s =>
                     {
-                        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicCarApi)t).ToList();
                         var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
                         var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-                        return GetMarkApi(s, characteristics, model, mark);
+                        var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == s.EquipmentId);
+                        var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == s.TypeId);
+                        return GetCross(s, characteristics, model, mark, equipment, body);
                     });
 
                     break;
                 case "Модель":
 
-                    return dbContext.Cars.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList().Select(s => {
-                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    return dbContext.Cars.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList().Select(s =>
+                    {
+                        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicCarApi)t).ToList();
                         var model = dbContext.Models.FirstOrDefault(t => t.ModelName.ToLower().Contains(text)); 
                         var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-                        return GetMarkApi(s, characteristics, model, mark);
+                        var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == s.EquipmentId);
+                        var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == s.TypeId);
+                        return GetCross(s, characteristics, model, mark, equipment, body);
                     });
 
                     break;
                 case "Марка":
 
-                    return dbContext.Cars.Where(s => s.Model.Mark.MarkName.ToLower().Contains(text)).ToList().Select(s => {
-                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    return dbContext.Cars.Where(s => s.Model.Mark.MarkName.ToLower().Contains(text)).ToList().Select(s => 
+                    {
+                        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicCarApi)t).ToList();
                         var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
                         var mark = dbContext.MarkCars.FirstOrDefault(i => i.MarkName.ToLower().Contains(text));
-                        return GetMarkApi(s, characteristics, model, mark);
+                        var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == s.EquipmentId);
+                        var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == s.TypeId);
+                        return GetCross(s, characteristics, model, mark, equipment, body);
                     });
 
                     break;
 
                 case "Цена":
 
-                    return dbContext.Cars.Where(s => s.CarPrice.ToString().ToLower().Contains(text)).ToList().Select(s => {
-                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    return dbContext.Cars.Where(s => s.CarPrice.ToString().ToLower().Contains(text)).ToList().Select(s => 
+                    {
+                        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicCarApi)t).ToList();
                         var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
                         var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-                        return GetMarkApi(s, characteristics, model, mark);
+                        var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == s.EquipmentId);
+                        var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == s.TypeId);
+                        return GetCross(s, characteristics, model, mark, equipment, body);
                     });
                     break;
 
                 default:
 
-                    return dbContext.Cars.ToList().Select(s => {
-                        var characteristics = dbContext.CharacteristicCars.Where(p => p.CarId == s.Id).Select(t => (CharacteristicApi)t.Characteristic).ToList();
+                    return dbContext.Cars.ToList().Select(s => 
+                    {
+                        var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == s.Id).Select(t => (CharacteristicCarApi)t).ToList();
                         var model = dbContext.Models.FirstOrDefault(t => t.Id == s.ModelId);
                         var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-                        return GetMarkApi(s, characteristics, model, mark);
+                        var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == s.EquipmentId);
+                        var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == s.TypeId);
+                        return GetCross(s, characteristics, model, mark, equipment, body);
                     });
                     break;
             }

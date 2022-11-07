@@ -66,7 +66,7 @@ namespace MyCar.Desktop.ViewModels
             } 
         }
 
-        public CustomCommand SaveCar { get; set; }
+        public CustomCommand Save { get; set; }
 
         public AddCarViewModel(CarApi car)
         {
@@ -105,7 +105,7 @@ namespace MyCar.Desktop.ViewModels
 
             GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
 
-            SaveCar = new CustomCommand(() =>
+            Save = new CustomCommand(() =>
             {
                 if(AddCarVM.ID == 0)
                 {
@@ -188,13 +188,13 @@ namespace MyCar.Desktop.ViewModels
                 SelectedModel = Models.FirstOrDefault();
                 SelectedEquipment = Equipments.FirstOrDefault();
             }
-            SelectedModel = carApi.Model;
-            SignalChanged(nameof(SelectedModel));
-            SelectedMark = carApi.Model.MarkCar;
+            SelectedModel = Models.FirstOrDefault(s=> s.ID == carApi.ModelId);
+            SelectedMark = Marks.FirstOrDefault(s=> s.ID == SelectedModel.MarkId);
             SignalChanged(nameof(SelectedMark));
-            SelectedEquipment = carApi.Equipment;
+            SignalChanged(nameof(SelectedModel));
+            SelectedEquipment = Equipments.FirstOrDefault(s=> s.ID == carApi.EquipmentId);
             SignalChanged(nameof(SelectedEquipment));
-            SelectedBodyType = carApi.BodyType;
+            SelectedBodyType = BodyTypes.FirstOrDefault(s=> s.ID == carApi.TypeId);
             SignalChanged(nameof(SelectedBodyType));
         }
 

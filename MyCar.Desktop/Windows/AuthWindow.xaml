@@ -20,7 +20,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Margin="0 10 10 0">
-                <Button Content="x" Style="{StaticResource WindowCloseButton}"
+                <Button Content="X" Style="{StaticResource WindowCloseButton}"
                         Width="20" HorizontalAlignment="Right" Command="{Binding CloseWindow}"
                         
                         />

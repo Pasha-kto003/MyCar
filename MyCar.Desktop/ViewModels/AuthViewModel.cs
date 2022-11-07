@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.Windows;
 
 namespace MyCar.Desktop.ViewModels
@@ -14,6 +15,7 @@ namespace MyCar.Desktop.ViewModels
     public class AuthViewModel : BaseViewModel
     {
         private Window mWindow;
+
 
         public bool LoginIsRunning { get; set; } = false;
         public string Password { get; set; }
@@ -33,7 +35,14 @@ namespace MyCar.Desktop.ViewModels
             });
 
 
-            Login = new CustomCommand(async () => {
+            Login = new CustomCommand(async()  => {
+
+                //UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                //{
+                //    Message = "Оченььь длинное соооооб Щение 3134",
+                //    OkText = "ОК",
+                //    Title = "Ошибка!"
+                //});
 
                 await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {
@@ -48,18 +57,6 @@ namespace MyCar.Desktop.ViewModels
         private async Task Enter()
         {
             User = await Api.Enter<UserApi>(UserName, Password, "Auth");
-        }
-        private async Task LogIn()
-        {
-
-            await RunCommandAsync(() => this.LoginIsRunning, async () =>
-            {
-               
-                Task task = Task.Run(Enter);
-                task.Wait();
-                ShowWindow();
-               
-            });
         }
         private void ShowWindow()
         {

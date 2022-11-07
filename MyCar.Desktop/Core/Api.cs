@@ -43,31 +43,19 @@ namespace MyCar.Desktop.Core
         }
 
         public static async Task<UserApi> Enter<UserApi>(string UserName, string Password, string controller)
-        //{
+        {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
             if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
                 //тут хз че в ретерне
                 return default(UserApi);
-        //    string answerText = await answer.Content.ReadAsStringAsync();
-        //    var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
-        //    return result;
-        //}
-
-        public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string controller) /*where T : ModelApi.ApiBaseType*/
-        {
-            var answer = await client.GetAsync(server + controller + $"/Password, UserName, FirstName, LastName, Patronymic, Telephone, Email?type={type}&text={text}");
             string answerText = await answer.Content.ReadAsStringAsync();
             var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;
         }
 
-        public static async Task<UserApi> Enter<UserApi>(string UserName, string Password, string controller)
+        public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string controller) /*where T : ModelApi.ApiBaseType*/
         {
-            var str = JsonSerializer.Serialize(value, typeof(UserApi));
-            var answer = await client.PostAsync(server + controller, new StringContent(str, Encoding.UTF8, "application/json"));
-            if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
-                //тут хз че в ретерне
-                return default(UserApi);
+            var answer = await client.GetAsync(server + controller);
             string answerText = await answer.Content.ReadAsStringAsync();
             var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;

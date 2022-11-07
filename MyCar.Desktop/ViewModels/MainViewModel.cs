@@ -75,12 +75,12 @@ namespace MyCar.Desktop.ViewModels
 
         public Page CurrentPage { get; set; }
 
-        public string UserString { get; set; }
         public CustomCommand MinimizeCommand { get; set; }
         public CustomCommand MaximizeCommand { get; set; }
         public CustomCommand CloseCommand { get; set; }
         public CustomCommand MenuCommand { get; set; }
         public CustomCommand UserPageCommand { get; set; }
+        public CustomCommand OpenCar { get; set; }
         public MainViewModel(Window window, UserApi user)
         {
             mWindow = window;

@@ -16,8 +16,6 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
 
-        
-
         private CarApi GetCross(Car car, List<CharacteristicCarApi> characteristics, Model model, MarkCar mark, Equipment equipment, BodyType bodyType)
         {
             var result = (CarApi)car;

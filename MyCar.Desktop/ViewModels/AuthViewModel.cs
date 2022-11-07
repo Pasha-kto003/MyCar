@@ -38,11 +38,11 @@ namespace MyCar.Desktop.ViewModels
                 mWindow.Close();
             });
 
-            Registration = new CustomCommand(() =>
-            {
-                RigistrationWindow rigistration = new RigistrationWindow();
-                rigistration.ShowDialog();
-            });
+            //Registration = new CustomCommand(() =>
+            //{
+            //    RigistrationWindow rigistration = new RigistrationWindow();
+            //    rigistration.ShowDialog();
+            //});
 
             Login = new CustomCommand(async()  => {
 

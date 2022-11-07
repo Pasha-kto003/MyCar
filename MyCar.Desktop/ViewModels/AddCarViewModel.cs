@@ -195,7 +195,6 @@ namespace MyCar.Desktop.ViewModels
             SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == carApi.EquipmentId);
             SignalChanged(nameof(SelectedEquipment));
             SelectedBodyType = BodyTypes.FirstOrDefault(s => s.ID == carApi.TypeId);
-            SignalChanged(nameof(SelectedBodyType));
         }
 
         public void CloseWindow(object obj)

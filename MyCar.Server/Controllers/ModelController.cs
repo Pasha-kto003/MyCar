@@ -22,6 +22,27 @@ namespace MyCar.Server.Controllers
             return dbContext.Models.Select(s => (ModelApi)s);
         }
 
+        private List<ModelApi> GetModelApi(MarkCar mark, List<ModelApi> models)
+        {
+            var result = (MarkCarApi)mark;
+            result.Models = models;
+            return result.Models;
+        }
+
+        [HttpGet("Mark")]
+        public IEnumerable<ModelApi> GetModel(string markName)
+        {
+            var models = dbContext.Models.ToList();
+            var markscar = dbContext.MarkCars.FirstOrDefault(s => s.MarkName.ToLower().Contains(markName));
+            if (markscar == null)
+            {
+                models = null;
+            }
+
+            var sortModels = models.Where(s => s.MarkId == markscar.Id).Select(t => (ModelApi)t).ToList();
+            return GetModelApi(markscar, sortModels);
+        }
+
         // GET api/<ModelController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ModelApi>> Get(int id)

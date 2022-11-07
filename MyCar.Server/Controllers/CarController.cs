@@ -16,6 +16,8 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
 
+        
+
         private CarApi GetCross(Car car, List<CharacteristicCarApi> characteristics, Model model, MarkCar mark, Equipment equipment, BodyType bodyType)
         {
             var result = (CarApi)car;
@@ -53,6 +55,8 @@ namespace MyCar.Server.Controllers
             var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);
             return GetCross(car, characteristics, model, mark, equipment, body);
         }
+
+        
 
         [HttpGet("Type, Text")]
         public IEnumerable<CarApi> SearchByCar(string type, string text)

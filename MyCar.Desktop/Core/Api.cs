@@ -65,6 +65,14 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
+        public static async Task<ModelApi> GetModelApi<ModelApi>(string markName, string controller)
+        {
+            var answer = await client.GetAsync(server + controller + $"/Mark?markName={markName}");
+            string answerText = await answer.Content.ReadAsStringAsync();
+            var result = (ModelApi)JsonSerializer.Deserialize(answerText, typeof(ModelApi), jsonOptions);
+            return result;
+        }
+
         public static async Task<int> PostAsync<T>(T value, string controller) //
         {
             var str = JsonSerializer.Serialize(value, typeof(T));

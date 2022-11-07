@@ -86,8 +86,6 @@ namespace MyCar.Desktop.ViewModels
 
             else
             {
-                //GetCar(car.ID);
-
                 GetCars(car);
                 AddCarVM = new CarApi
                 {
@@ -96,12 +94,16 @@ namespace MyCar.Desktop.ViewModels
                     CarPrice = car.CarPrice,
                     PhotoCar = car.PhotoCar,
                     ModelId = car.ModelId,
+                    Model = car.Model,
+                    BodyType = car.BodyType,
                     TypeId = car.TypeId,
                     EquipmentId = car.EquipmentId
                 }; 
             }
 
+            GetCars(AddCarVM);
 
+            GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
 
             SaveCar = new CustomCommand(() =>
             {
@@ -158,6 +160,11 @@ namespace MyCar.Desktop.ViewModels
             AddCarVM = await Api.GetAsync<CarApi>(id, "Car");
         }
 
+        public async Task GetModels(string markName)
+        {
+            Models = await Api.GetModelApi<List<ModelApi>>(markName, "Model");
+        }
+
         public async Task PostCar(CarApi carApi)
         {
             var car = await Api.PostAsync<CarApi>(carApi, "Car");
@@ -175,6 +182,12 @@ namespace MyCar.Desktop.ViewModels
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             CharacteristicsCar = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
+            if(carApi == null)
+            {
+                SelectedMark = Marks.FirstOrDefault();
+                SelectedModel = Models.FirstOrDefault();
+                SelectedEquipment = Equipments.FirstOrDefault();
+            }
             SelectedModel = carApi.Model;
             SignalChanged(nameof(SelectedModel));
             SelectedMark = carApi.Model.MarkCar;

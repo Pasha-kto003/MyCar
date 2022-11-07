@@ -65,7 +65,7 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<int> PostAsync<T>(T value, string controller)
+        public static async Task<int> PostAsync<T>(T value, string controller) //
         {
             var str = JsonSerializer.Serialize(value, typeof(T));
             var answer = await client.PostAsync(server + controller, new StringContent(str, Encoding.UTF8, "application/json"));

@@ -25,9 +25,10 @@
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
             </StackPanel>
-    </Grid>
         
-    <ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="16" SelectedItem="{Binding SelectedUser}" >
+    </Grid>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="{StaticResource FontSizeLarge}" SelectedItem="{Binding SelectedUser}" >
         <ListView.View>
             <GridView>
                 <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding UserName}"/>

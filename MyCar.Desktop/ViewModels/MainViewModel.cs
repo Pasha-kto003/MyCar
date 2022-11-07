@@ -74,18 +74,18 @@ namespace MyCar.Desktop.ViewModels
         public string UserString { get; set; }
 
         public Page CurrentPage { get; set; }
+
+        public string UserString { get; set; }
         public CustomCommand MinimizeCommand { get; set; }
         public CustomCommand MaximizeCommand { get; set; }
         public CustomCommand CloseCommand { get; set; }
         public CustomCommand MenuCommand { get; set; }
         public CustomCommand UserPageCommand { get; set; }
-        public CustomCommand OpenCar { get; set; }
-
         public MainViewModel(Window window, UserApi user)
         {
             mWindow = window;
 
-            UserString = user.UserName;
+            GetUserString(user);
 
             MinimizeCommand = new CustomCommand(() => mWindow.WindowState = WindowState.Minimized);
             MaximizeCommand = new CustomCommand(() => mWindow.WindowState ^= WindowState.Maximized);
@@ -105,6 +105,12 @@ namespace MyCar.Desktop.ViewModels
 
                 WindowResized();
             };
+        }
+
+        private void GetUserString(UserApi user)
+        {
+            UserString = user.Passport.FirstName + " " + user.Passport.LastName;
+            SignalChanged(nameof(UserString));
         }
         private Point GetMousePosition()
         {

@@ -45,16 +45,14 @@ namespace MyCar.Server.Controllers
             return CreateUserApi(client, passport, type);
         }
 
-        [HttpGet("Type, Text")]
+[HttpGet("Type, Text")]
         public IEnumerable<UserApi> SearchByUser(string type, string text)
         {
-            if(type == "" || text == "")
+            if (text == "")
             {
-                return dbContext.Users.ToList().Select(s =>
-                {
+                return dbContext.Users.ToList().Select(s => {
                     var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-                    var type = dbContext.UserTypes.FirstOrDefault(t => t.Id == s.UserTypeId);
-                    return CreateUserApi(s, passport, type);
+                    return CreateUserApi(s, passport);
                 });
             }
             switch (type)
@@ -102,6 +100,7 @@ namespace MyCar.Server.Controllers
                     break;
             }
         }
+
 
         // POST api/<UserController>
         //[Authorize]

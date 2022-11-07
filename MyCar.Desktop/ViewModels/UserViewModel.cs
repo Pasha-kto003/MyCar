@@ -1,5 +1,6 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 searchText = value;
-                Search();
+                Task.Run(Search);
             }
         }
         public List<string> SearchType { get; set; }
@@ -29,7 +30,6 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 selectedSearchType = value;
-                Search();
             }
         }
 
@@ -41,28 +41,45 @@ namespace MyCar.Desktop.ViewModels
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public UserApi SelectedUser { get; set; }   
 
+       
+        public CustomCommand AddUser { get; set; }
+
+        public CustomCommand EditUser { get; set; }
         public UserViewModel()
         {
             Task.Run(GetUserList);
  
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email", "Тип", "Отменить" });
+            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email"});
             selectedSearchType = SearchType.First();
 
-            Search();    
+            AddUser = new CustomCommand(() =>
+            {
+                EditUser edituser = new EditUser();
+                edituser.ShowDialog();
+            });
+
+            EditUser = new CustomCommand(() =>
+            {
+                if (SelectedUser == null || SelectedUser.ID == 0) return;
+                EditUser edituser = new EditUser(SelectedUser);
+                edituser.ShowDialog();
+            });
         }
 
         public async Task Search()
         {
             var search = SearchText.ToLower();
-            searchResult = await Api.SearchAsync<List<UserApi>>(SelectedSearchType, search, "User");
+            if(search == "")
+                searchResult = await Api.GetListAsync<List<UserApi>>("User");
+            else
+                searchResult = await Api.SearchAsync<List<UserApi>>(SelectedSearchType, search, "User");
             UpdateList();
-
         }
-
         private void UpdateList()
         {
             Users = searchResult;
+            SignalChanged(nameof(Users));
         }
 
         private async Task GetUserList()
@@ -71,6 +88,10 @@ namespace MyCar.Desktop.ViewModels
             UserTypes = await Api.GetListAsync<List<UserTypeApi>>("UserType");
             Passports = await Api.GetListAsync<List<PassportApi>>("Passport");
             FullUsers = Users;
+            foreach(var user in Users)
+            {
+                user.UserType = UserTypes.FirstOrDefault(s => s.ID == user.UserTypeId);
+            }
             SignalChanged(nameof(Users));
         }
 

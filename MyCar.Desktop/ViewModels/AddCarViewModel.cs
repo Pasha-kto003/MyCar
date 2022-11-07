@@ -34,7 +34,7 @@ namespace MyCar.Desktop.ViewModels
         }
 
         private MarkCarApi selectedMark { get; set; }
-        public MarkCarApi SelectedMark 
+        public MarkCarApi SelectedMark
         {
             get => selectedMark;
             set
@@ -56,14 +56,14 @@ namespace MyCar.Desktop.ViewModels
         }
 
         private EquipmentApi selectedEquipment { get; set; }
-        public EquipmentApi SelectedEquipment 
-        { 
-            get => selectedEquipment; 
-            set 
-            { 
+        public EquipmentApi SelectedEquipment
+        {
+            get => selectedEquipment;
+            set
+            {
                 selectedEquipment = value;
-                SignalChanged(); 
-            } 
+                SignalChanged();
+            }
         }
 
         public CustomCommand Save { get; set; }
@@ -80,7 +80,7 @@ namespace MyCar.Desktop.ViewModels
                 {
                     Articul = "1234",
                     CarPrice = 1000000,
-                    
+
                 };
             }
 
@@ -98,7 +98,7 @@ namespace MyCar.Desktop.ViewModels
                     BodyType = car.BodyType,
                     TypeId = car.TypeId,
                     EquipmentId = car.EquipmentId
-                }; 
+                };
             }
 
             GetCars(AddCarVM);
@@ -107,14 +107,14 @@ namespace MyCar.Desktop.ViewModels
 
             Save = new CustomCommand(() =>
             {
-                if(AddCarVM.ID == 0)
+                if (AddCarVM.ID == 0)
                 {
-                    if(SelectedMark == null || SelectedMark.ID == 0)
+                    if (SelectedMark == null || SelectedMark.ID == 0)
                     {
                         MessageBox.Show("Не введена марка авто");
                         return;
                     }
-                    else if(SelectedModel == null || SelectedModel.ID == 0)
+                    else if (SelectedModel == null || SelectedModel.ID == 0)
                     {
                         MessageBox.Show("Не выбрана модель авто");
                         return;
@@ -182,20 +182,19 @@ namespace MyCar.Desktop.ViewModels
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             CharacteristicsCar = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
-            if(carApi == null)
+            if (carApi == null)
             {
                 SelectedMark = Marks.FirstOrDefault();
                 SelectedModel = Models.FirstOrDefault();
                 SelectedEquipment = Equipments.FirstOrDefault();
             }
-            SelectedModel = Models.FirstOrDefault(s=> s.ID == carApi.ModelId);
-            SelectedMark = Marks.FirstOrDefault(s=> s.ID == SelectedModel.MarkId);
+            SelectedModel = Models.FirstOrDefault(s => s.ID == carApi.ModelId);
+            SelectedMark = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId);
             SignalChanged(nameof(SelectedMark));
             SignalChanged(nameof(SelectedModel));
-            SelectedEquipment = Equipments.FirstOrDefault(s=> s.ID == carApi.EquipmentId);
+            SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == carApi.EquipmentId);
             SignalChanged(nameof(SelectedEquipment));
-            SelectedBodyType = BodyTypes.FirstOrDefault(s=> s.ID == carApi.TypeId);
-            SignalChanged(nameof(SelectedBodyType));
+            SelectedBodyType = BodyTypes.FirstOrDefault(s => s.ID == carApi.TypeId);
         }
 
         public void CloseWindow(object obj)

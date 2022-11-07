@@ -26,12 +26,18 @@ namespace MyCar.Server.Controllers.Jwt
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
+            Passport passport = new Passport();
             User user = new User();
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.UserName = request.Username;
             user.PasswordHash = passwordHash;
             user.SaltHash = passwordSalt;
+
+            dbContext.Passports.Add(passport);
+            dbContext.SaveChanges();
+            user.PassportId = passport.Id;
+
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
             return Ok(user);

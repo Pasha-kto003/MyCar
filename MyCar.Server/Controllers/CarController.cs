@@ -45,7 +45,7 @@ namespace MyCar.Server.Controllers
 
         // GET api/<CarController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CarApi>> Get(int id)
+        public async Task<ActionResult<CarApi>> Get(int id) //
         {
             var car = await dbContext.Cars.FindAsync(id);
             var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == id).Select(t => (CharacteristicCarApi)t).ToList();

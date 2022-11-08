@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         mc:Ignorable="d"
-        Title="AddCarWindow" Height="500" Width="620" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+        Title="AddCarWindow" Height="500" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">
         <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
@@ -16,13 +16,13 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="450"/>
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <StackPanel Width="200" HorizontalAlignment="Center">
                         <Label Content="Изображение:" Foreground="Black" FontSize="16"/>
                         <Image Source="{Binding ImageCar}" Width="150" Height="150"/>
-                        <Button Content="Выбрать изображение" Command="{Binding Save}" Grid.Row="1" Grid.Column="1" Height="30" Width="180" Margin="5" HorizontalAlignment="Center" 
+                        <Button Content="Выбрать картинку" Command="{Binding Save}" Grid.Row="1" Grid.Column="1" Height="30" Width="180" Margin="5" HorizontalAlignment="Center" 
                                 VerticalAlignment="Bottom" FontFamily="Century Gothic" Foreground="Green"
                                 Background="Transparent" BorderBrush="Green" FontSize="16"/>
                     </StackPanel>
@@ -72,12 +72,13 @@
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                         <Label Content="Конфигурация авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
-                    <Label Grid.Row="8" Margin="0 0 0 0" Content="Конфигурация" FontSize="16" HorizontalAlignment="Left"/>
-                    <ComboBox ItemsSource="{Binding Equipments}" SelectedItem="{Binding SelectedEquipment}" DisplayMemberPath="NameEquipment" Grid.Row="8" HorizontalAlignment="Right" Width="280" FontSize="15" Height="30"/>
-                   </Grid>
-                <Button Content="Отмена" Click="Button_Click" Grid.Row="1" Grid.Column="1" Height="30" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontFamily="Century Gothic" Foreground="Red"
+                    <Label Grid.Row="8" Margin="0 0 0 0" Content="Конфигурация" FontSize="16" HorizontalAlignment="Left" Width="130"/>
+                    <ComboBox ItemsSource="{Binding Equipments}" SelectedItem="{Binding SelectedEquipment}" DisplayMemberPath="NameEquipment" Grid.Row="8" HorizontalAlignment="Center" Width="150" FontSize="15" Height="30"/>
+                    <TextBox Text="{Binding SelectedEquipment.MinPrice}" Width="150" Tag="Цена конфигурации" HorizontalAlignment="Right" Grid.Row="8" Height="30"/>
+                </Grid>
+                <Button Content="Отмена" Width="150" Click="Button_Click" Grid.Row="1" Grid.Column="1" Height="30" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontFamily="Century Gothic" Foreground="Red"
                     Background="Transparent" BorderBrush="Red" FontSize="16"/>
-                <Button Content="Сохранить" Command="{Binding SaveCar}" Grid.Row="1" Grid.Column="1" Height="30" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="Century Gothic" Foreground="Green"
+                <Button Content="Сохранить" Command="{Binding SaveCar}" Grid.Row="1" Width="150" Grid.Column="1" Height="30" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="Century Gothic" Foreground="Green"
                     Background="Transparent" BorderBrush="Green" FontSize="16"/>
 
             </Grid>

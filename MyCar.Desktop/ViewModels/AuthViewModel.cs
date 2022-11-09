@@ -46,12 +46,12 @@ namespace MyCar.Desktop.ViewModels
 
             Login = new CustomCommand(async()  => {
 
-                UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                {
-                    Message = "Оченььь длинное соооооб Щение 3134",
-                    OkText = "ОК",
-                    Title = "Ошибка!"
-                });
+                //UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                //{
+                //    Message = "Оченььь длинное соооооб Щение 3134",
+                //    OkText = "ОК",
+                //    Title = "Ошибка!"
+                //});
 
                 await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {

@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace MyCar.Desktop.ViewModels
 {
-    public class EditUserViewModel : BaseViewModel
+    public class AddUserViewModel : BaseViewModel
     {
         public UserTypeApi SelectedUserType { get; set; }
 
@@ -20,7 +20,7 @@ namespace MyCar.Desktop.ViewModels
 
         public CustomCommand Cancel { get; set; }
 
-        public EditUserViewModel(UserApi editUser)
+        public AddUserViewModel(UserApi editUser)
         {
             Task.Run(GetList);
 

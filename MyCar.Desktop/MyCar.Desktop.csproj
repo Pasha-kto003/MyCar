@@ -12,6 +12,7 @@
     <None Remove="Fonts\centurygothic.ttf" />
     <None Remove="Fonts\centurygothic_bold.ttf" />
     <None Remove="Fonts\fontawesome-webfont.ttf" />
+    <None Remove="Images\add.png" />
     <None Remove="Images\car_256.png" />
     <None Remove="Images\car_64px.png" />
     <None Remove="Images\user_64px.png" />
@@ -33,6 +34,7 @@
     <Resource Include="Fonts\centurygothic.ttf" />
     <Resource Include="Fonts\centurygothic_bold.ttf" />
     <Resource Include="Fonts\fontawesome-webfont.ttf" />
+    <Resource Include="Images\add.png" />
     <Resource Include="Images\car_256.png" />
     <Resource Include="Images\car_64px.png" />
     <Resource Include="Images\user_64px.png" />

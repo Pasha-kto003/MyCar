@@ -11,19 +11,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop.Windows
+namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для WaitWindow.xaml
+    /// Логика взаимодействия для MarkPage.xaml
     /// </summary>
-    public partial class WaitWindow : Window
+    public partial class MarkPage : Page
     {
-        public WaitWindow()
+        public MarkPage()
         {
             InitializeComponent();
-            DataContext = new WaitViewModel(this);
+            DataContext = new MarkViewModel();
         }
     }
 }

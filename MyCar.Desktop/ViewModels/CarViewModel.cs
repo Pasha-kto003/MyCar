@@ -118,21 +118,7 @@ namespace MyCar.Desktop.ViewModels
             CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             FullCars = Cars;
-            foreach (CarApi carApi in Cars)
-            {
-                carApi.CarOptions = "";
-                foreach (var options in carApi.CharacteristicCars)
-                {
-                    options.Characteristic = Characteristics.FirstOrDefault(s => s.ID == options.CharacteristicId);
-                    if (options != carApi.CharacteristicCars.Last())
-                        carApi.CarOptions += $"{options.Characteristic.CharacteristicName} {options.CharacteristicValue}, \n";
-                    else
-                        carApi.CarOptions += $"{options.Characteristic.CharacteristicName} {options.CharacteristicValue}";
-                }
-                SignalChanged(nameof(carApi.CarOptions));
-            }
             SignalChanged(nameof(Cars));
-
         }
     }
 }

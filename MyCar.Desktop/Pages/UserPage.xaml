@@ -27,8 +27,45 @@
             </StackPanel>
         
     </Grid>
-
-        <ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="{StaticResource FontSizeLarge}" SelectedItem="{Binding SelectedUser}" >
+        <DataGrid Grid.Row="1"
+                  FontSize="{StaticResource FontSizeLarge}"
+                  SelectedItem="{Binding SelectedUser}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Users}"
+            >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Логин"
+                                    Binding="{Binding UserName}"
+                                    Width="*"
+                                    />
+                <DataGridTextColumn Header="Email"
+                                    Binding="{Binding Email}"
+                                     Width="*"
+                                    />
+                <DataGridTextColumn Header="Имя"
+                                    Binding="{Binding Passport.FirstName}"
+                                     Width="*"
+                                    />
+                <DataGridTextColumn Header="Фамилия"
+                                    Binding="{Binding Passport.LastName}"
+                                     Width="*"
+                                    />
+                <DataGridTextColumn Header="Тип"
+                                    Binding="{Binding UserType.TypeName}"
+                                     Width="*"
+                                    />
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>  
+                    <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        
+        
+        <!--<ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="{StaticResource FontSizeLarge}" SelectedItem="{Binding SelectedUser}" >
         <ListView.View>
             <GridView>
                 <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding UserName}"/>
@@ -40,11 +77,11 @@
         </ListView.View>
         <ListView.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
                 <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
+                <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
             </ContextMenu>
         </ListView.ContextMenu>
-    </ListView>
+    </ListView>-->
 
     <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
         <StackPanel Orientation="Horizontal">

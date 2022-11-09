@@ -88,10 +88,6 @@ namespace MyCar.Desktop.ViewModels
             UserTypes = await Api.GetListAsync<List<UserTypeApi>>("UserType");
             Passports = await Api.GetListAsync<List<PassportApi>>("Passport");
             FullUsers = Users;
-            foreach(var user in Users)
-            {
-                user.UserType = UserTypes.FirstOrDefault(s => s.ID == user.UserTypeId);
-            }
             SignalChanged(nameof(Users));
         }
 

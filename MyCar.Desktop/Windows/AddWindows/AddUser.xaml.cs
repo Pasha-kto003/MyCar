@@ -1,4 +1,5 @@
-﻿using MyCar.Desktop.ViewModels;
+﻿using ModelsApi;
+using MyCar.Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,22 +17,19 @@ using System.Windows.Shapes;
 namespace MyCar.Desktop.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для RigistrationWindow.xaml
+    /// Логика взаимодействия для EditUser.xaml
     /// </summary>
-    public partial class RigistrationWindow : Window
+    public partial class EditUser : Window
     {
-        public RigistrationWindow()
+        public EditUser()
         {
             InitializeComponent();
-            DataContext = new RegistrationViewModel(this);
+            DataContext = new AddUserViewModel(null);
         }
-
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        public EditUser(UserApi user)
         {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
+            InitializeComponent();
+            DataContext = new AddUserViewModel(user);
         }
     }
 }

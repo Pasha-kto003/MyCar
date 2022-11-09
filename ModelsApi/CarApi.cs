@@ -14,6 +14,7 @@ namespace ModelsApi
         public string? Articul { get; set; }
         public string? PhotoCar { get; set; }
         public decimal? CarPrice { get; set; }
+        public string CarOptions { get; set; }
 
         public ModelApi Model { get; set; }
         public EquipmentApi Equipment { get; set; }

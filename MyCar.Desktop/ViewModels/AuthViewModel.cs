@@ -29,6 +29,8 @@ namespace MyCar.Desktop.ViewModels
 
         public CustomCommand CloseWindow { get ; set; }
         public CustomCommand Login { get; set; }
+        public CustomCommand Registration { get; set; }
+
         public AuthViewModel(Window window)
         {
             mWindow = window;

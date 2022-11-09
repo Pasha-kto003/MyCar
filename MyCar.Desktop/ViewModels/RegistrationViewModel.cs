@@ -41,14 +41,14 @@ namespace MyCar.Desktop.ViewModels
                     RepeatPassword = "";
                     SignalChanged(nameof(RepeatPassword));
                 }
-                RegistrationUser();
+                //RegistrationUser();
             });
 
         }
 
-        public async Task RegistrationUser()
-        {
-            User = await Api.RegistrationAsync<UserApi>(User, "Auth");
-        }
+        //public async Task RegistrationUser()
+        //{
+        //    User = await Api.RegistrationAsync<UserApi>(User, "Auth");
+        //}
     }
 }

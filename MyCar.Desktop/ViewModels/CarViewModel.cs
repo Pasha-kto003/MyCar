@@ -33,6 +33,17 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
+        private string carOptions { get; set; } = "";
+        public string CarOptions
+        {
+            get => carOptions;
+            set
+            {
+                carOptions = value;
+                SignalChanged();
+            }
+        }
+
         private CarApi selectedCar { get; set; }
         public CarApi SelectedCar
         {
@@ -49,6 +60,8 @@ namespace MyCar.Desktop.ViewModels
         public List<MarkCarApi> MarkCars { get; set; } = new List<MarkCarApi>();
         public List<BodyTypeApi> BodyTypes { get; set; } = new List<BodyTypeApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
+        public List<CharacteristicCarApi> CharacteristicCars { get; set; } = new List<CharacteristicCarApi>();
+        public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
 
         public CustomCommand EditCar { get; set; }
         public CustomCommand DeleteCar { get; set; }
@@ -102,7 +115,8 @@ namespace MyCar.Desktop.ViewModels
             MarkCars = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
-
+            CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
+            Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             FullCars = Cars;
             SignalChanged(nameof(Cars));
         }

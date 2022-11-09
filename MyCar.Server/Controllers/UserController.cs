@@ -16,23 +16,23 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
 
+        private UserApi GetUser(User user)
+        {
+            var result = (UserApi)user;
+            var type = dbContext.UserTypes.FirstOrDefault(s=> s.Id == user.UserTypeId);
+            result.UserType = (UserTypeApi)type;
+            var passport = dbContext.Passports.FirstOrDefault(s=> s.Id == user.PassportId);
+            result.Passport = (PassportApi)passport;
+            return result;
+        }
+
         // GET: api/<UserController>
         [HttpGet]
         public IEnumerable<UserApi> Get()
         {
             return dbContext.Users.ToList().Select(s => {
-                var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-                var type = dbContext.UserTypes.FirstOrDefault(t=> t.Id == s.UserTypeId);
-                return CreateUserApi(s, passport, type);
+                return GetUser(s);
             });
-        }
-
-        private UserApi CreateUserApi(User user, Passport passport, UserType userType)
-        {
-            var clientApi = (UserApi)user;
-            clientApi.Passport = (PassportApi)passport;
-            clientApi.UserType = (UserTypeApi)userType;
-            return clientApi;
         }
 
         // GET api/<UserController>/5
@@ -40,9 +40,7 @@ namespace MyCar.Server.Controllers
         public async Task<ActionResult<UserApi>> Get(long? id)
         {
             var client = await dbContext.Users.FindAsync(id);
-            var passport = await dbContext.Passports.FindAsync(client.PassportId);
-            var type = await dbContext.UserTypes.FindAsync(client.UserTypeId);
-            return CreateUserApi(client, passport, type);
+            return GetUser(client);
         }
 
         [HttpGet("Type, Text")]
@@ -51,9 +49,7 @@ namespace MyCar.Server.Controllers
             if (text == "")
             {
                 return dbContext.Users.ToList().Select(s => {
-                    var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-                    var type = dbContext.UserTypes.FirstOrDefault(t=> t.Id == s.UserTypeId);
-                    return CreateUserApi(s, passport, type);
+                    return GetUser(s);
                 });
             }
             switch (type)
@@ -62,9 +58,7 @@ namespace MyCar.Server.Controllers
 
                     return dbContext.Users.Where(s => s.UserName.ToLower().Contains(text)).ToList().Select(s =>
                     {
-                        var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-                        var type = dbContext.UserTypes.FirstOrDefault(t => t.Id == s.UserTypeId);
-                        return CreateUserApi(s, passport, type);
+                        return GetUser(s);
                     });
 
                     break;
@@ -72,9 +66,7 @@ namespace MyCar.Server.Controllers
 
                     return dbContext.Users.Where(s => s.Passport.LastName.ToLower().Contains(text)).ToList().Select(s =>
                     {
-                        var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-                        var type = dbContext.UserTypes.FirstOrDefault(t => t.Id == s.UserTypeId);
-                        return CreateUserApi(s, passport, type);
+                        return GetUser(s);
                     });
 
                     break;
@@ -82,9 +74,7 @@ namespace MyCar.Server.Controllers
 
                     return dbContext.Users.Where(s => s.Email.ToLower().Contains(text)).ToList().Select(s =>
                     {
-                        var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-                        var type = dbContext.UserTypes.FirstOrDefault(t => t.Id == s.UserTypeId);
-                        return CreateUserApi(s, passport, type);
+                        return GetUser(s);
                     });
 
                     break;
@@ -93,9 +83,7 @@ namespace MyCar.Server.Controllers
 
                     return dbContext.Users.ToList().Select(s =>
                     {
-                        var passport = dbContext.Passports.FirstOrDefault(p => p.Id == s.PassportId);
-                        var type = dbContext.UserTypes.FirstOrDefault(t => t.Id == s.UserTypeId);
-                        return CreateUserApi(s, passport, type);
+                        return GetUser(s);
                     });
 
                     break;

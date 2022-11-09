@@ -1,5 +1,6 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,19 +106,55 @@ namespace MyCar.Desktop.ViewModels
 
             GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
 
+
             Save = new CustomCommand(() =>
             {
                 if (AddCarVM.ID == 0)
                 {
                     if (SelectedMark == null || SelectedMark.ID == 0)
                     {
-                        MessageBox.Show("Не введена марка авто");
+                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                        {
+                            Message = "Не выбрана марка авто",
+                            OkText = "ОК",
+                            Title = "Ошибка!"
+                        });
                         return;
+
                     }
                     else if (SelectedModel == null || SelectedModel.ID == 0)
                     {
-                        MessageBox.Show("Не выбрана модель авто");
+                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                        {
+                            Message = "Не выбрана модель авто",
+                            OkText = "ОК",
+                            Title = "Ошибка!"
+                        });
                         return;
+                    }
+
+                    else if (SelectedBodyType == null || SelectedBodyType.ID == 0)
+                    {
+                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                        {
+                            Message = "Не выбран кузов для авто",
+                            OkText = "ОК",
+                            Title = "Ошибка!"
+                        });
+                        return;
+
+                    }
+
+                    else if (SelectedEquipment == null || SelectedEquipment.ID == 0)
+                    {
+                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                        {
+                            Message = "Не выбрана конфигурация авто",
+                            OkText = "ОК",
+                            Title = "Ошибка!"
+                        });
+                        return;
+
                     }
 
                     AddCarVM.ModelId = SelectedModel.ID;
@@ -128,7 +165,6 @@ namespace MyCar.Desktop.ViewModels
                     PostCar(AddCarVM);
 
                     MessageBox.Show($"Машина {AddCarVM.Model.ModelName} успешно создана");
-                    return;
                 }
 
                 else
@@ -141,7 +177,6 @@ namespace MyCar.Desktop.ViewModels
                     EditCar(AddCarVM);
 
                     MessageBox.Show($"Машина {AddCarVM.Model.ModelName} успешно изменена");
-                    return;
                 }
 
                 foreach (Window window in Application.Current.Windows)
@@ -181,13 +216,14 @@ namespace MyCar.Desktop.ViewModels
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
-            CharacteristicsCar = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             if (carApi == null)
             {
                 SelectedMark = Marks.FirstOrDefault();
                 SelectedModel = Models.FirstOrDefault();
                 SelectedEquipment = Equipments.FirstOrDefault();
             }
+            var car = await Api.GetAsync<CarApi>(carApi.ID ,"Car");
+            CharacteristicsCar = car.CharacteristicCars;
             SelectedModel = Models.FirstOrDefault(s => s.ID == carApi.ModelId);
             SelectedMark = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId);
             SignalChanged(nameof(SelectedMark));

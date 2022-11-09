@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyCar.Desktop.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="CarPage">
 
     <Grid>
@@ -28,16 +28,36 @@
             </StackPanel>
         </Grid>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Cars}"  FontSize="16" SelectedItem="{Binding SelectedCar}" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Марка авто" DisplayMemberBinding="{Binding Model.MarkCar.MarkName}"/>
-                    <GridViewColumn Header="Модель" DisplayMemberBinding="{Binding Model.ModelName}"/>
-                    <GridViewColumn Header="Комплектация" DisplayMemberBinding="{Binding Equipment.NameEquipment}"/>
-                    <GridViewColumn Header="Артикул товара" DisplayMemberBinding="{Binding Articul}"/>
-                    <GridViewColumn Header="Цена автомобиля" DisplayMemberBinding="{Binding CarPrice}"/>
-                </GridView>
-            </ListView.View>
+        <ListView Grid.Row="1" ItemsSource="{Binding Cars}"  FontSize="16" SelectedItem="{Binding SelectedCar}" d:ItemsSource="{d:SampleData ItemCount=5}" >
+            <ListView.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="10" Background="White">
+                        <Grid Width="200" Background="Transparent" MouseUp="Grid_MouseUp"  >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                            <Image Source="{Binding PhotoCar}"/>
+                            <TextBlock Text="{Binding Model.Mark.MarkName}" FontSize="16" Grid.Row="1"/>
+                            <TextBlock Text="{Binding Model.ModelName}" FontSize="16" Grid.Row="2"/>
+                            <TextBlock Text="{Binding BodyType.TypeName}" FontSize="16" Grid.Row="3"/>
+                            <TextBlock Text="{Binding Equipment.NameEquipment}" FontSize="16" Grid.Row="4"/>
+                            <TextBlock Text="{Binding CarOptions}" Grid.Row="5"/>
+                            <TextBlock Text="{Binding CarPrice}" FontSize="20" Foreground="ForestGreen" Grid.Row="6"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Удалить" Command="{Binding DeleteCar}"/>
@@ -51,7 +71,6 @@
                 <Button Content="+" Margin="5 0 0 0" Style="{StaticResource AddButton}"
                         Command="{Binding AddCar}">
                 </Button>
-
             </StackPanel>
             <Grid/>
         </Grid>

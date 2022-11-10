@@ -63,6 +63,7 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
+        <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
         
         
         <!--<ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="{StaticResource FontSizeLarge}" SelectedItem="{Binding SelectedUser}" >

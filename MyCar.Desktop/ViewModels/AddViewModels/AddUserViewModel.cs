@@ -17,7 +17,10 @@ namespace MyCar.Desktop.ViewModels
 
         public UserApi EditUser { get; set; }
 
+        public CustomCommand Save { get; set; }
+        public CustomCommand Cancel { get; set; }
 
+        public string Password { get; set; }
         public CustomCommand Cancel { get; set; }
 
         public AddUserViewModel(UserApi editUser)
@@ -41,6 +44,29 @@ namespace MyCar.Desktop.ViewModels
                    PasswordHash = editUser.PasswordHash,
                    Passport = editUser.Passport,
                    UserType = editUser.UserType
+                };     
+            }
+
+            Save = new CustomCommand(() =>
+            {
+                EditUser.UserType = SelectedUserType;
+                if(EditUser.ID == 0)
+                {
+                    CreateUser(EditUser);
+                }
+                else
+                {
+                    ChangeUser(EditUser);
+                    foreach (Window window in Application.Current.Windows)
+                    {
+                        if (window.DataContext == this)
+                        {
+                            window.Close();
+                        }
+                    }
+                }
+            });
+
                 };
 
                
@@ -57,6 +83,17 @@ namespace MyCar.Desktop.ViewModels
                 }
             });
         }  
+
+        private async Task CreateUser(UserApi userApi)
+        {
+            var user = await Api.RegistrationAsync<UserApi>(userApi, "Auth");
+        }
+
+        private async Task ChangeUser(UserApi userApi)
+        {
+            var user = await Api.PutAsync<UserApi>(userApi, "User");
+        }
+
 
         private async Task GetList()
         {

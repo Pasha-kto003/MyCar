@@ -96,7 +96,8 @@ namespace MyCar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<long>> Post([FromBody] UserApi userApi)
         {
-            Passport passport = (Passport)userApi.Passport;
+            Passport passport = new Passport();
+            passport.Id = dbContext.Passports.Count() + 1;
             await dbContext.Passports.AddAsync(passport);
             await dbContext.SaveChangesAsync();
             User newUser = (User)userApi;
@@ -109,18 +110,16 @@ namespace MyCar.Server.Controllers
         // PUT api/<UserController>/5
         //[Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(long id, [FromBody] UserApi userApi)
+        public async Task<ActionResult> Put(int id, [FromBody] UserApi userApi)
         {
-            var user = await dbContext.Users.FindAsync(id);
-            if (user == null)
+            var result = await dbContext.Users.FindAsync(id);
+            if(result == null)
+            {
                 return NotFound();
-            Passport passport = (Passport)userApi.Passport;
-            if (passport.Id == 0)
-                return BadRequest("Неверный паспорт");
-            User newClient = (User)userApi;
-            dbContext.Entry(user).CurrentValues.SetValues(newClient);
-            user.Passport = passport;
-            await dbContext.SaveChangesAsync();
+            }
+            var user = (User)userApi;
+            dbContext.Users.Update(result).CurrentValues.SetValues(user);
+            dbContext.SaveChanges();
             return Ok();
         }
 

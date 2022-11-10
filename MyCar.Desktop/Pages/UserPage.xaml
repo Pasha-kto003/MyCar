@@ -84,8 +84,8 @@
     </ListView>-->
 
     <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-        <StackPanel Orientation="Horizontal">
-                <Button   Content="Зарегистрировать" Margin="5 0 0 0" Style="{StaticResource AddButton}"
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button   Content="Зарегистрировать" Margin="0 0 5 0" Style="{StaticResource AddButton}"
                         Command="{Binding AddUser}">
                 </Button>
 

@@ -1,5 +1,6 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +38,7 @@ namespace MyCar.Desktop.ViewModels
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
         public List<MarkCarApi> Marks { get; set; } = new List<MarkCarApi>();
         public MarkCarApi SelectedMark { get; set; }
-
-
+        public CustomCommand EditMark { get; set; }
         public CustomCommand AddMark { get; set; }
 
         public MarkViewModel()
@@ -46,9 +46,22 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetMarkList);
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Модель", "Марка" });
+            SearchType.AddRange(new string[] { "Марка" });
             selectedSearchType = SearchType.First();
 
+            AddMark = new CustomCommand(() =>
+            {
+                AddMarkWindow addMark = new AddMarkWindow();
+                addMark.ShowDialog();
+            });
+
+            EditMark = new CustomCommand(() => 
+            {
+                if (SelectedMark == null || SelectedMark.ID == 0) return;
+                AddMarkWindow addMark = new AddMarkWindow(SelectedMark);
+                addMark.ShowDialog();
+            });
+           
 
         }
         public async Task Search()
@@ -71,10 +84,6 @@ namespace MyCar.Desktop.ViewModels
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             Models = await Api.GetListAsync<List<ModelApi>>("Model");
             FullMarks = Marks;
-            foreach (var mark in Marks)
-            {
-                mark.Models = Models.Where(s=>s.MarkId == mark.ID).ToList();
-            }
             SignalChanged(nameof(Marks));
         }
     }

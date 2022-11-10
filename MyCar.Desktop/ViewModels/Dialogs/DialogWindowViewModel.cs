@@ -68,7 +68,7 @@ namespace MyCar.Desktop.ViewModels.Dialogs
 
         #endregion
 
-        public string Title { get; set; } = "HEllo krol";
+        public string Title { get; set; } = "Диалоговое окно";
 
         public Control Content { get; set; }
 

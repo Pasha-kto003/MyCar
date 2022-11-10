@@ -56,7 +56,7 @@ namespace MyCar.Desktop.ViewModels
                 }
                 else
                 {
-                    ChangeUser(EditUser);
+                    ChangeUser(EditUser, EditUser.Passport);
                     foreach (Window window in Application.Current.Windows)
                     {
                         if (window.DataContext == this)
@@ -89,9 +89,10 @@ namespace MyCar.Desktop.ViewModels
             var user = await Api.RegistrationAsync<UserApi>(userApi, "Auth");
         }
 
-        private async Task ChangeUser(UserApi userApi)
+        private async Task ChangeUser(UserApi userApi, PassportApi passportapi)
         {
             var user = await Api.PutAsync<UserApi>(userApi, "User");
+            var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
 
 

@@ -34,8 +34,17 @@ namespace MyCar.Server.Controllers
 
         // PUT api/<PassportController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(int id, [FromBody] PassportApi value)
         {
+            var result = await dbContext.Passports.FindAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            var passport = (Passport)value;
+            dbContext.Passports.Update(result).CurrentValues.SetValues(passport);
+            dbContext.SaveChanges();
+            return Ok();
         }
 
         // DELETE api/<PassportController>/5

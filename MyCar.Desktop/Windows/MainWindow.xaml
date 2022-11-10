@@ -173,7 +173,7 @@
                              Command="{Binding OpenCar}">
                     <RadioButton.Content>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/user_64px.png" Margin="20 0 0 0"/>
+                            <Image Source="/Images/catalog_64px.png" Margin="20 0 0 0"/>
                             <TextBlock Text="Каталог" FontSize="20"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
                         </StackPanel>
@@ -185,7 +185,7 @@
                              Command="{Binding MarkPageCommand}">
                     <RadioButton.Content>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/user_64px.png" Margin="20 0 0 0"/>
+                            <Image Source="/Images/mark_64px.png" Margin="20 0 0 0"/>
                             <TextBlock Text="Марки"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
                         </StackPanel>

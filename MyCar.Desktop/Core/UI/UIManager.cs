@@ -30,5 +30,16 @@ namespace MyCar.Desktop.Core.UI
 
             return tcs.Task;
         }
+
+        public static void CloseWindow(object obj)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.DataContext == obj)
+                {
+                    window.Close();
+                }
+            }
+        }
     }
 }

@@ -57,13 +57,34 @@
                                     />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
-                <ContextMenu>
+                <ContextMenu>  
                     <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
                     <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+        
+        
+        <!--<ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="{StaticResource FontSizeLarge}" SelectedItem="{Binding SelectedUser}" >
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding UserName}"/>
+                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}"/>
+                <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Passport.FirstName}"/>
+                <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Passport.LastName}"/>
+                <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding UserType.TypeName}"/>
+                </GridView>
+        </ListView.View>
+        <ListView.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
+                <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
+            </ContextMenu>
+        </ListView.ContextMenu>
+    </ListView>-->
+
+    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
         <StackPanel Orientation="Horizontal">
                 <Button   Content="Зарегистрировать" Margin="5 0 0 0" Style="{StaticResource AddButton}"
                         Command="{Binding AddUser}">

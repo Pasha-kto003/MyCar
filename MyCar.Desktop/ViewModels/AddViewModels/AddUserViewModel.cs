@@ -21,6 +21,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Cancel { get; set; }
 
         public string Password { get; set; }
+        public CustomCommand Cancel { get; set; }
 
         public AddUserViewModel(UserApi editUser)
         {
@@ -66,6 +67,11 @@ namespace MyCar.Desktop.ViewModels
                 }
             });
 
+                };
+
+               
+            }
+
             Cancel = new CustomCommand(() =>
             {
                 foreach (Window window in Application.Current.Windows)
@@ -87,6 +93,7 @@ namespace MyCar.Desktop.ViewModels
         {
             var user = await Api.PutAsync<UserApi>(userApi, "User");
         }
+
 
         private async Task GetList()
         {

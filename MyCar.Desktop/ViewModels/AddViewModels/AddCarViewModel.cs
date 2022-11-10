@@ -222,7 +222,7 @@ namespace MyCar.Desktop.ViewModels
                 SelectedModel = Models.FirstOrDefault();
                 SelectedEquipment = Equipments.FirstOrDefault();
             }
-
+            
             var car = await Api.GetAsync<CarApi>(carApi.ID ,"Car");
             CharacteristicsCar = car.CharacteristicCars;
             SelectedModel = Models.FirstOrDefault(s => s.ID == carApi.ModelId);

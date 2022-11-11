@@ -21,7 +21,7 @@ namespace MyCar.Server.Controllers
             var result = (CarApi)car;
             result.CharacteristicCars = characteristics;
             result.Model = (ModelApi)model;
-            result.Model.MarkCar = (MarkCarApi)mark;
+            //result.Model.MarkCar = (MarkCarApi)mark;
             result.Equipment = (EquipmentApi)equipment;
             result.BodyType = (BodyTypeApi)bodyType;
             return result;
@@ -35,7 +35,7 @@ namespace MyCar.Server.Controllers
             var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
             result.Model = (ModelApi)model;
             var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-            result.Model.MarkCar = (MarkCarApi)mark;
+            //result.Model.MarkCar = (MarkCarApi)mark;
             var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == car.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;
             var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);

@@ -22,8 +22,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Cancel { get; set; }
 
         public string Password { get; set; }
-        public CustomCommand Cancel { get; set; }
- 
+
         public AddUserViewModel(UserApi editUser)
         {
             Task.Run(GetList);
@@ -66,13 +65,7 @@ namespace MyCar.Desktop.ViewModels
                         }
                     }
                 }
-            });
-
-                };
-
-               
-            }
-
+            });           
             Cancel = new CustomCommand(() =>
             {
                 UIManager.CloseWindow(this);

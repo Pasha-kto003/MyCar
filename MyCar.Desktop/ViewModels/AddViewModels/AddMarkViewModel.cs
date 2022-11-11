@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +26,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand Save { get; set; }
         public CustomCommand AddModel { get; set; }
         public CustomCommand RemoveModel { get; set; }
+        public CustomCommand CreateModel { get; set; }
 
         public AddMarkViewModel(MarkCarApi addmark)
         {
@@ -58,6 +60,22 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                         return;
                     }
                 ThisMarkModels.Add(SelectedModel);
+            });
+
+            CreateModel = new CustomCommand(async () =>
+            {
+                if(SelectedModel == null || SelectedModel.ID == 0)
+                {
+                    AddModelWindow addModel = new AddModelWindow();
+                    addModel.ShowDialog();
+                    GetList();
+                }
+                else
+                {
+                    AddModelWindow addModel = new AddModelWindow(SelectedModel);
+                    addModel.ShowDialog();
+                    GetList();
+                }
             });
 
             RemoveModel = new CustomCommand(() =>

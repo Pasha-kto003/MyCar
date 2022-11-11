@@ -104,7 +104,7 @@ namespace MyCar.Desktop.ViewModels
 
             GetCars(AddCarVM);
 
-            GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
+            //GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
 
 
             Save = new CustomCommand(() =>

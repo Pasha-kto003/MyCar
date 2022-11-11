@@ -10,6 +10,6 @@ namespace ModelsApi
     {
         public string? MarkName { get; set; }
 
-        public List<ModelApi> Models { get;set; }
+        public List<ModelApi>? Models { get;set; }
     }
 }

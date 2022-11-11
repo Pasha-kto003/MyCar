@@ -52,9 +52,16 @@
                                FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                         <Label Content="Текущие" Grid.Row="0" Grid.Column="1" FontFamily="{StaticResource CenturyGothicBold}"
                                FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
-                        
+
                         <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding AllModels}" 
-                                 Margin="5 0" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="ModelName"/>
+                                 Margin="5 0" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="ModelName">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Добавить новую модель" Command="{Binding CreateModel}"/>
+                                    <MenuItem Header="Удалить модель" Command="{Binding DeleteModel}"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
                         <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ThisMarkModels}" 
                                  Margin="5 0" SelectedItem="{Binding SelectedMarkModel}" DisplayMemberPath="ModelName"/>
                         

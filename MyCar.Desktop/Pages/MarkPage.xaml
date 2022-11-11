@@ -20,10 +20,10 @@
                     <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
                     <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                 </StackPanel>
-                <StackPanel>
+                <!--<StackPanel>
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
 
         </Grid>
@@ -49,9 +49,9 @@
         </DataGrid>
 
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-            <StackPanel Orientation="Horizontal">
-                <Button Margin="5 0 0 0" Style="{StaticResource AddButton}" Width="auto"
-                        Command="{Binding AddMark}" Background="Transparent" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
+                        Command="{Binding AddMark}"  ToolTip="Добавить">
                     <Button.Content>
                         <Image Source="/Images/add.png" />
                     </Button.Content>

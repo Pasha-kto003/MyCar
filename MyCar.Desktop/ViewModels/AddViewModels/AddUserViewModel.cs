@@ -1,5 +1,6 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace MyCar.Desktop.ViewModels
 
         public string Password { get; set; }
         public CustomCommand Cancel { get; set; }
-
+ 
         public AddUserViewModel(UserApi editUser)
         {
             Task.Run(GetList);
@@ -74,13 +75,7 @@ namespace MyCar.Desktop.ViewModels
 
             Cancel = new CustomCommand(() =>
             {
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.DataContext == this)
-                    {
-                        window.Close();
-                    }
-                }
+                UIManager.CloseWindow(this);
             });
         }  
 

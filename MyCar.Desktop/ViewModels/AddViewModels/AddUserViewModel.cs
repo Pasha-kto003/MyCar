@@ -22,8 +22,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Cancel { get; set; }
 
         public string Password { get; set; }
-        public CustomCommand Cancel { get; set; }
- 
+
         public AddUserViewModel(UserApi editUser)
         {
             Task.Run(GetList);
@@ -57,7 +56,7 @@ namespace MyCar.Desktop.ViewModels
                 }
                 else
                 {
-                    ChangeUser(EditUser);
+                    ChangeUser(EditUser, EditUser.Passport);
                     foreach (Window window in Application.Current.Windows)
                     {
                         if (window.DataContext == this)
@@ -66,13 +65,7 @@ namespace MyCar.Desktop.ViewModels
                         }
                     }
                 }
-            });
-
-                };
-
-               
-            }
-
+            });           
             Cancel = new CustomCommand(() =>
             {
                 UIManager.CloseWindow(this);
@@ -84,9 +77,10 @@ namespace MyCar.Desktop.ViewModels
             var user = await Api.RegistrationAsync<UserApi>(userApi, "Auth");
         }
 
-        private async Task ChangeUser(UserApi userApi)
+        private async Task ChangeUser(UserApi userApi, PassportApi passportapi)
         {
             var user = await Api.PutAsync<UserApi>(userApi, "User");
+            var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
 
 

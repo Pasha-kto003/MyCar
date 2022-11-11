@@ -104,7 +104,7 @@ namespace MyCar.Desktop.ViewModels
 
             GetCars(AddCarVM);
 
-            GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
+            //GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
 
 
             Save = new CustomCommand(() =>
@@ -113,47 +113,24 @@ namespace MyCar.Desktop.ViewModels
                 {
                     if (SelectedMark == null || SelectedMark.ID == 0)
                     {
-                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                        {
-                            Message = "Не выбрана марка авто",
-                            OkText = "ОК",
-                            Title = "Ошибка!"
-                        });
-                        return;
+                        SendMessage("Не выбрана марка");
 
                     }
                     else if (SelectedModel == null || SelectedModel.ID == 0)
                     {
-                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                        {
-                            Message = "Не выбрана модель авто",
-                            OkText = "ОК",
-                            Title = "Ошибка!"
-                        });
-                        return;
+                        SendMessage("Не выбрана модель");
+
                     }
 
                     else if (SelectedBodyType == null || SelectedBodyType.ID == 0)
                     {
-                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                        {
-                            Message = "Не выбран кузов для авто",
-                            OkText = "ОК",
-                            Title = "Ошибка!"
-                        });
-                        return;
+                        SendMessage("Не выбран тип кузова");
 
                     }
 
                     else if (SelectedEquipment == null || SelectedEquipment.ID == 0)
                     {
-                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                        {
-                            Message = "Не выбрана конфигурация авто",
-                            OkText = "ОК",
-                            Title = "Ошибка!"
-                        });
-                        return;
+                        SendMessage("Не выбрана коплектация");
 
                     }
 
@@ -208,6 +185,17 @@ namespace MyCar.Desktop.ViewModels
         public async Task EditCar(CarApi carApi)
         {
             var car = await Api.PutAsync<CarApi>(carApi, "Car");
+        }
+
+        public void SendMessage(string message)
+        {
+            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+            {
+                Message = message,
+                OkText = "ОК",
+                Title = "Ошибка!"
+            });
+            return;
         }
 
         public async Task GetCars(CarApi carApi)

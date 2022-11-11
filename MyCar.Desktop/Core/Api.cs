@@ -55,7 +55,8 @@ namespace MyCar.Desktop.Core
 
         public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string controller) /*where T : ModelApi.ApiBaseType*/
         {
-            var answer = await client.GetAsync(server + controller);
+            var str = JsonSerializer.Serialize(value, typeof(UserApi));
+            var answer = await client.PostAsync(server + controller, new StringContent(str, Encoding.UTF8, "application/json"));
             string answerText = await answer.Content.ReadAsStringAsync();
             var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;

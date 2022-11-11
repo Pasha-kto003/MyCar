@@ -1,5 +1,5 @@
 ﻿using ModelsApi;
-using MyCar.Desktop.ViewModels;
+using MyCar.Desktop.ViewModels.AddViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,30 +14,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop.Windows
+namespace MyCar.Desktop.Windows.AddWindows
 {
     /// <summary>
-    /// Логика взаимодействия для EditUser.xaml
+    /// Логика взаимодействия для AddBodyTypeWindow.xaml
     /// </summary>
-    public partial class AddUser : Window
+    public partial class AddBodyTypeWindow : Window
     {
-        public AddUser()
+        public AddBodyTypeWindow()
         {
             InitializeComponent();
-            DataContext = new AddUserViewModel(null);
-        }
-        public AddUser(UserApi user)
-        {
-            InitializeComponent();
-            DataContext = new AddUserViewModel(user);
+            DataContext = new AddBodyTypeViewModel(null);
         }
 
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        public AddBodyTypeWindow(BodyTypeApi bodyType)
         {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
+            InitializeComponent();
+            DataContext = new AddBodyTypeWindow(bodyType);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

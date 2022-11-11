@@ -32,21 +32,21 @@ namespace MyCar.Server.Controllers.Jwt
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(string password)
+        public async Task<ActionResult<User>> Register(UserDto request)
         {
-            //Passport passport = (Passport)request.Passport;
-            //await dbContext.Passports.AddAsync(passport);
-            //await dbContext.SaveChangesAsync();
+            Passport passport = (Passport)request.Passport;
+            await dbContext.Passports.AddAsync(passport);
+            await dbContext.SaveChangesAsync();
             User user = new User();
-            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
-            //user.UserName = request.Username;
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            user.UserName = request.Username;
             user.PasswordHash = passwordHash;
             user.SaltHash = passwordSalt;
-            //user.PassportId = passport.Id;
+            user.PassportId = passport.Id;
             await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
 
-            return Ok(user); //user
+            return Ok(request); //user
         }
 
         //[HttpPost("login")]

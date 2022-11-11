@@ -55,14 +55,14 @@ namespace MyCar.Desktop.ViewModels
 
             AddUser = new CustomCommand(() =>
             {
-                EditUser edituser = new EditUser();
+                AddUser edituser = new AddUser();
                 edituser.ShowDialog();
             });
 
             EditUser = new CustomCommand(() =>
             {
                 if (SelectedUser == null || SelectedUser.ID == 0) return;
-                EditUser edituser = new EditUser(SelectedUser);
+                AddUser edituser = new AddUser(SelectedUser);
                 edituser.ShowDialog();
             });
         }

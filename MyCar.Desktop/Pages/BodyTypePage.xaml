@@ -30,7 +30,7 @@
         </Grid>
         <DataGrid Grid.Row="1"
                   FontSize="{StaticResource FontSizeLarge}"
-                  SelectedItem="{Binding SelectedType}"
+                  SelectedItem="{Binding SelectedBodyType}"
                   IsReadOnly="True"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding BodyTypes}"
@@ -43,16 +43,16 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Редактировать" Command="{Binding EditModel}"/>
-                    <MenuItem Header="Удалить" Command="{Binding DeleteModel}"/>
+                    <MenuItem Header="Редактировать" Command="{Binding EditType}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DeleteType}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
 
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
             <StackPanel Orientation="Horizontal">
-                <Button Margin="5 0 0 0" Style="{StaticResource AddButton}" Width="auto"
-                        Command="{Binding AddModel}" Background="Transparent" >
+                <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
+                        Command="{Binding AddType}"  ToolTip="Добавить">
                     <Button.Content>
                         <Image Source="/Images/add.png" />
                     </Button.Content>

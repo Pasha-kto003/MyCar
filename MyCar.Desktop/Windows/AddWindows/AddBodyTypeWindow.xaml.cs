@@ -30,7 +30,7 @@ namespace MyCar.Desktop.Windows.AddWindows
         public AddBodyTypeWindow(BodyTypeApi bodyType)
         {
             InitializeComponent();
-            DataContext = new AddBodyTypeWindow(bodyType);
+            DataContext = new AddBodyTypeViewModel(bodyType);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

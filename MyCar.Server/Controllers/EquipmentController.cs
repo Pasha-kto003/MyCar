@@ -32,6 +32,27 @@ namespace MyCar.Server.Controllers
             return Ok((EquipmentApi)result);
         }
 
+        [HttpGet("Type, Text")]
+        public IEnumerable<EquipmentApi> SearchEquipment(string type, string text)
+        {
+            if (text == "")
+            {
+                return dbContext.Equipment.ToList().Select(s => (EquipmentApi)s);
+            }
+            else if (type == "Комплектация")
+            {
+                return dbContext.Equipment.Where(s => s.NameEquipment.ToLower().Contains(text)).Select(s => (EquipmentApi)s);
+            }
+            else if (type == "Цена")
+            {
+                return dbContext.Equipment.Where(s => s.MinPrice.ToString().ToLower().Contains(text)).Select(s => (EquipmentApi)s);
+            }
+            else
+            {
+                return dbContext.Equipment.ToList().Select(s => (EquipmentApi)s);
+            }
+        }
+
         // POST api/<EquipmentController>
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] EquipmentApi equipmentApi)

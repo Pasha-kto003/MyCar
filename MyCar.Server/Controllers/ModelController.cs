@@ -53,6 +53,23 @@ namespace MyCar.Server.Controllers
             return Ok((ModelApi)result);
         }
 
+        [HttpGet("Type, Text")]
+        public IEnumerable<ModelApi> SearchModel(string type, string text)
+        {
+            if (text == "")
+            {
+                return dbContext.Models.ToList().Select(s => (ModelApi)s);
+            }
+            else if (type == "Модель")
+            {
+                return dbContext.Models.Where(s => s.ModelName.ToLower().Contains(text)).Select(s => (ModelApi)s);
+            }
+            else
+            {
+                return dbContext.Models.ToList().Select(s => (ModelApi)s);
+            }
+        }
+
         // POST api/<ModelController>
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] ModelApi modelApi)

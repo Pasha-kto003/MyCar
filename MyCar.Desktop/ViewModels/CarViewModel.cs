@@ -21,6 +21,7 @@ namespace MyCar.Desktop.ViewModels
                 Search();
             }
         }
+
         public List<string> SearchType { get; set; }
         private string selectedSearchType;
         public string SelectedSearchType

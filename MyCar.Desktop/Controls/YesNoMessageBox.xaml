@@ -25,6 +25,5 @@
                 HorizontalAlignment="Center"
                 />
         </StackPanel>
-      
     </StackPanel>
 </local:BaseDialogUserControl>

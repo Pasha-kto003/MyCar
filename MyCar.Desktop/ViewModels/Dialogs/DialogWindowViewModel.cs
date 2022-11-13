@@ -75,6 +75,7 @@ namespace MyCar.Desktop.ViewModels.Dialogs
         public Control Content { get; set; }
 
         public CustomCommand YesCommand { get; set; }
+        public CustomCommand CloseCommand { get; set; }
         public CustomCommand CloseCommand { get; set; } 
         public DialogWindowViewModel(Window window)
         {

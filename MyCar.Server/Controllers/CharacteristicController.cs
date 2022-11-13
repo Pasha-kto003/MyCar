@@ -19,7 +19,18 @@ namespace MyCar.Server.Controllers
         [HttpGet]
         public IEnumerable<CharacteristicApi> Get() //
         {
-            return dbContext.Characteristics.Select(s => (CharacteristicApi)s);
+            return dbContext.Characteristics.ToList().Select(s =>
+            {
+                return GetCharacteristicApi(s);
+            });
+        }
+
+        private CharacteristicApi GetCharacteristicApi(Characteristic characteristic)
+        {
+            var result = (CharacteristicApi)characteristic;
+            var unit = dbContext.Units.FirstOrDefault(s=> s.Id == characteristic.UnitId);
+            result.Unit = (UnitApi)unit;
+            return result;
         }
 
         // GET api/<CharacteristicController>/5
@@ -29,8 +40,40 @@ namespace MyCar.Server.Controllers
             var characteristic = await dbContext.Characteristics.FindAsync(id);
             if (characteristic == null)
                 return NotFound();
-            //return Ok(CreateUnitApi(unit, products));
-            return Ok((CharacteristicApi)characteristic);
+            return GetCharacteristicApi(characteristic);
+        }
+
+        [HttpGet("Type, Text")]
+        public IEnumerable<CharacteristicApi> SearchCharacteristic(string type, string text)
+        {
+            if (type == null)
+            {
+                return dbContext.Characteristics.Select(s => (CharacteristicApi)s);
+            }
+
+            else if (type == "Характеристика")
+            {
+                return dbContext.Characteristics.Where(s=> s.CharacteristicName.ToLower().Contains(text)).ToList().Select(s =>
+                {
+                    return GetCharacteristicApi(s);
+                });
+            }
+
+            else if (type == "Единица изсерения")
+            {
+                return dbContext.Characteristics.Where(s => s.Unit.UnitName.ToLower().Contains(text)).ToList().Select(s =>
+                {
+                    return GetCharacteristicApi(s);
+                });
+            }
+
+            else
+            {
+                return dbContext.Characteristics.ToList().Select(s =>
+                {
+                    return GetCharacteristicApi(s);
+                });
+            }
         }
 
         // POST api/<CharacteristicController>

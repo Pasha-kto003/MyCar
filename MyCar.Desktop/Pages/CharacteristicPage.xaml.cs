@@ -1,6 +1,4 @@
-
-﻿using System;
-﻿using MyCar.Desktop.ViewModels.Dialogs;
+﻿using MyCar.Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop.Controls
+namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для YesNoMessageBox.xaml
+    /// Логика взаимодействия для CharacteristicPage.xaml
     /// </summary>
-    public partial class YesNoMessageBox : BaseDialogUserControl
+    public partial class CharacteristicPage : Page
     {
-        public YesNoMessageBox()
+        public CharacteristicPage()
         {
             InitializeComponent();
+            DataContext = new CharacteristicViewModel();
         }
     }
 }

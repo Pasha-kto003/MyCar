@@ -17,25 +17,20 @@ using System.Windows.Shapes;
 namespace MyCar.Desktop.Windows.AddWindows
 {
     /// <summary>
-    /// Логика взаимодействия для AddBodyTypeWindow.xaml
+    /// Логика взаимодействия для AddUnitWindow.xaml
     /// </summary>
-    public partial class AddBodyTypeWindow : Window
+    public partial class AddUnitWindow : Window
     {
-        public AddBodyTypeWindow()
+        public AddUnitWindow()
         {
             InitializeComponent();
-            DataContext = new AddBodyTypeViewModel(null);
+            DataContext = new AddUnitViewModel(null);
         }
 
-        public AddBodyTypeWindow(BodyTypeApi bodyType)
+        public AddUnitWindow(UnitApi unit)
         {
             InitializeComponent();
-            DataContext = new AddBodyTypeViewModel(bodyType);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            DataContext = new AddUnitViewModel(unit);
         }
     }
 }

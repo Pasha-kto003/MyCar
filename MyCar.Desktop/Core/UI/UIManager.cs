@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace MyCar.Desktop.Core.UI
 {
-    public static class UIManager 
+    public static class UIManager
     {
         public static Task ShowMessage(MessageBoxDialogViewModel viewModel)
         {
@@ -37,6 +37,7 @@ namespace MyCar.Desktop.Core.UI
             Application.Current.Dispatcher.Invoke(async () =>
             {
                 try
+                {
                 {  
                     await new YesNoMessageBox().ShowDialog(viewModel);
                 }

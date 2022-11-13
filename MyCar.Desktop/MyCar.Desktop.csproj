@@ -17,7 +17,10 @@
     <None Remove="Images\car_64px.png" />
     <None Remove="Images\catalog_64px.png" />
     <None Remove="Images\mark_64px.png" />
+    <None Remove="Images\sedan_64px.png" />
+    <None Remove="Images\users_64px.png" />
     <None Remove="Images\user_64px.png" />
+    <None Remove="Images\user_folder_64px.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +44,10 @@
     <Resource Include="Images\car_64px.png" />
     <Resource Include="Images\catalog_64px.png" />
     <Resource Include="Images\mark_64px.png" />
+    <Resource Include="Images\sedan_64px.png" />
+    <Resource Include="Images\users_64px.png" />
     <Resource Include="Images\user_64px.png" />
+    <Resource Include="Images\user_folder_64px.png" />
   </ItemGroup>
 
 </Project>

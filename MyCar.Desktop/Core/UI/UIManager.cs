@@ -30,6 +30,24 @@ namespace MyCar.Desktop.Core.UI
 
             return tcs.Task;
         }
+        public static Task ShowMessageYesNo(MessageBoxDialogViewModel viewModel)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            Application.Current.Dispatcher.Invoke(async () =>
+            {
+                try
+                {  
+                    await new YesNoMessageBox().ShowDialog(viewModel);
+                }
+                finally
+                {
+                    tcs.SetResult(true);
+                }
+            });
+
+            return tcs.Task;
+        }
 
         public static void CloseWindow(object obj)
         {

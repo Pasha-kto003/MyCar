@@ -19,12 +19,15 @@ namespace MyCar.Desktop.Controls
 
         public CustomCommand CloseCommand { get; private set; }
 
+        public CustomCommand YesCommand { get; private set; }
+
         public int WindowMinimumWidth { get; set; } = 250;
         public int WindowMinimumHeight { get; set; } = 100;
 
         public int TitleHeight { get; set; } = 30;
 
         public string Title { get; set; }
+        public bool Result { get; set; } = false;
 
         public BaseDialogUserControl()
         {
@@ -34,6 +37,12 @@ namespace MyCar.Desktop.Controls
                 mDialogWindow.ViewModel = new DialogWindowViewModel(mDialogWindow);
 
                 CloseCommand = new CustomCommand(() => mDialogWindow.Close());
+
+                YesCommand = new CustomCommand(() =>
+                {
+                    Result = true;
+                    mDialogWindow.Close();
+                });
             }
         }
 
@@ -50,15 +59,17 @@ namespace MyCar.Desktop.Controls
                     mDialogWindow.ViewModel.WindowMinimumHeight = WindowMinimumHeight;
                     mDialogWindow.ViewModel.TitleHeight = TitleHeight;
                     mDialogWindow.ViewModel.Title = string.IsNullOrEmpty(viewModel.Title) ? Title : viewModel.Title;
-
                     mDialogWindow.ViewModel.Content = this;
 
                     DataContext = viewModel;
 
                     mDialogWindow.Owner = Application.Current.MainWindow;
                     mDialogWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
                     mDialogWindow.ShowDialog();
+                    if (Result)
+                    {
+                        viewModel.Result = true;
+                    }
                 }
                 finally
                 {

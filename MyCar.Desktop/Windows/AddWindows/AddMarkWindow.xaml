@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows.AddWindows"
         mc:Ignorable="d"
-       Title="AddMark" Height="550" Width="420" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+        Title="AddMark" Height="550" Width="420" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">
         <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
@@ -57,8 +57,8 @@
                                  Margin="5 0" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="ModelName">
                             <ListBox.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Добавить новую модель" Command="{Binding CreateModel}"/>
-                                    <MenuItem Header="Удалить модель" Command="{Binding DeleteModel}"/>
+                                    <MenuItem Header="Редактировать" Command="{Binding EditModel}"/>
+                                    <MenuItem Header="Удалить" Command="{Binding DeleteModel}"/>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                         </ListBox>

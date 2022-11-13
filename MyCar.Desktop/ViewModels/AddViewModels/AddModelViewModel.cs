@@ -1,5 +1,6 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,18 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddModelViewModel : BaseViewModel
     {
+        public List<MarkCarApi> Marks { get; set; }
+        public MarkCarApi SelectedMark { get; set; }
         public ModelApi AddModelVM { get; set; }
 
         public CustomCommand SaveModel { get; set; }
 
+        public CustomCommand Cancel { get; set; }
         public AddModelViewModel(ModelApi model)
         {
-            if(model == null)
+            Task task = Task.Run(GetList);
+            task.Wait();
+            if (model == null)
             {
                 AddModelVM = new ModelApi();
             }
@@ -27,35 +33,36 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 AddModelVM = new ModelApi
                 {
                     ID = model.ID,
-                    //MarkCar = model.MarkCar,
                     MarkId = model.MarkId,
                     ModelName = model.ModelName
                 };
+                SelectedMark = Marks.FirstOrDefault(s => s.ID == model.MarkId);
             }
-
-            SaveModel = new CustomCommand(() =>
+            Cancel = new CustomCommand(() =>
             {
-                if(AddModelVM.ModelName == "")
+                UIManager.CloseWindow(this);
+            });
+            SaveModel = new CustomCommand(async() =>
+            {
+                if( SelectedMark == null || SelectedMark.ID == 0)
                 {
-                    MessageBox.Show("Не введено имя модели");
+                    await UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                    {
+                        Title = "Ошибка!",
+                        Message = "Не выбрана марка!"
+                    }) ;
                     return;
                 }
-                if(AddModelVM.ID == 0)
+                AddModelVM.MarkId = SelectedMark.ID;
+                if (AddModelVM.ID == 0)
                 {
-                    CreateModel(AddModelVM);
+                   await CreateModel(AddModelVM);
                 }
                 else
                 {
-                    EditModel(AddModelVM);
+                    await EditModel(AddModelVM);
                 }
-
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.DataContext == this)
-                    {
-                        CloseWindow(window);
-                    }
-                }
+                UIManager.CloseWindow(this);
             });
         }
 
@@ -69,10 +76,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             var model = await Api.PutAsync<ModelApi>(modelApi, "Model");
         }
 
-        public void CloseWindow(object obj)
+        private async Task GetList()
         {
-            Window window = obj as Window;
-            window.Close();
+            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+
+            SignalChanged(nameof(Marks));
         }
     }
 }

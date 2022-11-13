@@ -19,6 +19,7 @@
     <None Remove="Images\catalog_64px.png" />
     <None Remove="Images\feature.png" />
     <None Remove="Images\mark_64px.png" />
+    <None Remove="Images\turbo.png" />
     <None Remove="Images\user_64px.png" />
   </ItemGroup>
 
@@ -45,6 +46,7 @@
     <Resource Include="Images\catalog_64px.png" />
     <Resource Include="Images\feature.png" />
     <Resource Include="Images\mark_64px.png" />
+    <Resource Include="Images\turbo.png" />
     <Resource Include="Images\user_64px.png" />
   </ItemGroup>
 

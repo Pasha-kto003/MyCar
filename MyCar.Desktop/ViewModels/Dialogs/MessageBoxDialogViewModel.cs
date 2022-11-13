@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

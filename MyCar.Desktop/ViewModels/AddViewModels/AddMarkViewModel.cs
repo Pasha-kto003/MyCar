@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,38 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
     {
         public MarkCarApi AddMark { get; set; }
 
+        public List<MarkCarApi> Marks { get; set; }
+
         public ObservableCollection<ModelApi> AllModels { get; set; }
         public ObservableCollection<ModelApi> ThisMarkModels { get; set; } = new ObservableCollection<ModelApi>();
 
         public ModelApi SelectedModel { get; set; }
         public ModelApi SelectedMarkModel { get; set; }
+
+        private string searchText = "";
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                SearchModel();
+            }
+        }
+
+        private string selectedSearchType { get; set; }
+        public string SelectedSearchType
+        {
+            get => selectedSearchType;
+            set
+            {
+                selectedSearchType = value;
+                SearchModel();
+            }
+        }
+
+        private ObservableCollection<ModelApi> searchResult;
+        private ObservableCollection<ModelApi> FullModels;
 
         public CustomCommand Cancel { get; set; }
         public CustomCommand Save { get; set; }
@@ -30,6 +58,9 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         public AddMarkViewModel(MarkCarApi addmark)
         {
+
+            SelectedSearchType = "Модель";
+
             Task.Run(GetList);
 
             if (addmark == null)
@@ -50,16 +81,24 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             AddModel = new CustomCommand(() =>
             {
                 if (SelectedModel == null) return;
-                    if (CheckContains(ThisMarkModels.ToList(), SelectedModel))
+                if (CheckContains(ThisMarkModels.ToList(), SelectedModel))
+                {
+                    UIManager.ShowMessage(new MessageBoxDialogViewModel
                     {
-                        UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                        {
-                            Message = "Выбранная модель уже содержится!",
-                            Title = "Ошибка!"
-                        });
-                        return;
-                    }
-                ThisMarkModels.Add(SelectedModel);
+                        Message = "Выбранная модель уже содержится!",
+                        Title = "Ошибка!"
+                    });
+                    return;
+                }
+                MarkCarApi m = Marks.FirstOrDefault(x => x.ID == SelectedModel.MarkId);
+
+                MessageBoxDialogViewModel result = new MessageBoxDialogViewModel
+                { Title = "Подтверждение", Message = $"{SelectedModel.ModelName} уже содержится в {m.MarkName}, заменить?" };
+                UIManager.ShowMessageYesNo(result);
+                if (result.Result)
+                {
+                    ThisMarkModels.Add(SelectedModel);
+                }
             });
 
             CreateModel = new CustomCommand(async () =>
@@ -96,11 +135,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 }
                 catch (Exception e)
                 {
-                    UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                    {
-                        Message = e.Message,
-                        Title = "Ошибка!"
-                    });
+                    SendMessage(e.ToString());
                 }
                 UIManager.CloseWindow(this);
             });
@@ -124,10 +159,20 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         private async Task Add(MarkCarApi mark)
         {
-            var id = await Api.PostAsync<MarkCarApi>(mark, "MarkCar");
+            int id = await Api.PostAsync<MarkCarApi>(mark, "MarkCar");
+            foreach (ModelApi model in ThisMarkModels)
+            {
+                model.MarkId = id;
+                await Api.PutAsync<ModelApi>(model, "Model");
+            }
         }
         private async Task Edit(MarkCarApi mark)
         {
+            foreach (ModelApi model in ThisMarkModels)
+            {
+                model.MarkId = AddMark.ID;
+                await Api.PutAsync<ModelApi>(model, "Model");
+            }
             var id = await Api.PutAsync<MarkCarApi>(mark, "MarkCar");
         }
 
@@ -135,8 +180,39 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         {
             var list = await Api.GetListAsync<List<ModelApi>>("Model");
             AllModels = new ObservableCollection<ModelApi>(list);
+            FullModels = AllModels;
             SignalChanged(nameof(AllModels));
         }
 
+        public void SendMessage(string message)
+        {
+            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+            {
+                Message = message,
+                OkText = "ОК",
+                Title = "Ошибка!"
+            });
+            return;
+        }
+
+        private async Task UpdateList()
+        {
+            ThisMarkModels.Clear();
+            foreach (var model in AllModels)
+            {
+                if (model.MarkId == AddMark.ID)
+                {
+                    ThisMarkModels.Add(model);
+                }
+            }
+            SignalChanged(nameof(ThisMarkModels));
+        }
+
+        public async Task SearchModel()
+        {
+            var search = SearchText.ToLower();
+            searchResult = await Api.SearchAsync<ObservableCollection<ModelApi>>(SelectedSearchType, search, "Model");
+            UpdateList();
+        }
     }
 }

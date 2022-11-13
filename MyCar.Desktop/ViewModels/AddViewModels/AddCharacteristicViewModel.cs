@@ -16,6 +16,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
     {
         public List<UnitApi> AllUnits { get; set; } = new List<UnitApi>();
 
+        public UnitApi SelectedUnitThis { get; set; }
+
         public UnitApi SelectedUnit { get; set; }
         public CharacteristicApi AddCharacteristicVM { get; set; }
 
@@ -43,6 +45,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         private List<UnitApi> searchResult;
         private List<UnitApi> FullUnits;
+
+        public List<UnitApi> SelectedUnits { get; set; } = new List<UnitApi>();
 
         public string NameUnit { get; set; }
 
@@ -75,6 +79,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
                 GetCharacteristic(AddCharacteristicVM);
 
+                SelectedUnitThis = AddCharacteristicVM.Unit;
             }
 
             CreateUnit = new CustomCommand(() =>
@@ -104,14 +109,19 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     AddCharacteristicVM.Unit = SelectedUnit;
                     AddCharacteristicVM.Unit.UnitName = SelectedUnit.UnitName;
                     SignalChanged(AddCharacteristicVM.Unit.UnitName);
-                    NameUnit = SelectedUnit.UnitName;
+                    SelectedUnits.Add(SelectedUnit);
+                    SignalChanged(nameof(SelectedUnits));
+                    if (SelectedUnits.Count > 1)
+                    {
+                        SelectedUnits.Remove(SelectedUnits.Last());
+                        MessageBox.Show("Перебор");
+                    }
                 }
             });
             RemoveUnit = new CustomCommand(() =>
             {
-                AddCharacteristicVM.Unit = null;
-                AddCharacteristicVM.UnitId = 0;
-                SignalChanged(nameof(AddCharacteristicVM));
+                
+                
             });
 
             Save = new CustomCommand(() =>
@@ -168,11 +178,24 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         public async Task GetCharacteristic(CharacteristicApi characteristicApi)
         {
+            
             AllUnits = await Api.GetListAsync<List<UnitApi>>("Unit");
-
-            SelectedUnit = AllUnits.FirstOrDefault(s => s.ID == characteristicApi.UnitId);
             AddCharacteristicVM.Unit = SelectedUnit;
-            NameUnit = SelectedUnit.UnitName;
+
+            if (characteristicApi == null)
+            {
+                SelectedUnits = new List<UnitApi>();
+                SelectedUnit = AllUnits.FirstOrDefault();
+                SelectedUnitThis = SelectedUnits.FirstOrDefault();
+            }
+
+            else
+            {
+                SelectedUnits = AllUnits.Where(s => s.ID == characteristicApi.UnitId).ToList();
+            }
+
+            SignalChanged(nameof(SelectedUnits));
+            SelectedUnitThis = SelectedUnits.FirstOrDefault(s => s.ID == characteristicApi.UnitId);
             SignalChanged(nameof(SelectedUnit));
         }
 

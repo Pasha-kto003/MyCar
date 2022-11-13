@@ -62,7 +62,7 @@
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                         </ListBox>
-                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NameUnit}" 
+                        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SelectedUnits}" SelectedItem="{Binding SelectedUnitThis}" DisplayMemberPath="UnitName"
                                  Margin="5 0"/>
 
                         <Button Grid.Row="2" FontSize="18" Grid.Column="0" Style="{StaticResource RegularButton}"

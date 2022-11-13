@@ -38,8 +38,11 @@ namespace MyCar.Desktop.ViewModels
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
         public List<MarkCarApi> Marks { get; set; } = new List<MarkCarApi>();
         public MarkCarApi SelectedMark { get; set; }
+        public ModelApi SelectedModel { get; set; }
+
         public CustomCommand EditMark { get; set; }
         public CustomCommand AddMark { get; set; }
+        public CustomCommand AddModel { get; set; }
 
         public MarkViewModel()
         {
@@ -53,6 +56,7 @@ namespace MyCar.Desktop.ViewModels
             {
                 AddMarkWindow addMark = new AddMarkWindow();
                 addMark.ShowDialog();
+                Task.Run(GetMarkList);
             });
 
             EditMark = new CustomCommand(() => 
@@ -60,9 +64,15 @@ namespace MyCar.Desktop.ViewModels
                 if (SelectedMark == null || SelectedMark.ID == 0) return;
                 AddMarkWindow addMark = new AddMarkWindow(SelectedMark);
                 addMark.ShowDialog();
+                Task.Run(GetMarkList);
             });
-           
 
+            AddModel = new CustomCommand(() =>
+            {
+                AddModelWindow addModel = new AddModelWindow();
+                addModel.ShowDialog();
+                Task.Run(GetMarkList);
+            });
         }
         public async Task Search()
         {

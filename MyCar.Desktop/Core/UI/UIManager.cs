@@ -38,6 +38,7 @@ namespace MyCar.Desktop.Core.UI
             {
                 try
                 {
+                {  
                     await new YesNoMessageBox().ShowDialog(viewModel);
                 }
                 finally

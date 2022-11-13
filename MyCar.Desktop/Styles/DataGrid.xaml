@@ -33,7 +33,6 @@
                 BorderThickness="1"
                 BorderBrush="{DynamicResource LightValorantRedBrush}">
             <ListBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="ModelName">
-
             </ListBox>
         </Border>
     </DataTemplate>

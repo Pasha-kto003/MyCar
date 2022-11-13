@@ -54,7 +54,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand Save { get; set; }
         public CustomCommand AddModel { get; set; }
         public CustomCommand RemoveModel { get; set; }
-        public CustomCommand CreateModel { get; set; }
+        public CustomCommand EditModel { get; set; }
 
         public AddMarkViewModel(MarkCarApi addmark)
         {
@@ -100,21 +100,31 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     ThisMarkModels.Add(SelectedModel);
                 }
             });
+                        UIManager.ShowMessage(new MessageBoxDialogViewModel
+                        {
+                            Message = "Выбранная модель уже содержится!",
+                            Title = "Ошибка!"
+                        });
+                        return;
+                    }
+                MarkCarApi m = Marks.FirstOrDefault(x => x.ID == SelectedModel.MarkId); 
 
-            CreateModel = new CustomCommand(async () =>
+                MessageBoxDialogViewModel result = new MessageBoxDialogViewModel 
+                { Title = "Подтверждение", Message = $"{SelectedModel.ModelName} уже содержится в {m.MarkName}, заменить?" }; 
+                UIManager.ShowMessageYesNo(result);
+                if (result.Result)
+                {
+                    ThisMarkModels.Add(SelectedModel);
+                }
+            });
+
+            EditModel = new CustomCommand(async () =>
             {
-                if(SelectedModel == null || SelectedModel.ID == 0)
-                {
-                    AddModelWindow addModel = new AddModelWindow();
-                    addModel.ShowDialog();
-                    GetList();
-                }
-                else
-                {
-                    AddModelWindow addModel = new AddModelWindow(SelectedModel);
-                    addModel.ShowDialog();
-                    GetList();
-                }
+                if(SelectedModel == null || SelectedModel.ID == 0) return;
+                AddModelWindow addModel = new AddModelWindow(SelectedModel);
+                addModel.ShowDialog();
+                await Task.Run(GetList);
+                UpdateListBox();
             });
 
             RemoveModel = new CustomCommand(() =>
@@ -127,7 +137,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 try
                 {
-                    AddMark.Models = new List<ModelApi>(ThisMarkModels);
                     if (AddMark.ID == 0)
                       await Add(AddMark);
                     else
@@ -136,6 +145,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 catch (Exception e)
                 {
                     SendMessage(e.ToString());
+                    await UIManager.ShowMessage(new MessageBoxDialogViewModel
+                    {
+                        Message = e.Message,
+                        Title = "Ошибка!"
+                    });
                 }
                 UIManager.CloseWindow(this);
             });
@@ -144,19 +158,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 UIManager.CloseWindow(this);
             });
         }
-        private bool CheckContains(List<ModelApi> list, ModelApi model)
-        {
-            bool result = false;
-            foreach (ModelApi item in list)
-            {
-                if (item.ID == model.ID)
-                {
-                    result = true;
-                }
-            }
-            return result; 
-        }
-
+       
         private async Task Add(MarkCarApi mark)
         {
             int id = await Api.PostAsync<MarkCarApi>(mark, "MarkCar");
@@ -173,14 +175,55 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 model.MarkId = AddMark.ID;
                 await Api.PutAsync<ModelApi>(model, "Model");
             }
-            var id = await Api.PutAsync<MarkCarApi>(mark, "MarkCar");
+           var id = await Api.PutAsync<MarkCarApi>(mark, "MarkCar");
         }
 
+        private bool CheckContains(List<ModelApi> list, ModelApi model)
+        {
+            bool result = false;
+            foreach (ModelApi item in list)
+            {
+                if (item.ID == model.ID)
+                {
+                    result = true;
+                }
+            }
+            return result; 
+        }
+
+        private void UpdateListBox()
+        {
+            int id = await Api.PostAsync<MarkCarApi>(mark, "MarkCar");
+            foreach (ModelApi model in ThisMarkModels)
+            {
+                model.MarkId = id;
+                await Api.PutAsync<ModelApi>(model, "Model");
+            }
+        }
+        private async Task Edit(MarkCarApi mark)
+        {
+            foreach (ModelApi model in ThisMarkModels)
+            {
+                model.MarkId = AddMark.ID;
+                await Api.PutAsync<ModelApi>(model, "Model");
+            }
+            var id = await Api.PutAsync<MarkCarApi>(mark, "MarkCar");
+            ThisMarkModels.Clear();
+            foreach (var model in AllModels)
+            {
+                if (model.MarkId == AddMark.ID)
+                {
+                    ThisMarkModels.Add(model);
+                }
+            }
+            SignalChanged(nameof(ThisMarkModels));
+        }
         private async Task GetList()
         {
             var list = await Api.GetListAsync<List<ModelApi>>("Model");
             AllModels = new ObservableCollection<ModelApi>(list);
             FullModels = AllModels;
+            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             SignalChanged(nameof(AllModels));
         }
 

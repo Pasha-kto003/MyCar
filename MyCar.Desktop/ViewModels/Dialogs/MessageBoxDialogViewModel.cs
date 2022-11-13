@@ -13,5 +13,6 @@ namespace MyCar.Desktop.ViewModels.Dialogs
         public string Message { get; set; }
 
         public string OkText { get; set; } = "OK";
+
     }
 }

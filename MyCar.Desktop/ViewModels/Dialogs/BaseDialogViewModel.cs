@@ -11,5 +11,7 @@ namespace MyCar.Desktop.ViewModels.Dialogs
     {
         public string Title { get; set; }
         public bool Result { get;  set; }
+
+        public bool Result { get; set; } = false;
     }
 }

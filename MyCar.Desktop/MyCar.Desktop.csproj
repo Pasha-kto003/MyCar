@@ -20,7 +20,10 @@
     <None Remove="Images\feature.png" />
     <None Remove="Images\mark_64px.png" />
     <None Remove="Images\turbo.png" />
+    <None Remove="Images\sedan_64px.png" />
+    <None Remove="Images\users_64px.png" />
     <None Remove="Images\user_64px.png" />
+    <None Remove="Images\user_folder_64px.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,7 +50,10 @@
     <Resource Include="Images\feature.png" />
     <Resource Include="Images\mark_64px.png" />
     <Resource Include="Images\turbo.png" />
+    <Resource Include="Images\sedan_64px.png" />
+    <Resource Include="Images\users_64px.png" />
     <Resource Include="Images\user_64px.png" />
+    <Resource Include="Images\user_folder_64px.png" />
   </ItemGroup>
 
 </Project>

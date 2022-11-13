@@ -50,13 +50,14 @@
 
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
-                        Command="{Binding AddMark}"  ToolTip="Добавить">
-                    <Button.Content>
-                        <Image Source="/Images/add.png" />
-                    </Button.Content>
+                <Button Margin="0 0 5 0" Style="{StaticResource AddButton}" Width="auto"
+                        Command="{Binding AddMark}" Content="Добваить марку" ToolTip="Добавить">
+                 
                 </Button>
-
+                <Button Margin="0 0 5 0" Style="{StaticResource AddButton}" Width="auto"
+                        Command="{Binding AddModel}" Content="Добваить модель"  ToolTip="Добавить">
+                 
+                </Button>
             </StackPanel>
             <Grid/>
         </Grid>

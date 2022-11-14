@@ -17,14 +17,14 @@ using System.Windows.Shapes;
 namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для BodyTypePage.xaml
+    /// Логика взаимодействия для CharacteristicPage.xaml
     /// </summary>
-    public partial class BodyTypePage : Page
+    public partial class CharacteristicPage : Page
     {
-        public BodyTypePage()
+        public CharacteristicPage()
         {
             InitializeComponent();
-            DataContext = new BodyTypeViewModel();
+            DataContext = new CharacteristicViewModel();
         }
     }
 }

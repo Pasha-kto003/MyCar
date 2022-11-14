@@ -82,6 +82,9 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand UserPageCommand { get; set; }
         public CustomCommand OpenCar { get; set; }
         public CustomCommand MarkPageCommand { get; set; }
+        public CustomCommand BodyTypePageCommand { get; set; }
+        public CustomCommand CharcteristicPageCommand { get; set; }
+
         public MainViewModel(Window window, UserApi user)
         {
             mWindow = window;
@@ -94,6 +97,9 @@ namespace MyCar.Desktop.ViewModels
             MenuCommand = new CustomCommand(() => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));
 
             CurrentPage = new UserPage();
+
+            BodyTypePageCommand = new CustomCommand(() => CurrentPage = new BodyTypePage());
+            CharcteristicPageCommand = new CustomCommand(() => CurrentPage = new CharacteristicPage());
 
             UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage());
             OpenCar = new CustomCommand(() => CurrentPage = new CarPage());

@@ -1,4 +1,6 @@
-﻿using MyCar.Desktop.ViewModels;
+
+﻿using System;
+﻿using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +16,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop.Pages
+namespace MyCar.Desktop.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для BodyTypePage.xaml
+    /// Логика взаимодействия для YesNoMessageBox.xaml
     /// </summary>
-    public partial class BodyTypePage : Page
+    public partial class YesNoMessageBox : BaseDialogUserControl
     {
-        public BodyTypePage()
+        public YesNoMessageBox()
         {
             InitializeComponent();
-            DataContext = new BodyTypeViewModel();
         }
     }
 }

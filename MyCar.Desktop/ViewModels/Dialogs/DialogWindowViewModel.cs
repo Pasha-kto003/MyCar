@@ -70,9 +70,12 @@ namespace MyCar.Desktop.ViewModels.Dialogs
 
         public string Title { get; set; } = "Диалоговое окно";
 
+        public bool Result { get; set; } = false;
+
         public Control Content { get; set; }
 
-
+        public CustomCommand YesCommand { get; set; }
+        public CustomCommand CloseCommand { get; set; }
         public CustomCommand CloseCommand { get; set; } 
         public DialogWindowViewModel(Window window)
         {

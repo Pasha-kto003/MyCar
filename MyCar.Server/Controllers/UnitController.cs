@@ -33,6 +33,23 @@ namespace MyCar.Server.Controllers
             return Ok((UnitApi)unit);
         }
 
+        [HttpGet("Type, Text")]
+        public IEnumerable<UnitApi> SearchUnit(string type, string text)
+        {
+            if (text == "")
+            {
+                return dBContext.Units.ToList().Select(s=> (UnitApi)s);
+            }
+            else if(type == "Единица измерения")
+            {
+                return dBContext.Units.Where(s => s.UnitName.ToLower().Contains(text)).Select(s=> (UnitApi)s);
+            }
+            else
+            {
+                return dBContext.Units.ToList().Select(s => (UnitApi)s);
+            }
+        }
+
         // POST api/<UnitController>
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] UnitApi unitApi)

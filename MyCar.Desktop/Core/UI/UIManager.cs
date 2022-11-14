@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace MyCar.Desktop.Core.UI
 {
-    public static class UIManager 
+    public static class UIManager
     {
         public static Task ShowMessage(MessageBoxDialogViewModel viewModel)
         {
@@ -21,6 +21,25 @@ namespace MyCar.Desktop.Core.UI
                 try
                 {
                     await new DialogMessageBox().ShowDialog(viewModel);
+                }
+                finally
+                {
+                    tcs.SetResult(true);
+                }
+            });
+
+            return tcs.Task;
+        }
+        public static Task ShowMessageYesNo(MessageBoxDialogViewModel viewModel)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            Application.Current.Dispatcher.Invoke(async () =>
+            {
+                try
+                {
+                {  
+                    await new YesNoMessageBox().ShowDialog(viewModel);
                 }
                 finally
                 {

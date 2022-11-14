@@ -55,6 +55,25 @@ namespace MyCar.Server.Controllers
             return Ok();
         }
 
+        [HttpGet("Type, Text")]
+        public IEnumerable<BodyTypeApi> SearchBodyType(string type, string text)
+        {
+            if(type == null)
+            {
+                return dbContext.BodyTypes.Select(s => (BodyTypeApi)s);
+            }
+
+            else if(type == "Кузов")
+            {
+                return dbContext.BodyTypes.Where(s => s.TypeName.ToLower().Contains(text)).Select(t=> (BodyTypeApi)t);
+            }
+
+            else
+            {
+                return dbContext.BodyTypes.Select(s => (BodyTypeApi)s);
+            }
+        }
+
         // DELETE api/<BodyTypeController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)

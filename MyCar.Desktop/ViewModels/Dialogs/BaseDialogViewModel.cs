@@ -10,5 +10,8 @@ namespace MyCar.Desktop.ViewModels.Dialogs
     public  class BaseDialogViewModel : BaseViewModel
     {
         public string Title { get; set; }
+        public bool Result { get;  set; }
+
+        public bool Result { get; set; } = false;
     }
 }

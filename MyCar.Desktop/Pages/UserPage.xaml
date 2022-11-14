@@ -9,24 +9,24 @@
       Title="UserPage" Background="#efefef"  FontFamily="{StaticResource CenturyGothic}">
     <Grid>
         <Grid.RowDefinitions>
-        <RowDefinition Height="auto"/>
-        <RowDefinition />
-        <RowDefinition Height="50"/>
-    </Grid.RowDefinitions>
-        
-    <Grid Grid.Row="0" Background="WhiteSmoke">
-        <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
-            <StackPanel Margin="0 0 10 0">
-                <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
-                <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
-            </StackPanel>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="WhiteSmoke">
+            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
+                <StackPanel Margin="0 0 10 0">
+                    <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
+                    <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+                </StackPanel>
                 <StackPanel>
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
             </StackPanel>
-        
-    </Grid>
+
+        </Grid>
         <DataGrid Grid.Row="1"
                   FontSize="{StaticResource FontSizeLarge}"
                   SelectedItem="{Binding SelectedUser}"
@@ -57,42 +57,23 @@
                                     />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
-                <ContextMenu>  
+                <ContextMenu>
                     <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
                     <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-        
-        
-        <!--<ListView Grid.Row="1" ItemsSource="{Binding Users}"  FontSize="{StaticResource FontSizeLarge}" SelectedItem="{Binding SelectedUser}" >
-        <ListView.View>
-            <GridView>
-                <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding UserName}"/>
-                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}"/>
-                <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Passport.FirstName}"/>
-                <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Passport.LastName}"/>
-                <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding UserType.TypeName}"/>
-                </GridView>
-        </ListView.View>
-        <ListView.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
-                <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
-            </ContextMenu>
-        </ListView.ContextMenu>
-    </ListView>-->
 
-    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button   Content="Зарегистрировать" Margin="0 0 5 0" Style="{StaticResource AddButton}"
+            <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button   Content="Зарегистрировать" Margin="0 0 5 0" Style="{StaticResource AddButton}"
                         Command="{Binding AddUser}">
-                </Button>
+                    </Button>
 
-        </StackPanel>
-        <Grid/>
-    </Grid>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
     </Grid>
 </Page>

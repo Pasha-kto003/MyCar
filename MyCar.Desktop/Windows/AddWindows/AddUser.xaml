@@ -103,6 +103,7 @@
                     Background="Transparent" BorderBrush="Green" FontSize="16"/>
 
             </Grid>
+            </Grid>
 
         </Border>
     </Grid>

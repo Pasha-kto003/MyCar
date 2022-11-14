@@ -32,21 +32,23 @@ namespace MyCar.Server.Controllers.Jwt
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserDto request)
+        public async Task<ActionResult<User>> Register(string userName, string Password)
         {
-            Passport passport = (Passport)request.Passport;
-            await dbContext.Passports.AddAsync(passport);
-            await dbContext.SaveChangesAsync();
+            //Passport passport = (Passport)request.Passport;
+            //await dbContext.Passports.AddAsync(passport);
+            //await dbContext.SaveChangesAsync();
             User user = new User();
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-            user.UserName = request.Username;
+            //CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
+            //user.UserName = request.Username;
+            user.UserName = userName;
             user.PasswordHash = passwordHash;
             user.SaltHash = passwordSalt;
-            user.PassportId = passport.Id;
+            //user.PassportId = passport.Id;
             await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
 
-            return Ok(request); //user
+            return Ok(user); //user
         }
 
         //[HttpPost("login")]
@@ -72,8 +74,10 @@ namespace MyCar.Server.Controllers.Jwt
             string token = CreateToken(user);
 
             Passport passport = await dbContext.Passports.FindAsync(user.PassportId);
+            UserType userType = await dbContext.UserTypes.FindAsync(user.UserTypeId);
             var client = (UserApi)user;
             client.Passport = (PassportApi)passport;
+            client.UserType = (UserTypeApi)userType;
             return client;
             //user or token
         }

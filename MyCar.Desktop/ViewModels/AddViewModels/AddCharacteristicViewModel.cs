@@ -89,12 +89,14 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     AddUnitWindow unitWindow = new AddUnitWindow();
                     unitWindow.ShowDialog();
                     GetList();
+                    SignalChanged(nameof(SelectedUnit));
                 }
                 else
                 {
                     AddUnitWindow unitWindow = new AddUnitWindow(SelectedUnit);
                     unitWindow.ShowDialog();
                     GetList();
+                    SignalChanged(nameof(SelectedUnit));
                 }
             });
 
@@ -113,17 +115,19 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     SignalChanged(nameof(SelectedUnits));
                     if (SelectedUnits.Count > 1)
                     {
-                        SelectedUnits.Remove(SelectedUnits.Last());
-                        MessageBox.Show("Перебор");
+                        MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            SelectedUnits.Clear();
+                            AddCharacteristicVM.Unit = SelectedUnit;
+                            SelectedUnits.Add(SelectedUnit);
+                            SignalChanged(nameof(SelectedUnits));
+                            AddCharacteristicVM.UnitId = SelectedUnit.ID;
+                            EditCharacteristic(AddCharacteristicVM);
+                        }
                     }
                 }
             });
-            RemoveUnit = new CustomCommand(() =>
-            {
-                
-                
-            });
-
             Save = new CustomCommand(() =>
             {
 
@@ -132,12 +136,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     SendMessage("Не введена характеристика");
                 }
 
-                if (AddCharacteristicVM.Unit == null)
+                if (AddCharacteristicVM.UnitId == 0)
                 {
                     SendMessage("Вы не выбрали единицу измерения");
                 }
 
-                AddCharacteristicVM.UnitId = SelectedUnit.ID;
                 if(AddCharacteristicVM.ID == 0)
                 {
                     CreateCharacteristic(AddCharacteristicVM);

@@ -60,13 +60,16 @@ namespace MyCar.Server.Controllers
             {
                 return dbContext.Models.ToList().Select(s => (ModelApi)s);
             }
-            else if (type == "Модель")
+            switch (type)
             {
-                return dbContext.Models.Where(s => s.ModelName.ToLower().Contains(text)).Select(s => (ModelApi)s);
-            }
-            else
-            {
-                return dbContext.Models.ToList().Select(s => (ModelApi)s);
+                case "Наименование":
+
+                    return dbContext.Models.Where(s => s.ModelName.ToLower().Contains(text)).Select(s => (ModelApi)s);
+                    break;
+
+                default:
+                    return dbContext.Models.ToList().Select(s => (ModelApi)s);
+                    break;
             }
         }
 

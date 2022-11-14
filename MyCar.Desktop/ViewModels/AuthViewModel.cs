@@ -73,10 +73,21 @@ namespace MyCar.Desktop.ViewModels
         {
             if (User != null && User.ID != 0)
             {
-                 MainWindow testWindow = new MainWindow(User);
-                 testWindow.Show();
-                 mWindow.Close();
+                MainWindow testWindow = new MainWindow(User);
+                testWindow.Show();
+                mWindow.Close();
             }
+            else
+            {
+                UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+                {
+                    Title = "Ошибка",
+                    Message = "Неправильный логин или пароль!"
+                });
+                Password = "";
+                UserName = "";
+            }
+                
         }
 
     }

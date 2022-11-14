@@ -45,7 +45,7 @@ namespace MyCar.Desktop.Core
         public static async Task<UserApi> Enter<UserApi>(string UserName, string Password, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
-            if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (answer.StatusCode == System.Net.HttpStatusCode.NotFound || answer.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 //тут хз че в ретерне
                 return default(UserApi);
             string answerText = await answer.Content.ReadAsStringAsync();

@@ -15,6 +15,17 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddMarkViewModel : BaseViewModel
     {
+        private string searchText = "";
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                Task.Run(Search);
+            }
+        }
+        private ObservableCollection<ModelApi> searchResult;
         public MarkCarApi AddMark { get; set; }
 
         public List<MarkCarApi> Marks { get; set; }
@@ -29,7 +40,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand AddModel { get; set; }
         public CustomCommand RemoveModel { get; set; }
         public CustomCommand EditModel { get; set; }
-
+        public CustomCommand AddNewModel { get; set; }
         public AddMarkViewModel(MarkCarApi addmark)
         {
             Task.Run(GetList);
@@ -88,7 +99,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 {
                     if (mark.MarkName == AddMark.MarkName)
                     {
-                        SendMessage("Такая характеристика уже существует!!!");
+                        SendMessage("Такая марка уже существует!");
                     }
                 }
 
@@ -109,6 +120,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 UIManager.CloseWindow(this);
             });
+            
+
         }
 
         private async Task Add(MarkCarApi mark)
@@ -128,6 +141,20 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 await Api.PutAsync<ModelApi>(model, "Model");
             }
             var id = await Api.PutAsync<MarkCarApi>(mark, "MarkCar");
+        }
+        public async Task Search()
+        {
+            var search = SearchText.ToLower();
+            if (search == "")
+                searchResult = await Api.GetListAsync<ObservableCollection<ModelApi>>("Model");
+            else
+                searchResult = await Api.SearchAsync<ObservableCollection<ModelApi>>("Наименование", search, "Model");
+            UpdateList();
+        }
+        private void UpdateList()
+        {
+            AllModels = searchResult;
+            SignalChanged(nameof(AllModels));
         }
 
         private bool CheckContains(List<ModelApi> list, ModelApi model)

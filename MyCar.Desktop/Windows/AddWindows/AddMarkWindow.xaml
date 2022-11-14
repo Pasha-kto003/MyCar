@@ -50,6 +50,7 @@
                         </Grid.RowDefinitions>
                         <Label Content="Все" Grid.Row="0" Grid.Column="0" FontFamily="{StaticResource CenturyGothicBold}" 
                                FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        
                         <Label Content="Текущие" Grid.Row="0" Grid.Column="1" FontFamily="{StaticResource CenturyGothicBold}"
                                FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
 
@@ -65,10 +66,13 @@
                         <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ThisMarkModels}" 
                                  Margin="5 0" SelectedItem="{Binding SelectedMarkModel}" DisplayMemberPath="ModelName"/>
                         
-                        <Button Grid.Row="2" FontSize="18" Grid.Column="0" Style="{StaticResource RegularButton}"
+                        <Button Grid.Row="2" FontSize="18" Grid.Column="0" Style="{StaticResource RegularButton}" 
                                 Height="30" Margin="5" Content="Добавить" Command="{Binding AddModel}"/>
-                        <Button Grid.Row="2" FontSize="18" Grid.Column="1" Style="{StaticResource RegularButton}"
-                                Height="30" Margin="5" Content="Убрать" Command="{Binding RemoveModel}"/>
+                        <!--<Button Grid.Row="2" FontSize="18" Grid.Column="1" Style="{StaticResource RegularButton}"
+                                Height="30" Margin="5" Content="Убрать" Command="{Binding RemoveModel}"/>-->
+                        <!--<Button Grid.Row="2" FontSize="18" Grid.Column="1" Style="{StaticResource RegularButton}"
+                                HorizontalAlignment="Right" Padding="0" ToolTip="Добавить новую"
+                                Height="30" Margin="5" Content="+" Command="{Binding AddNewModel}" Width="30"/>-->
                     </Grid>
                 </Grid>
 

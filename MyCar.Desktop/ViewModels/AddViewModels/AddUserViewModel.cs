@@ -67,11 +67,6 @@ namespace MyCar.Desktop.ViewModels
                 }
             });
 
-                };
-
-               
-            }
-
             Cancel = new CustomCommand(() =>
             {
                 UIManager.CloseWindow(this);

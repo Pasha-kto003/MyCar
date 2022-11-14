@@ -15,6 +15,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
     public class AddCharacteristicViewModel : BaseViewModel
     {
         public List<UnitApi> AllUnits { get; set; } = new List<UnitApi>();
+        public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
 
         public UnitApi SelectedUnitThis { get; set; }
 
@@ -89,12 +90,14 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     AddUnitWindow unitWindow = new AddUnitWindow();
                     unitWindow.ShowDialog();
                     GetList();
+                    SignalChanged(nameof(SelectedUnit));
                 }
                 else
                 {
                     AddUnitWindow unitWindow = new AddUnitWindow(SelectedUnit);
                     unitWindow.ShowDialog();
                     GetList();
+                    SignalChanged(nameof(SelectedUnit));
                 }
             });
 
@@ -111,33 +114,34 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     SignalChanged(AddCharacteristicVM.Unit.UnitName);
                     SelectedUnits.Add(SelectedUnit);
                     SignalChanged(nameof(SelectedUnits));
+
                     if (SelectedUnits.Count > 1)
                     {
-                        SelectedUnits.Remove(SelectedUnits.Last());
-                        MessageBox.Show("Перебор");
+                        GetUnit();
                     }
                 }
             });
-            RemoveUnit = new CustomCommand(() =>
-            {
-                
-                
-            });
-
             Save = new CustomCommand(() =>
             {
+
+                foreach (var e in Characteristics)
+                {
+                    if (e.CharacteristicName == AddCharacteristicVM.CharacteristicName)
+                    {
+                        SendMessage("Такая характеристика уже существует!!!");
+                    }
+                }
 
                 if (AddCharacteristicVM.CharacteristicName == "")
                 {
                     SendMessage("Не введена характеристика");
                 }
 
-                if (AddCharacteristicVM.Unit == null)
+                if (AddCharacteristicVM.UnitId == 0)
                 {
                     SendMessage("Вы не выбрали единицу измерения");
                 }
 
-                AddCharacteristicVM.UnitId = SelectedUnit.ID;
                 if(AddCharacteristicVM.ID == 0)
                 {
                     CreateCharacteristic(AddCharacteristicVM);
@@ -158,6 +162,20 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             });
         }
 
+        public async Task GetUnit()
+        {
+            MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                SelectedUnits.Clear();
+                AddCharacteristicVM.Unit = SelectedUnit;
+                SelectedUnits.Add(SelectedUnit);
+                SignalChanged(nameof(SelectedUnits));
+                AddCharacteristicVM.UnitId = SelectedUnit.ID;
+                EditCharacteristic(AddCharacteristicVM);
+            }
+        }
+
         public async Task CreateCharacteristic(CharacteristicApi characteristicApi)
         {
             var characteristic = await Api.PostAsync<CharacteristicApi>(characteristicApi, "Characteristic");
@@ -170,6 +188,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         private async Task GetList()
         {
+            Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             var list = await Api.GetListAsync<List<UnitApi>>("Unit");
             AllUnits = new List<UnitApi>(list);
             FullUnits = AllUnits;

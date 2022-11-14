@@ -198,10 +198,7 @@
                     <RadioButton.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/Images/2993657-200.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Кузов авто"  VerticalAlignment="Center"
-                            <Image Source="/Images/sedan_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Кузов"  VerticalAlignment="Center"
-                                       Margin="10 0 0 0" />
+                            <TextBlock Text="Кузов авто"  VerticalAlignment="Center"/>
                         </StackPanel>
                     </RadioButton.Content>
                 </RadioButton>

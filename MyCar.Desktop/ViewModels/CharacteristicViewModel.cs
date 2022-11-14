@@ -68,6 +68,9 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand EditCharacteristic { get; set; }
 
+        public CustomCommand AddEquipment { get; set; }
+        public CustomCommand EditEquipment { get; set; }
+
         private List<CharacteristicApi> searchResult;
         private List<CharacteristicApi> FullTypes;
 
@@ -104,6 +107,20 @@ namespace MyCar.Desktop.ViewModels
                 AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow(SelectedCharacteristic);
                 addCharacteristic.ShowDialog();
                 GetCharacteristic();
+            });
+
+            AddEquipment = new CustomCommand(() =>
+            {
+                AddEquipmentWindow equipmentWindow = new AddEquipmentWindow();
+                equipmentWindow.ShowDialog();
+                GetEquipment();
+            });
+
+            EditEquipment = new CustomCommand(() =>
+            {
+                AddEquipmentWindow addEquipment = new AddEquipmentWindow();
+                addEquipment.ShowDialog();
+                GetEquipment();
             });
         }
 

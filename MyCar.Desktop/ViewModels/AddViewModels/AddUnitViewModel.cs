@@ -34,6 +34,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             Save = new CustomCommand(() =>
             {
+
                 if(AddUnitVM.UnitName == "")
                 {
                     SendMessage("Не введена единица измерения");

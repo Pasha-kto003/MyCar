@@ -54,12 +54,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (SelectedModel == null) return;
                 if (CheckContains(ThisMarkModels.ToList(), SelectedModel))
                 {
-                    UIManager.ShowMessage(new MessageBoxDialogViewModel
-                    {
-                        Message = "Выбранная модель уже содержится!",
-                        Title = "Ошибка!"
-                    });
-                    return;
+                    SendMessage($"Модель {SelectedModel.ModelName} уже содержится в марке");
                 }
                 MarkCarApi m = Marks.FirstOrDefault(x => x.ID == SelectedModel.MarkId);
 
@@ -89,6 +84,14 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             Save = new CustomCommand(async () =>
             {
+                foreach (var mark in Marks)
+                {
+                    if (mark.MarkName == AddMark.MarkName)
+                    {
+                        SendMessage("Такая характеристика уже существует!!!");
+                    }
+                }
+
                 try
                 {
                     if (AddMark.ID == 0)
@@ -98,11 +101,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 }
                 catch (Exception e)
                 {
-                    await UIManager.ShowMessage(new MessageBoxDialogViewModel
-                    {
-                        Message = e.Message,
-                        Title = "Ошибка!"
-                    });
+                    SendMessage($"{e.Message.ToString()}");
                 }
                 UIManager.CloseWindow(this);
             });
@@ -164,5 +163,16 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             SignalChanged(nameof(AllModels));
         }
 
+        private void SendMessage(string message)
+        {
+            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
+            {
+                Message = message,
+                OkText = "ОК",
+                Title = "Ошибка!"
+            });
+            UIManager.CloseWindow(this);
+            return;
+        }
     }
 }

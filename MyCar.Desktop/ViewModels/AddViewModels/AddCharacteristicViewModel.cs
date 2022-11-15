@@ -47,7 +47,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         private List<UnitApi> searchResult;
         private List<UnitApi> FullUnits;
 
-        public List<UnitApi> SelectedUnits { get; set; } = new List<UnitApi>();
+        public ObservableCollection<UnitApi> SelectedUnits { get; set; } = new ObservableCollection<UnitApi>();
 
         public string NameUnit { get; set; }
 
@@ -124,14 +124,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Save = new CustomCommand(() =>
             {
 
-                foreach (var e in Characteristics)
-                {
-                    if (e.CharacteristicName == AddCharacteristicVM.CharacteristicName)
-                    {
-                        SendMessage("Такая характеристика уже существует!!!");
-                    }
-                }
-
                 if (AddCharacteristicVM.CharacteristicName == "")
                 {
                     SendMessage("Не введена характеристика");
@@ -144,6 +136,14 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
                 if(AddCharacteristicVM.ID == 0)
                 {
+                    foreach (var e in Characteristics)
+                    {
+                        if (e.CharacteristicName == AddCharacteristicVM.CharacteristicName)
+                        {
+                            SendMessage("Такая характеристика уже существует!!!");
+                        }
+                        return;
+                    }
                     CreateCharacteristic(AddCharacteristicVM);
                     MessageBox.Show("Создана новая характеристика");
                 }
@@ -203,14 +203,15 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             if (characteristicApi == null)
             {
-                SelectedUnits = new List<UnitApi>();
+                SelectedUnits = new ObservableCollection<UnitApi>();
                 SelectedUnit = AllUnits.FirstOrDefault();
                 SelectedUnitThis = SelectedUnits.FirstOrDefault();
             }
 
             else
             {
-                SelectedUnits = AllUnits.Where(s => s.ID == characteristicApi.UnitId).ToList();
+                GetUnits(characteristicApi);
+                //SelectedUnits = AllUnits.Where(s => s.ID == characteristicApi.UnitId);
             }
 
             SignalChanged(nameof(SelectedUnits));
@@ -223,6 +224,14 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             var search = SearchText.ToLower();
             searchResult = await Api.SearchAsync<List<UnitApi>>(SelectedSearchType, search, "Unit");
             UpdateList();
+        }
+
+        public async Task GetUnits(CharacteristicApi characteristic)
+        {
+            var list = await Api.GetListAsync<List<UnitApi>>("Unit");
+            var l = list.Where(s=> s.ID == characteristic.UnitId);
+            SelectedUnits = new ObservableCollection<UnitApi>(l);
+            SignalChanged(nameof(SelectedUnits));
         }
 
         private async Task UpdateList()

@@ -11,14 +11,14 @@
                    Foreground="Black"
                    />
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-            <Button Content="Нет" Margin="0 0 10 0"
+            <Button Content="Нет" Margin="0 0 10 0" FontWeight="Bold"
                 Style="{StaticResource ButtonLogin}"
                 IsCancel="True"
                 FontSize="{StaticResource FontSizeRegular}"
                 Command="{Binding CloseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BaseDialogUserControl}}}"
                 HorizontalAlignment="Center"
                 />
-            <Button Content="Да" Margin="10 0 0 0"
+            <Button Content="Да" Margin="10 0 0 0" FontWeight="Bold"
                 Style="{StaticResource ButtonLogin}"
                 FontSize="{StaticResource FontSizeRegular}"
                 Command="{Binding YesCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BaseDialogUserControl}}}"

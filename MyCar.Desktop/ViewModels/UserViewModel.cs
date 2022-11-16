@@ -22,6 +22,20 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(Search);
             }
         }
+
+        public List<UserTypeApi> UserTypeFilter { get; set; }
+
+        private UserTypeApi selectedUserTypeFilter;
+        public UserTypeApi SelectedUserTypeFilter
+        {
+            get => selectedUserTypeFilter;
+            set
+            {
+                selectedUserTypeFilter = value;
+                Task.Run(Search);
+            }
+        }
+
         public List<string> SearchType { get; set; }
         private string selectedSearchType;
         public string SelectedSearchType
@@ -70,10 +84,10 @@ namespace MyCar.Desktop.ViewModels
         public async Task Search()
         {
             var search = SearchText.ToLower();
-            if(search == "")
-                searchResult = await Api.GetListAsync<List<UserApi>>("User");
+            if (search == "")
+                searchResult = await Api.SearchFilterAsync<List<UserApi>>(SelectedSearchType, "$", "User", SelectedUserTypeFilter.TypeName);
             else
-                searchResult = await Api.SearchAsync<List<UserApi>>(SelectedSearchType, search, "User");
+                searchResult = await Api.SearchFilterAsync<List<UserApi>>(SelectedSearchType, search, "User", SelectedUserTypeFilter.TypeName);
             UpdateList();
         }
         private void UpdateList()
@@ -86,6 +100,9 @@ namespace MyCar.Desktop.ViewModels
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
             UserTypes = await Api.GetListAsync<List<UserTypeApi>>("UserType");
+            UserTypeFilter = UserTypes;
+            UserTypeFilter.Add(new UserTypeApi { TypeName = "Все" });
+            SelectedUserTypeFilter = UserTypeFilter.Last();
             Passports = await Api.GetListAsync<List<PassportApi>>("Passport");
             FullUsers = Users;
             SignalChanged(nameof(Users));

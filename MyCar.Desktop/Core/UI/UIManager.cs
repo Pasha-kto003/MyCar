@@ -30,6 +30,26 @@ namespace MyCar.Desktop.Core.UI
 
             return tcs.Task;
         }
+        public static Task ShowErrorMessage(MessageBoxDialogViewModel viewModel)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            viewModel.Title = "Oшибка!";
+            viewModel.OkText = "OK";
+
+            Application.Current.Dispatcher.Invoke(async () =>
+            {
+                try
+                {
+                    await new DialogMessageBox().ShowDialog(viewModel);
+                }
+                finally
+                {
+                    tcs.SetResult(true);
+                }
+            });
+
+            return tcs.Task;
+        }
         public static Task ShowMessageYesNo(MessageBoxDialogViewModel viewModel)
         {
             var tcs = new TaskCompletionSource<bool>();

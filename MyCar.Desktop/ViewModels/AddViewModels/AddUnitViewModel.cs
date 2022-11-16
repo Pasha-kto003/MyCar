@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
                 if(AddUnitVM.UnitName == "")
                 {
-                    SendMessage("Не введена единица измерения");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не введена единица измерения" });
+                    return;
                 }
                 if(AddUnitVM.ID == 0)
                 {
@@ -47,14 +49,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 {
                     EditUnit(AddUnitVM);
                 }
-
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.DataContext == this)
-                    {
-                        CloseWindow(window);
-                    }
-                }
+                UIManager.CloseWindow(this);
             });
         }
 
@@ -66,23 +61,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         private async Task EditUnit(UnitApi unitApi)
         {
             var unit = await Api.PutAsync<UnitApi>(unitApi, "Unit");
-        }
-
-        public void SendMessage(string message)
-        {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Ошибка!"
-            });
-            return;
-        }
-
-        public void CloseWindow(object obj)
-        {
-            Window window = obj as Window;
-            window.Close();
         }
     }
 }

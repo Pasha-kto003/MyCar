@@ -65,7 +65,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (SelectedModel == null) return;
                 if (CheckContains(ThisMarkModels.ToList(), SelectedModel))
                 {
-                    SendMessage($"Модель {SelectedModel.ModelName} уже содержится в марке");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Модель {SelectedModel.ModelName} уже содержится в марке" });
+                    return;
                 }
                 MarkCarApi m = Marks.FirstOrDefault(x => x.ID == SelectedModel.MarkId);
 
@@ -99,10 +100,10 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 {
                     if (mark.MarkName == AddMark.MarkName)
                     {
-                        SendMessage("Такая марка уже существует!");
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Такая марка уже существует!" });
+                        return;
                     }
                 }
-
                 try
                 {
                     if (AddMark.ID == 0)
@@ -112,7 +113,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 }
                 catch (Exception e)
                 {
-                    SendMessage($"{e.Message.ToString()}");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"{e.Message.ToString()}" });
+                    return;
                 }
                 UIManager.CloseWindow(this);
             });
@@ -188,18 +190,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             AllModels = new ObservableCollection<ModelApi>(list);
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             SignalChanged(nameof(AllModels));
-        }
-
-        private void SendMessage(string message)
-        {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Ошибка!"
-            });
-            UIManager.CloseWindow(this);
-            return;
         }
     }
 }

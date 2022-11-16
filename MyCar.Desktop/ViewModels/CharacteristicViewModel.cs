@@ -56,10 +56,23 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
+        private UnitApi selectedUnitFilter;
+        public UnitApi SelectedUnitFilter
+        {
+            get => selectedUnitFilter;
+            set
+            {
+                selectedUnitFilter = value;
+                Task.Run(Search);
+            }
+        }
+
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
 
         public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
         public List<UnitApi> Units { get; set; } = new List<UnitApi>();
+
+        public List<UnitApi> UnitFilter { get; set; }
 
         public CharacteristicApi SelectedCharacteristic { get; set; }
         public UnitApi SelectedUnit { get; set; }
@@ -126,6 +139,8 @@ namespace MyCar.Desktop.ViewModels
 
         private async Task GetCharacteristic()
         {
+            UnitFilter = Units;
+            UnitFilter.Add(new UnitApi { UnitName = "Все" });
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             FullTypes = Characteristics;
@@ -166,9 +181,9 @@ namespace MyCar.Desktop.ViewModels
         {
             var search = SearchText.ToLower();
             if (search == "")
-                searchResult = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
+                searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, "$", "Characteristic", SelectedUnitFilter.UnitName);
             else
-                searchResult = await Api.SearchAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic");
+                searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic", SelectedUnitFilter.UnitName);
             UpdateList();
         }
 

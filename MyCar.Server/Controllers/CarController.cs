@@ -65,54 +65,49 @@ namespace MyCar.Server.Controllers
             return GetCar(car);
         }
 
-        
 
-        [HttpGet("Type, Text")]
-        public IEnumerable<CarApi> SearchByCar(string type, string text)
+
+        [HttpGet("Type, Text, Filter")]
+        public IEnumerable<CarApi> SearchByCar(string type, string text, string filter)
         {
-            switch (type)
+            IEnumerable<CarApi> CarsApi = dbContext.Cars.ToList().Select(s =>
             {
-                case "Артикул":
+                return GetCar(s);
+            });
 
-                    return dbContext.Cars.Where(s=> s.Articul.Contains(text)).ToList().Select(s =>
-                    {
-                        return GetCar(s);
-                    });
+            if (text != "$")
+                switch (type)
+                {
+                    case "Артикул":
 
-                    break;
-                case "Модель":
+                        CarsApi = CarsApi.Where(s => s.Articul.ToLower().Contains(text)).ToList();
+                        break;
+                    case "Модель":
+                        CarsApi = CarsApi.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList();
+                        break;
 
-                    return dbContext.Cars.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList().Select(s =>
-                    {
-                        return GetCar(s);
-                    });
+                    case "Марка":
+                        return dbContext.Cars.Where(s => s.Model.Mark.MarkName.ToLower().Contains(text)).ToList().Select(s =>
+                        {
+                            return GetCar(s);
+                        });
+                        break;
 
-                    break;
-                case "Марка":
+                    case "Цена":
+                        CarsApi = CarsApi.Where(s => s.CarPrice.ToString().ToLower().Contains(text)).ToList();
+                        break;
 
-                    return dbContext.Cars.Where(s => s.Model.Mark.MarkName.ToLower().Contains(text)).ToList().Select(s => 
-                    {
-                        return GetCar(s);
-                    });
+                    default:
+                        CarsApi = CarsApi.ToList();
+                        break;
+                }
 
-                    break;
-
-                case "Цена":
-
-                    return dbContext.Cars.Where(s => s.CarPrice.ToString().ToLower().Contains(text)).ToList().Select(s => 
-                    {
-                        return GetCar(s);
-                    });
-                    break;
-
-                default:
-
-                    return dbContext.Cars.ToList().Select(s => 
-                    {
-                        return GetCar(s);
-                    });
-                    break;
+            if (filter == "Модел")
+            {
+                CarsApi = CarsApi.Where(s => s.Model.ModelName.Contains(filter)).ToList();
             }
+
+            return CarsApi.ToList();
         }
 
         // POST api/<CarController>

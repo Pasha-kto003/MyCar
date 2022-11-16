@@ -26,6 +26,10 @@
                             <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
                             <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                         </StackPanel>
+                        <StackPanel>
+                            <Label Grid.Column="1" FontSize="16" Content="Фильтр:"  FontFamily="Century Gothic"/>
+                            <ComboBox Width="180" FontSize="16" ItemsSource="{Binding UnitFilter}" DisplayMemberPath="UnitName" SelectedItem="{Binding SelectedUnitFilter}"/>
+                        </StackPanel>
                     </StackPanel>
                     <DataGrid Grid.Row="1"
                   FontSize="{StaticResource FontSizeLarge}"

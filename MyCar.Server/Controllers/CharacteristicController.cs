@@ -43,37 +43,31 @@ namespace MyCar.Server.Controllers
             return GetCharacteristicApi(characteristic);
         }
 
-        [HttpGet("Type, Text")]
-        public IEnumerable<CharacteristicApi> SearchCharacteristic(string type, string text)
+        [HttpGet("Type, Text, Filter")]
+        public IEnumerable<CharacteristicApi> SearchCharacteristic(string type, string text, string filter)
         {
-            if (type == null)
+            IEnumerable<CharacteristicApi> CharacteristicsApi = dbContext.Characteristics.ToList().Select(s =>
             {
-                return dbContext.Characteristics.Select(s => (CharacteristicApi)s);
+                return GetCharacteristicApi(s);
+            });
+
+            if (text != "$")
+                switch (type)
+                {
+                    case "Характеристика":
+                        CharacteristicsApi = CharacteristicsApi.Where(s => s.CharacteristicName.ToLower().Contains(text)).ToList();
+                        break;
+                    default:
+                        CharacteristicsApi = CharacteristicsApi.ToList();
+                        break;
+                }
+
+            if (filter != "Все")
+            {
+                CharacteristicsApi = CharacteristicsApi.Where(s => s.Unit.UnitName.Contains(filter)).ToList();
             }
 
-            else if (type == "Характеристика")
-            {
-                return dbContext.Characteristics.Where(s=> s.CharacteristicName.ToLower().Contains(text)).ToList().Select(s =>
-                {
-                    return GetCharacteristicApi(s);
-                });
-            }
-
-            else if (type == "Единица изсерения")
-            {
-                return dbContext.Characteristics.Where(s => s.Unit.UnitName.ToLower().Contains(text)).ToList().Select(s =>
-                {
-                    return GetCharacteristicApi(s);
-                });
-            }
-
-            else
-            {
-                return dbContext.Characteristics.ToList().Select(s =>
-                {
-                    return GetCharacteristicApi(s);
-                });
-            }
+            return CharacteristicsApi.ToList();
         }
 
         // POST api/<CharacteristicController>

@@ -41,6 +41,13 @@ namespace MyCar.Desktop.Core
             var result = (T)JsonSerializer.Deserialize(answerText, typeof(T), jsonOptions);
             return result;
         }
+        public static async Task<T> SearchFilterAsync<T>(string type, string? text, string controller, string? filter)
+        {
+            var answer = await client.GetAsync(server + controller + $"/Type, Text, Filter?type={type}&text={text}&filter={filter}");
+            string answerText = await answer.Content.ReadAsStringAsync();
+            var result = (T)JsonSerializer.Deserialize(answerText, typeof(T), jsonOptions);
+            return result;
+        }
 
         public static async Task<T> SearchFilterAsync<T>(string type, string? text, string controller, string? filter)
         {
@@ -53,7 +60,7 @@ namespace MyCar.Desktop.Core
         public static async Task<UserApi> Enter<UserApi>(string UserName, string Password, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
-            if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (answer.StatusCode == System.Net.HttpStatusCode.NotFound || answer.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 //тут хз че в ретерне
                 return default(UserApi);
             string answerText = await answer.Content.ReadAsStringAsync();
@@ -61,7 +68,7 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string controller) /*where T : ModelApi.ApiBaseType*/
+        public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string controller) 
         {
             var str = JsonSerializer.Serialize(value, typeof(UserApi));
             var answer = await client.PostAsync(server + controller, new StringContent(str, Encoding.UTF8, "application/json"));
@@ -70,7 +77,7 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<ModelApi> GetModelApi<ModelApi>(string markName, string controller)
+    public static async Task<ModelApi> GetModelApi<ModelApi>(string markName, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/Mark?markName={markName}");
             string answerText = await answer.Content.ReadAsStringAsync();

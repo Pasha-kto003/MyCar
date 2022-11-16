@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,19 @@ namespace MyCar.Desktop.ViewModels
 {
     public class CharacteristicViewModel : BaseViewModel
     {
+        public List<UnitApi> UnitFilter { get; set; }
+
+        private UnitApi selectedUnitFilter;
+        public UnitApi SelectedUnitFilter
+        {
+            get => selectedUnitFilter;
+            set
+            {
+                selectedUnitFilter = value;
+                Task.Run(Search);
+            }
+        }
+
         private string searchText = "";
         public string SearchText
         {
@@ -93,7 +107,7 @@ namespace MyCar.Desktop.ViewModels
         public CharacteristicViewModel()
         {
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Характеристика", "Единица измерения" });
+            SearchType.AddRange(new string[] { "Характеристика"});
             selectedSearchType = SearchType.First();
 
             SearchTypeEquipment = new List<string>();
@@ -108,32 +122,33 @@ namespace MyCar.Desktop.ViewModels
             {
                 AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow();
                 addCharacteristic.ShowDialog();
-                GetCharacteristic();
+                Task.Run(GetCharacteristic);
             });
 
             EditCharacteristic = new CustomCommand(() =>
             {
                 if(SelectedCharacteristic == null)
                 {
-                    SendMessage("Не выбрана характеристика для редактирования");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана характеристика для редактирования" });
+                    return;
                 }
                 AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow(SelectedCharacteristic);
                 addCharacteristic.ShowDialog();
-                GetCharacteristic();
+                Task.Run(GetCharacteristic);
             });
 
             AddEquipment = new CustomCommand(() =>
             {
                 AddEquipmentWindow equipmentWindow = new AddEquipmentWindow();
                 equipmentWindow.ShowDialog();
-                GetEquipment();
+                Task.Run(GetEquipment);
             });
 
             EditEquipment = new CustomCommand(() =>
             {
                 AddEquipmentWindow addEquipment = new AddEquipmentWindow();
                 addEquipment.ShowDialog();
-                GetEquipment();
+                Task.Run(GetEquipment);
             });
         }
 
@@ -144,6 +159,11 @@ namespace MyCar.Desktop.ViewModels
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             FullTypes = Characteristics;
+
+            UnitFilter = Units;
+            UnitFilter.Add(new UnitApi { UnitName = "Все" });
+
+            SelectedUnitFilter = UnitFilter.Last();
             SignalChanged(nameof(Characteristics));
         }
 
@@ -152,17 +172,6 @@ namespace MyCar.Desktop.ViewModels
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             FullEquipments = Equipments;
             SignalChanged(nameof(Equipments));
-        }
-
-        public void SendMessage(string message)
-        {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Ошибка!"
-            });
-            return;
         }
 
         public async Task UpdateList()
@@ -183,7 +192,7 @@ namespace MyCar.Desktop.ViewModels
             if (search == "")
                 searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, "$", "Characteristic", SelectedUnitFilter.UnitName);
             else
-                searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic", SelectedUnitFilter.UnitName);
+                searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic",SelectedUnitFilter.UnitName);
             UpdateList();
         }
 

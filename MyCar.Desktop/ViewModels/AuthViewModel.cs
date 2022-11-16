@@ -8,6 +8,7 @@ using System.Windows;
 using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows;
 
 namespace MyCar.Desktop.ViewModels
@@ -73,10 +74,17 @@ namespace MyCar.Desktop.ViewModels
         {
             if (User != null && User.ID != 0)
             {
-                 MainWindow testWindow = new MainWindow(User);
-                 testWindow.Show();
-                 mWindow.Close();
+                MainWindow testWindow = new MainWindow(User);
+                testWindow.Show();
+                mWindow.Close();
             }
+            else
+            {
+                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Неправильный логин или пароль!" });
+                Password = "";
+                UserName = "";
+            }
+                
         }
 
     }

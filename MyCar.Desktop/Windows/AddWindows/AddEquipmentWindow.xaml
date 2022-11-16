@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows.AddWindows"
         mc:Ignorable="d"
-        Title="AddEquipmentWindow" Height="250" Width="400">
+        Title="AddEquipmentWindow" Height="250" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">
         <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">

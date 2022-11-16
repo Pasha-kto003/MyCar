@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,32 +33,28 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 };
             }
 
-            SaveBodyType = new CustomCommand(() =>
+            SaveBodyType = new CustomCommand(async () =>
             {
                 if(AddBodyTypeVM.TypeName == "")
                 {
-                    SendMessage("Не введен тип кузова");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не введен тип кузова" });
+                    return;
                 }
 
-                if(AddBodyTypeVM.ID == 0)
+                if (AddBodyTypeVM.ID == 0)
                 {
-                    CreateType(AddBodyTypeVM);
+                    Task create = CreateType(AddBodyTypeVM);
+                    await create;
                 }
                 else
                 {
-                    EditType(AddBodyTypeVM);
+                    Task edit = EditType(AddBodyTypeVM);
+                    await edit;
                 }
 
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.DataContext == this)
-                    {
-                        CloseWindow(window);
-                    }
-                }
+                UIManager.CloseWindow(this);
             });
         }
-
         public async Task CreateType(BodyTypeApi bodyType)
         {
             var body = await Api.PostAsync<BodyTypeApi>(bodyType, "BodyType");
@@ -66,23 +63,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public async Task EditType(BodyTypeApi bodyType)
         {
             var body = await Api.PutAsync<BodyTypeApi>(bodyType, "BodyType");
-        }
-
-        public void CloseWindow(object obj)
-        {
-            Window window = obj as Window;
-            window.Close();
-        }
-
-        public void SendMessage(string message)
-        {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Ошибка!"
-            });
-            return;
         }
     }
 }

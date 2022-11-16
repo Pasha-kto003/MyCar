@@ -52,21 +52,21 @@ namespace MyCar.Server.Controllers
             });
 
             if (text != "$")
-                switch (type)
-                {
-                    case "Логин":
+            switch (type)
+            {
+                case "Логин":
                         UsersApi = UsersApi.Where(s => s.UserName.ToLower().Contains(text)).ToList();
-                        break;
-                    case "Фамилия":
+                    break;
+                case "Фамилия":
                         UsersApi = UsersApi.Where(s => s.Passport.LastName.ToLower().Contains(text)).ToList();
-                        break;
-                    case "Email":
+                    break;
+                case "Email":
                         UsersApi = UsersApi.Where(s => s.Email.ToLower().Contains(text)).ToList();
-                        break;
-                    default:
+                    break;
+                default:
                         UsersApi = UsersApi.ToList();
-                        break;
-                }
+                    break;
+            }
 
             if (filter != "Все")
             {

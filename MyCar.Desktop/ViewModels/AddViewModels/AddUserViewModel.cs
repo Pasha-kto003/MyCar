@@ -57,15 +57,10 @@ namespace MyCar.Desktop.ViewModels
                 else
                 {
                     ChangeUser(EditUser, EditUser.Passport);
-                    foreach (Window window in Application.Current.Windows)
-                    {
-                        if (window.DataContext == this)
-                        {
-                            window.Close();
-                        }
-                    }
+                    UIManager.CloseWindow(this);
                 }
-            });           
+            });
+
             Cancel = new CustomCommand(() =>
             {
                 UIManager.CloseWindow(this);

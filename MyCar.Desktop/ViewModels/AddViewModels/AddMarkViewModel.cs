@@ -15,6 +15,17 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddMarkViewModel : BaseViewModel
     {
+        private string searchText = "";
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                Task.Run(Search);
+            }
+        }
+        private ObservableCollection<ModelApi> searchResult;
         public MarkCarApi AddMark { get; set; }
 
         public List<MarkCarApi> Marks { get; set; }
@@ -29,7 +40,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand AddModel { get; set; }
         public CustomCommand RemoveModel { get; set; }
         public CustomCommand EditModel { get; set; }
-
+        public CustomCommand AddNewModel { get; set; }
         public AddMarkViewModel(MarkCarApi addmark)
         {
             Task.Run(GetList);
@@ -54,7 +65,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (SelectedModel == null) return;
                 if (CheckContains(ThisMarkModels.ToList(), SelectedModel))
                 {
-                    SendMessage($"Модель {SelectedModel.ModelName} уже содержится в марке");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Модель {SelectedModel.ModelName} уже содержится в марке" });
+                    return;
                 }
                 MarkCarApi m = Marks.FirstOrDefault(x => x.ID == SelectedModel.MarkId);
 
@@ -88,10 +100,10 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 {
                     if (mark.MarkName == AddMark.MarkName)
                     {
-                        SendMessage("Такая характеристика уже существует!!!");
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Такая марка уже существует!" });
+                        return;
                     }
                 }
-
                 try
                 {
                     if (AddMark.ID == 0)
@@ -101,7 +113,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 }
                 catch (Exception e)
                 {
-                    SendMessage($"{e.Message.ToString()}");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"{e.Message.ToString()}" });
+                    return;
                 }
                 UIManager.CloseWindow(this);
             });
@@ -109,6 +122,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 UIManager.CloseWindow(this);
             });
+            
+
         }
 
         private async Task Add(MarkCarApi mark)
@@ -128,6 +143,20 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 await Api.PutAsync<ModelApi>(model, "Model");
             }
             var id = await Api.PutAsync<MarkCarApi>(mark, "MarkCar");
+        }
+        public async Task Search()
+        {
+            var search = SearchText.ToLower();
+            if (search == "")
+                searchResult = await Api.GetListAsync<ObservableCollection<ModelApi>>("Model");
+            else
+                searchResult = await Api.SearchAsync<ObservableCollection<ModelApi>>("Наименование", search, "Model");
+            UpdateList();
+        }
+        private void UpdateList()
+        {
+            AllModels = searchResult;
+            SignalChanged(nameof(AllModels));
         }
 
         private bool CheckContains(List<ModelApi> list, ModelApi model)
@@ -161,18 +190,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             AllModels = new ObservableCollection<ModelApi>(list);
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             SignalChanged(nameof(AllModels));
-        }
-
-        private void SendMessage(string message)
-        {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Ошибка!"
-            });
-            UIManager.CloseWindow(this);
-            return;
         }
     }
 }

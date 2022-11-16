@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,11 +47,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 if( SelectedMark == null || SelectedMark.ID == 0)
                 {
-                    await UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                    {
-                        Title = "Ошибка!",
-                        Message = "Не выбрана марка!"
-                    }) ;
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана марка!" });
                     return;
                 }
                 AddModelVM.MarkId = SelectedMark.ID;
@@ -79,7 +76,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         private async Task GetList()
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-
             SignalChanged(nameof(Marks));
         }
     }

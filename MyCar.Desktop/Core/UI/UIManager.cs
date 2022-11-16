@@ -57,7 +57,7 @@ namespace MyCar.Desktop.Core.UI
             Application.Current.Dispatcher.Invoke(async () =>
             {
                 try
-                {  
+                {
                     await new YesNoMessageBox().ShowDialog(viewModel);
                 }
                 finally

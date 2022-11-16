@@ -16,7 +16,9 @@ namespace MyCar.Desktop.ViewModels
         public CarApi AddCarVM { get; set; }
 
         public List<MarkCarApi> Marks { get; set; }
+        public List<MarkCarApi> CarMarks { get; set; }
         public List<ModelApi> Models { get; set; }
+        public List<ModelApi> CarModels { get; set; }
         public List<BodyTypeApi> BodyTypes { get; set; }
         public List<EquipmentApi> Equipments { get; set; }
         public List<CharacteristicCarApi> CharacteristicsCar { get; set; }
@@ -34,6 +36,8 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
+        public ModelApi SelectedCarModel { get; set; }
+
         private MarkCarApi selectedMark { get; set; }
         public MarkCarApi SelectedMark
         {
@@ -44,6 +48,8 @@ namespace MyCar.Desktop.ViewModels
                 SignalChanged();
             }
         }
+
+        public MarkCarApi SelectedCarMark { get; set; }
 
         private BodyTypeApi selectedBodyType { get; set; }
         public BodyTypeApi SelectedBodyType
@@ -109,31 +115,31 @@ namespace MyCar.Desktop.ViewModels
 
             Save = new CustomCommand(() =>
             {
+                if (SelectedMark == null || SelectedMark.ID == 0)
+                {
+                    SendMessage("Не выбрана марка");
+
+                }
+                else if (SelectedModel == null || SelectedModel.ID == 0)
+                {
+                    SendMessage("Не выбрана модель");
+
+                }
+
+                else if (SelectedBodyType == null || SelectedBodyType.ID == 0)
+                {
+                    SendMessage("Не выбран тип кузова");
+
+                }
+
+                else if (SelectedEquipment == null || SelectedEquipment.ID == 0)
+                {
+                    SendMessage("Не выбрана коплектация");
+
+                }
+
                 if (AddCarVM.ID == 0)
                 {
-                    if (SelectedMark == null || SelectedMark.ID == 0)
-                    {
-                        SendMessage("Не выбрана марка");
-
-                    }
-                    else if (SelectedModel == null || SelectedModel.ID == 0)
-                    {
-                        SendMessage("Не выбрана модель");
-
-                    }
-
-                    else if (SelectedBodyType == null || SelectedBodyType.ID == 0)
-                    {
-                        SendMessage("Не выбран тип кузова");
-
-                    }
-
-                    else if (SelectedEquipment == null || SelectedEquipment.ID == 0)
-                    {
-                        SendMessage("Не выбрана коплектация");
-
-                    }
-
                     AddCarVM.ModelId = SelectedModel.ID;
                     AddCarVM.Model.MarkId = SelectedMark.ID;
                     AddCarVM.EquipmentId = SelectedEquipment.ID;

@@ -141,6 +141,8 @@ namespace MyCar.Desktop.ViewModels
 
         private async Task GetCharacteristic()
         {
+            UnitFilter = Units;
+            UnitFilter.Add(new UnitApi { UnitName = "Все" });
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             FullTypes = Characteristics;

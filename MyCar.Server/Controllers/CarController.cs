@@ -82,10 +82,6 @@ namespace MyCar.Server.Controllers
 
                         CarsApi = CarsApi.Where(s => s.Articul.ToLower().Contains(text)).ToList();
                         break;
-                    case "Модель":
-                        CarsApi = CarsApi.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList();
-                        break;
-
                     case "Марка":
                         return dbContext.Cars.Where(s => s.Model.Mark.MarkName.ToLower().Contains(text)).ToList().Select(s =>
                         {
@@ -102,9 +98,14 @@ namespace MyCar.Server.Controllers
                         break;
                 }
 
-            if (filter == "Модел")
+            if (filter == "Модель")
             {
                 CarsApi = CarsApi.Where(s => s.Model.ModelName.Contains(filter)).ToList();
+            }
+
+            if(filter == "Кузов")
+            {
+                CarsApi = CarsApi.Where(s => s.BodyType.TypeName.Contains(filter)).ToList();
             }
 
             return CarsApi.ToList();

@@ -49,14 +49,6 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-        public static async Task<T> SearchFilterAsync<T>(string type, string? text, string controller, string? filter)
-        {
-            var answer = await client.GetAsync(server + controller + $"/Type, Text, Filter?type={type}&text={text}&filter={filter}");
-            string answerText = await answer.Content.ReadAsStringAsync();
-            var result = (T)JsonSerializer.Deserialize(answerText, typeof(T), jsonOptions);
-            return result;
-        }
-
         public static async Task<UserApi> Enter<UserApi>(string UserName, string Password, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");

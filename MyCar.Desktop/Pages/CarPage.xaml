@@ -25,6 +25,14 @@
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
+                <StackPanel>
+                    <Label Grid.Column="1" FontSize="16" Content="Модель:"  FontFamily="Century Gothic"/>
+                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding ModelFilter}" DisplayMemberPath="ModelName" SelectedItem="{Binding SelectedModelFilter}"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label Grid.Column="1" FontSize="16" Content="Кузов:"  FontFamily="Century Gothic"/>
+                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding BodyTypeFilter}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedBodyTypeFilter}"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
 

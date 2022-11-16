@@ -70,23 +70,10 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
-        private UnitApi selectedUnitFilter;
-        public UnitApi SelectedUnitFilter
-        {
-            get => selectedUnitFilter;
-            set
-            {
-                selectedUnitFilter = value;
-                Task.Run(Search);
-            }
-        }
-
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
 
         public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
         public List<UnitApi> Units { get; set; } = new List<UnitApi>();
-
-        public List<UnitApi> UnitFilter { get; set; }
 
         public CharacteristicApi SelectedCharacteristic { get; set; }
         public UnitApi SelectedUnit { get; set; }

@@ -11,6 +11,17 @@ namespace MyCar.Desktop.ViewModels
 {
     public class CarViewModel : BaseViewModel
     {
+
+        private ModelApi selectedModelFilter;
+        public ModelApi SelectedModelFilter
+        {
+            get => selectedModelFilter;
+            set
+            {
+                selectedModelFilter = value;
+                Search();
+            }
+        }
         private string searchText = "";
         public string SearchText
         {
@@ -58,6 +69,7 @@ namespace MyCar.Desktop.ViewModels
 
         public List<CarApi> Cars { get; set; } = new List<CarApi>();
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
+        public List<ModelApi> ModelFilter { get; set; }
         public List<MarkCarApi> MarkCars { get; set; } = new List<MarkCarApi>();
         public List<BodyTypeApi> BodyTypes { get; set; } = new List<BodyTypeApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
@@ -79,7 +91,6 @@ namespace MyCar.Desktop.ViewModels
             SearchType.AddRange(new string[] { "Модель", "Артикул", "Марка", "Цена", "Отменить" });
             selectedSearchType = SearchType.First();
 
-            Task.Run(Search);
 
             AddCar = new CustomCommand(() =>
             {
@@ -96,17 +107,20 @@ namespace MyCar.Desktop.ViewModels
             });
         }
 
-        public async Task Search()
-        {
-            var search = SearchText.ToLower();
-            searchResult = await Api.SearchAsync<List<CarApi>>(SelectedSearchType, search, "Car");
-            UpdateList();
-        }
-
         private async Task UpdateList()
         {
             Cars = searchResult;
             SignalChanged(nameof(searchResult));
+        }
+
+        public async Task Search()
+        {
+            var search = SearchText.ToLower();
+            if (search == "")
+                searchResult = await Api.SearchFilterAsync<List<CarApi>>(SelectedSearchType, "$", "Car", SelectedModelFilter.ModelName);
+            else
+                searchResult = await Api.SearchFilterAsync<List<CarApi>>(SelectedSearchType, search, "Car", SelectedModelFilter.ModelName);
+            UpdateList();
         }
 
         private async Task GetCarList()
@@ -118,6 +132,11 @@ namespace MyCar.Desktop.ViewModels
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
+
+            ModelFilter = await Api.GetListAsync<List<ModelApi>>("Model");
+            ModelFilter.Add(new ModelApi { ModelName = "Все" });
+            SelectedModelFilter = ModelFilter.Last();
+
             FullCars = Cars;
             SignalChanged(nameof(Cars));
         }

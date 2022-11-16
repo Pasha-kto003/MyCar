@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -52,6 +53,18 @@ namespace MyCar.Desktop.Core
             var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;
         }
+
+        //copy
+        public static async Task<UserApi> NewEnter<UserApi>(string UserName, string Password, string controller)
+        {
+            var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
+            if (answer.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return default;
+            string answerText = await answer.Content.ReadAsStringAsync();
+            var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
+            return result;
+        }
+        //copy
 
         public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string controller) /*where T : ModelApi.ApiBaseType*/
         {

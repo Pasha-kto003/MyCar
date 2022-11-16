@@ -37,10 +37,9 @@
             </ListBox>
         </Border>
     </DataTemplate>
+    
+    
     <Style x:Key="DataGridRowDetails" TargetType="{x:Type DataGridRow}">
-    
-    
-        <Style x:Key="DataGridRowDetails" TargetType="{x:Type DataGridRow}">
         <Setter Property="MinHeight" Value="30"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>

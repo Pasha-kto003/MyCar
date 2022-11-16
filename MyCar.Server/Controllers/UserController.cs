@@ -43,51 +43,37 @@ namespace MyCar.Server.Controllers
             return GetUser(client);
         }
 
-        [HttpGet("Type, Text")]
-        public IEnumerable<UserApi> SearchByUser(string type, string text)
+        [HttpGet("Type, Text, Filter")]
+        public IEnumerable<UserApi> SearchByUser(string type, string text, string filter)
         {
-            if (text == "")
+            IEnumerable<UserApi> UsersApi = dbContext.Users.ToList().Select(s =>
             {
-                return dbContext.Users.ToList().Select(s => {
-                    return GetUser(s);
-                });
-            }
+                return GetUser(s);
+            });
+
+            if (text != "$")
             switch (type)
             {
                 case "Логин":
-
-                    return dbContext.Users.Where(s => s.UserName.ToLower().Contains(text)).ToList().Select(s =>
-                    {
-                        return GetUser(s);
-                    });
-
+                        UsersApi = UsersApi.Where(s => s.UserName.ToLower().Contains(text)).ToList();
                     break;
                 case "Фамилия":
-
-                    return dbContext.Users.Where(s => s.Passport.LastName.ToLower().Contains(text)).ToList().Select(s =>
-                    {
-                        return GetUser(s);
-                    });
-
+                        UsersApi = UsersApi.Where(s => s.Passport.LastName.ToLower().Contains(text)).ToList();
                     break;
                 case "Email":
-
-                    return dbContext.Users.Where(s => s.Email.ToLower().Contains(text)).ToList().Select(s =>
-                    {
-                        return GetUser(s);
-                    });
-
+                        UsersApi = UsersApi.Where(s => s.Email.ToLower().Contains(text)).ToList();
                     break;
-
                 default:
-
-                    return dbContext.Users.ToList().Select(s =>
-                    {
-                        return GetUser(s);
-                    });
-
+                        UsersApi = UsersApi.ToList();
                     break;
             }
+
+            if (filter != "Все")
+            {
+                UsersApi = UsersApi.Where(s => s.UserType.TypeName.Contains(filter)).ToList();
+            }
+
+            return UsersApi.ToList();
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
@@ -22,17 +23,6 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(Search);
             }
         }
-        public List<string> SearchType { get; set; }
-        private string selectedSearchType;
-        public string SelectedSearchType
-        {
-            get => selectedSearchType;
-            set
-            {
-                selectedSearchType = value;
-            }
-        }
-
         public BodyTypeApi SelectedBodyType { get; set; }
 
         public CustomCommand AddType { get; set; }
@@ -45,32 +35,28 @@ namespace MyCar.Desktop.ViewModels
 
         public BodyTypeViewModel()
         {
-            SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Кузов" });
-            selectedSearchType = SearchType.First();
-
             Task.Run(GetBodyTypes);
 
             AddType = new CustomCommand(() =>
             {
                 AddBodyTypeWindow addBodyType = new AddBodyTypeWindow();
                 addBodyType.ShowDialog();
-                GetBodyTypes();
+                Task.Run(GetBodyTypes).Wait();
             });
 
             EditType = new CustomCommand(() =>
             {
                 if(SelectedBodyType == null || SelectedBodyType.ID == 0)
                 {
-                    SendMessage("Не выбран тип кузова");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран тип кузова!" });
+                    return;
                 }
                 else
                 {
                     AddBodyTypeWindow editBodyType = new AddBodyTypeWindow(SelectedBodyType);
                     editBodyType.ShowDialog();
-                    GetBodyTypes();
+                    Task.Run(GetBodyTypes).Wait();
                 }
-
             });
         }
 
@@ -79,17 +65,6 @@ namespace MyCar.Desktop.ViewModels
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyTYpe");
             FullTypes = BodyTypes;
             SignalChanged(nameof(BodyTypes));
-        }
-
-        public void SendMessage(string message)
-        {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Ошибка!"
-            });
-            return;
         }
 
         public async Task UpdateList()
@@ -104,7 +79,7 @@ namespace MyCar.Desktop.ViewModels
             if (search == "")
                 searchResult = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             else
-                searchResult = await Api.SearchAsync<List<BodyTypeApi>>(SelectedSearchType, search, "BodyType");
+                searchResult = await Api.SearchAsync<List<BodyTypeApi>>("Кузов", search, "BodyType");
             UpdateList();
         }
     }

@@ -10,7 +10,7 @@
                    Padding="5" FontFamily="{StaticResource CenturyGothicBold}"
                    Foreground="Black"
                    />
-        <Button Content="{Binding OkText}"
+        <Button Content="{Binding OkText}" FontWeight="Bold"
                 Style="{StaticResource ButtonLogin}"
                 IsCancel="True"
                 FontSize="{StaticResource FontSizeRegular}"

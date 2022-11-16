@@ -5,14 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows.AddWindows"
         mc:Ignorable="d"
-        Title="AddBodyTypeWindow" Height="250" Width="400">
-    <Grid>
+        Title="AddBodyTypeWindow" Height="250" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+    <Grid Background="WhiteSmoke">
+        <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
+                Panel.ZIndex="2">
+            <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
-            <Label Content="Наименование кузова" Margin="0 0 0 5" Width="200" Foreground="{StaticResource ValorantRedBrush}" HorizontalContentAlignment="Center" FontSize="16"/>
+            <Label Content="Наименование кузова" Margin="0 0 0 5" Width="200"  HorizontalContentAlignment="Center" FontSize="16"/>
             <TextBox DataContext="{Binding AddBodyTypeVM}" Tag="Кузов авто" Text="{Binding TypeName}" Margin="0 5 0 0" FontSize="16"/>
         </StackPanel>
         <Grid Grid.Row="1">
@@ -25,5 +28,7 @@
             <Button Content="Отмена" Height="30" Click="Button_Click" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center"  FontFamily="Century Gothic" Foreground="Red"
                     Background="Transparent" BorderBrush="Red" FontSize="16"/>
         </Grid>
+    </Grid>
+            </Border>
     </Grid>
 </Window>

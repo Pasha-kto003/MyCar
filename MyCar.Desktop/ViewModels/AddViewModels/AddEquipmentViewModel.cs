@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,18 +48,20 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 {
                     if(e.NameEquipment == AddEquipmentVM.NameEquipment)
                     {
-                        SendMessage("Такая комплектация уже существует!!!");
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Такая комплектация уже существует!" });
+                        return;
                     }
                 }
-
                 if(AddEquipmentVM.NameEquipment == "")
                 {
-                    SendMessage("Введите название комплектации!!!");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите название комплектации!" });
+                    return;
                 }
 
-                if(AddEquipmentVM.MinPrice == null)
+                if (AddEquipmentVM.MinPrice == null)
                 {
-                    SendMessage("Введите цену комплектации!!!");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите цену комплектации!" });
+                    return;
                 }
 
                 if (AddEquipmentVM.ID == 0)
@@ -88,15 +91,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
         }
 
-        public void SendMessage(string message)
-        {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Ошибка!"
-            });
-            return;
-        }
+        
     }
 }

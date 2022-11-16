@@ -98,14 +98,9 @@ namespace MyCar.Server.Controllers
                         break;
                 }
 
-            if (filter == "Модель")
+            if (filter != "Все")
             {
                 CarsApi = CarsApi.Where(s => s.Model.ModelName.Contains(filter)).ToList();
-            }
-
-            if(filter == "Кузов")
-            {
-                CarsApi = CarsApi.Where(s => s.BodyType.TypeName.Contains(filter)).ToList();
             }
 
             return CarsApi.ToList();

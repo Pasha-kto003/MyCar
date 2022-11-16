@@ -120,6 +120,58 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="Кузов авто">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Background="WhiteSmoke">
+                        <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
+                            <StackPanel Margin="0 0 10 0">
+                                <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
+                                <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchTextBody, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </Grid>
+                    <DataGrid Grid.Row="1"
+                  FontSize="{StaticResource FontSizeLarge}"
+                  SelectedItem="{Binding SelectedBodyType}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding BodyTypes}"
+            >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Наименование кузова"
+                                    Binding="{Binding TypeName}"
+                                    Width="*"
+                                    />
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Редактировать" Command="{Binding EditType}"/>
+                                <MenuItem Header="Удалить" Command="{Binding DeleteType}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+
+                    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
+                        Command="{Binding AddType}"  ToolTip="Добавить">
+                                <Button.Content>
+                                    <Image Source="/Images/add.png" />
+                                </Button.Content>
+                            </Button>
+
+                        </StackPanel>
+                        <Grid/>
+                    </Grid>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

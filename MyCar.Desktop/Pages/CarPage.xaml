@@ -26,13 +26,13 @@
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
                 <StackPanel>
-                    <Label Grid.Column="1" FontSize="16" Content="Модель:"  FontFamily="Century Gothic"/>
+                    <Label Grid.Column="1" FontSize="16" Content="Фильтр:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding ModelFilter}" DisplayMemberPath="ModelName" SelectedItem="{Binding SelectedModelFilter}"/>
                 </StackPanel>
-                <StackPanel>
+                <!--<StackPanel>
                     <Label Grid.Column="1" FontSize="16" Content="Кузов:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding BodyTypeFilter}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedBodyTypeFilter}"/>
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
         </Grid>
 
@@ -44,7 +44,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="10" Background="White">
+                    <Border CornerRadius="10" Background="Transparent">
                         <Grid Width="200" Background="Transparent" MouseUp="Grid_MouseUp"  >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="100"/>

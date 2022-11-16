@@ -88,7 +88,7 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetCarList);
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Модель", "Артикул", "Марка", "Цена", "Отменить" });
+            SearchType.AddRange(new string[] { "Артикул", "Марка", "Цена", "Отменить" });
             selectedSearchType = SearchType.First();
 
 

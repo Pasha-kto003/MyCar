@@ -70,6 +70,27 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
+        private string searchTextBody = "";
+        public string SearchTextBody
+        {
+            get => searchTextBody;
+            set
+            {
+                searchTextBody = value;
+                Task.Run(SearchBodyTypes);
+            }
+        }
+        public BodyTypeApi SelectedBodyType { get; set; }
+
+        public CustomCommand AddType { get; set; }
+        public CustomCommand EditType { get; set; }
+
+        private List<BodyTypeApi> searchResultBody;
+        private List<BodyTypeApi> FullBodyTypes;
+
+        public List<BodyTypeApi> BodyTypes { get; set; } = new List<BodyTypeApi>();
+
+
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
 
         public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
@@ -105,6 +126,8 @@ namespace MyCar.Desktop.ViewModels
 
             Task.Run(GetEquipment);
 
+            Task.Run(GetBodyTypes);
+
             AddCharacteristic = new CustomCommand(() =>
             {
                 AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow();
@@ -136,6 +159,28 @@ namespace MyCar.Desktop.ViewModels
                 AddEquipmentWindow addEquipment = new AddEquipmentWindow();
                 addEquipment.ShowDialog();
                 Task.Run(GetEquipment);
+            });
+
+            AddType = new CustomCommand(() =>
+            {
+                AddBodyTypeWindow addBodyType = new AddBodyTypeWindow();
+                addBodyType.ShowDialog();
+                Task.Run(GetBodyTypes).Wait();
+            });
+
+            EditType = new CustomCommand(() =>
+            {
+                if (SelectedBodyType == null || SelectedBodyType.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран тип кузова!" });
+                    return;
+                }
+                else
+                {
+                    AddBodyTypeWindow editBodyType = new AddBodyTypeWindow(SelectedBodyType);
+                    editBodyType.ShowDialog();
+                    Task.Run(GetBodyTypes).Wait();
+                }
             });
         }
 
@@ -191,6 +236,29 @@ namespace MyCar.Desktop.ViewModels
             else
                 searchResultEquipment = await Api.SearchAsync<List<EquipmentApi>>(SelectedSearchTypeEquipment, search, "Equipment");
             UpdateListEquipment();
+        }
+
+        public async Task GetBodyTypes()
+        {
+            BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyTYpe");
+            FullBodyTypes = BodyTypes;
+            SignalChanged(nameof(BodyTypes));
+        }
+
+        public async Task UpdateListBody()
+        {
+            BodyTypes = searchResultBody;
+            SignalChanged(nameof(BodyTypes));
+        }
+
+        public async Task SearchBodyTypes()
+        {
+            var search = SearchTextBody.ToLower();
+            if (search == "")
+                searchResultBody = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
+            else
+                searchResultBody = await Api.SearchAsync<List<BodyTypeApi>>("Кузов", search, "BodyType");
+            UpdateListBody();
         }
     }
 }

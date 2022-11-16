@@ -68,15 +68,23 @@
             </DataGrid.ContextMenu>
         </DataGrid>
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-
-            <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button   Content="Зарегистрировать" Margin="0 0 5 0" Style="{StaticResource AddButton}"
-                        Command="{Binding AddUser}">
-                    </Button>
-
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Label Content="{Binding SearchCountRows}" Foreground="White"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="&lt;" Width="20" Command="{Binding BackPage}" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
+                        <Label Content="{Binding Pages}"/>
+                        <Button Content=">" Width="20" Command="{Binding ForwardPage}" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                        <Label Content="Кол-во записей на странице:" Foreground="White" FontSize="16" Height="30"/>
+                        <ComboBox IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+                    </StackPanel>
                 </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Зарегистрировать" Margin="0 0 5 0" Style="{StaticResource AddButton}"
+                        Command="{Binding AddUser}">
+                        </Button>
+                    </StackPanel>
             </Grid>
         </Grid>
-    </Grid>
 </Page>

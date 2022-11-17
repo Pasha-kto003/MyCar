@@ -40,8 +40,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     NameEquipment = equipment.NameEquipment
                 };
             }
-
-            SaveEquipment = new CustomCommand(async () =>
+            SaveEquipment = new CustomCommand( async () =>
             {
                 foreach (var e in Equipments)
                 {

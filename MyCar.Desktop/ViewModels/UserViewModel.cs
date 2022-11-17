@@ -12,7 +12,6 @@ namespace MyCar.Desktop.ViewModels
 {
     public class UserViewModel : BaseViewModel
     {
-
         public string SearchCountRows { get; set; }
 
         public List<string> ViewCountRows { get; set; }
@@ -78,7 +77,7 @@ namespace MyCar.Desktop.ViewModels
         public UserViewModel()
         {
             Task.Run(GetUserList).Wait();
-
+            
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email" });
             SelectedSearchType = SearchType.First();

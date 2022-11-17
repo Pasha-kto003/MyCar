@@ -40,9 +40,8 @@ namespace MyCar.Desktop.ViewModels
             CloseWindow = new CustomCommand(() => {
                 mWindow.Close();
             });
-
-            Login = new CustomCommand(async () => {
-
+            
+            Login = new CustomCommand(async()  => {
                 await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {
                     Task task = Task.Run(Enter);

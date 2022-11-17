@@ -101,7 +101,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand EditEquipment { get; set; }
 
         public CharacteristicViewModel()
-        {
+        { 
             Task.Run(GetCharacteristic).Wait();
 
             Task.Run(GetEquipment).Wait();
@@ -129,7 +129,7 @@ namespace MyCar.Desktop.ViewModels
 
             EditCharacteristic = new CustomCommand(() =>
             {
-                if (SelectedCharacteristic == null || SelectedCharacteristic.ID == 0)
+                if(SelectedCharacteristic == null || SelectedCharacteristic.ID == 0)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана характеристика для редактирования" });
                     return;

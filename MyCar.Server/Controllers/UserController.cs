@@ -83,10 +83,10 @@ namespace MyCar.Server.Controllers
         public async Task<ActionResult<long>> Post([FromBody] UserApi userApi)
         {
             Passport passport = new Passport();
-            passport.Id = dbContext.Passports.Count() + 1;
             passport = (Passport)userApi.Passport;
+            passport.Id = dbContext.Passports.Count() + 1;
             await dbContext.Passports.AddAsync(passport);
-            zawait dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
             User newUser = (User)userApi;
             newUser.PassportId = passport.Id;
             await dbContext.Users.AddAsync(newUser);

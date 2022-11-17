@@ -41,20 +41,7 @@ namespace MyCar.Desktop.ViewModels
                 mWindow.Close();
             });
 
-            //Registration = new CustomCommand(() =>
-            //{
-            //    RigistrationWindow rigistration = new RigistrationWindow();
-            //    rigistration.ShowDialog();
-            //});
-
             Login = new CustomCommand(async()  => {
-
-                //UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                //{
-                //    Message = "Оченььь длинное соооооб Щение 3134",
-                //    OkText = "ОК",
-                //    Title = "Ошибка!"
-                //});
 
                 await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {

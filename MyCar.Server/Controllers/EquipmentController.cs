@@ -39,17 +39,17 @@ namespace MyCar.Server.Controllers
             {
                 return dbContext.Equipment.ToList().Select(s => (EquipmentApi)s);
             }
-            else if (type == "Комплектация")
+            switch (type)
             {
-                return dbContext.Equipment.Where(s => s.NameEquipment.ToLower().Contains(text)).Select(s => (EquipmentApi)s);
-            }
-            else if (type == "Цена")
-            {
-                return dbContext.Equipment.Where(s => s.MinPrice.ToString().ToLower().Contains(text)).Select(s => (EquipmentApi)s);
-            }
-            else
-            {
-                return dbContext.Equipment.ToList().Select(s => (EquipmentApi)s);
+                case "Комплектация":
+                    return dbContext.Equipment.Where(s => s.NameEquipment.ToLower().Contains(text)).Select(s => (EquipmentApi)s);
+                    break;
+                case "Цена":
+                    return dbContext.Equipment.Where(s => s.NameEquipment.ToLower().Contains(text)).Select(s => (EquipmentApi)s);
+                    break;
+                default:
+                    return dbContext.Equipment.ToList().Select(s => (EquipmentApi)s);
+                    break;
             }
         }
 

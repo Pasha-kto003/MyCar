@@ -26,13 +26,13 @@
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
                 <StackPanel>
-                    <Label Grid.Column="1" FontSize="16" Content="Модель:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding ModelFilter}" DisplayMemberPath="ModelName" SelectedItem="{Binding SelectedModelFilter}"/>
+                    <Label Grid.Column="1" FontSize="16" Content="Фильтр:"  FontFamily="Century Gothic"/>
+                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding MarkFilter}" DisplayMemberPath="MarkName" SelectedItem="{Binding SelectedMarkFilter}"/>
                 </StackPanel>
-                <StackPanel>
+                <!--<StackPanel>
                     <Label Grid.Column="1" FontSize="16" Content="Кузов:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding BodyTypeFilter}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedBodyTypeFilter}"/>
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
         </Grid>
 
@@ -44,7 +44,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="10" Background="White">
+                    <Border CornerRadius="10" Background="Transparent">
                         <Grid Width="200" Background="Transparent" MouseUp="Grid_MouseUp"  >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="100"/>
@@ -74,10 +74,25 @@
             </ListView.ContextMenu>
         </ListView>
 
-        <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-            <StackPanel Orientation="Horizontal">
-                <Button Content="+" Margin="5 0 0 0" Style="{StaticResource AddButton}"
+        <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2">
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Label Content="{Binding SearchCountRows}" Foreground="White"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="&lt;" Width="20" Command="{Binding BackPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
+                    <Label Content="{Binding Pages}" Foreground="White"/>
+                    <Button Content=">" Width="20" Command="{Binding ForwardPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                    <Label Content="Кол-во записей на странице:" Foreground="White" FontSize="16" Height="30"/>
+                    <ComboBox IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Margin="5 0 0 0" Style="{StaticResource AddImageButton}"
                         Command="{Binding AddCar}">
+                    <Button.Content>
+                        <Image Source="/Images/add.png"/>
+                    </Button.Content>
                 </Button>
             </StackPanel>
             <Grid/>

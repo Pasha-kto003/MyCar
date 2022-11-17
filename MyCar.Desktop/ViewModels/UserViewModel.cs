@@ -12,6 +12,20 @@ namespace MyCar.Desktop.ViewModels
 {
     public class UserViewModel : BaseViewModel
     {
+        public string SearchCountRows { get; set; }
+
+        public List<string> ViewCountRows { get; set; }
+        public string SelectedViewCountRows
+        {
+            get => selectedViewCountRows;
+            set
+            {
+                selectedViewCountRows = value;
+                paginationPageIndex = 0;
+                Pagination();
+            }
+        }
+
         private string searchText = "";
         public string SearchText
         {
@@ -22,7 +36,6 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(Search);
             }
         }
-
         public List<UserTypeApi> UserTypeFilter { get; set; }
 
         private UserTypeApi selectedUserTypeFilter;
@@ -37,15 +50,8 @@ namespace MyCar.Desktop.ViewModels
         }
 
         public List<string> SearchType { get; set; }
-        private string selectedSearchType;
-        public string SelectedSearchType
-        {
-            get => selectedSearchType;
-            set
-            {
-                selectedSearchType = value;
-            }
-        }
+
+        public string SelectedSearchType { get; set; }
 
         private List<UserApi> searchResult;
         private List<UserApi> FullUsers;
@@ -53,19 +59,57 @@ namespace MyCar.Desktop.ViewModels
         public List<UserTypeApi> UserTypes { get; set; } = new List<UserTypeApi>();
         public List<PassportApi> Passports { get; set; } = new List<PassportApi>();
         public List<UserApi> Users { get; set; } = new List<UserApi>();
-        public UserApi SelectedUser { get; set; }   
+        public UserApi SelectedUser { get; set; }
 
-       
+        int paginationPageIndex = 0;
+        private string searchCountRows;
+        private string selectedViewCountRows;
+        public int rows = 0;
+        public int CountPages = 0;
+        public string Pages { get; set; }
+
         public CustomCommand AddUser { get; set; }
-
         public CustomCommand EditUser { get; set; }
+
+        public CustomCommand BackPage { get; set; }
+        public CustomCommand ForwardPage { get; set; }
+
         public UserViewModel()
         {
-            Task.Run(GetUserList);
- 
+            Task.Run(GetUserList).Wait();
+            
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email"});
-            selectedSearchType = SearchType.First();
+            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email" });
+            SelectedSearchType = SearchType.First();
+
+            ViewCountRows = new List<string>();
+            ViewCountRows.AddRange(new string[] { "5", "Все" });
+            selectedViewCountRows = ViewCountRows.Last();
+
+            BackPage = new CustomCommand(() => {
+                if (searchResult == null)
+                    return;
+                if (paginationPageIndex > 0)
+                    paginationPageIndex--;
+                Pagination();
+
+            });
+
+            ForwardPage = new CustomCommand(() =>
+            {
+                if (searchResult == null)
+                    return;
+                int.TryParse(SelectedViewCountRows, out int rowsOnPage);
+                if (rowsOnPage == 0)
+                    return;
+                int countPage = searchResult.Count / rowsOnPage;
+                CountPages = countPage;
+                if (searchResult.Count() % rowsOnPage != 0)
+                    countPage++;
+                if (countPage > paginationPageIndex + 1)
+                    paginationPageIndex++;
+                Pagination();
+            });
 
             AddUser = new CustomCommand(() =>
             {
@@ -89,6 +133,8 @@ namespace MyCar.Desktop.ViewModels
             else
                 searchResult = await Api.SearchFilterAsync<List<UserApi>>(SelectedSearchType, search, "User", SelectedUserTypeFilter.TypeName);
             UpdateList();
+            InitPagination();
+            Pagination();
         }
         private void UpdateList()
         {
@@ -105,8 +151,34 @@ namespace MyCar.Desktop.ViewModels
             SelectedUserTypeFilter = UserTypeFilter.Last();
             Passports = await Api.GetListAsync<List<PassportApi>>("Passport");
             FullUsers = Users;
-            SignalChanged(nameof(Users));
+            searchResult = Users;
+            InitPagination();
+            Pagination();
         }
 
+        public void InitPagination()
+        {
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {FullUsers.Count()}";
+            paginationPageIndex = 0;
+        }
+
+        public void Pagination()
+        {
+            int rowsOnPage = 0;
+            if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
+            {
+                Users = searchResult;
+            }
+            else
+            {
+                Users = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
+                SignalChanged(nameof(Users));
+            }
+            int.TryParse(SelectedViewCountRows, out rows);
+            if (rows == 0)
+                rows = FullUsers.Count;
+            CountPages = (searchResult.Count() - 1) / rows;
+            Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
+        }
     }
 }

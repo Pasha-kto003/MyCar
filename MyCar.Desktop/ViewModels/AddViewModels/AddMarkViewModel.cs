@@ -98,7 +98,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 foreach (var mark in Marks)
                 {
-                    if (mark.MarkName == AddMark.MarkName)
+                    if (mark.MarkName == AddMark.MarkName && mark.ID == 0)
                     {
                         UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Такая марка уже существует!" });
                         return;

@@ -4,6 +4,7 @@ using MyCar.Desktop.Core.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,6 +18,7 @@ namespace MyCar.Desktop.ViewModels
         public List<UserTypeApi> UserTypes { get; set; }
 
         public UserApi EditUser { get; set; }
+        public PassportApi EditPassport { get; set; }
 
         public CustomCommand Save { get; set; }
         public CustomCommand Cancel { get; set; }
@@ -30,6 +32,8 @@ namespace MyCar.Desktop.ViewModels
             if (editUser == null)
             {
                 EditUser = new UserApi {UserTypeId = 1 };
+                EditUser.Passport = new PassportApi();
+                //EditPassport = new PassportApi(); mb
             }
             else
             {
@@ -54,6 +58,8 @@ namespace MyCar.Desktop.ViewModels
                     Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
                     EditUser.PasswordHash = passwordHash;
                     EditUser.SaltHash = passwordSalt;
+
+                    
                     CreateUser(EditUser);
                 }
                 else
@@ -71,6 +77,7 @@ namespace MyCar.Desktop.ViewModels
 
         private async Task CreateUser(UserApi userApi)
         {
+            userApi.Passport = EditUser.Passport;
             var user = await Api.PostAsync<UserApi>(userApi, "User");
         }
 

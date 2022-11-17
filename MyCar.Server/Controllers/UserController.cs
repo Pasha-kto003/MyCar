@@ -84,8 +84,9 @@ namespace MyCar.Server.Controllers
         {
             Passport passport = new Passport();
             passport.Id = dbContext.Passports.Count() + 1;
+            passport = (Passport)userApi.Passport;
             await dbContext.Passports.AddAsync(passport);
-            await dbContext.SaveChangesAsync();
+            zawait dbContext.SaveChangesAsync();
             User newUser = (User)userApi;
             newUser.PassportId = passport.Id;
             await dbContext.Users.AddAsync(newUser);

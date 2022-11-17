@@ -41,9 +41,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 };
             }
 
-            SaveEquipment = new CustomCommand(async () =>
+            SaveEquipment = new CustomCommand( async () =>
             {
-
                 foreach (var e in Equipments)
                 {
                     if(e.NameEquipment == AddEquipmentVM.NameEquipment)
@@ -57,21 +56,19 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите название комплектации!" });
                     return;
                 }
-
                 //if (AddEquipmentVM.MinPrice == null)
                 //{
                 //    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите цену комплектации!" });
                 //    return;
                 //}
+
                 if (AddEquipmentVM.ID == 0)
                 {
-                   Task task = Add(AddEquipmentVM); 
-                    await task;
+                    await Add(AddEquipmentVM); 
                 }
                 else
                 {
-                    Task task = Edit(AddEquipmentVM);
-                    await task;
+                    await Edit(AddEquipmentVM);
                 }           
                 UIManager.CloseWindow(this);
             });

@@ -100,46 +100,49 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand EditEquipment { get; set; }
 
         public CharacteristicViewModel()
-        {
+        { 
+            Task.Run(GetCharacteristic).Wait();
+
+            Task.Run(GetEquipment).Wait();
+
+            Task.Run(GetBodyTypes).Wait();
+
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Характеристика"});
             SelectedSearchType = SearchType.First();
 
             SearchTypeEquipment = new List<string>();
             SearchTypeEquipment.AddRange(new string[] { "Комплектация", "Цена" });
-            SelectedSearchTypeEquipment = SearchTypeEquipment.First(); 
+            SelectedSearchTypeEquipment = SearchTypeEquipment.First();
 
-            Task.Run(GetCharacteristic);
-
-            Task.Run(GetEquipment);
-
-            Task.Run(GetBodyTypes);
+            UnitFilter = Units;
+            UnitFilter.Add(new UnitApi { UnitName = "Все" });
+            SelectedUnitFilter = UnitFilter.Last();
 
             AddCharacteristic = new CustomCommand(() =>
             {
                 AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow();
                 addCharacteristic.ShowDialog();
-                Task.Run(GetCharacteristic);
+                Task.Run(GetCharacteristic).Wait();
             });
 
             EditCharacteristic = new CustomCommand(() =>
             {
-                if(SelectedCharacteristic == null)
+                if(SelectedCharacteristic == null || SelectedCharacteristic.ID == 0)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана характеристика для редактирования" });
                     return;
                 }
                 AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow(SelectedCharacteristic);
                 addCharacteristic.ShowDialog();
-                Task.Run(GetCharacteristic);
+                Task.Run(GetCharacteristic).Wait();
             });
 
             AddEquipment = new CustomCommand(() =>
             {
                 AddEquipmentWindow equipmentWindow = new AddEquipmentWindow();
                 equipmentWindow.ShowDialog();
-                Task.Run(GetEquipment);
-                UpdateListEquipment();
+                Task.Run(GetEquipment).Wait();
             });
 
             EditEquipment = new CustomCommand(() =>
@@ -151,8 +154,7 @@ namespace MyCar.Desktop.ViewModels
                 }
                 AddEquipmentWindow addEquipment = new AddEquipmentWindow(SelectedEquipment);
                 addEquipment.ShowDialog();
-                Task.Run(GetEquipment);
-                UpdateListEquipment();
+                Task.Run(GetEquipment).Wait();
             });
 
             AddType = new CustomCommand(() =>
@@ -181,16 +183,9 @@ namespace MyCar.Desktop.ViewModels
         #region Characteristic
         private async Task GetCharacteristic()
         {
-            UnitFilter = Units;
-            UnitFilter.Add(new UnitApi { UnitName = "Все" });
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
             FullTypes = Characteristics;
-
-            UnitFilter = Units;
-            UnitFilter.Add(new UnitApi { UnitName = "Все" });
-
-            SelectedUnitFilter = UnitFilter.Last();
             SignalChanged(nameof(Characteristics));
         }
         private void UpdateList()

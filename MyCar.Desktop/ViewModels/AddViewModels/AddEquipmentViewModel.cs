@@ -40,18 +40,17 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     NameEquipment = equipment.NameEquipment
                 };
             }
-
             SaveEquipment = new CustomCommand( async () =>
             {
                 foreach (var e in Equipments)
                 {
-                    if(e.NameEquipment == AddEquipmentVM.NameEquipment)
+                    if (e.NameEquipment == AddEquipmentVM.NameEquipment)
                     {
                         UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Такая комплектация уже существует!" });
                         return;
                     }
                 }
-                if(AddEquipmentVM.NameEquipment == "")
+                if (AddEquipmentVM.NameEquipment == "")
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите название комплектации!" });
                     return;
@@ -64,12 +63,12 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
                 if (AddEquipmentVM.ID == 0)
                 {
-                    await Add(AddEquipmentVM); 
+                    await Add(AddEquipmentVM);
                 }
                 else
                 {
                     await Edit(AddEquipmentVM);
-                }           
+                }
                 UIManager.CloseWindow(this);
             });
             Cancel = new CustomCommand(() =>
@@ -93,6 +92,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
         }
 
-        
+
     }
 }

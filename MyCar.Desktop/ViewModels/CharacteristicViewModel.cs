@@ -96,6 +96,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand EditType { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand EditCharacteristic { get; set; }
+        public CustomCommand AddUnit { get; set; }
         public CustomCommand AddEquipment { get; set; }
         public CustomCommand EditEquipment { get; set; }
 
@@ -108,7 +109,7 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetBodyTypes).Wait();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Характеристика"});
+            SearchType.AddRange(new string[] { "Характеристика" });
             SelectedSearchType = SearchType.First();
 
             SearchTypeEquipment = new List<string>();
@@ -135,6 +136,13 @@ namespace MyCar.Desktop.ViewModels
                 }
                 AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow(SelectedCharacteristic);
                 addCharacteristic.ShowDialog();
+                Task.Run(GetCharacteristic).Wait();
+            });
+
+            AddUnit = new CustomCommand(() =>
+            {
+                AddUnitWindow addUnit = new AddUnitWindow();
+                addUnit.ShowDialog();
                 Task.Run(GetCharacteristic).Wait();
             });
 
@@ -199,7 +207,7 @@ namespace MyCar.Desktop.ViewModels
             if (search == "")
                 searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, "$", "Characteristic", SelectedUnitFilter.UnitName);
             else
-                searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic",SelectedUnitFilter.UnitName);
+                searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic", SelectedUnitFilter.UnitName);
             UpdateList();
         }
         #endregion

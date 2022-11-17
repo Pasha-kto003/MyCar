@@ -28,7 +28,7 @@ namespace MyCar.Desktop.ViewModels
         public UserApi User { get; set; }
         private int ErrorCount { get; set; }
 
-        public CustomCommand CloseWindow { get ; set; }
+        public CustomCommand CloseWindow { get; set; }
         public CustomCommand Login { get; set; }
         public CustomCommand Registration { get; set; }
 
@@ -40,9 +40,8 @@ namespace MyCar.Desktop.ViewModels
             CloseWindow = new CustomCommand(() => {
                 mWindow.Close();
             });
-
+            
             Login = new CustomCommand(async()  => {
-
                 await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {
                     Task task = Task.Run(Enter);
@@ -71,7 +70,7 @@ namespace MyCar.Desktop.ViewModels
                 Password = "";
                 UserName = "";
             }
-                
+
         }
 
     }

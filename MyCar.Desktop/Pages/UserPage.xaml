@@ -68,6 +68,17 @@
             </DataGrid.ContextMenu>
         </DataGrid>
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Label Content="{Binding SearchCountRows}" Foreground="White"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="&lt;" Width="20" Command="{Binding BackPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
+                        <Label Content="{Binding Pages}" Foreground="White"/>
+                        <Button Content=">" Width="20" Command="{Binding ForwardPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                        <Label Content="Кол-во записей на странице:" Foreground="White" FontSize="16" Height="30"/>
+                        <ComboBox IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+                    </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Horizontal">
 
                 <Label Content="{Binding SearchCountRows}" Foreground="White" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -77,7 +88,6 @@
                     <Button FontSize="16" Content="&lt;" Foreground="White" Width="20" Command="{Binding BackPage}" Style="{StaticResource RegularButton}" Padding="0 10"/>
                     <Label FontSize="16" Content="{Binding Pages}" Foreground="White" VerticalAlignment="Center"/>
                     <Button  FontSize="16" Content=">" Foreground="White" Width="20" Command="{Binding ForwardPage}"  Style="{StaticResource RegularButton}" Padding="0 10"/>
-
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">

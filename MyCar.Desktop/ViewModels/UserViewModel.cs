@@ -79,7 +79,7 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetUserList).Wait();
             
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email"});
+            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email" });
             SelectedSearchType = SearchType.First();
 
             ViewCountRows = new List<string>();

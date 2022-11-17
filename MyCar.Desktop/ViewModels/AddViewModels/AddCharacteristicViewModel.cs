@@ -22,10 +22,12 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand SaveCharacteristic { get; set; }
         public CustomCommand Cancel { get; set; }
 
+        public CustomCommand EditUnit { get; set; }
+
         public AddCharacteristicViewModel(CharacteristicApi characteristic)
         {
            Task.Run(GetList).Wait();
-
+           
             if (characteristic == null)
             {
                 AddCharacteristicVM = new CharacteristicApi();
@@ -46,6 +48,22 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 UIManager.CloseWindow(this);
             });
+
+            EditUnit = new CustomCommand(() =>
+            {
+                if(SelectedUnit == null || SelectedUnit.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана ед. измерения!" });
+                    return;
+                }
+                else
+                {
+                    AddUnitWindow addUnit = new AddUnitWindow(SelectedUnit);
+                    addUnit.ShowDialog();
+                    Task.Run(GetList).Wait();
+                }
+            });
+            
             SaveCharacteristic = new CustomCommand(async () =>
             {
                 if (SelectedUnit == null || SelectedUnit.ID == 0)
@@ -74,7 +92,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         private async Task EditCharacteristic(CharacteristicApi characteristic)
         {
-            var characteristics = await Api.PutAsync<CharacteristicApi>(characteristic, "Characteristic");
+            var characteristics = await Api.PostAsync<CharacteristicApi>(characteristic, "Characteristic");
         }
 
         private async Task GetList()

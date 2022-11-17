@@ -24,7 +24,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public AddEquipmentViewModel(EquipmentApi equipment)
         {
 
-            Task.Run(Get);
+            Task.Run(Get).Wait();
 
             if (equipment == null)
             {
@@ -41,38 +41,40 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 };
             }
 
-            SaveEquipment = new CustomCommand(() =>
+            SaveEquipment = new CustomCommand(async () =>
             {
-
                 foreach (var e in Equipments)
                 {
-                    if(e.NameEquipment == AddEquipmentVM.NameEquipment)
+                    if (e.NameEquipment == AddEquipmentVM.NameEquipment)
                     {
                         UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Такая комплектация уже существует!" });
                         return;
                     }
                 }
-                if(AddEquipmentVM.NameEquipment == "")
+                if (AddEquipmentVM.NameEquipment == "")
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите название комплектации!" });
                     return;
                 }
-
-                if (AddEquipmentVM.MinPrice == null)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите цену комплектации!" });
-                    return;
-                }
+                //if (AddEquipmentVM.MinPrice == null)
+                //{
+                //    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Введите цену комплектации!" });
+                //    return;
+                //}
 
                 if (AddEquipmentVM.ID == 0)
                 {
-                    Add(AddEquipmentVM);
+                    await Add(AddEquipmentVM);
                 }
-
                 else
                 {
-                    Edit(AddEquipmentVM);
+                    await Edit(AddEquipmentVM);
                 }
+                UIManager.CloseWindow(this);
+            });
+            Cancel = new CustomCommand(() =>
+            {
+                UIManager.CloseWindow(this);
             });
         }
 
@@ -91,6 +93,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
         }
 
-        
+
     }
 }

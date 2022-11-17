@@ -28,7 +28,7 @@ namespace MyCar.Desktop.ViewModels
         public UserApi User { get; set; }
         private int ErrorCount { get; set; }
 
-        public CustomCommand CloseWindow { get ; set; }
+        public CustomCommand CloseWindow { get; set; }
         public CustomCommand Login { get; set; }
         public CustomCommand Registration { get; set; }
 
@@ -41,20 +41,7 @@ namespace MyCar.Desktop.ViewModels
                 mWindow.Close();
             });
 
-            //Registration = new CustomCommand(() =>
-            //{
-            //    RigistrationWindow rigistration = new RigistrationWindow();
-            //    rigistration.ShowDialog();
-            //});
-
-            Login = new CustomCommand(async()  => {
-
-                //UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-                //{
-                //    Message = "Оченььь длинное соооооб Щение 3134",
-                //    OkText = "ОК",
-                //    Title = "Ошибка!"
-                //});
+            Login = new CustomCommand(async () => {
 
                 await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {
@@ -84,7 +71,7 @@ namespace MyCar.Desktop.ViewModels
                 Password = "";
                 UserName = "";
             }
-                
+
         }
 
     }

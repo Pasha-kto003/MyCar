@@ -122,7 +122,7 @@
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                         <Label Content="Конфигурация авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
-                    <Label Grid.Row="11" Margin="0 0 0 0" Content="Конфигурация" FontSize="16" HorizontalAlignment="Left" Width="130"/>
+                    <Label Grid.Row="11" Content="Конфигурация" FontSize="16" HorizontalAlignment="Left" Width="130"/>
                     <ComboBox ItemsSource="{Binding Equipments}" SelectedItem="{Binding SelectedEquipment}" DisplayMemberPath="NameEquipment" Grid.Row="11" HorizontalAlignment="Center" Width="150" FontSize="15" Height="30"/>
                     <TextBox Text="{Binding SelectedEquipment.MinPrice}" Width="150" Tag="Цена конфигурации" HorizontalAlignment="Right" Grid.Row="11" Height="30"/>
                 </Grid>

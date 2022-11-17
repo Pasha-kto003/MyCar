@@ -82,11 +82,8 @@ namespace MyCar.Server.Controllers
 
                         CarsApi = CarsApi.Where(s => s.Articul.ToLower().Contains(text)).ToList();
                         break;
-                    case "Марка":
-                        return dbContext.Cars.Where(s => s.Model.Mark.MarkName.ToLower().Contains(text)).ToList().Select(s =>
-                        {
-                            return GetCar(s);
-                        });
+                    case "Модель":
+                        CarsApi = CarsApi.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList();
                         break;
 
                     case "Цена":
@@ -100,7 +97,8 @@ namespace MyCar.Server.Controllers
 
             if (filter != "Все")
             {
-                CarsApi = CarsApi.Where(s => s.Model.ModelName.Contains(filter)).ToList();
+                int id = dbContext.MarkCars.FirstOrDefault(s=> s.MarkName.ToLower().Contains(filter)).Id;
+                CarsApi = CarsApi.Where(s => s.Model.MarkId == id);
             }
 
             return CarsApi.ToList();

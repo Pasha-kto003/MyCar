@@ -13,15 +13,7 @@ namespace MyCar.Desktop.ViewModels
     public class UserViewModel : BaseViewModel
     {
 
-        public string SearchCountRows
-        {
-            get => searchCountRows;
-            set
-            {
-                searchCountRows = value;
-                SignalChanged();
-            }
-        }
+        public string SearchCountRows { get; set; }
 
         public List<string> ViewCountRows { get; set; }
         public string SelectedViewCountRows
@@ -45,7 +37,6 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(Search);
             }
         }
-
         public List<UserTypeApi> UserTypeFilter { get; set; }
 
         private UserTypeApi selectedUserTypeFilter;
@@ -60,15 +51,8 @@ namespace MyCar.Desktop.ViewModels
         }
 
         public List<string> SearchType { get; set; }
-        private string selectedSearchType;
-        public string SelectedSearchType
-        {
-            get => selectedSearchType;
-            set
-            {
-                selectedSearchType = value;
-            }
-        }
+
+        public string SelectedSearchType { get; set; }
 
         private List<UserApi> searchResult;
         private List<UserApi> FullUsers;
@@ -83,17 +67,7 @@ namespace MyCar.Desktop.ViewModels
         private string selectedViewCountRows;
         public int rows = 0;
         public int CountPages = 0;
-
-        private string pages;
-        public string Pages
-        {
-            get => pages;
-            set
-            {
-                pages = value;
-                SignalChanged();
-            }
-        }
+        public string Pages { get; set; }
 
         public CustomCommand AddUser { get; set; }
         public CustomCommand EditUser { get; set; }
@@ -103,14 +77,14 @@ namespace MyCar.Desktop.ViewModels
 
         public UserViewModel()
         {
-            Task.Run(GetUserList);
- 
+            Task.Run(GetUserList).Wait();
+
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email"});
-            selectedSearchType = SearchType.First();
+            SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email" });
+            SelectedSearchType = SearchType.First();
 
             ViewCountRows = new List<string>();
-            ViewCountRows.AddRange(new string[] { "5", "все" });
+            ViewCountRows.AddRange(new string[] { "5", "Все" });
             selectedViewCountRows = ViewCountRows.Last();
 
             BackPage = new CustomCommand(() => {
@@ -150,10 +124,6 @@ namespace MyCar.Desktop.ViewModels
                 AddUser edituser = new AddUser(SelectedUser);
                 edituser.ShowDialog();
             });
-
-            searchResult = Users;
-            InitPagination();
-            Pagination();
         }
 
         public async Task Search()
@@ -182,13 +152,14 @@ namespace MyCar.Desktop.ViewModels
             SelectedUserTypeFilter = UserTypeFilter.Last();
             Passports = await Api.GetListAsync<List<PassportApi>>("Passport");
             FullUsers = Users;
-            SignalChanged(nameof(Users));
+            searchResult = Users;
             InitPagination();
+            Pagination();
         }
 
         public void InitPagination()
         {
-            SearchCountRows = $"Найдено записей: {searchResult.Count} из {Users.Count()}";
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {FullUsers.Count()}";
             paginationPageIndex = 0;
         }
 
@@ -203,10 +174,12 @@ namespace MyCar.Desktop.ViewModels
             {
                 Users = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
                 SignalChanged(nameof(Users));
-                int.TryParse(SelectedViewCountRows, out rows);
-                CountPages = (searchResult.Count() - 1) / rows;
-                Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
             }
+            int.TryParse(SelectedViewCountRows, out rows);
+            if (rows == 0)
+                rows = FullUsers.Count;
+            CountPages = (searchResult.Count() - 1) / rows;
+            Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
         }
     }
 }

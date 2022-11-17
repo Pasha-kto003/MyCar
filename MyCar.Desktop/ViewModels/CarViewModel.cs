@@ -1,5 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,27 @@ namespace MyCar.Desktop.ViewModels
     public class CarViewModel : BaseViewModel
     {
 
-        private ModelApi selectedModelFilter;
-        public ModelApi SelectedModelFilter
+        public string SearchCountRows { get; set; }
+
+        public List<string> ViewCountRows { get; set; }
+        public string SelectedViewCountRows
         {
-            get => selectedModelFilter;
+            get => selectedViewCountRows;
             set
             {
-                selectedModelFilter = value;
+                selectedViewCountRows = value;
+                paginationPageIndex = 0;
+                Pagination();
+            }
+        }
+
+        private MarkCarApi selectedMarkFilter;
+        public MarkCarApi SelectedMarkFilter
+        {
+            get => selectedMarkFilter;
+            set
+            {
+                selectedMarkFilter = value;
                 Search();
             }
         }
@@ -69,16 +85,27 @@ namespace MyCar.Desktop.ViewModels
 
         public List<CarApi> Cars { get; set; } = new List<CarApi>();
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
-        public List<ModelApi> ModelFilter { get; set; }
+        public List<MarkCarApi> MarkFilter { get; set; }
         public List<MarkCarApi> MarkCars { get; set; } = new List<MarkCarApi>();
         public List<BodyTypeApi> BodyTypes { get; set; } = new List<BodyTypeApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
         public List<CharacteristicCarApi> CharacteristicCars { get; set; } = new List<CharacteristicCarApi>();
         public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
 
+        int paginationPageIndex = 0;
+        private string searchCountRows;
+        private string selectedViewCountRows;
+        public int rows = 0;
+        public int CountPages = 0;
+        public string Pages { get; set; }
+
+
         public CustomCommand EditCar { get; set; }
         public CustomCommand DeleteCar { get; set; }
         public CustomCommand AddCar { get; set; }
+
+        public CustomCommand BackPage { get; set; }
+        public CustomCommand ForwardPage { get; set; }
 
         private List<CarApi> searchResult;
         private List<CarApi> FullCars;
@@ -88,9 +115,37 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetCarList);
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Артикул", "Марка", "Цена", "Отменить" });
+            SearchType.AddRange(new string[] { "Артикул", "Модель", "Цена", "Отменить" });
             selectedSearchType = SearchType.First();
 
+            ViewCountRows = new List<string>();
+            ViewCountRows.AddRange(new string[] { "5", "Все" });
+            selectedViewCountRows = ViewCountRows.Last();
+
+            BackPage = new CustomCommand(() => {
+                if (searchResult == null)
+                    return;
+                if (paginationPageIndex > 0)
+                    paginationPageIndex--;
+                Pagination();
+
+            });
+
+            ForwardPage = new CustomCommand(() =>
+            {
+                if (searchResult == null)
+                    return;
+                int.TryParse(SelectedViewCountRows, out int rowsOnPage);
+                if (rowsOnPage == 0)
+                    return;
+                int countPage = searchResult.Count / rowsOnPage;
+                CountPages = countPage;
+                if (searchResult.Count() % rowsOnPage != 0)
+                    countPage++;
+                if (countPage > paginationPageIndex + 1)
+                    paginationPageIndex++;
+                Pagination();
+            });
 
             AddCar = new CustomCommand(() =>
             {
@@ -101,6 +156,11 @@ namespace MyCar.Desktop.ViewModels
 
             EditCar = new CustomCommand(() =>
             {
+                if(SelectedCar == null || SelectedCar.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран автомобиль для редактирования" });
+                    return;
+                }
                 AddCarWindow window = new AddCarWindow(SelectedCar);
                 window.ShowDialog();
                 GetCarList();
@@ -117,10 +177,12 @@ namespace MyCar.Desktop.ViewModels
         {
             var search = SearchText.ToLower();
             if (search == "")
-                searchResult = await Api.SearchFilterAsync<List<CarApi>>(SelectedSearchType, "$", "Car", SelectedModelFilter.ModelName);
+                searchResult = await Api.SearchFilterAsync<List<CarApi>>(SelectedSearchType, "$", "Car", SelectedMarkFilter.MarkName);
             else
-                searchResult = await Api.SearchFilterAsync<List<CarApi>>(SelectedSearchType, search, "Car", SelectedModelFilter.ModelName);
+                searchResult = await Api.SearchFilterAsync<List<CarApi>>(SelectedSearchType, search, "Car", SelectedMarkFilter.MarkName);
             UpdateList();
+            InitPagination();
+            Pagination();
         }
 
         private async Task GetCarList()
@@ -132,13 +194,40 @@ namespace MyCar.Desktop.ViewModels
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
-
-            ModelFilter = await Api.GetListAsync<List<ModelApi>>("Model");
-            ModelFilter.Add(new ModelApi { ModelName = "Все" });
-            SelectedModelFilter = ModelFilter.Last();
+            SignalChanged(nameof(Cars));
+            MarkFilter = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            MarkFilter.Add(new MarkCarApi { MarkName = "Все" });
+            SelectedMarkFilter = MarkFilter.Last();
 
             FullCars = Cars;
-            SignalChanged(nameof(Cars));
+            searchResult = Cars;
+            InitPagination();
+            Pagination();
+        }
+
+        public void InitPagination()
+        {
+            SearchCountRows = $"Найдено записей: {searchResult.Count} из {FullCars.Count()}";
+            paginationPageIndex = 0;
+        }
+
+        public void Pagination()
+        {
+            int rowsOnPage = 0;
+            if (!int.TryParse(SelectedViewCountRows, out rowsOnPage))
+            {
+                Cars = searchResult;
+            }
+            else
+            {
+                Cars = searchResult.Skip(rowsOnPage * paginationPageIndex).Take(rowsOnPage).ToList();
+                SignalChanged(nameof(Cars));
+            }
+            int.TryParse(SelectedViewCountRows, out rows);
+            if (rows == 0)
+                rows = FullCars.Count;
+            CountPages = (searchResult.Count() - 1) / rows;
+            Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
         }
     }
 }

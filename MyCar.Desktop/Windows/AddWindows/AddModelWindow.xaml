@@ -21,7 +21,7 @@
                 </StackPanel>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
                     <Label Content="Марка" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
-                    <ComboBox ItemsSource="{Binding Marks}" SelectedItem="{Binding SelectedMark}" DisplayMemberPath="MarkName" IsEditable="True"/>
+                    <ComboBox ItemsSource="{Binding Marks}" SelectedItem="{Binding SelectedMark}" DisplayMemberPath="MarkName" FontSize="16" IsEditable="True"/>
                 </StackPanel>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>

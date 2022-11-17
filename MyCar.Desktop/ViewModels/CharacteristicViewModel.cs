@@ -13,6 +13,7 @@ namespace MyCar.Desktop.ViewModels
 {
     public class CharacteristicViewModel : BaseViewModel
     {
+        #region CharacteristicProperties
         public List<UnitApi> UnitFilter { get; set; }
 
         private UnitApi selectedUnitFilter;
@@ -36,6 +37,21 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(Search);
             }
         }
+        public List<string> SearchType { get; set; }
+        public string SelectedSearchType { get; set; }
+
+        public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
+        public List<UnitApi> Units { get; set; } = new List<UnitApi>();
+
+        public CharacteristicApi SelectedCharacteristic { get; set; }
+        public UnitApi SelectedUnit { get; set; }
+
+        private List<CharacteristicApi> searchResult;
+
+        private List<CharacteristicApi> FullTypes;
+        #endregion
+
+        #region EqupmentProperties
 
         private string searchTextEquipment = "";
         public string SearchTextEquipment
@@ -47,29 +63,17 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(SearchEquipment);
             }
         }
-
-        public List<string> SearchType { get; set; }
-        private string selectedSearchType;
-        public string SelectedSearchType
-        {
-            get => selectedSearchType;
-            set
-            {
-                selectedSearchType = value;
-            }
-        }
-
         public List<string> SearchTypeEquipment { get; set; }
-        private string selectedSearchTypeEquipment;
-        public string SelectedSearchTypeEquipment
-        {
-            get => selectedSearchTypeEquipment;
-            set
-            {
-                selectedSearchTypeEquipment = value;
-            }
-        }
+        public string SelectedSearchTypeEquipment { get; set; }
 
+        public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
+        public EquipmentApi SelectedEquipment { get; set; }
+
+        private List<EquipmentApi> FullEquipments;
+        private List<EquipmentApi> searchResultEquipment;
+        #endregion
+
+        #region BodyTypeProperties
         private string searchTextBody = "";
         public string SearchTextBody
         {
@@ -80,47 +84,30 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(SearchBodyTypes);
             }
         }
-        public BodyTypeApi SelectedBodyType { get; set; }
-
-        public CustomCommand AddType { get; set; }
-        public CustomCommand EditType { get; set; }
 
         private List<BodyTypeApi> searchResultBody;
         private List<BodyTypeApi> FullBodyTypes;
 
         public List<BodyTypeApi> BodyTypes { get; set; } = new List<BodyTypeApi>();
+        public BodyTypeApi SelectedBodyType { get; set; }
+        #endregion
 
-
-        public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
-
-        public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
-        public List<UnitApi> Units { get; set; } = new List<UnitApi>();
-
-        public CharacteristicApi SelectedCharacteristic { get; set; }
-        public UnitApi SelectedUnit { get; set; }
-        public EquipmentApi SelectedEquipment { get; set; }
-
+        public CustomCommand AddType { get; set; }
+        public CustomCommand EditType { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand EditCharacteristic { get; set; }
-
         public CustomCommand AddEquipment { get; set; }
         public CustomCommand EditEquipment { get; set; }
-
-        private List<CharacteristicApi> searchResult;
-        private List<CharacteristicApi> FullTypes;
-
-        private List<EquipmentApi> FullEquipments;
-        private List<EquipmentApi> searchResultEquipment;
 
         public CharacteristicViewModel()
         {
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Характеристика"});
-            selectedSearchType = SearchType.First();
+            SelectedSearchType = SearchType.First();
 
             SearchTypeEquipment = new List<string>();
             SearchTypeEquipment.AddRange(new string[] { "Комплектация", "Цена" });
-            selectedSearchTypeEquipment = SearchTypeEquipment.First(); 
+            SelectedSearchTypeEquipment = SearchTypeEquipment.First(); 
 
             Task.Run(GetCharacteristic);
 
@@ -152,13 +139,20 @@ namespace MyCar.Desktop.ViewModels
                 AddEquipmentWindow equipmentWindow = new AddEquipmentWindow();
                 equipmentWindow.ShowDialog();
                 Task.Run(GetEquipment);
+                UpdateListEquipment();
             });
 
             EditEquipment = new CustomCommand(() =>
             {
-                AddEquipmentWindow addEquipment = new AddEquipmentWindow();
+                if (SelectedEquipment == null || SelectedEquipment.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана комплектация для редактирования" });
+                    return;
+                }
+                AddEquipmentWindow addEquipment = new AddEquipmentWindow(SelectedEquipment);
                 addEquipment.ShowDialog();
                 Task.Run(GetEquipment);
+                UpdateListEquipment();
             });
 
             AddType = new CustomCommand(() =>
@@ -184,6 +178,7 @@ namespace MyCar.Desktop.ViewModels
             });
         }
 
+        #region Characteristic
         private async Task GetCharacteristic()
         {
             UnitFilter = Units;
@@ -198,26 +193,11 @@ namespace MyCar.Desktop.ViewModels
             SelectedUnitFilter = UnitFilter.Last();
             SignalChanged(nameof(Characteristics));
         }
-
-        private async Task GetEquipment()
-        {
-            Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
-            FullEquipments = Equipments;
-            SignalChanged(nameof(Equipments));
-        }
-
-        public async Task UpdateList()
+        private void UpdateList()
         {
             Characteristics = searchResult;
             SignalChanged(nameof(Characteristics));
         }
-
-        public async Task UpdateListEquipment()
-        {
-            Equipments = searchResultEquipment;
-            SignalChanged(nameof(Equipments));
-        }
-
         private async Task Search()
         {
             var search = SearchText.ToLower();
@@ -226,6 +206,20 @@ namespace MyCar.Desktop.ViewModels
             else
                 searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic",SelectedUnitFilter.UnitName);
             UpdateList();
+        }
+        #endregion
+
+        #region Equipment
+        private async Task GetEquipment()
+        {
+            Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
+            FullEquipments = Equipments;
+            SignalChanged(nameof(Equipments));
+        }
+        private void UpdateListEquipment()
+        {
+            Equipments = searchResultEquipment;
+            SignalChanged(nameof(Equipments));
         }
 
         private async Task SearchEquipment()
@@ -237,7 +231,9 @@ namespace MyCar.Desktop.ViewModels
                 searchResultEquipment = await Api.SearchAsync<List<EquipmentApi>>(SelectedSearchTypeEquipment, search, "Equipment");
             UpdateListEquipment();
         }
+        #endregion
 
+        #region BodyTypes
         public async Task GetBodyTypes()
         {
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyTYpe");
@@ -245,7 +241,7 @@ namespace MyCar.Desktop.ViewModels
             SignalChanged(nameof(BodyTypes));
         }
 
-        public async Task UpdateListBody()
+        private void UpdateListBody()
         {
             BodyTypes = searchResultBody;
             SignalChanged(nameof(BodyTypes));
@@ -260,5 +256,6 @@ namespace MyCar.Desktop.ViewModels
                 searchResultBody = await Api.SearchAsync<List<BodyTypeApi>>("Кузов", search, "BodyType");
             UpdateListBody();
         }
+        #endregion
     }
 }

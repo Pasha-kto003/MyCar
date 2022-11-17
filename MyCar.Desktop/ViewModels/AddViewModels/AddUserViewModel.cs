@@ -40,7 +40,6 @@ namespace MyCar.Desktop.ViewModels
                    Email = editUser.Email,
                    UserName = editUser.UserName,
                    UserTypeId = editUser.UserTypeId,
-                   SaltHash = editUser.SaltHash,
                    PasswordHash = editUser.PasswordHash,
                    Passport = editUser.Passport,
                    UserType = editUser.UserType
@@ -52,6 +51,9 @@ namespace MyCar.Desktop.ViewModels
                 EditUser.UserType = SelectedUserType;
                 if(EditUser.ID == 0)
                 {
+                    Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
+                    EditUser.PasswordHash = passwordHash;
+                    EditUser.SaltHash = passwordSalt;
                     CreateUser(EditUser);
                 }
                 else
@@ -69,7 +71,7 @@ namespace MyCar.Desktop.ViewModels
 
         private async Task CreateUser(UserApi userApi)
         {
-            var user = await Api.RegistrationAsync<UserApi>(userApi, "Auth");
+            var user = await Api.PostAsync<UserApi>(userApi, "User");
         }
 
         private async Task ChangeUser(UserApi userApi, PassportApi passportapi)

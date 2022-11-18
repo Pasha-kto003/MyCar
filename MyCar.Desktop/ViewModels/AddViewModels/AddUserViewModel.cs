@@ -33,7 +33,6 @@ namespace MyCar.Desktop.ViewModels
             {
                 EditUser = new UserApi {UserTypeId = 1 };
                 EditUser.Passport = new PassportApi();
-                //EditPassport = new PassportApi(); mb
             }
             else
             {
@@ -53,7 +52,11 @@ namespace MyCar.Desktop.ViewModels
             Save = new CustomCommand(() =>
             {
                 EditUser.UserType = SelectedUserType;
-                if(EditUser.ID == 0)
+                Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
+                EditUser.PasswordHash = passwordHash;
+                EditUser.SaltHash = passwordSalt;
+
+                if (EditUser.ID == 0)
                 {
                     Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
                     EditUser.PasswordHash = passwordHash;
@@ -61,6 +64,7 @@ namespace MyCar.Desktop.ViewModels
 
                     
                     CreateUser(EditUser);
+                    UIManager.CloseWindow(this);
                 }
                 else
                 {

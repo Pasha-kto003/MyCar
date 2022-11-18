@@ -9,7 +9,6 @@ namespace MyCar.Desktop.Core.Hash
 {
     public static class HashCheck
     {
-        
         public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())

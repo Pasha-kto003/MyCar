@@ -30,6 +30,7 @@ namespace MyCar.Desktop.ViewModels
             if (editUser == null)
             {
                 EditUser = new UserApi {UserTypeId = 1 };
+                EditUser.Passport = new PassportApi();
             }
             else
             {
@@ -50,9 +51,14 @@ namespace MyCar.Desktop.ViewModels
             Save = new CustomCommand(() =>
             {
                 EditUser.UserType = SelectedUserType;
-                if(EditUser.ID == 0)
+                Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
+                EditUser.PasswordHash = passwordHash;
+                EditUser.SaltHash = passwordSalt;
+
+                if (EditUser.ID == 0)
                 {
                     CreateUser(EditUser);
+                    UIManager.CloseWindow(this);
                 }
                 else
                 {
@@ -69,7 +75,8 @@ namespace MyCar.Desktop.ViewModels
 
         private async Task CreateUser(UserApi userApi)
         {
-            var user = await Api.RegistrationAsync<UserApi>(userApi, "Auth");
+            userApi.Passport = EditUser.Passport;
+            var user = await Api.PostAsync<UserApi>(userApi, "User");
         }
 
         private async Task ChangeUser(UserApi userApi, PassportApi passportapi)

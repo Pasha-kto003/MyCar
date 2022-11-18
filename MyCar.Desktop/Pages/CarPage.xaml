@@ -25,7 +25,7 @@
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel Margin="10 0 0 0">
                     <Label Grid.Column="1" FontSize="16" Content="Фильтр:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding MarkFilter}" DisplayMemberPath="MarkName" SelectedItem="{Binding SelectedMarkFilter}"/>
                 </StackPanel>
@@ -76,10 +76,10 @@
 
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2">
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Label Content="{Binding SearchCountRows}" Foreground="White"/>
+                <Label Content="{Binding SearchCountRows}" Foreground="White" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="&lt;" Width="20" Command="{Binding BackPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
-                    <Label Content="{Binding Pages}" Foreground="White"/>
+                    <Label Content="{Binding Pages}" Foreground="White" VerticalAlignment="Center"/>
                     <Button Content=">" Width="20" Command="{Binding ForwardPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">

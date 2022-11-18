@@ -103,6 +103,7 @@
                         Command="{Binding AddUser}">
                         </Button>
                     </StackPanel>
+                    </StackPanel>
             </Grid>
         </Grid>
 </Page>

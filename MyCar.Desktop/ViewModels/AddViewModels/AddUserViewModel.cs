@@ -4,6 +4,7 @@ using MyCar.Desktop.Core.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,6 +18,7 @@ namespace MyCar.Desktop.ViewModels
         public List<UserTypeApi> UserTypes { get; set; }
 
         public UserApi EditUser { get; set; }
+        public PassportApi EditPassport { get; set; }
 
         public CustomCommand Save { get; set; }
         public CustomCommand Cancel { get; set; }
@@ -41,7 +43,6 @@ namespace MyCar.Desktop.ViewModels
                    Email = editUser.Email,
                    UserName = editUser.UserName,
                    UserTypeId = editUser.UserTypeId,
-                   SaltHash = editUser.SaltHash,
                    PasswordHash = editUser.PasswordHash,
                    Passport = editUser.Passport,
                    UserType = editUser.UserType
@@ -57,6 +58,11 @@ namespace MyCar.Desktop.ViewModels
 
                 if (EditUser.ID == 0)
                 {
+                    Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
+                    EditUser.PasswordHash = passwordHash;
+                    EditUser.SaltHash = passwordSalt;
+
+                    
                     CreateUser(EditUser);
                     UIManager.CloseWindow(this);
                 }

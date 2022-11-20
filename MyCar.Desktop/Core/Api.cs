@@ -1,4 +1,6 @@
 ﻿using ModelsApi;
+using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MyCar.Desktop.Core
 {
@@ -82,7 +85,10 @@ namespace MyCar.Desktop.Core
             var str = JsonSerializer.Serialize(value, typeof(T));
             var answer = await client.PostAsync(server + controller, new StringContent(str, Encoding.UTF8, "application/json"));
             if (answer.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"{answer.StatusCode}" });
                 return -1;
+            }
             string answerText = await answer.Content.ReadAsStringAsync();
             if (!int.TryParse(answerText, out int result))
                 return -1;
@@ -93,6 +99,11 @@ namespace MyCar.Desktop.Core
         {
             var str = JsonSerializer.Serialize(value, typeof(T));
             var answer = await client.PutAsync(server + controller + $"/{value.ID}", new StringContent(str, Encoding.UTF8, "application/json"));
+            if (answer.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"{answer.StatusCode}" });
+                return false;
+            }
             return answer.StatusCode == System.Net.HttpStatusCode.OK;
         }
 

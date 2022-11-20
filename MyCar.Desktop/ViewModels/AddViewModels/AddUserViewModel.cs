@@ -58,11 +58,6 @@ namespace MyCar.Desktop.ViewModels
 
                 if (EditUser.ID == 0)
                 {
-                    Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
-                    EditUser.PasswordHash = passwordHash;
-                    EditUser.SaltHash = passwordSalt;
-
-                    
                     CreateUser(EditUser);
                     UIManager.CloseWindow(this);
                 }

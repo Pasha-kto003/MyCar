@@ -26,13 +26,9 @@
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
                 <StackPanel Margin="10 0 0 0">
-                    <Label Grid.Column="1" FontSize="16" Content="Фильтр:"  FontFamily="Century Gothic"/>
+                    <Label Grid.Column="1" FontSize="16" Content="Марка:"  FontFamily="Century Gothic"/>
                     <ComboBox Width="180" FontSize="16" ItemsSource="{Binding MarkFilter}" DisplayMemberPath="MarkName" SelectedItem="{Binding SelectedMarkFilter}"/>
                 </StackPanel>
-                <!--<StackPanel>
-                    <Label Grid.Column="1" FontSize="16" Content="Кузов:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding BodyTypeFilter}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedBodyTypeFilter}"/>
-                </StackPanel>-->
             </StackPanel>
         </Grid>
 

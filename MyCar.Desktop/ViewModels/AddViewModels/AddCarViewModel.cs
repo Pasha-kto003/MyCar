@@ -27,7 +27,7 @@ namespace MyCar.Desktop.ViewModels
 
         public Image ImageCar { get; set; }
 
-        public int CharacteristicValue { get; set; }
+        public string CharacteristicValue { get; set; }
 
         private ModelApi selectedModel { get; set; }
         public ModelApi SelectedModel

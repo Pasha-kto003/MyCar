@@ -92,7 +92,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         private async Task EditCharacteristic(CharacteristicApi characteristic)
         {
-            var characteristics = await Api.PostAsync<CharacteristicApi>(characteristic, "Characteristic");
+            var characteristics = await Api.PutAsync<CharacteristicApi>(characteristic, "Characteristic");
         }
 
         private async Task GetList()

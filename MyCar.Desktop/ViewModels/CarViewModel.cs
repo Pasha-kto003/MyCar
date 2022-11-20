@@ -149,7 +149,7 @@ namespace MyCar.Desktop.ViewModels
 
             AddCar = new CustomCommand(() =>
             {
-                AddCarWindow window = new AddCarWindow();
+                AddCarWindow window = new AddCarWindow(null);
                 window.ShowDialog();
                 GetCarList();
             });
@@ -195,6 +195,7 @@ namespace MyCar.Desktop.ViewModels
             CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             SignalChanged(nameof(Cars));
+
             MarkFilter = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             MarkFilter.Add(new MarkCarApi { MarkName = "Все" });
             SelectedMarkFilter = MarkFilter.Last();
@@ -226,6 +227,13 @@ namespace MyCar.Desktop.ViewModels
             int.TryParse(SelectedViewCountRows, out rows);
             if (rows == 0)
                 rows = FullCars.Count;
+            if(rows > FullCars.Count)
+            {
+                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Превышено количество объектов" });
+                SelectedViewCountRows = ViewCountRows.Last();
+                SignalChanged(nameof(SelectedViewCountRows));
+                return;
+            }
             CountPages = (searchResult.Count() - 1) / rows;
             Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
         }

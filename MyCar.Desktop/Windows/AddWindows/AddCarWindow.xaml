@@ -83,16 +83,18 @@
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                         <Label Content="Характеристики авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="9" Orientation="Vertical" Height="100" Width="430" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <StackPanel Grid.Row="9" Orientation="Vertical" Height="150" Width="430" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <StackPanel Orientation="Horizontal" Height="50" Width="430" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Label FontSize="16" Content="Характеристика: " HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ComboBox ItemsSource="{Binding Characteristics}" SelectedItem="{Binding SelectedCharacteristic}" DisplayMemberPath="CharacteristicName" IsTextSearchEnabled="True" IsEditable="True" Height="30" Width="250" VerticalAlignment="Top"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Height="50" Width="430">
+                        <StackPanel Orientation="Horizontal" Height="40" Width="430">
                             <Label Content="Значение характеристики: " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
                             <TextBox Text="{Binding CharacteristicValue}" Width="175" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
-                        
+                        <StackPanel Orientation="Vertical" Height="50" Width="430">
+                            <Button Command="{Binding AddCharacteristic}" VerticalAlignment="Center" Margin="0 10 0 0" Height="30" Width="200" Style="{StaticResource AddButton}" Content="Добавить параметр"/>
+                        </StackPanel>
                     </StackPanel>
                     <ListBox Grid.Row="9" ItemsSource="{Binding CharacteristicsCar}" SelectedItem="{Binding SelectedCharacteristicCar}" Height="100" VerticalAlignment="Bottom" HorizontalContentAlignment="Stretch" Background="White" FontSize="16">
                         <ListBox.ItemTemplate>

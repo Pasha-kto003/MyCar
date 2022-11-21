@@ -149,7 +149,7 @@ namespace MyCar.Desktop.ViewModels
 
             AddCar = new CustomCommand(() =>
             {
-                AddCarWindow window = new AddCarWindow(null);
+                AddCarWindow window = new AddCarWindow();
                 window.ShowDialog();
                 GetCarList();
             });

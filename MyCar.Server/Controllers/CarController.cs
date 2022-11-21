@@ -89,7 +89,6 @@ namespace MyCar.Server.Controllers
                     case "Цена":
                         CarsApi = CarsApi.Where(s => s.CarPrice.ToString().ToLower().Contains(text)).ToList();
                         break;
-
                     default:
                         CarsApi = CarsApi.ToList();
                         break;
@@ -126,9 +125,6 @@ namespace MyCar.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] CarApi editcar)
         {
-            foreach (var characteristics in editcar.Characteristics)
-                if (characteristics.ID == 0)
-                    return BadRequest($"Продукт {characteristics.CharacteristicName} не существует");
             var car = (Car)editcar;
             var cross = dbContext.CharacteristicCars.FirstOrDefault(t => t.CarId == car.Id);
             var oldcar = await dbContext.Cars.FindAsync(id);

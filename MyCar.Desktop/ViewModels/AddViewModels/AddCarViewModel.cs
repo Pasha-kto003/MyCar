@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -127,8 +128,6 @@ namespace MyCar.Desktop.ViewModels
 
             GetCars(AddCarVM);
 
-            //GetModels(AddCarVM.Model.MarkCar.MarkName); //SelectedMark.MarkName
-
             AddCharacteristic = new CustomCommand(() =>
             {
                 CharacteristicCarApi characteristic = new CharacteristicCarApi
@@ -152,7 +151,14 @@ namespace MyCar.Desktop.ViewModels
                 AddCarVM.Equipment = SelectedEquipment;
                 AddCarVM.TypeId = SelectedBodyType.ID;
                 AddCarVM.BodyType = SelectedBodyType;
+                AddCarVM.PhotoCar = "string"; //add for test
+                AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
 
+                foreach (var characteristic in AddCarVM.CharacteristicCars)
+                {
+                    characteristic.Characteristic = Characteristics.FirstOrDefault(s => s.ID == characteristic.CharacteristicId);
+                    AddCarVM.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
+                }
                 if (SelectedMark == null || SelectedMark.ID == 0)
                 {
                     SendMessage("Не выбрана марка");
@@ -161,24 +167,26 @@ namespace MyCar.Desktop.ViewModels
                 else if (SelectedModel == null || SelectedModel.ID == 0)
                 {
                     SendMessage("Не выбрана модель");
-
                 }
 
                 else if (SelectedBodyType == null || SelectedBodyType.ID == 0)
                 {
                     SendMessage("Не выбран тип кузова");
-
                 }
 
                 else if (SelectedEquipment == null || SelectedEquipment.ID == 0)
                 {
                     SendMessage("Не выбрана коплектация");
+                }
 
+                else if (CharacteristicsCar == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана характеристика авто" });
+                    return;
                 }
 
                 if (AddCarVM.ID == 0)
                 {
-                    AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
                     PostCar(AddCarVM);
                     SendMessage($"Машина {AddCarVM.Model.ModelName} успешно создана");
                 }
@@ -212,6 +220,7 @@ namespace MyCar.Desktop.ViewModels
 
         public async Task PostCar(CarApi carApi)
         {
+            carApi.CharacteristicCars = CharacteristicsCar.ToList();
             var car = await Api.PostAsync<CarApi>(carApi, "Car");
         }
 

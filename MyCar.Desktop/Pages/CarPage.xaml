@@ -23,11 +23,11 @@
                 </StackPanel>
                 <StackPanel>
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
                 <StackPanel Margin="10 0 0 0">
                     <Label Grid.Column="1" FontSize="16" Content="Марка:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding MarkFilter}" DisplayMemberPath="MarkName" SelectedItem="{Binding SelectedMarkFilter}"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding MarkFilter}" DisplayMemberPath="MarkName" SelectedItem="{Binding SelectedMarkFilter}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -80,7 +80,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                     <Label Content="Кол-во записей на странице:" Foreground="White" FontSize="16" Height="30"/>
-                    <ComboBox IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

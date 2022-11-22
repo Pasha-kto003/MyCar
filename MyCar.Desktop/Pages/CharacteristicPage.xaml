@@ -27,7 +27,7 @@
                         </StackPanel>
                         <StackPanel>
                             <Label Grid.Column="1" FontSize="16" Content="Фильтр:"  FontFamily="Century Gothic"/>
-                            <ComboBox Width="180" FontSize="16" ItemsSource="{Binding UnitFilter}" DisplayMemberPath="UnitName" SelectedItem="{Binding SelectedUnitFilter}"/>
+                            <ComboBox Width="180" Style="{StaticResource ComboBoxFlatStyle}" FontSize="16" ItemsSource="{Binding UnitFilter}" DisplayMemberPath="UnitName" SelectedItem="{Binding SelectedUnitFilter}"/>
                         </StackPanel>
                     </StackPanel>
                     <DataGrid Grid.Row="1"
@@ -54,10 +54,12 @@
 
                     <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Margin="0 0 10 0" Style="{StaticResource AddImageButton}" Width="auto"
-                            Command="{Binding AddUnit}" Content="Добавить единицу измерения" ToolTip="Добавить" VerticalAlignment="Center" Height="40"/>
-                            <Button Margin="0 0 0 0" Style="{StaticResource AddImageButton}" Width="auto"
-                            Command="{Binding AddCharacteristic}" Content="Добавить характеристику" ToolTip="Добавить" VerticalAlignment="Center" Height="40"/>
+                            <Button Margin="0 0 5 0" Style="{StaticResource AddButton}" Width="auto"
+                        Command="{Binding AddUnit}" Content="Добавить ед. измерения" ToolTip="Добавить едидиницу измерения">
+                            </Button>
+                            <Button Margin="0 0 5 0" Style="{StaticResource AddButton}" Width="auto"
+                        Command="{Binding AddCharacteristic}" Content="Добавить характеристику" ToolTip="Добавить характеристику">
+                            </Button>
                         </StackPanel>
                         <Grid/>
                     </Grid>
@@ -80,7 +82,7 @@
                         </StackPanel>
                         <StackPanel>
                             <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
-                            <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchTypeEquipment}" SelectedItem="{Binding SelectedSearchTypeEquipment}"/>
+                            <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding SearchTypeEquipment}" SelectedItem="{Binding SelectedSearchTypeEquipment}"/>
                         </StackPanel>
                     </StackPanel>
                     <DataGrid Grid.Row="1"

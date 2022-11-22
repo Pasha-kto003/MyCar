@@ -22,14 +22,14 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="{x:Type Button}" x:Key="SystemIconButton" BasedOn="{StaticResource Hoverless}">
 
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="Padding" Value="5" />
 
     </Style>
-    
+
     <Style TargetType="{x:Type Button}" x:Key="AddButton" >
         <Setter Property="Background" Value="{StaticResource ValorantRedBrush}" />
         <Setter Property="Foreground" Value="White" />
@@ -89,7 +89,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    
+
                     <Grid VerticalAlignment="Stretch"
                               HorizontalAlignment="Stretch"
                               Background="{TemplateBinding Background}"
@@ -129,8 +129,8 @@
         </Style.Triggers>
     </Style>
 
-   
-    
+
+
     <Style TargetType="{x:Type Button}" x:Key="WindowControlButton" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="Background" Value="Transparent" />

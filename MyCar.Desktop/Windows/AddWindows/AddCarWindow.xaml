@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         mc:Ignorable="d"
-        Title="AddCarWindow" Height="1000" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+        Title="AddCarWindow" Height="1050" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">
         <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
@@ -22,7 +22,7 @@
                     <StackPanel Width="200" HorizontalAlignment="Center">
                         <Label Content="Изображение:" Foreground="Black" FontSize="16"/>
                         <Image Source="{Binding ImageCar}" Width="180" Height="180"/>
-                        <Button Content="Выбрать картинку" Grid.Row="1" Grid.Column="1" Height="30" Width="180" Margin="5" HorizontalAlignment="Center" 
+                        <Button Command="{Binding AddImage}" Content="Выбрать картинку" Grid.Row="1" Grid.Column="1" Height="30" Width="180" Margin="5" HorizontalAlignment="Center" 
                                 VerticalAlignment="Bottom" FontFamily="Century Gothic" Foreground="Green"
                                 Background="Transparent" BorderBrush="Green" FontSize="16"/>
                     </StackPanel>
@@ -32,10 +32,10 @@
                         <RowDefinition Height="45"/>
                         <RowDefinition Height="45"/>
                         <RowDefinition Height="55"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="60"/>
                         <RowDefinition Height="0"/>
                         <RowDefinition Height="55"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="200"/>
                         <RowDefinition Height="0"/>
                         <RowDefinition Height="55"/>
                         <RowDefinition Height="250"/>
@@ -45,9 +45,9 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Label Content="Артикул авто:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"/>
-                    <TextBox DataContext="{Binding AddCarVM}" Text="{Binding Articul}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="280" Height="30"/>
+                    <TextBox DataContext="{Binding AddCarVM}" Text="{Binding Articul}" HorizontalAlignment="Right" Margin="0 0 30 0" VerticalAlignment="Center" Width="200" Height="30"/>
                     <Label Content="Цена авто:" Grid.Row="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                    <TextBox DataContext="{Binding AddCarVM}" Grid.Row="1" Text="{Binding CarPrice}" VerticalAlignment="Center" HorizontalAlignment="Right" Width="280" Height="30"/>
+                    <TextBox DataContext="{Binding AddCarVM}" Grid.Row="1" Text="{Binding CarPrice}" VerticalAlignment="Center" Margin="0 0 30 0" HorizontalAlignment="Right" Width="200" Height="30"/>
                     <StackPanel Grid.Row="2" Margin="0 10 0 0">
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                         <Label Content="Марка авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
@@ -58,7 +58,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Выбранная марка: " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
-                        <ComboBox IsEnabled="True" ItemsSource="{Binding Marks}" SelectedItem="{Binding SelectedMark}" DisplayMemberPath="MarkName" Grid.Column="1" Width="200" Height="30"/>
+                        <TextBox Text="{Binding MarkText, UpdateSourceTrigger=PropertyChanged}" Width="200" IsReadOnly="True" Grid.Column="1" Height="30"/>
                     </Grid>
                     <StackPanel Grid.Row="5" Margin="0 10 0 0">
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
@@ -69,15 +69,17 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Выбранная модель: " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
-                        <ComboBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="ModelName" Grid.Column="1" Width="200" Height="30" IsEditable="True"/>
+                        <ListBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="ModelName" Width="200" Height="150" VerticalAlignment="Top"/>
+                        <ListBox ItemsSource="{Binding CarModels}" SelectedItem="{Binding SelectedCarModel}" DisplayMemberPath="ModelName" Height="150" VerticalAlignment="Top" Grid.Column="1" Width="200"/>
+                        <Button Command="{Binding AddModel}" VerticalAlignment="Bottom" Height="30" HorizontalAlignment="Center" Grid.ColumnSpan="2" Width="200" Content="Добавить модель"
+                                Background="Transparent" BorderBrush="Green" FontSize="16" Foreground="Green"/>
                     </Grid>
                     <StackPanel Grid.Row="12" Margin="0 10 0 0">
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                         <Label Content="Кузов авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
                     <Label Content="Тип кузова:" Grid.Row="13" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <ComboBox ItemsSource="{Binding BodyTypes}" SelectedItem="{Binding SelectedBodyType}" DisplayMemberPath="TypeName" HorizontalAlignment="Right" Width="280" Height="30" Grid.Row="13"/>
+                    <ComboBox ItemsSource="{Binding BodyTypes}" SelectedItem="{Binding SelectedBodyType}" DisplayMemberPath="TypeName" Style="{StaticResource ComboBoxFlatStyle}" HorizontalAlignment="Right" Width="280" Height="30" Grid.Row="13"/>
 
                     <StackPanel Grid.Row="8" Margin="0 10 0 0">
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
@@ -86,14 +88,14 @@
                     <StackPanel Grid.Row="9" Orientation="Vertical" Height="150" Width="430" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <StackPanel Orientation="Horizontal" Height="50" Width="430" HorizontalAlignment="Center" VerticalAlignment="Top">
                             <Label FontSize="16" Content="Характеристика: " HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <ComboBox ItemsSource="{Binding Characteristics}" SelectedItem="{Binding SelectedCharacteristic}" DisplayMemberPath="CharacteristicName" IsTextSearchEnabled="True" IsEditable="True" Height="30" Width="250" VerticalAlignment="Top"/>
+                            <ComboBox ItemsSource="{Binding Characteristics}" SelectedItem="{Binding SelectedCharacteristic}" DisplayMemberPath="CharacteristicName" IsTextSearchEnabled="True" IsEditable="True" Style="{StaticResource ComboBoxFlatStyle}" Height="30" Width="250" VerticalAlignment="Top"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="40" Width="430">
                             <Label Content="Значение характеристики: " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
                             <TextBox Text="{Binding CharacteristicValue}" Width="175" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Height="50" Width="430">
-                            <Button Command="{Binding AddCharacteristic}" VerticalAlignment="Center" Margin="0 10 0 0" Height="30" Width="200" Style="{StaticResource AddButton}" Content="Добавить параметр"/>
+                            <Button Command="{Binding AddCharacteristic}" VerticalAlignment="Center" Margin="0 10 0 0" Height="30" Width="200" Background="Transparent" BorderBrush="Green" FontSize="16" FontFamily="Century Gothic" Foreground="Green" Content="Добавить параметр"/>
                         </StackPanel>
                     </StackPanel>
                     <ListBox Grid.Row="9" ItemsSource="{Binding CharacteristicsCar}" SelectedItem="{Binding SelectedCharacteristicCar}" Height="100" VerticalAlignment="Bottom" HorizontalContentAlignment="Stretch" Background="White" FontSize="16">
@@ -125,7 +127,7 @@
                         <Label Content="Конфигурация авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
                     <Label Grid.Row="11" Content="Конфигурация" FontSize="16" HorizontalAlignment="Left" Width="120"/>
-                    <ComboBox ItemsSource="{Binding Equipments}" SelectedItem="{Binding SelectedEquipment}" Margin="0 0 40 0" DisplayMemberPath="NameEquipment" Grid.Row="11" HorizontalAlignment="Center" Width="150" FontSize="15" Height="30"/>
+                    <ComboBox ItemsSource="{Binding Equipments}" SelectedItem="{Binding SelectedEquipment}" Margin="0 0 40 0" DisplayMemberPath="NameEquipment" Style="{StaticResource ComboBoxFlatStyle}" Grid.Row="11" HorizontalAlignment="Center" Width="150" FontSize="15" Height="30"/>
                     <TextBox Text="{Binding SelectedEquipment.MinPrice}" Width="150" Tag="Цена конфигурации" HorizontalAlignment="Right" Grid.Row="11" Height="30"/>
                 </Grid>
                 <Button Content="Отмена" Width="150" Click="Button_Click" Grid.Row="1" Grid.Column="1" Height="30" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontFamily="Century Gothic" Foreground="Red"

@@ -20,7 +20,7 @@ namespace MyCar.Desktop.ViewModels
         public List<MarkCarApi> Marks { get; set; }
         public List<MarkCarApi> CarMarks { get; set; }
         public List<ModelApi> Models { get; set; }
-        public List<ModelApi> CarModels { get; set; }
+        public ObservableCollection<ModelApi> CarModels { get; set; }
         public List<BodyTypeApi> BodyTypes { get; set; }
         public List<EquipmentApi> Equipments { get; set; }
         public ObservableCollection<CharacteristicCarApi> CharacteristicsCar { get; set; }
@@ -29,6 +29,8 @@ namespace MyCar.Desktop.ViewModels
         public Image ImageCar { get; set; }
 
         public string CharacteristicValue { get; set; }
+
+        public string MarkText { get; set; }
 
         private ModelApi selectedModel { get; set; }
         public ModelApi SelectedModel
@@ -91,6 +93,7 @@ namespace MyCar.Desktop.ViewModels
 
         public CustomCommand Save { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
+        public CustomCommand AddModel { get; set; }
 
         public AddCarViewModel(CarApi car)
         {
@@ -124,9 +127,30 @@ namespace MyCar.Desktop.ViewModels
                     TypeId = car.TypeId,
                     EquipmentId = car.EquipmentId
                 };
+                SelectedCarModel = AddCarVM.Model;
             }
 
             GetCars(AddCarVM);
+
+            AddModel = new CustomCommand(() =>
+            {
+                if(SelectedModel == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Вы не выбрали модель" });
+                    return;
+                }
+                else
+                {
+                    AddCarVM.Model = SelectedModel;
+                    CarModels.Add(SelectedModel);
+                    SignalChanged(nameof(CarModels));
+                    SelectedMark.ID = (int)SelectedModel.MarkId;
+                    if (CarModels.Count > 1)
+                    {
+                        GetModel();
+                    }
+                }
+            });
 
             AddCharacteristic = new CustomCommand(() =>
             {
@@ -168,7 +192,11 @@ namespace MyCar.Desktop.ViewModels
                 {
                     SendMessage("Не выбрана модель");
                 }
-
+                else if (SelectedModel.MarkId != SelectedMark.ID)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Данная марка не содержит выбранную модель" });
+                    return;
+                }
                 else if (SelectedBodyType == null || SelectedBodyType.ID == 0)
                 {
                     SendMessage("Не выбран тип кузова");
@@ -213,9 +241,12 @@ namespace MyCar.Desktop.ViewModels
             AddCarVM = await Api.GetAsync<CarApi>(id, "Car");
         }
 
-        public async Task GetModels(string markName)
+        public async Task GetModels(CarApi car)
         {
-            Models = await Api.GetModelApi<List<ModelApi>>(markName, "Model");
+            var list = await Api.GetListAsync<List<ModelApi>>("Model");
+            var l = list.Where(s=> s.ID == car.ModelId).ToList();
+            CarModels = new ObservableCollection<ModelApi>(l);
+            SignalChanged(nameof(CarModels));
         }
 
         public async Task PostCar(CarApi carApi)
@@ -240,6 +271,21 @@ namespace MyCar.Desktop.ViewModels
             return;
         }
 
+        public async Task GetModel()
+        {
+            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                CarModels.Clear();
+                AddCarVM.Model = SelectedCarModel;
+                CarModels.Add(SelectedModel);
+                SignalChanged(nameof(CarModels));
+                MarkText = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId).MarkName;
+                AddCarVM.ModelId = SelectedModel.ID;
+                EditCar(AddCarVM);
+            }
+        }
         public async Task GetCars(CarApi carApi)
         {
             Models = await Api.GetListAsync<List<ModelApi>>("Model");
@@ -247,13 +293,15 @@ namespace MyCar.Desktop.ViewModels
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
-
+            
             if (carApi == null)
             {
                 SelectedModel = Models.FirstOrDefault();
                 SelectedMark = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId);
                 SignalChanged(nameof(SelectedMark));
                 SelectedEquipment = Equipments.FirstOrDefault();
+                CarModels = new ObservableCollection<ModelApi>();
+                SelectedCarModel = CarModels.FirstOrDefault();
             }
 
             else
@@ -262,7 +310,7 @@ namespace MyCar.Desktop.ViewModels
                 var list = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
                 car.CharacteristicCars = list.Where(s => s.CarId == car.ID).ToList();
                 CharacteristicsCar = new ObservableCollection<CharacteristicCarApi>(car.CharacteristicCars);
-
+                GetModels(carApi);
                 foreach (var characteristic in CharacteristicsCar)
                 {
                     characteristic.Characteristic = Characteristics.FirstOrDefault(s => s.ID == characteristic.CharacteristicId);
@@ -271,6 +319,8 @@ namespace MyCar.Desktop.ViewModels
                 SelectedMark = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId);
                 SignalChanged(nameof(SelectedMark));
                 SignalChanged(nameof(SelectedModel));
+
+                MarkText = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId).MarkName;
                 SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == carApi.EquipmentId);
                 SignalChanged(nameof(SelectedEquipment));
                 SelectedBodyType = BodyTypes.FirstOrDefault(s => s.ID == carApi.TypeId);

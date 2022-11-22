@@ -72,7 +72,7 @@ namespace MyCar.Desktop.Core
             return result;
         }
 
-    public static async Task<ModelApi> GetModelApi<ModelApi>(string markName, string controller)
+        public static async Task<ModelApi> GetModelApi<ModelApi>(string markName, string controller)
         {
             var answer = await client.GetAsync(server + controller + $"/Mark?markName={markName}");
             string answerText = await answer.Content.ReadAsStringAsync();

@@ -80,7 +80,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                     <Label Content="Кол-во записей на странице:" Foreground="White" FontSize="16" Height="30"/>
-                    <ComboBox IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

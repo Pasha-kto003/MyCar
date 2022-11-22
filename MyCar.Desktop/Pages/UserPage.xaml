@@ -22,11 +22,11 @@
                 </StackPanel>
                 <StackPanel Margin="0 0 10 0">
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
                 <StackPanel>
                     <Label Grid.Column="1" FontSize="16" Content="Роль:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding UserTypeFilter}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedUserTypeFilter}"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding UserTypeFilter}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedUserTypeFilter}"/>
                 </StackPanel>
             </StackPanel>
 
@@ -78,7 +78,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                         <Label Content="Кол-во записей:" Foreground="White" FontSize="16" Height="30"/>
-                        <ComboBox Width="100" Height="30" ItemsSource="{Binding ViewCountRows}" VerticalContentAlignment="Center" IsEditable="True" FontSize="16" SelectedItem="{Binding SelectedViewCountRows}"/>
+                        <ComboBox Width="100" Height="30" Style="{StaticResource ComboBoxFlatStyle}" ItemsSource="{Binding ViewCountRows}" VerticalContentAlignment="Center" FontSize="16" SelectedItem="{Binding SelectedViewCountRows}"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

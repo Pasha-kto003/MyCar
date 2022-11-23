@@ -1,21 +1,35 @@
-﻿using ModelsApi;
+﻿using Microsoft.Win32;
+using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace MyCar.Desktop.ViewModels
 {
     public class AddCarViewModel : BaseViewModel
     {
         public CarApi AddCarVM { get; set; }
+
+        private BitmapImage imageCar { get; set; }
+        public BitmapImage ImageCar
+        {
+            get=> imageCar;
+            set
+            {
+                imageCar = value;
+                SignalChanged();
+            }
+        }
 
         public List<MarkCarApi> Marks { get; set; }
         public List<MarkCarApi> CarMarks { get; set; }
@@ -25,8 +39,6 @@ namespace MyCar.Desktop.ViewModels
         public List<EquipmentApi> Equipments { get; set; }
         public ObservableCollection<CharacteristicCarApi> CharacteristicsCar { get; set; }
         public List<CharacteristicApi> Characteristics { get; set; }
-
-        public Image ImageCar { get; set; }
 
         public string CharacteristicValue { get; set; }
 
@@ -94,6 +106,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Save { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand AddModel { get; set; }
+        public CustomCommand AddImage { get; set; }
 
         public AddCarViewModel(CarApi car)
         {
@@ -107,7 +120,7 @@ namespace MyCar.Desktop.ViewModels
                 {
                     Articul = "1234",
                     CarPrice = 1000000,
-
+                    PhotoCar = @"\CarImages\picture.png"
                 };
                 GetCars(car);
             }
@@ -128,6 +141,16 @@ namespace MyCar.Desktop.ViewModels
                     EquipmentId = car.EquipmentId
                 };
                 SelectedCarModel = AddCarVM.Model;
+
+                if (ImageCar == null)
+                {
+                    ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + AddCarVM.PhotoCar);
+                }
+
+                else
+                {
+                    ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + "picture.png");
+                }
             }
 
             GetCars(AddCarVM);
@@ -166,6 +189,28 @@ namespace MyCar.Desktop.ViewModels
                 SignalChanged(nameof(CharacteristicsCar));
             });
 
+            string dir = Environment.CurrentDirectory;
+            AddImage = new CustomCommand(() =>
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                if(openFileDialog.ShowDialog() == true)
+                {
+                    try
+                    {
+                        var info = new FileInfo(openFileDialog.FileName);
+                        ImageCar = GetImageFromPath(openFileDialog.FileName);
+                        AddCarVM.PhotoCar = $"/CarImages/{info.Name}";
+                        var newParh = Environment.CurrentDirectory + AddCarVM.PhotoCar;
+                        File.Copy(openFileDialog.FileName, newParh);
+                    }
+
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                }
+            });
+
             Save = new CustomCommand(() =>
             {
                 AddCarVM.ModelId = SelectedModel.ID;
@@ -175,7 +220,6 @@ namespace MyCar.Desktop.ViewModels
                 AddCarVM.Equipment = SelectedEquipment;
                 AddCarVM.TypeId = SelectedBodyType.ID;
                 AddCarVM.BodyType = SelectedBodyType;
-                AddCarVM.PhotoCar = "string"; //add for test
                 AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
 
                 foreach (var characteristic in AddCarVM.CharacteristicCars)
@@ -325,6 +369,16 @@ namespace MyCar.Desktop.ViewModels
                 SignalChanged(nameof(SelectedEquipment));
                 SelectedBodyType = BodyTypes.FirstOrDefault(s => s.ID == carApi.TypeId);
             } 
+        }
+
+        private BitmapImage GetImageFromPath(string url)
+        {
+            BitmapImage img = new BitmapImage();
+            img.BeginInit();
+            img.CacheOption = BitmapCacheOption.OnLoad;
+            img.UriSource = new Uri(url, UriKind.Absolute);
+            img.EndInit();
+            return img;
         }
 
         public void CloseWindow(object obj)

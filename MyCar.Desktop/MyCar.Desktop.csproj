@@ -9,6 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CarImages\HondaNSX.jpg" />
+    <None Remove="CarImages\HondaNsx.png" />
+    <None Remove="CarImages\Mazda-RX-8.png" />
+    <None Remove="CarImages\MazdaRx-7.png" />
+    <None Remove="CarImages\NissanAlmera.jpg" />
+    <None Remove="CarImages\NissanAlmera.png" />
+    <None Remove="CarImages\picture.png" />
+    <None Remove="CarImages\png-transparent-toyota-tundra-toyota-camry-hybrid-mid-size-car-toyota-compact-car-sedan-car.png" />
+    <None Remove="CarImages\ToyotaCamry.png" />
+    <None Remove="CarImages\ToyotaCamryBlack.png" />
+    <None Remove="CarImages\ToyotaCamrySedan.png" />
+    <None Remove="CarImages\ToyotaCrown.png" />
+    <None Remove="CarImages\toyota_camry2019_grey.png" />
     <None Remove="Fonts\centurygothic.ttf" />
     <None Remove="Fonts\centurygothic_bold.ttf" />
     <None Remove="Fonts\fontawesome-webfont.ttf" />
@@ -39,6 +52,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="CarImages\HondaNSX.jpg" />
+    <Resource Include="CarImages\HondaNsx.png" />
+    <Resource Include="CarImages\Mazda-RX-8.png" />
+    <Resource Include="CarImages\MazdaRx-7.png" />
+    <Resource Include="CarImages\NissanAlmera.png" />
+    <Resource Include="CarImages\picture.png" />
+    <Resource Include="CarImages\ToyotaCamry.png" />
+    <Resource Include="CarImages\ToyotaCamryBlack.png" />
+    <Resource Include="CarImages\ToyotaCamrySedan.png" />
+    <Resource Include="CarImages\ToyotaCrown.png" />
+    <Resource Include="CarImages\toyota_camry2019_grey.png" />
     <Resource Include="Fonts\centurygothic.ttf" />
     <Resource Include="Fonts\centurygothic_bold.ttf" />
     <Resource Include="Fonts\fontawesome-webfont.ttf" />

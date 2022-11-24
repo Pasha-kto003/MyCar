@@ -318,4 +318,9 @@
                 }
                 SignalChanged(nameof(carApi.CarOptions));
             }
+
+                    AddCarVM.Model = SelectedModel;
+                    CarModels.Add(SelectedModel);
+                    SignalChanged(nameof(CarModels));
+                    SelectedMark.ID = (int)SelectedModel.MarkId;
             

@@ -157,7 +157,7 @@ namespace MyCar.Desktop.ViewModels
 
             if (AddCarVM.PhotoCar == null)
             {
-                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + @"/CarImages/picture.png");
+                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + @"/CarImages/picture.png"); //
             }
 
             else

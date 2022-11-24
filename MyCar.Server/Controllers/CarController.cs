@@ -35,6 +35,7 @@ namespace MyCar.Server.Controllers
             var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
             result.Model = (ModelApi)model;
             var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+            result.CarMark = mark.MarkName;
             //result.Model.MarkCar = (MarkCarApi)mark;
             var equipment = dbContext.Equipment.FirstOrDefault(e => e.Id == car.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;

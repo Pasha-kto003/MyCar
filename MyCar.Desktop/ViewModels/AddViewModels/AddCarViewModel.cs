@@ -103,10 +103,22 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
+        private CharacteristicCarApi selectedCharacteristicCar { get; set; }
+        public CharacteristicCarApi SelectedCharacteristicCar
+        {
+            get => selectedCharacteristicCar;
+            set
+            {
+                selectedCharacteristicCar = value;
+                SignalChanged();
+            }
+        }
+
         public CustomCommand Save { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand AddModel { get; set; }
         public CustomCommand AddImage { get; set; }
+        public CustomCommand DeleteCharacteristic { get; set; }
 
         public AddCarViewModel(CarApi car)
         {
@@ -120,7 +132,7 @@ namespace MyCar.Desktop.ViewModels
                 {
                     Articul = "1234",
                     CarPrice = 1000000,
-                    PhotoCar = @"\CarImages\picture.png"
+                    PhotoCar = @"/CarImages/picture.png"
                 };
                 GetCars(car);
             }
@@ -141,16 +153,16 @@ namespace MyCar.Desktop.ViewModels
                     EquipmentId = car.EquipmentId
                 };
                 SelectedCarModel = AddCarVM.Model;
+            }
 
-                if (ImageCar == null)
-                {
-                    ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + AddCarVM.PhotoCar);
-                }
+            if (AddCarVM.PhotoCar == null)
+            {
+                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + @"/CarImages/picture.png");
+            }
 
-                else
-                {
-                    ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + "picture.png");
-                }
+            else
+            {
+                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + AddCarVM.PhotoCar);
             }
 
             GetCars(AddCarVM);
@@ -164,10 +176,12 @@ namespace MyCar.Desktop.ViewModels
                 }
                 else
                 {
-                    AddCarVM.Model = SelectedModel;
+                    AddCarVM.Model = SelectedCarModel;
                     CarModels.Add(SelectedModel);
                     SignalChanged(nameof(CarModels));
-                    SelectedMark.ID = (int)SelectedModel.MarkId;
+                    MarkText = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId).MarkName;
+                    AddCarVM.ModelId = SelectedModel.ID;
+                    EditCar(AddCarVM);
                     if (CarModels.Count > 1)
                     {
                         GetModel();
@@ -211,6 +225,26 @@ namespace MyCar.Desktop.ViewModels
                 }
             });
 
+            DeleteCharacteristic = new CustomCommand(() =>
+            {
+                if(SelectedCharacteristicCar == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбранна характеристика авто" });
+                    return;
+                }
+                else
+                {
+                    MessageBoxResult result = MessageBox.Show("Вы точно желаете удалить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        CharacteristicsCar.Remove(SelectedCharacteristicCar);
+                        SignalChanged(nameof(CharacteristicsCar));
+                        AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
+                        EditCar(AddCarVM);
+                    }
+                }
+            });
+
             Save = new CustomCommand(() =>
             {
                 AddCarVM.ModelId = SelectedModel.ID;
@@ -221,6 +255,7 @@ namespace MyCar.Desktop.ViewModels
                 AddCarVM.TypeId = SelectedBodyType.ID;
                 AddCarVM.BodyType = SelectedBodyType;
                 AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
+                AddCarVM.CarMark = MarkText;
 
                 foreach (var characteristic in AddCarVM.CharacteristicCars)
                 {

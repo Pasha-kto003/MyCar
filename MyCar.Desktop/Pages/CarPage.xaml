@@ -52,7 +52,7 @@
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
                             <Image Source="{Binding PhotoCar}"/>
-                            <TextBlock Text="{Binding Model.Mark.MarkName}" FontSize="16" Grid.Row="1"/>
+                            <TextBlock Text="{Binding CarMark}" FontSize="16" Grid.Row="1"/>
                             <TextBlock Text="{Binding Model.ModelName}" FontSize="16" Grid.Row="2"/>
                             <TextBlock Text="{Binding BodyType.TypeName}" FontSize="16" Grid.Row="3"/>
                             <TextBlock Text="{Binding Equipment.NameEquipment}" FontSize="16" Grid.Row="4"/>

@@ -13,10 +13,9 @@
     <None Remove="CarImages\HondaNsx.png" />
     <None Remove="CarImages\Mazda-RX-8.png" />
     <None Remove="CarImages\MazdaRx-7.png" />
-    <None Remove="CarImages\NissanAlmera.jpg" />
+    <None Remove="CarImages\Nissan350Z.png" />
     <None Remove="CarImages\NissanAlmera.png" />
     <None Remove="CarImages\picture.png" />
-    <None Remove="CarImages\png-transparent-toyota-tundra-toyota-camry-hybrid-mid-size-car-toyota-compact-car-sedan-car.png" />
     <None Remove="CarImages\ToyotaCamry.png" />
     <None Remove="CarImages\ToyotaCamryBlack.png" />
     <None Remove="CarImages\ToyotaCamrySedan.png" />
@@ -56,6 +55,7 @@
     <Resource Include="CarImages\HondaNsx.png" />
     <Resource Include="CarImages\Mazda-RX-8.png" />
     <Resource Include="CarImages\MazdaRx-7.png" />
+    <Resource Include="CarImages\Nissan350Z.png" />
     <Resource Include="CarImages\NissanAlmera.png" />
     <Resource Include="CarImages\picture.png" />
     <Resource Include="CarImages\ToyotaCamry.png" />

@@ -64,5 +64,32 @@ namespace MyCar.Server.Controllers
             await dbContext.SaveChangesAsync();
             return Ok(order.Id);
         }
+
+        [HttpPut]
+        public async Task<ActionResult<OrderApi>> Put(int id, [FromBody] OrderApi editOrder)
+        {
+            var order = (Order)editOrder;
+            var cross = dbContext.Warehouses.FirstOrDefault(s=> s.OrderId == id);
+            var oldOrder = await dbContext.Orders.FindAsync(id);
+            if(oldOrder == null)
+            {
+                return NotFound();
+            }
+            dbContext.Entry(oldOrder).CurrentValues.SetValues(order);
+            var warehouseRemove = dbContext.Warehouses.Where(s => s.OrderId == id).ToList();
+            dbContext.Warehouses.RemoveRange(warehouseRemove);
+
+            var crosses = editOrder.WareHouses.Select(s => (Warehouse)s);
+            await dbContext.Warehouses.AddRangeAsync(crosses.Select(s => new Warehouse
+            {
+                OrderId = order.Id,
+                CarId = s.CarId,
+                CountChange = s.CountChange,
+                Discount = s.Discount,
+                Price = s.Price
+            }));
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
     }
 }

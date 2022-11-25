@@ -30,8 +30,13 @@ namespace MyCar.Server.Controllers
         private CarApi GetCar(Car car)
         {
             var result = (CarApi)car;
-            var characteristics = dbContext.CharacteristicCars.Where(t => t.CarId == car.Id).Select(t => (CharacteristicCarApi)t).ToList();
-            result.CharacteristicCars = characteristics;
+            var characteristicsCar = dbContext.CharacteristicCars.Where(t => t.CarId == car.Id).Select(t => (CharacteristicCarApi)t).ToList();
+            foreach (var characeristicCar in characteristicsCar)
+            {
+                characeristicCar.Characteristic = (CharacteristicApi)dbContext.Characteristics.FirstOrDefault(s => s.Id == characeristicCar.CharacteristicId);
+                characeristicCar.Characteristic.Unit = (UnitApi)dbContext.Units.FirstOrDefault(s => s.Id == characeristicCar.Characteristic.UnitId);
+            }
+            result.CharacteristicCars = characteristicsCar;
             var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
             result.Model = (ModelApi)model;
             var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
@@ -46,6 +51,7 @@ namespace MyCar.Server.Controllers
                 characteristic.Characteristic = dbContext.Characteristics.FirstOrDefault(s=> s.Id == characteristic.CharacteristicId);
                 result.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
             }
+           
             return result;
         }
 

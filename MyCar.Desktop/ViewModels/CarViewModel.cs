@@ -35,7 +35,7 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 selectedMarkFilter = value;
-                Search();
+                Task.Run(Search);
             }
         }
         private string searchText = "";
@@ -45,7 +45,7 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 searchText = value;
-                Search();
+                Task.Run(Search);
             }
         }
 
@@ -57,7 +57,7 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 selectedSearchType = value;
-                Search();
+                Task.Run(Search);
             }
         }
 
@@ -71,21 +71,11 @@ namespace MyCar.Desktop.ViewModels
                 SignalChanged();
             }
         }
-
-        private CarApi selectedCar { get; set; }
-        public CarApi SelectedCar
-        {
-            get => selectedCar;
-            set
-            {
-                selectedCar = value;
-                SignalChanged();
-            }
-        }
+        public CarApi SelectedCar { get; set; }
 
         public List<CarApi> Cars { get; set; } = new List<CarApi>();
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
-        public List<MarkCarApi> MarkFilter { get; set; }
+        public List<MarkCarApi> MarkFilter { get; set; } = new List<MarkCarApi>();
         public List<MarkCarApi> MarkCars { get; set; } = new List<MarkCarApi>();
         public List<BodyTypeApi> BodyTypes { get; set; } = new List<BodyTypeApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
@@ -112,7 +102,7 @@ namespace MyCar.Desktop.ViewModels
 
         public CarViewModel()
         {
-            Task.Run(GetCarList);
+            Task.Run(GetCarList).Wait();
 
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Артикул", "Модель", "Цена", "Отменить" });
@@ -121,6 +111,10 @@ namespace MyCar.Desktop.ViewModels
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "5", "Все" });
             selectedViewCountRows = ViewCountRows.Last();
+
+            MarkFilter = MarkCars;
+            MarkFilter.Add(new MarkCarApi { MarkName = "Все" });
+            SelectedMarkFilter = MarkFilter.Last();
 
             BackPage = new CustomCommand(() => {
                 if (searchResult == null)
@@ -167,7 +161,7 @@ namespace MyCar.Desktop.ViewModels
             });
         }
 
-        private async Task UpdateList()
+        private void UpdateList()
         {
             Cars = searchResult;
             SignalChanged(nameof(searchResult));
@@ -194,16 +188,8 @@ namespace MyCar.Desktop.ViewModels
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
-            SignalChanged(nameof(Cars));
-
-            MarkFilter = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-            MarkFilter.Add(new MarkCarApi { MarkName = "Все" });
-            SelectedMarkFilter = MarkFilter.Last();
-
             FullCars = Cars;
-            searchResult = Cars;
-            InitPagination();
-            Pagination();
+           
         }
 
         public void InitPagination()

@@ -19,112 +19,53 @@ namespace MyCar.Desktop.ViewModels
     public class AddCarViewModel : BaseViewModel
     {
         public CarApi AddCarVM { get; set; }
-
-        private BitmapImage imageCar { get; set; }
-        public BitmapImage ImageCar
-        {
-            get=> imageCar;
-            set
-            {
-                imageCar = value;
-                SignalChanged();
-            }
-        }
-
+        public string ImageCar { get; set; }
         public List<MarkCarApi> Marks { get; set; }
-        public List<MarkCarApi> CarMarks { get; set; }
         public List<ModelApi> Models { get; set; }
-        public ObservableCollection<ModelApi> CarModels { get; set; }
         public List<BodyTypeApi> BodyTypes { get; set; }
         public List<EquipmentApi> Equipments { get; set; }
         public ObservableCollection<CharacteristicCarApi> CharacteristicsCar { get; set; }
+            = new ObservableCollection<CharacteristicCarApi>();
+
         public List<CharacteristicApi> Characteristics { get; set; }
 
         public string CharacteristicValue { get; set; }
-
         public string MarkText { get; set; }
 
-        private ModelApi selectedModel { get; set; }
+        public ModelApi selectedModel;
         public ModelApi SelectedModel
         {
             get => selectedModel;
             set
             {
                 selectedModel = value;
-                SignalChanged();
+                GetMarkText(selectedModel);
             }
         }
-
         public ModelApi SelectedCarModel { get; set; }
+        public BodyTypeApi SelectedBodyType { get; set; }
+        public EquipmentApi SelectedEquipment { get; set; }
+        public CharacteristicApi SelectedCharacteristic { get; set; }
 
-        private MarkCarApi selectedMark { get; set; }
-        public MarkCarApi SelectedMark
-        {
-            get => selectedMark;
-            set
-            {
-                selectedMark = value;
-                SignalChanged();
-            }
-        }
-
-        public MarkCarApi SelectedCarMark { get; set; }
-
-        private BodyTypeApi selectedBodyType { get; set; }
-        public BodyTypeApi SelectedBodyType
-        {
-            get => selectedBodyType;
-            set
-            {
-                selectedBodyType = value;
-                SignalChanged();
-            }
-        }
-
-        private EquipmentApi selectedEquipment { get; set; }
-        public EquipmentApi SelectedEquipment
-        {
-            get => selectedEquipment;
-            set
-            {
-                selectedEquipment = value;
-                SignalChanged();
-            }
-        }
-
-        private CharacteristicApi selectedCharacteristic { get; set; }
-        public CharacteristicApi SelectedCharacteristic
-        {
-            get=> selectedCharacteristic;
-            set
-            {
-                selectedCharacteristic = value;
-                SignalChanged();
-            }
-        }
-
-        private CharacteristicCarApi selectedCharacteristicCar { get; set; }
+        private CharacteristicCarApi selectedCharacteristicCar;
         public CharacteristicCarApi SelectedCharacteristicCar
         {
             get => selectedCharacteristicCar;
             set
             {
                 selectedCharacteristicCar = value;
-                SignalChanged();
+                SelectedCharacteristicChanged(selectedCharacteristicCar);
             }
         }
 
         public CustomCommand Save { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
-        public CustomCommand AddModel { get; set; }
         public CustomCommand AddImage { get; set; }
         public CustomCommand DeleteCharacteristic { get; set; }
 
         public AddCarViewModel(CarApi car)
         {
-            Models = new List<ModelApi>();
-            Marks = new List<MarkCarApi>();
-            CharacteristicsCar = new ObservableCollection<CharacteristicCarApi>();
+            Task.Run(GetList).Wait();
 
             if (car == null)
             {
@@ -132,14 +73,10 @@ namespace MyCar.Desktop.ViewModels
                 {
                     Articul = "1234",
                     CarPrice = 1000000,
-                    PhotoCar = @"/CarImages/picture.png"
                 };
-                GetCars(car);
             }
-
             else
             {
-                GetCars(car);
                 AddCarVM = new CarApi
                 {
                     ID = car.ID,
@@ -150,182 +87,142 @@ namespace MyCar.Desktop.ViewModels
                     Model = car.Model,
                     BodyType = car.BodyType,
                     TypeId = car.TypeId,
-                    EquipmentId = car.EquipmentId
+                    EquipmentId = car.EquipmentId,
+                    CharacteristicCars = car.CharacteristicCars
                 };
                 SelectedCarModel = AddCarVM.Model;
+                GetInfo();
             }
-
-            if (AddCarVM.PhotoCar == null)
-            {
-                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + @"/CarImages/picture.png");
-            }
-
-            else
-            {
-                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + AddCarVM.PhotoCar);
-            }
-
-            GetCars(AddCarVM);
-
-            AddModel = new CustomCommand(() =>
-            {
-                if(SelectedModel == null)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Вы не выбрали модель" });
-                    return;
-                }
-                else
-                {
-                    AddCarVM.Model = SelectedCarModel;
-                    CarModels.Add(SelectedModel);
-                    SignalChanged(nameof(CarModels));
-                    MarkText = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId).MarkName;
-                    AddCarVM.ModelId = SelectedModel.ID;
-                    EditCar(AddCarVM);
-                    if (CarModels.Count > 1)
-                    {
-                        GetModel();
-                    }
-                }
-            });
+            ImageCar = AddCarVM.PhotoCar;
 
             AddCharacteristic = new CustomCommand(() =>
             {
-                CharacteristicCarApi characteristic = new CharacteristicCarApi
+                bool match = false;
+                foreach (var item in CharacteristicsCar)
                 {
-                    CarId = AddCarVM.ID,
-                    CharacteristicValue = CharacteristicValue.ToString(),
-                    Characteristic = SelectedCharacteristic,
-                    CharacteristicId = SelectedCharacteristic.ID
-                };
-
-                CharacteristicsCar.Add(characteristic);
-                SignalChanged(nameof(CharacteristicsCar));
+                    if (item.CharacteristicId == SelectedCharacteristic.ID)
+                    {
+                        item.CharacteristicValue = CharacteristicValue;
+                        CharacteristicsCar.Remove(item);
+                        CharacteristicsCar.Add(item);
+                        match = true;
+                        break;
+                    }
+                }
+                if (!match)
+                {
+                    CharacteristicCarApi characteristicCar = new CharacteristicCarApi
+                    {
+                        CarId = AddCarVM.ID,
+                        CharacteristicValue = CharacteristicValue.ToString(),
+                        Characteristic = SelectedCharacteristic,
+                        CharacteristicId = SelectedCharacteristic.ID
+                    };
+                    CharacteristicsCar.Add(characteristicCar);
+                }
             });
 
             string dir = Environment.CurrentDirectory;
             AddImage = new CustomCommand(() =>
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                if(openFileDialog.ShowDialog() == true)
+                openFileDialog.InitialDirectory = dir + @"\CarImages\";
+                if (openFileDialog.ShowDialog() == true)
                 {
                     try
                     {
                         var info = new FileInfo(openFileDialog.FileName);
-                        ImageCar = GetImageFromPath(openFileDialog.FileName);
-                        AddCarVM.PhotoCar = $"/CarImages/{info.Name}";
-                        var newParh = Environment.CurrentDirectory + AddCarVM.PhotoCar;
+                        var newParh = Environment.CurrentDirectory + @"\CarImages\" + info.Name;
+                        ImageCar = info.Name;
+                        AddCarVM.PhotoCar = info.Name;
                         File.Copy(openFileDialog.FileName, newParh);
                     }
 
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.Message);
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = e.Message });
                     }
                 }
             });
 
             DeleteCharacteristic = new CustomCommand(() =>
             {
-                if(SelectedCharacteristicCar == null)
+                if (SelectedCharacteristicCar == null)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбранна характеристика авто" });
                     return;
                 }
                 else
                 {
-                    MessageBoxResult result = MessageBox.Show("Вы точно желаете удалить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
+                    MessageBoxDialogViewModel result = new MessageBoxDialogViewModel { Title = "Подтверждение", Message = $"Вы точно хотите удалить параметр?" };
+                    UIManager.ShowMessageYesNo(result);
+                    if (result.Result)
                     {
                         CharacteristicsCar.Remove(SelectedCharacteristicCar);
-                        SignalChanged(nameof(CharacteristicsCar));
-                        AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
-                        EditCar(AddCarVM);
                     }
                 }
             });
 
-            Save = new CustomCommand(() =>
+            Save = new CustomCommand(async () =>
             {
                 AddCarVM.ModelId = SelectedModel.ID;
                 AddCarVM.Model = SelectedModel;
-                AddCarVM.Model.MarkId = SelectedMark.ID;
                 AddCarVM.EquipmentId = SelectedEquipment.ID;
                 AddCarVM.Equipment = SelectedEquipment;
+                AddCarVM.BodyType = SelectedBodyType;
                 AddCarVM.TypeId = SelectedBodyType.ID;
                 AddCarVM.BodyType = SelectedBodyType;
                 AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
-                AddCarVM.CarMark = MarkText;
 
                 foreach (var characteristic in AddCarVM.CharacteristicCars)
                 {
                     characteristic.Characteristic = Characteristics.FirstOrDefault(s => s.ID == characteristic.CharacteristicId);
                     AddCarVM.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
                 }
-                if (SelectedMark == null || SelectedMark.ID == 0)
-                {
-                    SendMessage("Не выбрана марка");
 
-                }
-                else if (SelectedModel == null || SelectedModel.ID == 0)
+                if (SelectedModel == null || SelectedModel.ID == 0)
                 {
-                    SendMessage("Не выбрана модель");
-                }
-                else if (SelectedModel.MarkId != SelectedMark.ID)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Данная марка не содержит выбранную модель" });
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана модель" });
                     return;
                 }
                 else if (SelectedBodyType == null || SelectedBodyType.ID == 0)
                 {
-                    SendMessage("Не выбран тип кузова");
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран тип кузова" });
+                    return;
                 }
 
                 else if (SelectedEquipment == null || SelectedEquipment.ID == 0)
                 {
-                    SendMessage("Не выбрана коплектация");
-                }
-
-                else if (CharacteristicsCar == null)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана характеристика авто" });
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана комплектация" });
                     return;
                 }
 
                 if (AddCarVM.ID == 0)
                 {
-                    PostCar(AddCarVM);
-                    SendMessage($"Машина {AddCarVM.Model.ModelName} успешно создана");
+                    await PostCar(AddCarVM);
                 }
-
                 else
                 {
-                    EditCar(AddCarVM);
-                    SendMessage($"Машина {AddCarVM.Model.ModelName} успешно изменена");
+                    await EditCar(AddCarVM);
                 }
 
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.DataContext == this)
-                    {
-                        CloseWindow(window);
-                    }
-                }
-                SignalChanged(nameof(CharacteristicsCar));
+                UIManager.CloseWindow(this);
             });
         }
-
-        public async Task GetCar(int id)
+        private async Task GetList()
         {
-            AddCarVM = await Api.GetAsync<CarApi>(id, "Car");
+            Models = await Api.GetListAsync<List<ModelApi>>("Model");
+            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
+            Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
+            Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
         }
-
-        public async Task GetModels(CarApi car)
+        private void GetInfo()
         {
-            var list = await Api.GetListAsync<List<ModelApi>>("Model");
-            var l = list.Where(s=> s.ID == car.ModelId).ToList();
-            CarModels = new ObservableCollection<ModelApi>(l);
-            SignalChanged(nameof(CarModels));
+            CharacteristicsCar = new ObservableCollection<CharacteristicCarApi>(AddCarVM.CharacteristicCars);
+            SelectedModel = Models.FirstOrDefault(s => s.ID == AddCarVM.ModelId);
+            SelectedBodyType = BodyTypes.FirstOrDefault(s => s.ID == AddCarVM.TypeId);
+            SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == AddCarVM.EquipmentId);
         }
 
         public async Task PostCar(CarApi carApi)
@@ -339,87 +236,18 @@ namespace MyCar.Desktop.ViewModels
             var car = await Api.PutAsync<CarApi>(carApi, "Car");
         }
 
-        public void SendMessage(string message)
+        private void GetMarkText(ModelApi model)
         {
-            UIManager.ShowMessage(new Dialogs.MessageBoxDialogViewModel
-            {
-                Message = message,
-                OkText = "ОК",
-                Title = "Успех!"
-            });
-            return;
+            if (model != null)
+                MarkText = Marks.FirstOrDefault(s => s.ID == model.MarkId).MarkName;
         }
-
-        public async Task GetModel()
+        private void SelectedCharacteristicChanged(CharacteristicCarApi selectedCharacteristicCar)
         {
-            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-            MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
+            if (selectedCharacteristicCar != null)
             {
-                CarModels.Clear();
-                AddCarVM.Model = SelectedCarModel;
-                CarModels.Add(SelectedModel);
-                SignalChanged(nameof(CarModels));
-                MarkText = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId).MarkName;
-                AddCarVM.ModelId = SelectedModel.ID;
-                EditCar(AddCarVM);
+                SelectedCharacteristic = Characteristics.FirstOrDefault(s => s.ID == selectedCharacteristicCar.CharacteristicId);
+                CharacteristicValue = selectedCharacteristicCar.CharacteristicValue;
             }
-        }
-        public async Task GetCars(CarApi carApi)
-        {
-            Models = await Api.GetListAsync<List<ModelApi>>("Model");
-            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-            BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
-            Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
-            Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
-            
-            if (carApi == null)
-            {
-                SelectedModel = Models.FirstOrDefault();
-                SelectedMark = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId);
-                SignalChanged(nameof(SelectedMark));
-                SelectedEquipment = Equipments.FirstOrDefault();
-                CarModels = new ObservableCollection<ModelApi>();
-                SelectedCarModel = CarModels.FirstOrDefault();
-            }
-
-            else
-            {
-                var car = await Api.GetAsync<CarApi>(carApi.ID, "Car");
-                var list = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
-                car.CharacteristicCars = list.Where(s => s.CarId == car.ID).ToList();
-                CharacteristicsCar = new ObservableCollection<CharacteristicCarApi>(car.CharacteristicCars);
-                GetModels(carApi);
-                foreach (var characteristic in CharacteristicsCar)
-                {
-                    characteristic.Characteristic = Characteristics.FirstOrDefault(s => s.ID == characteristic.CharacteristicId);
-                }
-                SelectedModel = Models.FirstOrDefault(s => s.ID == carApi.ModelId);
-                SelectedMark = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId);
-                SignalChanged(nameof(SelectedMark));
-                SignalChanged(nameof(SelectedModel));
-
-                MarkText = Marks.FirstOrDefault(s => s.ID == SelectedModel.MarkId).MarkName;
-                SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == carApi.EquipmentId);
-                SignalChanged(nameof(SelectedEquipment));
-                SelectedBodyType = BodyTypes.FirstOrDefault(s => s.ID == carApi.TypeId);
-            } 
-        }
-
-        private BitmapImage GetImageFromPath(string url)
-        {
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(url, UriKind.Absolute);
-            img.EndInit();
-            return img;
-        }
-
-        public void CloseWindow(object obj)
-        {
-            Window window = obj as Window;
-            window.Close();
         }
     }
 }

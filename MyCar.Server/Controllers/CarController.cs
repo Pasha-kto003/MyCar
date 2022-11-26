@@ -16,17 +16,6 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
 
-        private CarApi GetCross(Car car, List<CharacteristicCarApi> characteristics, Model model, MarkCar mark, Equipment equipment, BodyType bodyType)
-        {
-            var result = (CarApi)car;
-            result.CharacteristicCars = characteristics;
-            result.Model = (ModelApi)model;
-            //result.Model.MarkCar = (MarkCarApi)mark;
-            result.Equipment = (EquipmentApi)equipment;
-            result.BodyType = (BodyTypeApi)bodyType;
-            return result;
-        }
-
         private CarApi GetCar(Car car)
         {
             var result = (CarApi)car;
@@ -35,6 +24,7 @@ namespace MyCar.Server.Controllers
             {
                 characeristicCar.Characteristic = (CharacteristicApi)dbContext.Characteristics.FirstOrDefault(s => s.Id == characeristicCar.CharacteristicId);
                 characeristicCar.Characteristic.Unit = (UnitApi)dbContext.Units.FirstOrDefault(s => s.Id == characeristicCar.Characteristic.UnitId);
+                result.CarOptions += $"{characeristicCar.Characteristic.CharacteristicName} {characeristicCar.CharacteristicValue} \n";
             }
             result.CharacteristicCars = characteristicsCar;
             var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
@@ -46,12 +36,6 @@ namespace MyCar.Server.Controllers
             result.Equipment = (EquipmentApi)equipment;
             var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);
             result.BodyType = (BodyTypeApi)body;
-            foreach (var characteristic in dbContext.CharacteristicCars.Where(s => s.CarId == car.Id).ToList())
-            {
-                characteristic.Characteristic = dbContext.Characteristics.FirstOrDefault(s => s.Id == characteristic.CharacteristicId);
-                result.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
-            }
-
             return result;
         }
 

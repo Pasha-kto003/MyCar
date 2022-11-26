@@ -19,7 +19,7 @@ namespace MyCar.Desktop.ViewModels
     public class AddCarViewModel : BaseViewModel
     {
         public CarApi AddCarVM { get; set; }
-        public BitmapImage ImageCar { get; set; }
+        public string ImageCar { get; set; }
         public List<MarkCarApi> Marks { get; set; }
         public List<ModelApi> Models { get; set; }
         public List<BodyTypeApi> BodyTypes { get; set; }
@@ -73,7 +73,6 @@ namespace MyCar.Desktop.ViewModels
                 {
                     Articul = "1234",
                     CarPrice = 1000000,
-                    PhotoCar = @"/CarImages/picture.png"
                 };
             }
             else
@@ -94,17 +93,7 @@ namespace MyCar.Desktop.ViewModels
                 SelectedCarModel = AddCarVM.Model;
                 GetInfo();
             }
-
-            if (AddCarVM.PhotoCar == null)
-            {
-                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + @"/CarImages/picture.png"); //
-            }
-
-            else
-            {
-                ImageCar = GetImageFromPath(Environment.CurrentDirectory + "//" + AddCarVM.PhotoCar);
-            }
-
+                ImageCar = AddCarVM.PhotoCar;
 
             AddCharacteristic = new CustomCommand(() =>
             {
@@ -142,15 +131,16 @@ namespace MyCar.Desktop.ViewModels
                     try
                     {
                         var info = new FileInfo(openFileDialog.FileName);
-                        ImageCar = GetImageFromPath(openFileDialog.FileName);
-                        AddCarVM.PhotoCar = $"/CarImages/{info.Name}";
-                        var newParh = Environment.CurrentDirectory + AddCarVM.PhotoCar;
+                        var newParh = Environment.CurrentDirectory +"/CarImages/" + info.Name;
                         File.Copy(openFileDialog.FileName, newParh);
+                        ImageCar = info.Name;
+                        AddCarVM.PhotoCar = info.Name;
+                       
                     }
 
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.Message);
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = e.Message });
                     }
                 }
             });
@@ -259,17 +249,5 @@ namespace MyCar.Desktop.ViewModels
                  CharacteristicValue = selectedCharacteristicCar.CharacteristicValue;
             } 
         }
-
-        private BitmapImage GetImageFromPath(string url)
-        {
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(url, UriKind.Absolute);
-            img.EndInit();
-            return img;
-        }
-
-       
     }
 }

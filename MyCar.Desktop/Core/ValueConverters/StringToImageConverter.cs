@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace MyCar.Desktop.Core.ValueConverters
 {
     public class StringToImageConverter : BaseValueConverter<StringToImageConverter>

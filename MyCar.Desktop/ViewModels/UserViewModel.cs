@@ -146,8 +146,7 @@ namespace MyCar.Desktop.ViewModels
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
             UserTypes = await Api.GetListAsync<List<UserTypeApi>>("UserType");
-            Passports = await Api.GetListAsync<List<PassportApi>>("Passport");
-
+            Passports = await Api.GetListAsync<List<PassportApi>>("Passport"); 
             UserTypeFilter = UserTypes;
             UserTypeFilter.Add(new UserTypeApi { TypeName = "Все" });
             SelectedUserTypeFilter = UserTypeFilter.Last();

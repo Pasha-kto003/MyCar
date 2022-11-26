@@ -189,7 +189,6 @@ namespace MyCar.Desktop.ViewModels
             CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             FullCars = Cars;
-
         }
 
         public void InitPagination()

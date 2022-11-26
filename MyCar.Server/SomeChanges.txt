@@ -324,3 +324,8 @@
                     SignalChanged(nameof(CarModels));
                     SelectedMark.ID = (int)SelectedModel.MarkId;
             
+            foreach (var characteristic in dbContext.CharacteristicCars.Where(s => s.CarId == car.Id).ToList())
+            {
+                characteristic.Characteristic = dbContext.Characteristics.FirstOrDefault(s => s.Id == characteristic.CharacteristicId);
+                result.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
+            }

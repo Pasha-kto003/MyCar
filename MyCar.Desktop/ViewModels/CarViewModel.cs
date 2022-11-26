@@ -150,7 +150,7 @@ namespace MyCar.Desktop.ViewModels
 
             EditCar = new CustomCommand(() =>
             {
-                if(SelectedCar == null || SelectedCar.ID == 0)
+                if (SelectedCar == null || SelectedCar.ID == 0)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран автомобиль для редактирования" });
                     return;
@@ -189,7 +189,6 @@ namespace MyCar.Desktop.ViewModels
             CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             FullCars = Cars;
-           
         }
 
         public void InitPagination()
@@ -213,7 +212,7 @@ namespace MyCar.Desktop.ViewModels
             int.TryParse(SelectedViewCountRows, out rows);
             if (rows == 0)
                 rows = FullCars.Count;
-            if(rows > FullCars.Count)
+            if (rows > FullCars.Count)
             {
                 UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Превышено количество объектов" });
                 SelectedViewCountRows = ViewCountRows.Last();

@@ -99,11 +99,6 @@ namespace MyCar.Desktop.Core
         {
             var str = JsonSerializer.Serialize(value, typeof(T));
             var answer = await client.PutAsync(server + controller + $"/{value.ID}", new StringContent(str, Encoding.UTF8, "application/json"));
-            if (answer.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"{answer.StatusCode}" });
-                return false;
-            }
             return answer.StatusCode == System.Net.HttpStatusCode.OK;
         }
 

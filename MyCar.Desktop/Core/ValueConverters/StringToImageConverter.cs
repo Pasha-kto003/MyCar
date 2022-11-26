@@ -6,8 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace MyCar.Desktop.Core
+namespace MyCar.Desktop.Core.ValueConverters
 {
     public class StringToImageConverter : BaseValueConverter<StringToImageConverter>
     {
@@ -19,7 +18,6 @@ namespace MyCar.Desktop.Core
             else
                 return UIManager.GetImageFromPath(defaultPath + "picture.png");
         }
-
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

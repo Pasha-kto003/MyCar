@@ -93,7 +93,7 @@ namespace MyCar.Desktop.ViewModels
                 SelectedCarModel = AddCarVM.Model;
                 GetInfo();
             }
-                ImageCar = AddCarVM.PhotoCar;
+            ImageCar = AddCarVM.PhotoCar;
 
             AddCharacteristic = new CustomCommand(() =>
             {
@@ -118,24 +118,24 @@ namespace MyCar.Desktop.ViewModels
                         Characteristic = SelectedCharacteristic,
                         CharacteristicId = SelectedCharacteristic.ID
                     };
-                     CharacteristicsCar.Add(characteristicCar);
-                }               
+                    CharacteristicsCar.Add(characteristicCar);
+                }
             });
 
             string dir = Environment.CurrentDirectory;
             AddImage = new CustomCommand(() =>
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                if(openFileDialog.ShowDialog() == true)
+                openFileDialog.InitialDirectory = dir + @"\CarImages\";
+                if (openFileDialog.ShowDialog() == true)
                 {
                     try
                     {
                         var info = new FileInfo(openFileDialog.FileName);
-                        var newParh = Environment.CurrentDirectory +"/CarImages/" + info.Name;
-                        File.Copy(openFileDialog.FileName, newParh);
+                        var newParh = Environment.CurrentDirectory + @"\CarImages\" + info.Name;
                         ImageCar = info.Name;
                         AddCarVM.PhotoCar = info.Name;
-                       
+                        File.Copy(openFileDialog.FileName, newParh);
                     }
 
                     catch (Exception e)
@@ -147,14 +147,14 @@ namespace MyCar.Desktop.ViewModels
 
             DeleteCharacteristic = new CustomCommand(() =>
             {
-                if(SelectedCharacteristicCar == null)
+                if (SelectedCharacteristicCar == null)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбранна характеристика авто" });
                     return;
                 }
                 else
                 {
-                    MessageBoxDialogViewModel result = new MessageBoxDialogViewModel{ Title = "Подтверждение", Message = $"Вы точно хотите удалить параметр?" };
+                    MessageBoxDialogViewModel result = new MessageBoxDialogViewModel { Title = "Подтверждение", Message = $"Вы точно хотите удалить параметр?" };
                     UIManager.ShowMessageYesNo(result);
                     if (result.Result)
                     {
@@ -239,15 +239,15 @@ namespace MyCar.Desktop.ViewModels
         private void GetMarkText(ModelApi model)
         {
             if (model != null)
-            MarkText = Marks.FirstOrDefault(s => s.ID == model.MarkId).MarkName;
+                MarkText = Marks.FirstOrDefault(s => s.ID == model.MarkId).MarkName;
         }
         private void SelectedCharacteristicChanged(CharacteristicCarApi selectedCharacteristicCar)
         {
-            if(selectedCharacteristicCar != null)
+            if (selectedCharacteristicCar != null)
             {
-                 SelectedCharacteristic = Characteristics.FirstOrDefault(s => s.ID == selectedCharacteristicCar.CharacteristicId);
-                 CharacteristicValue = selectedCharacteristicCar.CharacteristicValue;
-            } 
+                SelectedCharacteristic = Characteristics.FirstOrDefault(s => s.ID == selectedCharacteristicCar.CharacteristicId);
+                CharacteristicValue = selectedCharacteristicCar.CharacteristicValue;
+            }
         }
     }
 }

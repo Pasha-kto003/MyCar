@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace MyCar.Desktop.Core.UI
 {
@@ -78,6 +79,16 @@ namespace MyCar.Desktop.Core.UI
                     window.Close();
                 }
             }
+        }
+
+        public static BitmapImage GetImageFromPath(string url)
+        {
+            BitmapImage img = new BitmapImage();
+            img.BeginInit();
+            img.CacheOption = BitmapCacheOption.OnLoad;
+            img.UriSource = new Uri(url, UriKind.Absolute);
+            img.EndInit();
+            return img;
         }
     }
 }

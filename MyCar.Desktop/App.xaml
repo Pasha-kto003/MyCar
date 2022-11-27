@@ -15,12 +15,12 @@
                 <ResourceDictionary Source="Styles/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
-        <Style TargetType="ListView">
+        <Style TargetType="ListView" x:Key="AlternativeListView">
             <Setter Property="AlternationCount" Value="2"/>
         </Style>
-           
-            
-            <Style TargetType="ListViewItem">
+
+
+            <Style TargetType="ListViewItem" x:Key="AlternativeListViewItem">
             <!--<Setter Property="Background" Value="#FFE0DEDE"/>-->
             <Setter Property="Padding" Value="2"/>
             <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}"/>

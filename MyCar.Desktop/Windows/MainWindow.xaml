@@ -135,8 +135,8 @@
                         </ImageBrush>
                     </Rectangle.Fill>
                 </Rectangle>
-                <TextBlock Text="{Binding UserString}" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
-                       FontSize="{StaticResource FontSizeXLarge}" Foreground="{StaticResource DarkGrayBrush}"  />
+                <TextBlock Text="{Binding UserString}" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
+                       FontSize="18"  Foreground="{StaticResource DarkGrayBrush}" Width="150" />
             </StackPanel>
             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Fill="Gray" Height="0.5" Width="220"/>
         </Grid>

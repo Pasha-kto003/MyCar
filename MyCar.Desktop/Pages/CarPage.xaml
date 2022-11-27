@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyCar.Desktop.Pages" 
-      xmlns:core="clr-namespace:MyCar.Desktop.Core.ValueConverters"
       xmlns:core="clr-namespace:MyCar.Desktop.Core"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
@@ -34,32 +33,31 @@
             </StackPanel>
         </Grid>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Cars}"  FontSize="16" SelectedItem="{Binding SelectedCar}" d:ItemsSource="{d:SampleData ItemCount=5}" >
+        <ListView Grid.Row="1" ItemsSource="{Binding Cars}"  FontSize="16" SelectedItem="{Binding SelectedCar}"
+                  Background="WhiteSmoke" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" >
             <ListView.ItemsPanel >
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal"/>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="10" Background="Transparent">
-                        <Grid Width="200" Background="Transparent" MouseUp="Grid_MouseUp"  >
+                    <Border CornerRadius="10" Background="White" BorderBrush="Gray" BorderThickness="1">
+                        <Grid Width="200" Height="250" Background="Transparent" MouseUp="Grid_MouseUp" Margin="15">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="100"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Image Source="{Binding PhotoCar, Converter={core:StringToImageConverter}}"/>
-                            <TextBlock Text="{Binding CarMark}" FontSize="16" Grid.Row="1"/>
-                            <TextBlock Text="{Binding Model.ModelName}" FontSize="16" Grid.Row="2"/>
-                            <TextBlock Text="{Binding BodyType.TypeName}" FontSize="16" Grid.Row="3"/>
-                            <TextBlock Text="{Binding Equipment.NameEquipment}" FontSize="16" Grid.Row="4"/>
-                            <TextBlock Text="{Binding CarOptions}" Grid.Row="5"/>
-                            <TextBlock Text="{Binding CarPrice}" FontSize="20" Foreground="ForestGreen" Grid.Row="6"/>
+                            <Image Source="{Binding PhotoCar, Converter={core:StringToImageConverter}}" Margin="0 0 0 10"/>
+                            <TextBlock Text="{Binding Model.ModelName}" FontSize="18" Grid.Row="1" FontWeight="DemiBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding CarMark}" FontSize="18" Grid.Row="2" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding BodyType.TypeName, StringFormat= Кузов: {0}}" FontSize="18" Grid.Row="3" />
+                            <TextBlock Text="{Binding Equipment.NameEquipment}" FontSize="18" Grid.Row="4" />
+                            <TextBlock Text="{Binding CarPrice,StringFormat={}Цена: {0:N2} ₽}" FontSize="18" Foreground="ForestGreen" Grid.Row="6" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
@@ -74,15 +72,17 @@
 
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2">
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Label Content="{Binding SearchCountRows}" Foreground="White" VerticalAlignment="Center"/>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="&lt;" Width="20" Command="{Binding BackPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
-                    <Label Content="{Binding Pages}" Foreground="White" VerticalAlignment="Center"/>
-                    <Button Content=">" Width="20" Command="{Binding ForwardPage}" Foreground="White" BorderBrush="{StaticResource ValorantRedBrush}" Background="{StaticResource ValorantRedBrush}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                    <Label Content="Кол-во записей на странице:" Foreground="White" FontSize="16" Height="30"/>
-                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" IsEditable="True" Width="200" Height="30" ItemsSource="{Binding ViewCountRows}" SelectedItem="{Binding SelectedViewCountRows}"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Label Content="{Binding SearchCountRows}" Foreground="White" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button FontSize="16" Content="&lt;" Foreground="White" Width="20" Command="{Binding BackPage}" Style="{StaticResource RegularButton}" Padding="0 10"/>
+                        <Label FontSize="16" Content="{Binding Pages}" Foreground="White" VerticalAlignment="Center"/>
+                        <Button  FontSize="16" Content=">" Foreground="White" Width="20" Command="{Binding ForwardPage}"  Style="{StaticResource RegularButton}" Padding="0 10"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                        <Label Content="Кол-во записей:" Foreground="White" FontSize="16" Height="30"/>
+                        <ComboBox Width="100" Height="30" Style="{StaticResource ComboBoxFlatStyle}" ItemsSource="{Binding ViewCountRows}" VerticalContentAlignment="Center" FontSize="16" SelectedItem="{Binding SelectedViewCountRows}"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

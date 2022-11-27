@@ -132,10 +132,11 @@ namespace MyCar.Desktop.ViewModels
                     try
                     {
                         var info = new FileInfo(openFileDialog.FileName);
-                        var newParh = Environment.CurrentDirectory + @"\CarImages\" + info.Name;
+                        var newPath = Environment.CurrentDirectory + @"\CarImages\" + info.Name;
+                        if (!File.Exists(newPath))
+                            File.Copy(openFileDialog.FileName, newPath);
                         ImageCar = info.Name;
                         AddCarVM.PhotoCar = info.Name;
-                        File.Copy(openFileDialog.FileName, newParh);
                     }
 
                     catch (Exception e)

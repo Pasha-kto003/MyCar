@@ -1,4 +1,5 @@
-﻿using ModelsApi;
+﻿using Microsoft.Win32;
+using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.ViewModels.Dialogs;
@@ -6,10 +7,12 @@ using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MyCar.Desktop.ViewModels.AddViewModels
 {
@@ -41,6 +44,10 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand RemoveModel { get; set; }
         public CustomCommand EditModel { get; set; }
         public CustomCommand AddNewModel { get; set; }
+        public CustomCommand AddImage { get; set; }
+
+        public string ImageMark { get; set; }
+
         public AddMarkViewModel(MarkCarApi addmark)
         {
             Task.Run(GetList);
@@ -56,9 +63,35 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     ID = addmark.ID,
                     MarkName = addmark.MarkName,
                     Models = addmark.Models,
+                    MarkPhoto = addmark.MarkPhoto
                 };
                 ThisMarkModels = new ObservableCollection<ModelApi>(AddMark.Models);
             }
+            ImageMark = AddMark.MarkPhoto;
+
+            string dir = Environment.CurrentDirectory;
+            AddImage = new CustomCommand(() =>
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.InitialDirectory = dir + @"\CarImages\";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    try
+                    {
+                        var info = new FileInfo(openFileDialog.FileName);
+                        var newPath = Environment.CurrentDirectory + @"\MarkImages\" + info.Name;
+                        if (!File.Exists(newPath))
+                            File.Copy(openFileDialog.FileName, newPath);
+                        ImageMark = info.Name;
+                        AddMark.MarkPhoto = info.Name;
+                    }
+
+                    catch (Exception e)
+                    {
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = e.Message });
+                    }
+                }
+            });
 
             AddModel = new CustomCommand(() =>
             {

@@ -66,8 +66,8 @@
                                    FontFamily="{StaticResource CenturyGothic}"
                                    Foreground="{StaticResource ValorantRedBrush}"/>
                         
-                        <TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>
-
+                        <!--<TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>-->
+                        <PasswordBox x:Name="passwordtxt" Tag="Password" Height="30" Style="{StaticResource PasswordBoxtxt}"/>
                         <Button  Content="Войти"
                              core:IsBusyProperty.Value="{Binding LoginIsRunning}"
                              Style="{StaticResource ButtonLogin}"

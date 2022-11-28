@@ -23,7 +23,7 @@ namespace MyCar.Desktop.Windows
         public AuthWindow()
         {
             InitializeComponent();
-            DataContext = new AuthViewModel(this);
+            DataContext = new AuthViewModel(this, passwordtxt);
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

@@ -133,8 +133,8 @@ namespace MyCar.Desktop.ViewModels
                     {
                         var info = new FileInfo(openFileDialog.FileName);
                         var newPath = Environment.CurrentDirectory + @"\CarImages\" + info.Name;
-                        if(!File.Exists(newPath))
-                        File.Copy(openFileDialog.FileName, newPath);
+                        if (!File.Exists(newPath))
+                            File.Copy(openFileDialog.FileName, newPath);
                         ImageCar = info.Name;
                         AddCarVM.PhotoCar = info.Name;
                     }

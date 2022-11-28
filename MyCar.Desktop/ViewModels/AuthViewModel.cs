@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
@@ -32,18 +33,20 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Login { get; set; }
         public CustomCommand Registration { get; set; }
 
-        public AuthViewModel(Window window)
+        public AuthViewModel(Window window, PasswordBox passwordtxt)
         {
             mWindow = window;
-
 
             CloseWindow = new CustomCommand(() => {
                 mWindow.Close();
             });
             
+            
+
             Login = new CustomCommand(async()  => {
                 await RunCommandAsync(() => this.LoginIsRunning, async () =>
                 {
+                    Password = passwordtxt.Password;
                     Task task = Task.Run(Enter);
                     await task;
                     ShowWindow();

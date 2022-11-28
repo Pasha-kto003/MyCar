@@ -9,7 +9,8 @@ namespace MyCar.Server.DB
             return new MarkCarApi
             {
                 ID = markCar.Id,
-                MarkName = markCar.MarkName
+                MarkName = markCar.MarkName,
+                MarkPhoto = markCar.MarkPhoto
             };
         }
 
@@ -18,7 +19,8 @@ namespace MyCar.Server.DB
             return new MarkCar
             {
                 Id = markCar.ID,
-                MarkName = markCar.MarkName
+                MarkName = markCar.MarkName,
+                MarkPhoto = markCar.MarkPhoto
             };
         }
     }

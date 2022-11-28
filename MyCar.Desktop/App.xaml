@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="Styles/DataGrid.xaml" />
                 <ResourceDictionary Source="Styles/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
         <Style TargetType="ListView" x:Key="AlternativeListView">
             <Setter Property="AlternationCount" Value="2"/>
         </Style>
@@ -41,7 +41,7 @@
         </Style>
 
         </ResourceDictionary>
-        
-        
+
+
     </Application.Resources>
 </Application>

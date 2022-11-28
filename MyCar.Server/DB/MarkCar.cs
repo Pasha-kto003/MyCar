@@ -12,6 +12,7 @@ namespace MyCar.Server.DB
 
         public int Id { get; set; }
         public string? MarkName { get; set; }
+        public string? MarkPhoto { get; set; }
 
         public virtual ICollection<Model> Models { get; set; }
     }

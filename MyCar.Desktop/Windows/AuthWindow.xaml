@@ -67,7 +67,7 @@
                                    Foreground="{StaticResource ValorantRedBrush}"/>
                         
                         <!--<TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>-->
-                        <PasswordBox x:Name="passwordtxt" Tag="Пароль" Height="30" Style="{StaticResource PasswordBoxtxt}"/>
+                        <PasswordBox x:Name="passwordtxt" Tag="Пароль" Height="40" PasswordChar="*" Style="{StaticResource PasswordBoxtxt}"/>
                         <Button  Content="Войти"
                              core:IsBusyProperty.Value="{Binding LoginIsRunning}"
                              Style="{StaticResource ButtonLogin}"

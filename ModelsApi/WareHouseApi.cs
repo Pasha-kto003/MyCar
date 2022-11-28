@@ -13,5 +13,7 @@ namespace ModelsApi
         public int? CountChange { get; set; }
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
+
+        public CarApi Car { get; set; }
     }
 }

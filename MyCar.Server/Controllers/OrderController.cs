@@ -16,10 +16,12 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
 
-        private OrderApi CreateOrderApi(Order orderIn, List<CarApi> cars)
+        private OrderApi CreateOrderApi(Order orderIn)
         {
             var result = (OrderApi)orderIn;
-            result.Cars = cars;
+            var user = dbContext.Users.FirstOrDefault(x => x.Id == orderIn.ClientId);
+            result.User = (UserApi)user;
+            result.WareHouses = dbContext.Warehouses.Where(s=> s.OrderId == orderIn.Id).Select(t=> (WareHouseApi)t).ToList();
             return result;
         }
 
@@ -29,8 +31,7 @@ namespace MyCar.Server.Controllers
         {
             return dbContext.Orders.ToList().Select(s =>
             {
-                var warehouses = dbContext.Warehouses.Where(t => t.OrderId == s.Id).Select(t => (CarApi)t.Car).ToList();
-                return CreateOrderApi(s, warehouses);
+                return CreateOrderApi(s);
             });
         }
 
@@ -39,8 +40,40 @@ namespace MyCar.Server.Controllers
         public async Task<ActionResult<OrderApi>> Get(int id)
         {
             var order = await dbContext.Orders.FindAsync(id);
-            var products = dbContext.Warehouses.Where(t => t.OrderId == id).Select(t => (CarApi)t.Car).ToList();
-            return CreateOrderApi(order, products);
+            return CreateOrderApi(order);
+        }
+
+        [HttpGet("Type, Text, Filter")]
+        public IEnumerable<OrderApi> SearchOrder(string type, string text, string filter)
+        {
+            IEnumerable<OrderApi> OrdersApi = dbContext.Orders.ToList().Select(s =>
+            {
+                return CreateOrderApi(s);
+            });
+
+            if (text != "$")
+            {
+                switch (type)
+                {
+                    case "Пользователь":
+                        OrdersApi = OrdersApi.Where(s => s.User.UserName.ToLower().Contains(text)).ToList();
+                        break;
+                    case "Дата заказа":
+                        OrdersApi = OrdersApi.Where(s => s.DateOfOrder.ToString().ToLower().Contains(text)).ToList();
+                        break;
+                    default:
+                        OrdersApi = OrdersApi.ToList();
+                        break;
+                }
+            }
+
+            if(filter != "Все")
+            {
+                int id = dbContext.ActionTypes.FirstOrDefault(s => s.ActionTypeName.ToLower().Contains(filter)).Id;
+                OrdersApi = OrdersApi.Where(s => s.ActionTypeId == id);
+            }
+
+            return OrdersApi.ToList();
         }
 
         // POST api/<OrderController>

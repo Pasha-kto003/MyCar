@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows" 
-        xmlns:core="clr-namespace:MyCar.Desktop.Core.ValueConverters"
+        xmlns:core="clr-namespace:MyCar.Desktop.Core"
         mc:Ignorable="d"
         Title="AddCarWindow" Height="800" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">

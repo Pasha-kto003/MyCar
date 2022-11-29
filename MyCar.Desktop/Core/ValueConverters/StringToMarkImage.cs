@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace MyCar.Desktop.Core.ValueConverters
+namespace MyCar.Desktop.Core
 {
     public class StringToMarkImage : BaseValueConverter<StringToMarkImage>
     {

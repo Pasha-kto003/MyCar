@@ -33,10 +33,12 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Login { get; set; }
         public CustomCommand Registration { get; set; }
 
+        private PasswordBox PasswordBox;
+
         public AuthViewModel(Window window, PasswordBox passwordtxt)
         {
             mWindow = window;
-
+            PasswordBox = passwordtxt;
             CloseWindow = new CustomCommand(() => {
                 mWindow.Close();
             });
@@ -70,10 +72,9 @@ namespace MyCar.Desktop.ViewModels
             else
             {
                 UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Неправильный логин или пароль!" });
-                Password = "";
+                PasswordBox.Password = "";
                 UserName = "";
             }
-
         }
 
     }

@@ -132,12 +132,23 @@ namespace MyCar.Desktop.ViewModels
                     {
                         var info = new FileInfo(openFileDialog.FileName);
                         var newPath = Environment.CurrentDirectory + @"\CarImages\" + info.Name;
-                        if (!File.Exists(newPath))
+                        if (File.Exists(newPath))
+                        {
+                            MessageBoxDialogViewModel result = new MessageBoxDialogViewModel
+                            { Title = "Подтверждение", Message = $"Файл с именем {info.Name} уже содержится в папке назначения\n                  Назначить уже существующий файл?" };
+                            UIManager.ShowMessageYesNo(result);
+                            if (!result.Result)
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
                             File.Copy(openFileDialog.FileName, newPath);
+                        }
                         ImageCar = info.Name;
                         AddCarVM.PhotoCar = info.Name;
                     }
-
                     catch (Exception e)
                     {
                         UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = e.Message });

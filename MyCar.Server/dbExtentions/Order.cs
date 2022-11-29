@@ -10,7 +10,7 @@ namespace MyCar.Server.DB
             {
                 ID = order.Id,
                 ActionTypeId = order.ActionTypeId,
-                ClientId = order.ClientId,
+                UserId = order.UserId,
                 DateOfOrder = order.DateOfOrder,
                 StatusId = order.StatusId
             };
@@ -22,7 +22,7 @@ namespace MyCar.Server.DB
             {
                 Id = order.ID,
                 ActionTypeId = order.ActionTypeId,
-                ClientId = order.ClientId,
+                UserId = order.UserId,
                 DateOfOrder = order.DateOfOrder,
                 StatusId = order.StatusId
             };

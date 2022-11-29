@@ -87,7 +87,6 @@ namespace MyCar.Desktop.ViewModels
                     Model = car.Model,
                     BodyType = car.BodyType,
                     TypeId = car.TypeId,
-                    EquipmentId = car.EquipmentId,
                     CharacteristicCars = car.CharacteristicCars
                 };
                 SelectedCarModel = AddCarVM.Model;
@@ -168,8 +167,6 @@ namespace MyCar.Desktop.ViewModels
             {
                 AddCarVM.ModelId = SelectedModel.ID;
                 AddCarVM.Model = SelectedModel;
-                AddCarVM.EquipmentId = SelectedEquipment.ID;
-                AddCarVM.Equipment = SelectedEquipment;
                 AddCarVM.BodyType = SelectedBodyType;
                 AddCarVM.TypeId = SelectedBodyType.ID;
                 AddCarVM.BodyType = SelectedBodyType;
@@ -223,7 +220,6 @@ namespace MyCar.Desktop.ViewModels
             CharacteristicsCar = new ObservableCollection<CharacteristicCarApi>(AddCarVM.CharacteristicCars);
             SelectedModel = Models.FirstOrDefault(s => s.ID == AddCarVM.ModelId);
             SelectedBodyType = BodyTypes.FirstOrDefault(s => s.ID == AddCarVM.TypeId);
-            SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == AddCarVM.EquipmentId);
         }
 
         public async Task PostCar(CarApi carApi)

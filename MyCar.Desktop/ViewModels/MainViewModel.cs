@@ -83,6 +83,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand OpenCar { get; set; }
         public CustomCommand MarkPageCommand { get; set; }
         public CustomCommand CharcteristicPageCommand { get; set; }
+        public CustomCommand CarSalesPageCommand { get; set; }
 
         public MainViewModel(Window window, UserApi user)
         {
@@ -98,7 +99,7 @@ namespace MyCar.Desktop.ViewModels
             CurrentPage = new UserPage();
 
             CharcteristicPageCommand = new CustomCommand(() => CurrentPage = new CharacteristicPage());
-
+            CarSalesPageCommand = new CustomCommand(() => CurrentPage = new SaleCarsPage());
             UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage());
             OpenCar = new CustomCommand(() => CurrentPage = new CarPage());
             MarkPageCommand = new CustomCommand(() => CurrentPage = new MarkPage());

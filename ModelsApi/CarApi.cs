@@ -10,7 +10,6 @@ namespace ModelsApi
     {
         public int? ModelId { get; set; }
         public int? TypeId { get; set; }
-        public int? EquipmentId { get; set; }
         public string? Articul { get; set; }
         public string? PhotoCar { get; set; }
         public decimal? CarPrice { get; set; }
@@ -18,7 +17,6 @@ namespace ModelsApi
         public string? CarMark { get; set; }
 
         public ModelApi Model { get; set; }
-        public EquipmentApi Equipment { get; set; }
         public BodyTypeApi BodyType { get; set; }
 
         public List<CharacteristicCarApi> CharacteristicCars { get; set; }

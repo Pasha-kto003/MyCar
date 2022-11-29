@@ -19,7 +19,7 @@ namespace MyCar.Server.Controllers
         private OrderApi CreateOrderApi(Order orderIn)
         {
             var result = (OrderApi)orderIn;
-            var user = dbContext.Users.FirstOrDefault(x => x.Id == orderIn.ClientId);
+            var user = dbContext.Users.FirstOrDefault(x => x.Id == orderIn.UserId);
             result.User = (UserApi)user;
             result.WareHouses = dbContext.Warehouses.Where(s=> s.OrderId == orderIn.Id).Select(t=> (WareHouseApi)t).ToList();
             return result;
@@ -80,16 +80,16 @@ namespace MyCar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] OrderApi newOrder)
         {
-            foreach (var products in newOrder.Cars)
+            foreach (var products in newOrder.SaleCars)
                 if (products.ID == 0)
-                    return BadRequest($"{products.ModelId} не существует");
+                    return BadRequest($"{products.ID} не существует");
             var order = (Order)newOrder;
             await dbContext.Orders.AddAsync(order);
             await dbContext.SaveChangesAsync();
             await dbContext.Warehouses.AddRangeAsync(newOrder.WareHouses.Select(s => new Warehouse
             {
                 OrderId = order.Id,
-                CarId = s.CarId,
+                SaleCarId = s.SaleCarId,
                 CountChange = s.CountChange,
                 Discount = s.Discount,
                 Price = s.Price
@@ -116,7 +116,7 @@ namespace MyCar.Server.Controllers
             await dbContext.Warehouses.AddRangeAsync(crosses.Select(s => new Warehouse
             {
                 OrderId = order.Id,
-                CarId = s.CarId,
+                SaleCarId = s.SaleCarId,
                 CountChange = s.CountChange,
                 Discount = s.Discount,
                 Price = s.Price

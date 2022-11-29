@@ -9,7 +9,7 @@ namespace MyCar.Server.DB
             return new WareHouseApi
             {
                 ID = warehouse.Id,
-                CarId = warehouse.CarId,
+                SaleCarId = warehouse.SaleCarId,
                 OrderId = warehouse.OrderId,
                 Price = warehouse.Price,
                 CountChange = warehouse.CountChange,
@@ -21,7 +21,7 @@ namespace MyCar.Server.DB
             return new Warehouse
             {
                 Id = warehouse.ID,
-                CarId = warehouse.CarId,
+                SaleCarId = warehouse.SaleCarId,
                 OrderId = warehouse.OrderId,
                 Price = warehouse.Price,
                 CountChange = warehouse.CountChange,

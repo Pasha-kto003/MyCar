@@ -11,7 +11,6 @@ namespace MyCar.Server.DB
                 ID = car.Id,
                 Articul = car.Articul,
                 CarPrice = car.CarPrice,
-                EquipmentId = car.EquipmentId,
                 ModelId = car.ModelId,
                 PhotoCar = car.PhotoCar,
                 TypeId = car.TypeId
@@ -25,7 +24,6 @@ namespace MyCar.Server.DB
                 Id = car.ID,
                 Articul = car.Articul,
                 CarPrice = car.CarPrice,
-                EquipmentId = car.EquipmentId,
                 ModelId = car.ModelId,
                 PhotoCar = car.PhotoCar,
                 TypeId = car.TypeId

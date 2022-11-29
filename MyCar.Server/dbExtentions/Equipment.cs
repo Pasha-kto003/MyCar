@@ -9,7 +9,6 @@ namespace MyCar.Server.DB
             return new EquipmentApi
             {
                 ID = equipment.Id,
-                MinPrice = equipment.MinPrice,
                 NameEquipment = equipment.NameEquipment
             };
         }
@@ -19,7 +18,6 @@ namespace MyCar.Server.DB
             return new Equipment
             {
                 Id = equipment.ID,
-                MinPrice = equipment.MinPrice,
                 NameEquipment = equipment.NameEquipment
             };
         }

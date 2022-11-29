@@ -7,13 +7,12 @@ namespace MyCar.Server.DB
     {
         public Equipment()
         {
-            Cars = new HashSet<Car>();
+            SaleCars = new HashSet<SaleCar>();
         }
 
         public int Id { get; set; }
         public string? NameEquipment { get; set; }
-        public decimal? MinPrice { get; set; }
 
-        public virtual ICollection<Car> Cars { get; set; }
+        public virtual ICollection<SaleCar> SaleCars { get; set; }
     }
 }

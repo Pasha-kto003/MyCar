@@ -9,13 +9,13 @@ namespace ModelsApi
     public class OrderApi : ApiBaseType
     {
         public DateTime? DateOfOrder { get; set; }
-        public int? ClientId { get; set; }
+        public int? UserId { get; set; }
         public int? ActionTypeId { get; set; }
         public int? StatusId { get; set; }
 
         public UserApi User { get; set; }
         public ActionTypeApi ActionType { get; set; }
         public List<WareHouseApi> WareHouses { get; set; }
-        public List<CarApi> Cars { get; set; }
+        public List<SaleCarApi> SaleCars { get; set; }
     }
 }

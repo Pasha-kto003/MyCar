@@ -8,12 +8,12 @@ namespace ModelsApi
 {
     public class WareHouseApi : ApiBaseType
     {
-        public int? CarId { get; set; }
+        public int? SaleCarId { get; set; }
         public int? OrderId { get; set; }
         public int? CountChange { get; set; }
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
 
-        public CarApi Car { get; set; }
+        public SaleCarApi Car { get; set; }
     }
 }

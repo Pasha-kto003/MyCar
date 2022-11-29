@@ -26,6 +26,7 @@ namespace MyCar.Server.DB
         public virtual DbSet<Model> Models { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<Passport> Passports { get; set; } = null!;
+        public virtual DbSet<SaleCar> SaleCars { get; set; } = null!;
         public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<Unit> Units { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -75,11 +76,6 @@ namespace MyCar.Server.DB
                 entity.Property(e => e.CarPrice).HasColumnType("money");
 
                 entity.Property(e => e.PhotoCar).IsUnicode(false);
-
-                entity.HasOne(d => d.Equipment)
-                    .WithMany(p => p.Cars)
-                    .HasForeignKey(d => d.EquipmentId)
-                    .HasConstraintName("FK_Car_Equipment");
 
                 entity.HasOne(d => d.Model)
                     .WithMany(p => p.Cars)
@@ -133,8 +129,6 @@ namespace MyCar.Server.DB
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.MinPrice).HasColumnType("money");
-
                 entity.Property(e => e.NameEquipment)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -182,15 +176,15 @@ namespace MyCar.Server.DB
                     .HasForeignKey(d => d.ActionTypeId)
                     .HasConstraintName("FK_Order_ActionType");
 
-                entity.HasOne(d => d.Client)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.ClientId)
-                    .HasConstraintName("FK_Order_User");
-
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK_Order_Status");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_Order_User");
             });
 
             modelBuilder.Entity<Passport>(entity =>
@@ -224,6 +218,29 @@ namespace MyCar.Server.DB
                 entity.Property(e => e.Seria)
                     .HasMaxLength(10)
                     .IsFixedLength();
+            });
+
+            modelBuilder.Entity<SaleCar>(entity =>
+            {
+                entity.ToTable("SaleCar");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Articul)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EquipmentPrice).HasColumnType("money");
+
+                entity.HasOne(d => d.Car)
+                    .WithMany(p => p.SaleCars)
+                    .HasForeignKey(d => d.CarId)
+                    .HasConstraintName("FK_SaleCar_Car");
+
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.SaleCars)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .HasConstraintName("FK_SaleCar_Equipment");
             });
 
             modelBuilder.Entity<Status>(entity =>
@@ -294,15 +311,15 @@ namespace MyCar.Server.DB
 
                 entity.Property(e => e.Price).HasColumnType("money");
 
-                entity.HasOne(d => d.Car)
-                    .WithMany(p => p.Warehouses)
-                    .HasForeignKey(d => d.CarId)
-                    .HasConstraintName("FK_Warehouse_Car");
-
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.Warehouses)
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_Warehouse_Order");
+
+                entity.HasOne(d => d.SaleCar)
+                    .WithMany(p => p.Warehouses)
+                    .HasForeignKey(d => d.SaleCarId)
+                    .HasConstraintName("FK_Warehouse_SaleCar");
             });
 
             OnModelCreatingPartial(modelBuilder);

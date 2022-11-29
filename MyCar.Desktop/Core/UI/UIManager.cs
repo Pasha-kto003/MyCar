@@ -3,6 +3,7 @@ using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,10 +85,13 @@ namespace MyCar.Desktop.Core.UI
         public static BitmapImage GetImageFromPath(string url)
         {
             BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(url, UriKind.Absolute);
-            img.EndInit();
+            using (var fs = new FileStream(url, FileMode.Open, FileAccess.Read))
+            {
+                img.BeginInit();
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.StreamSource = fs;
+                img.EndInit();
+            }
             return img;
         }
     }

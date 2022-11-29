@@ -63,8 +63,8 @@
 
                                         <Viewbox Grid.Column="0" Grid.ColumnSpan="3"  Stretch="Uniform">
                                             <StackPanel>
-                                                <TextBlock FontSize="1" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}" >
-
+                                                <TextBlock FontSize="18" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}"
+                                                           FontFamily="Bahnschrift SemiBold SemiCondensed" Foreground="{StaticResource ValorantRedBrush}" >
                                                 </TextBlock>
 
                                             </StackPanel>
@@ -199,7 +199,7 @@
                     <RadioButton.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/Images/catalog_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Продажи"  VerticalAlignment="Center"
+                            <TextBlock Text="Склад"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
                         </StackPanel>
                     </RadioButton.Content>

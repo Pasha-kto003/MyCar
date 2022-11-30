@@ -113,7 +113,7 @@ namespace MyCar.Desktop.ViewModels
             SelectedSearchType = SearchType.First();
 
             SearchTypeEquipment = new List<string>();
-            SearchTypeEquipment.AddRange(new string[] { "Комплектация", "Цена" });
+            SearchTypeEquipment.AddRange(new string[] { "Комплектация" });
             SelectedSearchTypeEquipment = SearchTypeEquipment.First();
 
             UnitFilter = Units;

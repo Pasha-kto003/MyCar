@@ -39,34 +39,42 @@
                         <RowDefinition Height="45"/>
                     </Grid.RowDefinitions>
 
-                    <Label Content="Артикул:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"/>
-                    <TextBox FontSize="16" DataContext="{Binding AddCarVM}" Text="{Binding Articul}" HorizontalAlignment="Right" Margin="0 0 30 0" VerticalAlignment="Center" Width="200" Height="30"/>
+                    <Label Content="Цена:" Grid.Row="0" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBox FontSize="16" DataContext="{Binding AddCarVM}" Grid.Row="0" Text="{Binding CarPrice}" VerticalAlignment="Center" Margin="0 0 30 0" HorizontalAlignment="Right" Width="200" Height="30"/>
 
-                    <Label Content="Цена:" Grid.Row="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                    <TextBox FontSize="16" DataContext="{Binding AddCarVM}" Grid.Row="1" Text="{Binding CarPrice}" VerticalAlignment="Center" Margin="0 0 30 0" HorizontalAlignment="Right" Width="200" Height="30"/>
-
-                    <StackPanel Grid.Row="2" Margin="0 10 0 0">
+                    <StackPanel Grid.Row="1" Margin="0 10 0 0">
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                         <Label Content="Модель и Марка" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
-
+                    
+                    <Label Grid.Row="2" Content="Марка:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="MarkName"
+                              SelectedItem="{Binding SelectedMark}" 
+                              ItemsSource="{Binding Marks}" Grid.Row="2"
+                              Width="200" Height="30" FontSize="16"
+                              HorizontalAlignment="Right"
+                              Margin="0 0 30 0" VerticalAlignment="Center"
+                              IsEditable="True"/>
+                  
                     <Label Content="Модель:" Grid.Row="3" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="ModelName"
-                              SelectedItem="{Binding SelectedModel}" ItemsSource="{Binding Models}" Grid.Row="3"
-                              Width="200" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 30 0" VerticalAlignment="Center" IsEditable="True"/>
+                              SelectedItem="{Binding SelectedModel}" 
+                              ItemsSource="{Binding Models}" Grid.Row="3"
+                              Width="200" Height="30" FontSize="16"
+                              HorizontalAlignment="Right"
+                              Margin="0 0 30 0" VerticalAlignment="Center"
+                              IsEditable="True"/>
 
-                    <Label Grid.Row="4" Content="Марка:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"/>
-                    <TextBox Grid.Row="4" Text="{Binding MarkText, UpdateSourceTrigger=PropertyChanged}" FontSize="16"
-                             Margin="0 0 30 0" HorizontalAlignment="Right" Width="200" IsReadOnly="True" Grid.Column="1" Height="30"/>
-                   
-                    <StackPanel Grid.Row="5" Margin="0 10 0 0">
+                  
+                    
+                    <StackPanel Grid.Row="4" Margin="0 10 0 0">
                         <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                         <Label Content="Кузов" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </StackPanel>
                    
-                    <Label Content="Тип кузова:" Grid.Row="6" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Label Content="Тип кузова:" Grid.Row="5" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <ComboBox FontSize="16" ItemsSource="{Binding BodyTypes}" SelectedItem="{Binding SelectedBodyType}" DisplayMemberPath="TypeName" Style="{StaticResource ComboBoxFlatStyle}"
-                              HorizontalAlignment="Right" Width="200" Height="30" Grid.Row="6"  Margin="0 0 30 0"/>
+                              HorizontalAlignment="Right" Width="200" Height="30" Grid.Row="5"  Margin="0 0 30 0"/>
                 </Grid>
 
                 <Grid Grid.Row="1" Grid.ColumnSpan="2">

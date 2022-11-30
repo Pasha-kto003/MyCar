@@ -49,7 +49,7 @@ namespace MyCar.Desktop.ViewModels
                 };     
             }
 
-            Save = new CustomCommand(() =>
+            Save = new CustomCommand(async () =>
             {
                 EditUser.UserType = SelectedUserType;
                 Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -58,14 +58,13 @@ namespace MyCar.Desktop.ViewModels
 
                 if (EditUser.ID == 0)
                 {
-                    CreateUser(EditUser);
-                    UIManager.CloseWindow(this);
+                    await CreateUser(EditUser);
                 }
                 else
                 {
-                    ChangeUser(EditUser, EditUser.Passport);
-                    UIManager.CloseWindow(this);
-                }
+                    await ChangeUser(EditUser, EditUser.Passport);
+                } 
+                UIManager.CloseWindow(this);
             });
 
             Cancel = new CustomCommand(() =>

@@ -115,6 +115,7 @@ namespace MyCar.Desktop.ViewModels
             {
                 AddUser edituser = new AddUser();
                 edituser.ShowDialog();
+                Task.Run(GetUserList);
             });
 
             EditUser = new CustomCommand(() =>
@@ -122,6 +123,7 @@ namespace MyCar.Desktop.ViewModels
                 if (SelectedUser == null || SelectedUser.ID == 0) return;
                 AddUser edituser = new AddUser(SelectedUser);
                 edituser.ShowDialog();
+                Task.Run(GetUserList);
             });
         }
 

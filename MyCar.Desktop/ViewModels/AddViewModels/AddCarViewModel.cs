@@ -21,9 +21,11 @@ namespace MyCar.Desktop.ViewModels
         public CarApi AddCarVM { get; set; }
         public string ImageCar { get; set; }
         public List<MarkCarApi> Marks { get; set; }
+        public List<CarApi> Cars { get; set; }
+
+        public List<ModelApi> FullModels { get; set; }
         public List<ModelApi> Models { get; set; }
         public List<BodyTypeApi> BodyTypes { get; set; }
-        public List<EquipmentApi> Equipments { get; set; }
         public ObservableCollection<CharacteristicCarApi> CharacteristicsCar { get; set; }
             = new ObservableCollection<CharacteristicCarApi>();
 
@@ -39,12 +41,21 @@ namespace MyCar.Desktop.ViewModels
             set
             {
                 selectedModel = value;
-                GetMarkText(selectedModel);
+                UpdateMark(selectedModel);
+            }
+        }
+        public MarkCarApi selectedMark;
+        public MarkCarApi SelectedMark
+        {
+            get => selectedMark;
+            set
+            {
+                selectedMark = value;
+                UpdateModels(selectedMark);
             }
         }
         public ModelApi SelectedCarModel { get; set; }
         public BodyTypeApi SelectedBodyType { get; set; }
-        public EquipmentApi SelectedEquipment { get; set; }
         public CharacteristicApi SelectedCharacteristic { get; set; }
 
         private CharacteristicCarApi selectedCharacteristicCar;
@@ -69,18 +80,13 @@ namespace MyCar.Desktop.ViewModels
 
             if (car == null)
             {
-                AddCarVM = new CarApi
-                {
-                    Articul = "1234",
-                    CarPrice = 1000000,
-                };
+                AddCarVM = new CarApi{};
             }
             else
             {
                 AddCarVM = new CarApi
                 {
                     ID = car.ID,
-                    Articul = car.Articul,
                     CarPrice = car.CarPrice,
                     PhotoCar = car.PhotoCar,
                     ModelId = car.ModelId,
@@ -89,6 +95,7 @@ namespace MyCar.Desktop.ViewModels
                     TypeId = car.TypeId,
                     CharacteristicCars = car.CharacteristicCars
                 };
+                Cars.RemoveAll(car=>car.ID == AddCarVM.ID);
                 SelectedCarModel = AddCarVM.Model;
                 GetInfo();
             }
@@ -176,11 +183,17 @@ namespace MyCar.Desktop.ViewModels
 
             Save = new CustomCommand(async () =>
             {
+                if (Cars.Exists(s=>s.ModelId == SelectedModel.ID))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Выбранная модель уже используется!" });
+                    return;
+                }
                 AddCarVM.ModelId = SelectedModel.ID;
                 AddCarVM.Model = SelectedModel;
                 AddCarVM.BodyType = SelectedBodyType;
                 AddCarVM.TypeId = SelectedBodyType.ID;
                 AddCarVM.BodyType = SelectedBodyType;
+                
                 AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
 
                 foreach (var characteristic in AddCarVM.CharacteristicCars)
@@ -200,12 +213,6 @@ namespace MyCar.Desktop.ViewModels
                     return;
                 }
 
-                else if (SelectedEquipment == null || SelectedEquipment.ID == 0)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана комплектация" });
-                    return;
-                }
-
                 if (AddCarVM.ID == 0)
                 {
                     await PostCar(AddCarVM);
@@ -221,10 +228,11 @@ namespace MyCar.Desktop.ViewModels
         private async Task GetList()
         {
             Models = await Api.GetListAsync<List<ModelApi>>("Model");
+            FullModels = Models;
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            Cars = await Api.GetListAsync<List<CarApi>>("Car");
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
-            Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
         }
         private void GetInfo()
         {
@@ -244,10 +252,15 @@ namespace MyCar.Desktop.ViewModels
             var car = await Api.PutAsync<CarApi>(carApi, "Car");
         }
 
-        private void GetMarkText(ModelApi model)
+        private void UpdateMark(ModelApi model)
         {
             if (model != null)
-                MarkText = Marks.FirstOrDefault(s => s.ID == model.MarkId).MarkName;
+                SelectedMark = Marks.FirstOrDefault(s => s.ID == model.MarkId);
+        }
+        private void UpdateModels(MarkCarApi mark)
+        {
+            if (mark != null)
+                Models = FullModels.Where(s => s.MarkId == mark.ID).ToList();
         }
         private void SelectedCharacteristicChanged(CharacteristicCarApi selectedCharacteristicCar)
         {

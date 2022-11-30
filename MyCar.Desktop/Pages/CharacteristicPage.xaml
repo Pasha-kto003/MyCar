@@ -80,10 +80,6 @@
                             <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
                             <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchTextEquipment, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                         </StackPanel>
-                        <StackPanel>
-                            <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
-                            <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding SearchTypeEquipment}" SelectedItem="{Binding SelectedSearchTypeEquipment}"/>
-                        </StackPanel>
                     </StackPanel>
                     <DataGrid Grid.Row="1"
                   FontSize="{StaticResource FontSizeLarge}"
@@ -97,7 +93,6 @@
                                     Binding="{Binding NameEquipment}"
                                     Width="2*"
                                     />
-                            <DataGridTextColumn Header="Сумма комплектации" Binding="{Binding MinPrice}" Width="1*"/>
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>

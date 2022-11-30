@@ -8,11 +8,24 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddCarSaleViewModel : BaseViewModel
     {
+        private string searchText = "";
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                Task.Run(Search);
+            }
+        }
+        private ObservableCollection<CarApi> searchResult;
+
         public ObservableCollection<CarApi> Cars { get; set; } = new ObservableCollection<CarApi>();
         public ObservableCollection<CarApi> CarSales { get; set; } = new ObservableCollection<CarApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
@@ -59,7 +72,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         public AddCarSaleViewModel(SaleCarApi saleCar)
         {
-            Task.Run(GetList).Wait();
+            Task.Run(GetList);
             if (saleCar == null)
             {
                 AddSaleVM = new SaleCarApi { EquipmentPrice = 10000000, Articul = "111" };
@@ -107,15 +120,29 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     return;
                 }
 
-                else
+                if (CheckContains(CarSales.ToList(), SelectedCar))
                 {
-                    CarSales.Add(SelectedCar);
-                    if (CarSales.Count > 1)
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Машина {SelectedCar.Model.ModelName} уже содержится на складе" });
+                    return;
+                }
+
+                else
+                {                   
+                    if (AddSaleVM.CarId != 0 || AddSaleVM.CarId != null)
                     {
-                        CarSales.Clear();
-                        SignalChanged(nameof(CarSales));
-                        CarSales.Add(SelectedCar);
-                    }
+                        MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            CarSales.Clear();
+                            SignalChanged(nameof(CarSales));
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }   
+                    CarSales.Add(SelectedCar);
+                    SignalChanged(nameof(CarSales));
                     EditSale(AddSaleVM);
                     AddSaleVM.Car = CarSales.Last();
                     AddSaleVM.CarId = CarSales.Last().ID;
@@ -150,6 +177,35 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public async Task AddSale(SaleCarApi saleCar)
         {
             var sale = await Api.PostAsync<SaleCarApi>(saleCar, "CarSales");
+        }
+
+        private bool CheckContains(List<CarApi> list, CarApi car)
+        {
+            bool result = false;
+            foreach (CarApi item in list)
+            {
+                if (item.ID == car.ID)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        public async Task Search()
+        {
+            var search = SearchText.ToLower();
+            if (search == "")
+                searchResult = await Api.GetListAsync<ObservableCollection<CarApi>>("Car");
+            else
+                searchResult = await Api.SearchAsync<ObservableCollection<CarApi>>("Модель", search, "Car");
+            UpdateList();
+        }
+
+        private void UpdateList()
+        {
+            Cars = searchResult;
+            SignalChanged(nameof(Cars));
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         xmlns:core="clr-namespace:MyCar.Desktop.Core"
         mc:Ignorable="d"
-        Title="AuthWindow" Height="580" Width="350"
+        Title="AuthWindow" Height="580" Width="420"
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
@@ -14,7 +14,7 @@
         Background="Transparent">
 
     <Border CornerRadius="10" Background="White" MouseDown="Border_MouseDown">
-        <Grid  >
+        <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -47,7 +47,7 @@
                     TextBlock.TextAlignment="Center">
 
                 <Grid Background="Transparent" 
-                            Width="300"
+                            Width="420"
                             Margin="0 100 0 0">
 
                     <StackPanel>
@@ -59,7 +59,7 @@
                                    FontSize="{StaticResource FontSizeRegular}"
                                    FontFamily="{StaticResource CenturyGothic}"
                                    Foreground="{StaticResource ValorantRedBrush}"/>
-                        <TextBox Text="{Binding UserName}" Tag="Логин" Style="{StaticResource TextBoxLogin}" />
+                        <TextBox Text="{Binding UserName}" Tag="Логин" Style="{StaticResource TextBoxLogin}" Width="300"/>
 
                         <TextBlock Text="{Binding ErrorPassword}" Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="30"
                                    FontSize="{StaticResource FontSizeRegular}"
@@ -67,7 +67,20 @@
                                    Foreground="{StaticResource ValorantRedBrush}"/>
                         
                         <!--<TextBox Text="{Binding Password}" Tag="Пароль" Style="{StaticResource TextBoxLogin}"/>-->
-                        <PasswordBox x:Name="passwordtxt" Tag="Пароль" Height="40" PasswordChar="*" Style="{StaticResource PasswordBoxtxt}"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <PasswordBox x:Name="passwordtxt" Tag="Пароль" Margin="60 0 0 0" Height="40" Width="300" PasswordChar="*" Style="{StaticResource PasswordBoxtxt}"/>
+                            <Button HorizontalAlignment="Right" Width="30" Height="30" Name="Button3" Click="Button_Click" Background="Transparent">
+                                <Button.Content>
+                                    <Image Source="/Images/6684701.png"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Width="30" Height="30" Name="Button4" Click="Button_Click1" Visibility="Hidden" Background="Transparent">
+                                <Button.Content>
+                                    <Image Source="/Images/icons8-close-30.png"/>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+                        <TextBox x:Name="textpass" Height="40" Margin="0 40 0 0" Width="300" FontSize="16" Style="{StaticResource TextBoxLogin}"/>
                         <Button  Content="Войти"
                              core:IsBusyProperty.Value="{Binding LoginIsRunning}"
                              Style="{StaticResource ButtonLogin}"

@@ -33,5 +33,28 @@ namespace MyCar.Desktop.Windows
                 this.DragMove();
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(passwordtxt.PasswordChar == '*')
+            {
+                textpass.Text = passwordtxt.Password;
+            }
+            if(textpass.Text != "")
+            {
+                //Image img = new Image();
+                //img.Source = new BitmapImage(new Uri(@"C:\Users\User\source\repos\MyCar\MyCar.Desktop\Images\icons8-close-30.png"));
+                //Button3.Content = img;
+                Button3.Visibility = Visibility.Hidden;
+                Button4.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Button_Click1(object sender, RoutedEventArgs e)
+        {
+            textpass.Text = "";
+            Button3.Visibility = Visibility.Visible;
+            Button4.Visibility = Visibility.Hidden;
+        }
     }
 }

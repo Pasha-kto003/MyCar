@@ -39,7 +39,6 @@
                 <Ellipse Width="100" Height="100" Fill="white">
                    
                 </Ellipse>
-
             </StackPanel>-->
             <StackPanel Grid.Row="1" Orientation="Horizontal"
                     VerticalAlignment="Center"
@@ -75,7 +74,6 @@
                              Command="{Binding Login}" HorizontalAlignment="Center" />
 
                 </Grid>
-               
             </StackPanel>
             <CheckBox  x:Name="ShowPasswordCharsCheckBox" 
                        Grid.Row="1" HorizontalAlignment="Right" 

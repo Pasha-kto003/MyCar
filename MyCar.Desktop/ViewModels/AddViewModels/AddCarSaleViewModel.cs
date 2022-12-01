@@ -121,7 +121,16 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
                 if (CheckContains(CarSales.ToList(), SelectedCar))
                 {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Машина {SelectedCar.Model.ModelName} уже содержится на складе" });
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Машина {SelectedCar.Model.ModelName} уже содержится на складе, хотите ее заменить?" });
+                    MessageBoxDialogViewModel result = new MessageBoxDialogViewModel
+                    { Title = "Подтверждение", Message = $"Машина {SelectedCar.Model.ModelName} уже содержится на складе, хотите ее заменить?" };
+                    UIManager.ShowMessageYesNo(result);
+                    if (result.Result)
+                    {
+                        CarSales.Clear();
+                        CarSales.Add(SelectedCar);
+                        EditSale(AddSaleVM);
+                    }
                     return;
                 }
 

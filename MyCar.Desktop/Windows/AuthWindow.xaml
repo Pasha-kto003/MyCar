@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         xmlns:core="clr-namespace:MyCar.Desktop.Core"
         mc:Ignorable="d"
-        Title="AuthWindow" Height="580" Width="420"
+        Title="AuthWindow" Height="580" Width="350"
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"

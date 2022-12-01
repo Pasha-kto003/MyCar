@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -33,28 +34,26 @@ namespace MyCar.Desktop.Windows
                 this.DragMove();
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ShowPasswordCharsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if(passwordtxt.PasswordChar == '*')
-            {
-                textpass.Text = passwordtxt.Password;
-            }
-            if(textpass.Text != "")
-            {
-                //Image img = new Image();
-                //img.Source = new BitmapImage(new Uri(@"C:\Users\User\source\repos\MyCar\MyCar.Desktop\Images\icons8-close-30.png"));
-                //Button3.Content = img;
-                Button3.Visibility = Visibility.Hidden;
-                Button4.Visibility = Visibility.Visible;
-            }
+            passwordtxt.Visibility = Visibility.Collapsed;
+            textboxpass.Visibility = Visibility.Visible;
+
+            textboxpass.Text = new NetworkCredential(string.Empty, passwordtxt.SecurePassword).Password;
+            textboxpass.Focus();
         }
 
-        private void Button_Click1(object sender, RoutedEventArgs e)
+        private void ShowPasswordCharsCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            textpass.Text = "";
-            Button3.Visibility = Visibility.Visible;
-            Button4.Visibility = Visibility.Hidden;
+            passwordtxt.Visibility = Visibility.Visible;
+            textboxpass.Visibility = Visibility.Collapsed;
+
+            passwordtxt.Focus();
+        }
+
+        private void textboxpass_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            passwordtxt.Password = textboxpass.Text;
         }
     }
 }

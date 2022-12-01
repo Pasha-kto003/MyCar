@@ -72,7 +72,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         public AddCarSaleViewModel(SaleCarApi saleCar)
         {
-            Task.Run(GetList);
+            Task.Run(GetList).Wait();
             if (saleCar == null)
             {
                 AddSaleVM = new SaleCarApi { EquipmentPrice = 10000000, Articul = "111" };
@@ -90,7 +90,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     EquipmentPrice = saleCar.EquipmentPrice
                 };
                 Get();
-                
             }
 
             Save = new CustomCommand(() =>
@@ -130,22 +129,22 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 {                   
                     if (AddSaleVM.CarId != 0 || AddSaleVM.CarId != null)
                     {
-                        MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить свойство?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        MessageBoxResult result = MessageBox.Show($"Вы точно желаете заменить авто ? {AddSaleVM.Car.Model.ModelName}", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
                         {
                             CarSales.Clear();
                             SignalChanged(nameof(CarSales));
+                            CarSales.Add(SelectedCar);
+                            SignalChanged(nameof(CarSales));
+                            EditSale(AddSaleVM);
+                            AddSaleVM.Car = CarSales.Last();
+                            AddSaleVM.CarId = CarSales.Last().ID;
                         }
                         else
                         {
                             return;
                         }
-                    }   
-                    CarSales.Add(SelectedCar);
-                    SignalChanged(nameof(CarSales));
-                    EditSale(AddSaleVM);
-                    AddSaleVM.Car = CarSales.Last();
-                    AddSaleVM.CarId = CarSales.Last().ID;
+                    }
                 }
             });
 
@@ -163,10 +162,12 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Cars = new ObservableCollection<CarApi>(list);
             SignalChanged(nameof(Cars));
         }
+
         private void Get()
         {
-            SelectedEquipment = Equipments.FirstOrDefault(s=> s.ID == AddSaleVM.EquipmentId);
-            SelectedCarSale = AddSaleVM.Car;
+            SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == AddSaleVM.EquipmentId);
+            var sales = Cars.Where(s => s.ID == AddSaleVM.CarId).ToList();
+            CarSales = new ObservableCollection<CarApi>(sales);
         }
 
         private async Task EditSale(SaleCarApi saleCar)

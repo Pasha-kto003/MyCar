@@ -34,7 +34,6 @@ namespace MyCar.Desktop.Windows
                 this.DragMove();
             }
         }
-
         private void ShowPasswordCharsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             passwordtxt.Visibility = Visibility.Collapsed;

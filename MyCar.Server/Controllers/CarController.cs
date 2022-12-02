@@ -27,11 +27,12 @@ namespace MyCar.Server.Controllers
                 
             }
             result.CharacteristicCars = characteristicsCar;
-            var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
-            result.Model = (ModelApi)model;
-            var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+
+            var model = (ModelApi)dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
+            var mark = (MarkCarApi)dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+            model.MarkCar = mark;
+            result.Model = model;
             result.CarMark = mark.MarkName;
-            //result.Model.MarkCar = (MarkCarApi)mark;
             var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);
             result.BodyType = (BodyTypeApi)body;
             foreach (var characteristic in dbContext.CharacteristicCars.Where(s => s.CarId == car.Id).ToList())

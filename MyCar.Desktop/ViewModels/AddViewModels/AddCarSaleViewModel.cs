@@ -14,58 +14,30 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddCarSaleViewModel : BaseViewModel
     {
-        private string searchText = "";
-        public string SearchText
+        private MarkCarApi selectedMark;
+        public MarkCarApi SelectedMark
         {
-            get => searchText;
+            get => selectedMark;
             set
             {
-                searchText = value;
-                Task.Run(Search);
+                selectedMark = value;
+                SelectedMarkChanged(selectedMark);
             }
         }
-        private ObservableCollection<CarApi> searchResult;
 
-        public ObservableCollection<CarApi> Cars { get; set; } = new ObservableCollection<CarApi>();
-        public ObservableCollection<CarApi> CarSales { get; set; } = new ObservableCollection<CarApi>();
+        private List<CarApi> searchResult;
+
+        public List<SaleCarApi> SaleCars { get; set; } = new List<SaleCarApi>();
+        public List<CarApi> Cars { get; set; } = new List<CarApi>();  
+        public List<CarApi> FullCars { get; set; } = new List<CarApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
+        public List<MarkCarApi> Marks { get; set; } = new List<MarkCarApi>();
+        public CarApi SelectedCar { get; set; }
 
-        private CarApi selectedCar { get; set; }
-        public CarApi SelectedCar
-        {
-            get => selectedCar;
-            set
-            {
-                selectedCar = value;
-                SignalChanged();
-            }
-        }
-
-        private CarApi selectedCarSale { get; set; }
-        public CarApi SelectedCarSale
-        {
-            get => selectedCarSale;
-            set
-            {
-                selectedCarSale = value;
-                SignalChanged();
-            }
-        }
-
-        private EquipmentApi selectedEquipment { get; set; }
-        public EquipmentApi SelectedEquipment
-        {
-            get => selectedEquipment;
-            set
-            {
-                selectedEquipment = value;
-                SignalChanged();
-            }
-        }
+        public EquipmentApi SelectedEquipment { get; set; }
 
         public CustomCommand Save { get; set; }
-        public CustomCommand AddCar { get; set; }
         public CustomCommand Cancel { get; set; }
 
         public SaleCarApi AddSaleVM { get; set; }
@@ -75,7 +47,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Task.Run(GetList).Wait();
             if (saleCar == null)
             {
-                AddSaleVM = new SaleCarApi { EquipmentPrice = 10000000, Articul = "111" };
+                AddSaleVM = new SaleCarApi { };
             }
             else
             {
@@ -90,71 +62,39 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     EquipmentPrice = saleCar.EquipmentPrice
                 };
                 Get();
+                SaleCars.RemoveAll(s => s.ID == AddSaleVM.ID);
             }
 
-            Save = new CustomCommand(() =>
+            Save = new CustomCommand(async () =>
             {
+                if (SelectedCar == null || SelectedCar.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран автомобиль!" });
+                    return;
+                }
+                if (SelectedEquipment == null || SelectedEquipment.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана комплектация!" });
+                    return;
+                }
+
+                if (!CheckUnique())
+                    return;
+
                 AddSaleVM.EquipmentId = SelectedEquipment.ID;
                 AddSaleVM.Equipment = SelectedEquipment;
-                AddSaleVM.Car = CarSales.Last();
+                AddSaleVM.CarId = SelectedCar.ID;
+                AddSaleVM.Car = SelectedCar;
+
                 if (AddSaleVM.ID == 0)
                 {
-                    AddSale(AddSaleVM);
-                    UIManager.ShowMessage(new MessageBoxDialogViewModel { Message = "Создан заказ" });
-                    UIManager.CloseWindow(this);
+                    await AddSale(AddSaleVM);
                 }
                 else
                 {
-                    EditSale(AddSaleVM);
-                    UIManager.ShowMessage(new MessageBoxDialogViewModel { Message = "Изменен заказ" });
-                    UIManager.CloseWindow(this);
+                    await EditSale(AddSaleVM);
                 }
-            });
-
-            AddCar = new CustomCommand(() =>
-            {
-                if (SelectedCar == null)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано авто" });
-                    return;
-                }
-
-                if (CheckContains(CarSales.ToList(), SelectedCar))
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Машина {SelectedCar.Model.ModelName} уже содержится на складе, хотите ее заменить?" });
-                    MessageBoxDialogViewModel result = new MessageBoxDialogViewModel
-                    { Title = "Подтверждение", Message = $"Машина {SelectedCar.Model.ModelName} уже содержится на складе, хотите ее заменить?" };
-                    UIManager.ShowMessageYesNo(result);
-                    if (result.Result)
-                    {
-                        CarSales.Clear();
-                        CarSales.Add(SelectedCar);
-                        EditSale(AddSaleVM);
-                    }
-                    return;
-                }
-
-                else
-                {                   
-                    if (AddSaleVM.CarId != 0 || AddSaleVM.CarId != null)
-                    {
-                        MessageBoxResult result = MessageBox.Show($"Вы точно желаете заменить авто ? {AddSaleVM.Car.Model.ModelName}", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            CarSales.Clear();
-                            SignalChanged(nameof(CarSales));
-                            CarSales.Add(SelectedCar);
-                            SignalChanged(nameof(CarSales));
-                            EditSale(AddSaleVM);
-                            AddSaleVM.Car = CarSales.Last();
-                            AddSaleVM.CarId = CarSales.Last().ID;
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                }
+                UIManager.CloseWindow(this);
             });
 
             Cancel = new CustomCommand(() =>
@@ -163,20 +103,37 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             });
         }
 
+        private bool CheckUnique()
+        {
+            if (SaleCars.Exists(s=>s.Articul == AddSaleVM.Articul))
+            {
+                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Артикул должен быть уникальным!" });
+                return false;
+            }
+            if (SaleCars.Exists(s =>s.CarId == SelectedCar.ID & s.EquipmentId == SelectedEquipment.ID))
+            {
+                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Автомобиль с выбранной комплектацией уже существует!" });
+                return false;
+            }
+            return true;
+        }
+
         private async Task GetList()
         {
-            var list = await Api.GetListAsync<List<CarApi>>("Car");
+            Cars = await Api.GetListAsync<List<CarApi>>("Car");
+            SaleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             Models = await Api.GetListAsync<List<ModelApi>>("Model");
-            Cars = new ObservableCollection<CarApi>(list);
-            SignalChanged(nameof(Cars));
+            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            Marks.Add(new MarkCarApi { MarkName = "Все" });
+            FullCars = Cars;
         }
 
         private void Get()
         {
             SelectedEquipment = Equipments.FirstOrDefault(s => s.ID == AddSaleVM.EquipmentId);
-            var sales = Cars.Where(s => s.ID == AddSaleVM.CarId).ToList();
-            CarSales = new ObservableCollection<CarApi>(sales);
+            SelectedCar = Cars.FirstOrDefault(s => s.ID == AddSaleVM.CarId);
+            SelectedMark = Marks.FirstOrDefault(s => s.ID == AddSaleVM.Car.Model.MarkId);
         }
 
         private async Task EditSale(SaleCarApi saleCar)
@@ -188,34 +145,12 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         {
             var sale = await Api.PostAsync<SaleCarApi>(saleCar, "CarSales");
         }
-
-        private bool CheckContains(List<CarApi> list, CarApi car)
+        private void SelectedMarkChanged(MarkCarApi mark)
         {
-            bool result = false;
-            foreach (CarApi item in list)
-            {
-                if (item.ID == car.ID)
-                {
-                    result = true;
-                }
-            }
-            return result;
-        }
-
-        public async Task Search()
-        {
-            var search = SearchText.ToLower();
-            if (search == "")
-                searchResult = await Api.GetListAsync<ObservableCollection<CarApi>>("Car");
+            if (mark.ID == 0)
+                Cars = FullCars;
             else
-                searchResult = await Api.SearchAsync<ObservableCollection<CarApi>>("Модель", search, "Car");
-            UpdateList();
-        }
-
-        private void UpdateList()
-        {
-            Cars = searchResult;
-            SignalChanged(nameof(Cars));
+            Cars = FullCars.Where(s => s.Model.MarkId == mark.ID).ToList();
         }
     }
 }

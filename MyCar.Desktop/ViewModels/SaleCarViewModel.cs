@@ -26,13 +26,13 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
-        private EquipmentApi selectedEquipment;
+        private EquipmentApi selectedEquipmentfilter;
         public EquipmentApi SelectedEquipmentFilter
         {
-            get => selectedEquipment;
+            get => selectedEquipmentfilter;
             set
             {
-                selectedEquipment = value;
+                selectedEquipmentfilter = value;
                 Task.Run(Search);
             }
         }
@@ -86,9 +86,10 @@ namespace MyCar.Desktop.ViewModels
 
         public SaleCarViewModel()
         {
+            Task.Run(GetSales).Wait();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Артикул", "Машина", "Цена комплектации" });
+            SearchType.AddRange(new string[] { "Артикул", "Машина" });
             SelectedSearchType = SearchType.First();
 
             EquipmentFilter = Equipments;
@@ -99,7 +100,6 @@ namespace MyCar.Desktop.ViewModels
             ViewCountRows.AddRange(new string[] { "5", "Все" });
             selectedViewCountRows = ViewCountRows.Last();
 
-            Task.Run(GetSales).Wait();
 
             AddSale = new CustomCommand(() =>
             {
@@ -163,13 +163,6 @@ namespace MyCar.Desktop.ViewModels
             int.TryParse(SelectedViewCountRows, out rows);
             if (rows == 0)
                 rows = FullSales.Count;
-            if (rows > FullSales.Count)
-            {
-                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Превышено количество объектов" });
-                SelectedViewCountRows = ViewCountRows.Last();
-                SignalChanged(nameof(SelectedViewCountRows));
-                return;
-            }
             CountPages = (searchResult.Count() - 1) / rows;
             Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
         }

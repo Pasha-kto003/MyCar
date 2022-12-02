@@ -42,19 +42,23 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Артикул"
                                     Binding="{Binding Articul}"
-                                     Width="*"
-                                    />
-                <DataGridTextColumn Header="Машина"
-                                    Binding="{Binding Car.Model.ModelName}"
                                     Width="*"
                                     />
-                <DataGridTextColumn Header="Комплектация авто"
+                <DataGridTextColumn Header="Машина"
+                                    Binding="{Binding Car.CarName}"
+                                    Width="*"
+                                    />
+                <DataGridTextColumn Header="Комплектация"
                                     Binding="{Binding Equipment.NameEquipment}"
                                      Width="*"
                                     />
                 <DataGridTextColumn Header="Цена комплектации"
-                                    Binding="{Binding EquipmentPrice}"
-                                     Width="*"
+                                    Binding="{Binding EquipmentPrice, StringFormat={}{0:N2} ₽}"
+                                     MinWidth="100"
+                                    />
+                <DataGridTextColumn Header="Полная цена"
+                                    Binding="{Binding FullPrice, StringFormat={}{0:N2} ₽}"
+                                    Width="*"
                                     />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>

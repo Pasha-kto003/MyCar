@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DataModels;
 using MyCar.Server.DB;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,16 +20,7 @@ namespace MyCar.Server.Controllers
         // GET: api/<CarSalesController>
         private SaleCarApi GetSale(SaleCar saleCar)
         {
-            var result = (SaleCarApi)saleCar;
-            var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
-            result.Equipment = (EquipmentApi)equipment;
-            var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
-            result.Car = (CarApi)car;
-            var model = dbContext.Models.FirstOrDefault(s=> s.Id == car.ModelId);
-            result.Car.Model = (ModelApi)model;
-            var mark = dbContext.MarkCars.FirstOrDefault(s => s.Id == model.MarkId);
-            result.Car.CarMark = mark.MarkName;
-            return result;
+            return ModelData.SaleGet(saleCar, dbContext);
         }
 
         // GET: api/<SaleCarController>

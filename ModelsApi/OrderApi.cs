@@ -16,6 +16,5 @@ namespace ModelsApi
         public UserApi User { get; set; }
         public ActionTypeApi ActionType { get; set; }
         public List<WareHouseApi> WareHouses { get; set; }
-        public List<SaleCarApi> SaleCars { get; set; }
     }
 }

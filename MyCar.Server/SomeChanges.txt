@@ -329,3 +329,13 @@
                 characteristic.Characteristic = dbContext.Characteristics.FirstOrDefault(s => s.Id == characteristic.CharacteristicId);
                 result.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
             }
+
+            //result.SaleCar.Car = (CarApi)dbContext.Cars.FirstOrDefault(s => s.Id == result.SaleCar.CarId);
+            //result.SaleCar.Equipment = (EquipmentApi)dbContext.Equipment.FirstOrDefault(s => s.Id == result.SaleCar.EquipmentId);
+            //result.SaleCar.Car.Model = (ModelApi)dbContext.Models.FirstOrDefault(s => s.Id == result.SaleCar.Car.ModelId);
+            //result.SaleCar.Car.CarMark = dbContext.MarkCars.FirstOrDefault(s => s.Id == result.SaleCar.Car.Model.MarkId).MarkName;
+            //result.SaleCar.Car.CharacteristicCars = dbContext.CharacteristicCars.Where(s => s.CarId == result.SaleCar.CarId).Select(t => (CharacteristicCarApi)t).ToList();
+            //foreach (var s in result.SaleCar.Car.CharacteristicCars)
+            //{
+            //    s.Characteristic = (CharacteristicApi)dbContext.Characteristics.FirstOrDefault(c => c.Id == s.CharacteristicId);
+            //}

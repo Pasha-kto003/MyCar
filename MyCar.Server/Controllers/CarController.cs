@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DataModels;
 using MyCar.Server.DB;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,28 +19,7 @@ namespace MyCar.Server.Controllers
 
         private CarApi GetCar(Car car)
         {
-            var result = (CarApi)car;
-            var characteristicsCar = dbContext.CharacteristicCars.Where(t => t.CarId == car.Id).Select(t => (CharacteristicCarApi)t).ToList();
-            foreach (var characeristicCar in characteristicsCar)
-            {
-                characeristicCar.Characteristic = (CharacteristicApi)dbContext.Characteristics.FirstOrDefault(s => s.Id == characeristicCar.CharacteristicId);
-                characeristicCar.Characteristic.Unit = (UnitApi)dbContext.Units.FirstOrDefault(s => s.Id == characeristicCar.Characteristic.UnitId);
-                
-            }
-            result.CharacteristicCars = characteristicsCar;
-            var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
-            result.Model = (ModelApi)model;
-            var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
-            result.CarMark = mark.MarkName;
-            //result.Model.MarkCar = (MarkCarApi)mark;
-            var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);
-            result.BodyType = (BodyTypeApi)body;
-            foreach (var characteristic in dbContext.CharacteristicCars.Where(s => s.CarId == car.Id).ToList())
-            {
-                characteristic.Characteristic = dbContext.Characteristics.FirstOrDefault(s => s.Id == characteristic.CharacteristicId);
-                result.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
-            }
-            return result;
+            return ModelData.GetCar(car, dbContext);
         }
 
         [HttpGet]

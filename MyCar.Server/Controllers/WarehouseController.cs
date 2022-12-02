@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DataModels;
 using MyCar.Server.DB;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,10 +17,19 @@ namespace MyCar.Server.Controllers
             this.dbContext = dbContext;
         }
         // GET: api/<WarehouseController>
+        private WareHouseApi GetWareHouseApi(Warehouse wareHouse)
+        {
+            return ModelData.WarehouseGet(wareHouse, dbContext);  
+        }
+
+        // GET: api/<WarehouseController>
         [HttpGet]
         public IEnumerable<WareHouseApi> Get()
         {
-            return dbContext.Warehouses.Select(s => (WareHouseApi)s);
+            return dbContext.Warehouses.ToList().Select(s =>
+            {
+                return GetWareHouseApi(s);
+            });
         }
 
         // GET api/<WarehouseController>/5

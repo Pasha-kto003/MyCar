@@ -16,7 +16,7 @@ namespace ModelsApi
         public string? CarOptions { get; set; }
         public string? CarMark { get; set; }
 
-        public string? CarName
+        public string? CarName 
         {
             get => CarMark + " " + Model.ModelName;
         }

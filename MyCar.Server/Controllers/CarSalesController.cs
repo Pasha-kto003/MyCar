@@ -49,7 +49,6 @@ namespace MyCar.Server.Controllers
             });
 
             if(text != "$")
-            {
                 switch (type)
                 {
                     case "Артикул":
@@ -65,13 +64,12 @@ namespace MyCar.Server.Controllers
                         SalesApi = SalesApi.ToList();
                         break;
                 }
-
                 if(filter != "Все")
                 {
-                    int id = dbContext.Equipment.FirstOrDefault(s => s.NameEquipment.ToLower().Contains(filter)).Id;
+                    int id = dbContext.Equipment.FirstOrDefault(s => s.NameEquipment.ToLower().Equals(filter)).Id;
                     SalesApi = SalesApi.Where(s=> s.EquipmentId == id);
                 }
-            }
+
             return SalesApi.ToList();
         }
 

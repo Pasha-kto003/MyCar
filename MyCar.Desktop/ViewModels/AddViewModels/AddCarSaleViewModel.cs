@@ -105,12 +105,12 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         private bool CheckUnique()
         {
-            if (SaleCars.Exists(s => s.Articul == AddSaleVM.Articul))
+            if (SaleCars.Exists(s=>s.Articul == AddSaleVM.Articul))
             {
                 UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Артикул должен быть уникальным!" });
                 return false;
             }
-            if (SaleCars.Exists(s => s.CarId == SelectedCar.ID & s.EquipmentId == SelectedEquipment.ID))
+            if (SaleCars.Exists(s =>s.CarId == SelectedCar.ID & s.EquipmentId == SelectedEquipment.ID))
             {
                 UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Автомобиль с выбранной комплектацией уже существует!" });
                 return false;

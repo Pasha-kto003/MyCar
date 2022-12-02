@@ -14,6 +14,6 @@ namespace ModelsApi
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
 
-        public SaleCarApi Car { get; set; }
+        public SaleCarApi SaleCar { get; set; }
     }
 }

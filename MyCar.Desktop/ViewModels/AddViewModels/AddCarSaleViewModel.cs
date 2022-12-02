@@ -28,7 +28,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         private List<CarApi> searchResult;
 
         public List<SaleCarApi> SaleCars { get; set; } = new List<SaleCarApi>();
-        public List<CarApi> Cars { get; set; } = new List<CarApi>();  
+        public List<CarApi> Cars { get; set; } = new List<CarApi>();
         public List<CarApi> FullCars { get; set; } = new List<CarApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
@@ -150,7 +150,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             if (mark.ID == 0)
                 Cars = FullCars;
             else
-            Cars = FullCars.Where(s => s.Model.MarkId == mark.ID).ToList();
+                Cars = FullCars.Where(s => s.Model.MarkId == mark.ID).ToList();
         }
     }
 }

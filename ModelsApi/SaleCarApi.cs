@@ -12,6 +12,7 @@ namespace ModelsApi
         public int? CarId { get; set; }
         public int? EquipmentId { get; set; }
         public decimal? EquipmentPrice { get; set; }
+        public decimal? FullPrice { get => EquipmentPrice + Car.CarPrice; }
 
         public decimal? FullPrice { get => EquipmentPrice + Car.CarPrice; }
 

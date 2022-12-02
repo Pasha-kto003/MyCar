@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Server.DB;
+using MyCar.Server.DataModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,11 +19,7 @@ namespace MyCar.Server.Controllers
 
         private OrderApi CreateOrderApi(Order orderIn)
         {
-            var result = (OrderApi)orderIn;
-            var user = dbContext.Users.FirstOrDefault(x => x.Id == orderIn.UserId);
-            result.User = (UserApi)user;
-            result.WareHouses = dbContext.Warehouses.Where(s=> s.OrderId == orderIn.Id).Select(t=> (WareHouseApi)t).ToList();
-            return result;
+            return ModelData.OrderGet(orderIn, dbContext);
         }
 
         // GET: api/<OrderController>
@@ -80,7 +77,7 @@ namespace MyCar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] OrderApi newOrder)
         {
-            foreach (var products in newOrder.SaleCars)
+            foreach (var products in newOrder.WareHouses)
                 if (products.ID == 0)
                     return BadRequest($"{products.ID} не существует");
             var order = (Order)newOrder;

@@ -33,7 +33,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 };
             }
 
-            Save = new CustomCommand(() =>
+            Save = new CustomCommand( async () =>
             {
 
                 if(AddUnitVM.UnitName == "")
@@ -43,12 +43,17 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 }
                 if(AddUnitVM.ID == 0)
                 {
-                    CreateUnit(AddUnitVM);
+                    await CreateUnit(AddUnitVM);
                 }
                 else
                 {
-                    EditUnit(AddUnitVM);
+                    await EditUnit(AddUnitVM);
                 }
+                UIManager.CloseWindow(this);
+            });
+
+            Cancel = new CustomCommand(() =>
+            {
                 UIManager.CloseWindow(this);
             });
         }

@@ -41,10 +41,8 @@ namespace MyCar.Desktop.ViewModels
         public string SelectedSearchType { get; set; }
 
         public List<CharacteristicApi> Characteristics { get; set; } = new List<CharacteristicApi>();
-        public List<UnitApi> Units { get; set; } = new List<UnitApi>();
 
         public CharacteristicApi SelectedCharacteristic { get; set; }
-        public UnitApi SelectedUnit { get; set; }
 
         private List<CharacteristicApi> searchResult;
 
@@ -92,11 +90,17 @@ namespace MyCar.Desktop.ViewModels
         public BodyTypeApi SelectedBodyType { get; set; }
         #endregion
 
+        #region UnitProperties
+        public List<UnitApi> Units { get; set; } = new List<UnitApi>();
+        public UnitApi SelectedUnit { get; set;  }
+        #endregion
+
         public CustomCommand AddType { get; set; }
         public CustomCommand EditType { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand EditCharacteristic { get; set; }
         public CustomCommand AddUnit { get; set; }
+        public CustomCommand EditUnit { get; set; }
         public CustomCommand AddEquipment { get; set; }
         public CustomCommand EditEquipment { get; set; }
 
@@ -108,6 +112,8 @@ namespace MyCar.Desktop.ViewModels
 
             Task.Run(GetBodyTypes).Wait();
 
+            Task.Run(GetUnit).Wait();
+
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Характеристика" });
             SelectedSearchType = SearchType.First();
@@ -116,7 +122,6 @@ namespace MyCar.Desktop.ViewModels
             SearchTypeEquipment.AddRange(new string[] { "Комплектация" });
             SelectedSearchTypeEquipment = SearchTypeEquipment.First();
 
-            UnitFilter = Units;
             UnitFilter.Add(new UnitApi { UnitName = "Все" });
             SelectedUnitFilter = UnitFilter.Last();
 
@@ -143,7 +148,21 @@ namespace MyCar.Desktop.ViewModels
             {
                 AddUnitWindow addUnit = new AddUnitWindow();
                 addUnit.ShowDialog();
+                Task.Run(GetUnit).Wait();
                 Task.Run(GetCharacteristic).Wait();
+            });
+
+            EditUnit = new CustomCommand(() =>
+            {
+                if (SelectedUnit == null || SelectedUnit.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана ед. измерения" });
+                    return;
+                }
+                AddUnitWindow addUnit = new AddUnitWindow(SelectedUnit);
+                addUnit.ShowDialog();
+                Task.Run(GetCharacteristic).Wait();
+                Task.Run(GetUnit).Wait();
             });
 
             AddEquipment = new CustomCommand(() =>
@@ -192,7 +211,7 @@ namespace MyCar.Desktop.ViewModels
         private async Task GetCharacteristic()
         {
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
-            Units = await Api.GetListAsync<List<UnitApi>>("Unit");
+            UnitFilter = await Api.GetListAsync<List<UnitApi>>("Unit");
             FullTypes = Characteristics;
             SignalChanged(nameof(Characteristics));
         }
@@ -258,6 +277,13 @@ namespace MyCar.Desktop.ViewModels
             else
                 searchResultBody = await Api.SearchAsync<List<BodyTypeApi>>("Кузов", search, "BodyType");
             UpdateListBody();
+        }
+        #endregion
+
+        #region Units
+        private async Task GetUnit()
+        {
+            Units = await Api.GetListAsync<List<UnitApi>>("Unit");
         }
         #endregion
     }

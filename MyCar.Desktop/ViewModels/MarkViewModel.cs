@@ -43,6 +43,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand EditMark { get; set; }
         public CustomCommand AddMark { get; set; }
         public CustomCommand AddModel { get; set; }
+        public CustomCommand EditModel { get; set; }
 
         public MarkViewModel()
         {
@@ -70,6 +71,13 @@ namespace MyCar.Desktop.ViewModels
             AddModel = new CustomCommand(() =>
             {
                 AddModelWindow addModel = new AddModelWindow();
+                addModel.ShowDialog();
+                Task.Run(GetMarkList);
+            });
+            EditModel = new CustomCommand(() =>
+            {
+                if (SelectedModel == null || SelectedModel.ID == 0) return;
+                AddModelWindow addModel = new AddModelWindow(SelectedModel);
                 addModel.ShowDialog();
                 Task.Run(GetMarkList);
             });

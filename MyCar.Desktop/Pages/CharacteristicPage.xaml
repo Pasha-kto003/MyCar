@@ -54,11 +54,11 @@
 
                     <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Margin="0 0 5 0" Style="{StaticResource AddButton}" Width="auto"
-                        Command="{Binding AddUnit}" Content="Добавить ед. измерения" ToolTip="Добавить едидиницу измерения">
-                            </Button>
-                            <Button Margin="0 0 5 0" Style="{StaticResource AddButton}" Width="auto"
-                        Command="{Binding AddCharacteristic}" Content="Добавить характеристику" ToolTip="Добавить характеристику">
+                            <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
+                        Command="{Binding AddCharacteristic}" ToolTip="Добавить">
+                                <Button.Content>
+                                    <Image Source="/Images/add.png" />
+                                </Button.Content>
                             </Button>
                         </StackPanel>
                         <Grid/>
@@ -161,6 +161,51 @@
                         <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                             <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
                         Command="{Binding AddType}"  ToolTip="Добавить">
+                                <Button.Content>
+                                    <Image Source="/Images/add.png" />
+                                </Button.Content>
+                            </Button>
+
+                        </StackPanel>
+                        <Grid/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock Text="Ед. измерения" FontSize="15"/>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="1"
+                  FontSize="{StaticResource FontSizeLarge}"
+                  SelectedItem="{Binding SelectedUnit}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Units}"
+            >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Наименование"
+                                    Binding="{Binding UnitName}"
+                                    Width="*"
+                                    />
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Редактировать" Command="{Binding EditUnit}"/>
+                                <MenuItem Header="Удалить" Command="{Binding DeleteUnit}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+
+                    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
+                        Command="{Binding AddUnit}"  ToolTip="Добавить">
                                 <Button.Content>
                                     <Image Source="/Images/add.png" />
                                 </Button.Content>

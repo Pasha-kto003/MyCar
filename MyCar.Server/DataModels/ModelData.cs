@@ -55,7 +55,10 @@ namespace MyCar.Server.DataModels
             var user = dbContext.Users.FirstOrDefault(x => x.Id == orderIn.UserId);
             result.User = (UserApi)user;
             result.WareHouses = dbContext.Warehouses.Where(s => s.OrderId == orderIn.Id).Select(t => (WareHouseApi)t).ToList();
-            var warehouses = dbContext.Warehouses.ToList().Select(s =>{return WarehouseGet(s, dbContext);});
+            var warehouses = dbContext.Warehouses.ToList().Select(s =>
+            {
+                return WarehouseGet(s, dbContext);
+            });
             result.WareHouses = warehouses.Select(s=> (WareHouseApi)s).ToList();
             return result;
         }

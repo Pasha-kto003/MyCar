@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ModelsApi.CarApi>
+
+@{
+    ViewData["Title"] = "CarView";
+}
+
+<h1>CarView</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="corner-box-1 card col-sm-3 m-1" style=" width: 300px; height: 400px; margin-top: 10px;">
+            <div class="corner-box-1-content">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <img src="@item.PhotoCar" style="width:200px; height:200px;" />
+                        <br />
+                        <h5>@item.CarName</h5>
+                    </h4>
+                    <h5>@item.CarPrice &#8381</h5>
+                    <p class="card-text">@item.CarOptions</p>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.ID">Изменить</a>
+                        <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.ID">Удалить</a>
+                    }
+                    <a asp-action="AddBuy" asp-controller="Home" asp-route-id="@item.ID"> Купить</a>
+                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

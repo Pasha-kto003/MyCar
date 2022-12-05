@@ -3,6 +3,7 @@ using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.ViewModels.Dialogs;
+using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -73,6 +74,8 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand AddImage { get; set; }
         public CustomCommand DeleteCharacteristic { get; set; }
+        public CustomCommand EditCharacteristic { get; set; }
+        public CustomCommand EditCount { get; set; }
 
         public AddCarViewModel(CarApi car)
         {
@@ -178,6 +181,44 @@ namespace MyCar.Desktop.ViewModels
                     {
                         CharacteristicsCar.Remove(SelectedCharacteristicCar);
                     }
+                }
+            });
+
+            EditCount = new CustomCommand(() =>
+            {
+                if(SelectedCharacteristicCar == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Вы не выбрали характеристику" });
+                    return;
+                }
+                else
+                {
+                    if(CharacteristicValue == null || CharacteristicValue == "")
+                    {
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Отсутствует значение характеристики" });
+                        return;
+                    }
+                    else
+                    {
+                        SelectedCharacteristicCar.CharacteristicValue = CharacteristicValue;
+                        EditCar(AddCarVM);
+                        SignalChanged(nameof(SelectedCharacteristicCar.CharacteristicValue));
+                    }
+                }
+            });
+
+            EditCharacteristic = new CustomCommand(() =>
+            {
+                if(SelectedCharacteristicCar.Characteristic == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Вы не выбрали характеристику" });
+                    return;
+                }
+                else
+                {
+                    AddCharacteristicWindow addCharacteristic = new AddCharacteristicWindow(SelectedCharacteristicCar.Characteristic);
+                    addCharacteristic.ShowDialog();
+                    Task.Run(GetList).Wait();
                 }
             });
 

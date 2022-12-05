@@ -14,7 +14,6 @@ namespace ModelsApi
         public decimal? EquipmentPrice { get; set; }
         public decimal? FullPrice { get => EquipmentPrice + Car.CarPrice; }
 
-        public decimal? FullPrice { get => EquipmentPrice + Car.CarPrice; }
 
         public CarApi Car { get; set; }
         public EquipmentApi Equipment { get; set; }

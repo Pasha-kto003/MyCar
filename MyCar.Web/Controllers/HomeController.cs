@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ModelsApi;
+using MyCar.Web.Core;
 using MyCar.Web.Models;
 using System.Diagnostics;
 
@@ -16,6 +18,17 @@ namespace MyCar.Web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> CarView()
+        {
+            var cars = new List<CarApi>();
+            cars = await Api.GetListAsync<List<CarApi>>("Car");
+            foreach(CarApi car in cars)
+            {
+                car.PhotoCar = $@"C:/Users/User/source/repos/MyCar/MyCar.Web/bin/Debug/net6.0/CarImages/{car.PhotoCar}";
+            }
+            return View("CarView", cars);
         }
 
         public IActionResult Privacy()

@@ -39,8 +39,6 @@ namespace MyCar.Server.Controllers
             return GetCar(car);
         }
 
-
-
         [HttpGet("Type, Text, Filter")]
         public IEnumerable<CarApi> SearchByCar(string type, string text, string filter)
         {

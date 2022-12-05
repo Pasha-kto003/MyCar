@@ -22,5 +22,16 @@ namespace MyCar.Server.Controllers
         {
             return dbContext.CharacteristicCars.Select(s => (CharacteristicCarApi)s);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] CharacteristicCarApi edit)
+        {
+            var oldcross = await dbContext.CharacteristicCars.FindAsync(id);
+            if (oldcross == null)
+                return NotFound();
+            dbContext.Entry(oldcross).CurrentValues.SetValues(dbContext);
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
     }
 }

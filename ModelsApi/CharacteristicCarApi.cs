@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModelsApi
 {
-    public class CharacteristicCarApi
+    public class CharacteristicCarApi : ApiBaseType
     {
         public int CarId { get; set; }
         public int CharacteristicId { get; set; }

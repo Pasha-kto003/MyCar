@@ -55,7 +55,7 @@
                         <Label Content="Текущие" Grid.Row="0" Grid.Column="1" FontFamily="{StaticResource CenturyGothicBold}"
                                FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
 
-                        <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding AllModels}" 
+                        <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding AllModels}" FontSize="16"
                                  Margin="5 0" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="ModelName">
                             <ListBox.ContextMenu>
                                 <ContextMenu>
@@ -64,7 +64,7 @@
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                         </ListBox>
-                        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ThisMarkModels}" 
+                        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ThisMarkModels}" FontSize="16"
                                  Margin="5 0" SelectedItem="{Binding SelectedMarkModel}" DisplayMemberPath="ModelName"/>
 
                         <Button Grid.Row="2" FontSize="18" Grid.Column="0" Grid.ColumnSpan="2" Width="200" Style="{StaticResource RegularButton}" 

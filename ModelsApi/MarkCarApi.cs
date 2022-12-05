@@ -11,5 +11,6 @@ namespace ModelsApi
         public string? MarkName { get; set; }
         public string? MarkPhoto { get; set; }
         public List<ModelApi>? Models { get;set; }
+        public ModelApi? SelectedModel { get; set; }
     }
 }

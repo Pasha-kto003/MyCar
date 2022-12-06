@@ -54,12 +54,22 @@ namespace MyCar.Server.DataModels
             var result = (OrderApi)orderIn;
             var user = dbContext.Users.FirstOrDefault(x => x.Id == orderIn.UserId);
             result.User = (UserApi)user;
+            var type = dbContext.ActionTypes.FirstOrDefault(s => s.Id == orderIn.ActionTypeId);
+            result.ActionType = (ActionTypeApi)type;
+            var status = dbContext.Statuses.FirstOrDefault(s => s.Id == orderIn.StatusId);
+            result.Status = (StatusApi)status;
             result.WareHouses = dbContext.Warehouses.Where(s => s.OrderId == orderIn.Id).Select(t => (WareHouseApi)t).ToList();
-            var warehouses = dbContext.Warehouses.ToList().Select(s =>
+            var warehouses = dbContext.Warehouses.Where(s=> s.OrderId == orderIn.Id).ToList().Select(s =>
             {
                 return WarehouseGet(s, dbContext);
             });
             result.WareHouses = warehouses.Select(s=> (WareHouseApi)s).ToList();
+            foreach (var warehouse in result.WareHouses)
+            {
+                result.CarOptions += $"{warehouse.SaleCar.Car.CarName}";
+                result.SumOrder = warehouse.SaleCar.FullPrice + warehouse.Price;
+            }
+
             return result;
         }
     }

@@ -1,0 +1,101 @@
+﻿<Page x:Class="MyCar.Desktop.Pages.OrderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MyCar.Desktop.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="OrderPage">
+
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="WhiteSmoke">
+            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
+                <StackPanel Margin="0 0 10 0">
+                    <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
+                    <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
+                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
+                </StackPanel>
+                <StackPanel Margin="10 0 0 0">
+                    <Label Grid.Column="1" FontSize="16" Content="Тип операции:"  FontFamily="Century Gothic"/>
+                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding TypeFilter}" SelectedItem="{Binding SelectedTypeFilter}" DisplayMemberPath="ActionTypeName"/>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+        <DataGrid Grid.Row="1" 
+                  FontSize="{StaticResource FontSizeLarge}"
+                  SelectedItem="{Binding SelectedOrder}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Orders}"
+            >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата заказа"
+                                    Binding="{Binding DateOfOrder}"
+                                    Width="*"
+                                    />
+                <DataGridTextColumn Header="Тип заказа"
+                                    Binding="{Binding ActionType.ActionTypeName}"
+                                    Width="*"/>
+                <DataGridTextColumn Header="Статус заказа"
+                                    Binding="{Binding Status.StatusName}"
+                                    Width="*"/>
+                <DataGridTextColumn Header="Стоимость заказа"
+                                    Binding="{Binding SumOrder}"
+                                    Width="*"/>
+                <DataGridTextColumn Header="Пользователь"
+                                    Binding="{Binding User.UserName}"
+                                    Width="*"/>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border Margin="5"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource LightValorantRedBrush}">
+                        <TextBlock Text="{Binding CarOptions}"/>
+                    </Border>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Редактировать заказ" Command="{Binding EditOrder}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DeleteMark}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Label Content="{Binding SearchCountRows}" Foreground="White" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button FontSize="16" Content="&lt;" Foreground="White" Width="20" Command="{Binding BackPage}" Style="{StaticResource RegularButton}" Padding="0 10"/>
+                    <Label FontSize="16" Content="{Binding Pages}" Foreground="White" VerticalAlignment="Center"/>
+                    <Button  FontSize="16" Content=">" Foreground="White" Width="20" Command="{Binding ForwardPage}"  Style="{StaticResource RegularButton}" Padding="0 10"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                    <Label Content="Кол-во записей:" Foreground="White" FontSize="16" Height="30"/>
+                    <ComboBox Width="100" Height="30" Style="{StaticResource ComboBoxFlatStyle}" ItemsSource="{Binding ViewCountRows}" VerticalContentAlignment="Center" FontSize="16" SelectedItem="{Binding SelectedViewCountRows}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Margin="5 0 0 0" Style="{StaticResource AddImageButton}"
+                        Command="{Binding AddOrder}">
+                    <Button.Content>
+                        <Image Source="/Images/add.png"/>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Grid/>
+        </Grid>
+    </Grid>
+</Page>

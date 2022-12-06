@@ -66,7 +66,7 @@ namespace MyCar.Server.Controllers.Jwt
 
             user = await dbContext.Users.FirstOrDefaultAsync(s => s.UserName == userName);
 
-            if (!VerifyPasswordHash(Password, user.PasswordHash, user.SaltHash))
+            if (user.PasswordHash == null || !VerifyPasswordHash(Password, user.PasswordHash, user.SaltHash))
             {
                 return BadRequest("Wrong password!");
             }

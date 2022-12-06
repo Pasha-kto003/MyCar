@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace MyCar.Desktop.ViewModels
         public UserTypeApi SelectedUserType { get; set; }
 
         public List<UserTypeApi> UserTypes { get; set; }
+        public List<UserApi> Users { get; set; }
 
         public UserApi EditUser { get; set; }
         public PassportApi EditPassport { get; set; }
@@ -23,7 +25,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Save { get; set; }
         public CustomCommand Cancel { get; set; }
 
-        public string Password { get; set; }
+        public string OldUserName = "";
 
         public AddUserViewModel(UserApi editUser)
         {
@@ -31,31 +33,45 @@ namespace MyCar.Desktop.ViewModels
 
             if (editUser == null)
             {
-                EditUser = new UserApi {UserTypeId = 1 };
+                EditUser = new UserApi { UserTypeId = 1 };
                 EditUser.Passport = new PassportApi();
             }
             else
             {
+                OldUserName = editUser.UserName;
                 EditUser = new UserApi
                 {
-                   ID = editUser.ID,
-                   PassportId = editUser.PassportId,
-                   Email = editUser.Email,
-                   UserName = editUser.UserName,
-                   UserTypeId = editUser.UserTypeId,
-                   PasswordHash = editUser.PasswordHash,
-                   Passport = editUser.Passport,
-                   UserType = editUser.UserType
-                };     
+                    ID = editUser.ID,
+                    PassportId = editUser.PassportId,
+                    Email = editUser.Email,
+                    UserName = editUser.UserName,
+                    UserTypeId = editUser.UserTypeId,
+                    PasswordHash = editUser.PasswordHash,
+                    SaltHash = editUser.SaltHash,
+                    Passport = editUser.Passport,
+                    UserType = editUser.UserType
+                };
             }
 
             Save = new CustomCommand(async () =>
             {
+                if (SelectedUserType == null || SelectedUserType.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран тип пользователя!" });
+                    return;
+                }
+                if (EditUser.UserName == null || EditUser.UserName == "")
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Логин - обязательное поле!" });
+                    return;
+                }
+                if (EditUser.UserName != OldUserName & !CheckUniqueUserName(EditUser))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Пользователь с таким логином уже существует!" });
+                    return;
+                }
                 EditUser.UserType = SelectedUserType;
-                Core.Hash.HashCheck.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
-                EditUser.PasswordHash = passwordHash;
-                EditUser.SaltHash = passwordSalt;
-
+               
                 if (EditUser.ID == 0)
                 {
                     await CreateUser(EditUser);
@@ -85,9 +101,17 @@ namespace MyCar.Desktop.ViewModels
             var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
 
+        private bool CheckUniqueUserName(UserApi user)
+        {
+            if (Users.Exists(s=>s.UserName == user.UserName))
+                return false;
+            else
+                return true;
+        }
 
         private async Task GetList()
         {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
             UserTypes = await Api.GetListAsync<List<UserTypeApi>>("UserType");
             SelectedUserType = UserTypes.FirstOrDefault(s => s.ID == EditUser.UserTypeId);
             SignalChanged(nameof(UserTypes));

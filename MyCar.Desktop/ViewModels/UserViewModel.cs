@@ -70,7 +70,7 @@ namespace MyCar.Desktop.ViewModels
 
         public CustomCommand AddUser { get; set; }
         public CustomCommand EditUser { get; set; }
-
+        public CustomCommand EditPassword { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
 
@@ -123,6 +123,14 @@ namespace MyCar.Desktop.ViewModels
                 if (SelectedUser == null || SelectedUser.ID == 0) return;
                 AddUser edituser = new AddUser(SelectedUser);
                 edituser.ShowDialog();
+                Task.Run(GetUserList);
+            });
+
+            EditPassword = new CustomCommand(() =>
+            {
+                if (SelectedUser == null || SelectedUser.ID == 0) return;
+                EditPasswordWindow editpass = new EditPasswordWindow(SelectedUser);
+                editpass.ShowDialog();
                 Task.Run(GetUserList);
             });
         }

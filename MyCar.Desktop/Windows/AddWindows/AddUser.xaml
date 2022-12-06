@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         mc:Ignorable="d"
-        Title="EditUser" Height="600" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+        Title="EditUser" Height="500" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
         <Grid>
@@ -25,7 +25,6 @@
                     <RowDefinition Height="45"/>
                     <RowDefinition Height="45"/>
                     <RowDefinition Height="45"/>
-                    <RowDefinition Height="45"/>
 
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -35,25 +34,22 @@
 
                 <Label Content="Email:" Grid.Row="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <TextBox DataContext="{Binding EditUser}" Text="{Binding Email}" Grid.Row="1" Width="300" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
-               
-                <Label Content="Пароль:" Grid.Row="2" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Password}" Grid.Row="2" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="300" Height="30" Margin="0 0 10 0"/>
-
-                <StackPanel Grid.Row="3" Margin="0 10 0 0">
+              
+                <StackPanel Grid.Row="2" Margin="0 10 0 0">
                     <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                     <Label Content="Паспорт" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                 </StackPanel>
                
-                <Label Content="Имя:" Grid.Row="4" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <TextBox DataContext="{Binding EditUser}" Text="{Binding Passport.FirstName}" Grid.Row="4" Width="300" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                <Label Content="Имя:" Grid.Row="3" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBox DataContext="{Binding EditUser}" Text="{Binding Passport.FirstName}" Grid.Row="3" Width="300" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
 
-                <Label Content="Фамилия:" Grid.Row="5" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <TextBox DataContext="{Binding EditUser}" Text="{Binding Passport.LastName}" Grid.Row="5" Width="300" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                <Label Content="Фамилия:" Grid.Row="4" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBox DataContext="{Binding EditUser}" Text="{Binding Passport.LastName}" Grid.Row="4" Width="300" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
 
-                <Label Content="Отчество:" Grid.Row="6" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <TextBox DataContext="{Binding EditUser}" Text="{Binding Passport.Patronimyc}" Grid.Row="6" Width="300" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                <Label Content="Отчество:" Grid.Row="5" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBox DataContext="{Binding EditUser}" Text="{Binding Passport.Patronimyc}" Grid.Row="5" Width="300" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
 
-                <Grid  Grid.Row="7">
+                <Grid  Grid.Row="6">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.5*"/>
                         <ColumnDefinition Width="0.5*"/>
@@ -69,15 +65,15 @@
                     </StackPanel>
                 </Grid>
 
-                <Label Content="Дата выдачи:" Grid.Row="8" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <DatePicker DataContext="{Binding EditUser}" Width="200" HorizontalAlignment="Right"  Grid.Row="8" FontSize="16" Height="30"  Margin="0 0 10 0" VerticalAlignment="Center"
+                <Label Content="Дата выдачи:" Grid.Row="7" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <DatePicker DataContext="{Binding EditUser}" Width="200" HorizontalAlignment="Right"  Grid.Row="7" FontSize="16" Height="30"  Margin="0 0 10 0" VerticalAlignment="Center"
                          SelectedDate="{Binding Passport.DateStart, StringFormat='{}{0:dd.MM.yyyy}'}" 
                          />
-                <Label Content="Тип пользователя:" Grid.Row="9" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedUserType}" ItemsSource="{Binding UserTypes}" Grid.Row="9" Width="200" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                <Button Content="Отмена" Command="{Binding Cancel}" Grid.Row="11" Height="30" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontFamily="Century Gothic" Foreground="Red"
+                <Label Content="Тип пользователя:" Grid.Row="8" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="TypeName" SelectedItem="{Binding SelectedUserType}" ItemsSource="{Binding UserTypes}" Grid.Row="8" Width="200" Height="30" FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                <Button Content="Отмена" Command="{Binding Cancel}" Grid.Row="10" Height="30" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Bottom"  FontFamily="Century Gothic" Foreground="Red"
                     Background="Transparent" BorderBrush="Red" FontSize="16"/>
-                <Button Content="Сохранить" Command="{Binding Save}" Grid.Row="11" Height="30" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="Century Gothic" Foreground="Green"
+                <Button Content="Сохранить" Command="{Binding Save}" Grid.Row="10" Height="30" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="Century Gothic" Foreground="Green"
                     Background="Transparent" BorderBrush="Green" FontSize="16"/>
 
             </Grid>

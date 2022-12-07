@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Server.DB;
 using MyCar.Server.DataModels;

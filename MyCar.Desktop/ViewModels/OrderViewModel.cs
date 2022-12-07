@@ -1,4 +1,4 @@
-﻿using ModelsApi;
+using ModelsApi;
 using MyCar.Desktop.Core;
 using System;
 using System.Collections.Generic;

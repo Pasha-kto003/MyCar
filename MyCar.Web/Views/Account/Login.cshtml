@@ -1,7 +1,8 @@
 ﻿@model MyCar.Web.Models.LoginModel
-<div class="row" style="justify-content:center; align-items:center; display:block; height:100%;">
+<div class="row" style="justify-content:center; align-items:center; display:block; height:100%; position: fixed; top: 50%; left: 50%;
+width: 50%; height: auto; margin: -200px 0 0 -25%;" >
     <div class="container text-center align-middle d-flex justify-content-center">
-    <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" style="width:300px;">
+    <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" >
         <h2>Sign In</h2>
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>

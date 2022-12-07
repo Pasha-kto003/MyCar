@@ -8,6 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OrderPage">
 
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition />
@@ -20,8 +21,13 @@
                     <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
                     <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                 </StackPanel>
+                <StackPanel Margin="0 0 10 0">
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
+                <StackPanel>
+                    <Label Grid.Column="1" FontSize="16" Content="Комплектация:"  FontFamily="Century Gothic"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding EquipmentFilter}" DisplayMemberPath="NameEquipment" SelectedItem="{Binding SelectedEquipmentFilter}"/>
                 </StackPanel>
             </StackPanel>
 
@@ -34,25 +40,63 @@
                   ItemsSource="{Binding Orders}"
             >
             <DataGrid.Columns>
+                <DataGridTextColumn Header="№"
+                                    Binding="{Binding ID}"
+                                    Width="80"
+                                    />
+                <DataGridTextColumn Header="Дата"
+                                    Binding="{Binding DateOfOrder, StringFormat='{}{0:dd.MM.yyyy}'}"
                                     Width="*"
                                     />
+                <DataGridTextColumn Header="Тип"
                                     Binding="{Binding ActionType.ActionTypeName}"
+                                     Width="*"
+                                    />
+                <DataGridTextColumn Header="Статус"
                                     Binding="{Binding Status.StatusName}"
+                                    Width="*"
+                                    />
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Border Margin="5"
                 BorderThickness="1"
                 BorderBrush="{DynamicResource LightValorantRedBrush}">
+                        <DataGrid
+                            IsReadOnly="True"
+                            AutoGenerateColumns="False"
+                            FontSize="{StaticResource FontSizeLarge}"
+                            ItemsSource="{Binding Warehouses}"
+                            SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.SelectedWarehouse}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Авто"
+                                    Binding="{Binding SaleCar.CarName}"
+                                    Width="*"
+                                    />
+                                <DataGridTextColumn Header="Кол-во"
+                                    Binding="{Binding CountChange}"
+                                    Width="*"
+                                    />
+                                <DataGridTextColumn Header="Цена"
+                                    Binding="{Binding Price, StringFormat={}{0:N2} ₽}"
+                                     Width="*"
+                                    />
+                                <DataGridTextColumn Header="Скидка"
+                                    Binding="{Binding Discount, StringFormat={}{0:N2} ₽}"
+                                    Width="*"
+                                    />
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Border>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
             <DataGrid.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Редактировать" Command="{Binding EditOrder}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DeleteOrder}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
-
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
             <StackPanel Grid.Row="2" Orientation="Horizontal">
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
@@ -76,7 +120,6 @@
                     </Button.Content>
                 </Button>
             </StackPanel>
-            <Grid/>
         </Grid>
     </Grid>
 </Page>

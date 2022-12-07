@@ -1,7 +1,9 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+
 using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.ViewModels.Dialogs;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,11 @@ namespace MyCar.Desktop.ViewModels
 {
     public class OrderViewModel : BaseViewModel
     {
-        public List<OrderApi> Orders { get; set; }  
+
+        public List<OrderApi> Orders { get; set; } = new List<OrderApi>();
+        public List<StatusApi> Statuses { get; set; } = new List<StatusApi>();
+        public List<ActionTypeApi> ActionTypes { get; set; } = new List<ActionTypeApi>();
+        public List<ActionTypeApi> TypeFilter { get; set; } = new List<ActionTypeApi>();
 
         private List<OrderApi> searchResult;
         private List<OrderApi> FullOrders;
@@ -91,7 +97,6 @@ namespace MyCar.Desktop.ViewModels
         public OrderViewModel()
         {
             Task.Run(GetOrders).Wait();
-
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Дата заказа", "Статус заказа", "Пользователь" });
             selectedSearchType = SearchType.First();
@@ -129,7 +134,7 @@ namespace MyCar.Desktop.ViewModels
             SignalChanged(nameof(searchResult));
         }
 
-        private async Task GetOrders()
+        public async Task GetOrders()
         {
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             ActionTypes = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
@@ -179,6 +184,7 @@ namespace MyCar.Desktop.ViewModels
             }
             CountPages = (searchResult.Count() - 1) / rows;
             Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
+
         }
     }
 }

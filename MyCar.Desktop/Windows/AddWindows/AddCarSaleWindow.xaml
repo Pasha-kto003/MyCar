@@ -29,10 +29,6 @@
                 <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
                 <Label Content="Авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
             </StackPanel>
-            <!--<StackPanel Grid.Row="3" Margin="0 0 0 10" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label Content="Поиск авто:" FontSize="16" HorizontalAlignment="Left" Width="100" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding SearchText}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="300" FontSize="16"/>
-            </StackPanel>-->
             <Label Grid.Row="2" Content="Фильтр:" HorizontalAlignment="Left"
                    VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>
             <ComboBox Grid.Row="2" FontSize="16" Style="{StaticResource ComboBoxFlatStyle}" ItemsSource="{Binding Marks}" 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Web.Core;
 using MyCar.Web.Models;
@@ -15,11 +16,12 @@ namespace MyCar.Web.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
             return View();
         }
-
+        
         public async Task<IActionResult> CarView()
         {
             var cars = new List<CarApi>();

@@ -58,6 +58,9 @@ namespace MyCar.Server.Controllers
                     case "Дата заказа":
                         OrdersApi = OrdersApi.Where(s => s.DateOfOrder.ToString().ToLower().Contains(text)).ToList();
                         break;
+                    case "Статус заказа":
+                        OrdersApi = OrdersApi.Where(s => s.Status.StatusName.ToLower().Contains(text)).ToList();
+                        break;
                     default:
                         OrdersApi = OrdersApi.ToList();
                         break;

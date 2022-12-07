@@ -1,9 +1,5 @@
-﻿using ModelsApi;
+using ModelsApi;
 using MyCar.Desktop.Core;
-
-using MyCar.Desktop.Core.UI;
-using MyCar.Desktop.ViewModels.Dialogs;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,60 +10,6 @@ namespace MyCar.Desktop.ViewModels
 {
     public class OrderViewModel : BaseViewModel
     {
-
-        public List<OrderApi> Orders { get; set; } = new List<OrderApi>();
-        public List<StatusApi> Statuses { get; set; } = new List<StatusApi>();
-        public List<ActionTypeApi> ActionTypes { get; set; } = new List<ActionTypeApi>();
-        public List<ActionTypeApi> TypeFilter { get; set; } = new List<ActionTypeApi>();
-
-        private List<OrderApi> searchResult;
-        private List<OrderApi> FullOrders;
-
-        private OrderApi selectedOrder { get; set; }
-        public OrderApi SelectedOrder
-        {
-            get => selectedOrder;
-            set
-            {
-                selectedOrder = value;
-                SignalChanged();
-            }
-        }
-
-        private string searchText = "";
-        public string SearchText
-        {
-            get => searchText;
-            set
-            {
-                searchText = value;
-                Task.Run(Search);
-            }
-        }
-
-        public List<string> SearchType { get; set; }
-        private string selectedSearchType;
-        public string SelectedSearchType
-        {
-            get => selectedSearchType;
-            set
-            {
-                selectedSearchType = value;
-                Task.Run(Search);
-            }
-        }
-
-        private ActionTypeApi selectedTypeFilter;
-        public ActionTypeApi SelectedTypeFilter
-        {
-            get=> selectedTypeFilter;
-            set
-            {
-                selectedTypeFilter = value;
-                Task.Run(Search);
-            }
-        }
-
         public string SearchCountRows { get; set; }
         public List<string> ViewCountRows { get; set; }
         public string SelectedViewCountRows
@@ -81,11 +23,39 @@ namespace MyCar.Desktop.ViewModels
             }
         }
 
-        public CustomCommand BackPage { get; set; }
-        public CustomCommand ForwardPage { get; set; }
+        private ActionTypeApi selectedActionTypeFilter;
+        public ActionTypeApi SelectedActionTypeFilter
+        {
+            get => selectedActionTypeFilter;
+            set
+            {
+                selectedActionTypeFilter = value;
+                Task.Run(Search);
+            }
+        }
+        private string searchText = "";
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                Task.Run(Search);
+            }
+        }
+        public List<string> SearchType { get; set; }
+        private string selectedSearchType;
+        public string SelectedSearchType
+        {
+            get => selectedSearchType;
+            set
+            {
+                selectedSearchType = value;
+                Task.Run(Search);
+            }
+        }
 
-        public CustomCommand AddOrder { get; set; }
-        public CustomCommand EditOrder { get; set; }
+        private List<OrderApi> searchResult;
 
         int paginationPageIndex = 0;
         private string searchCountRows;
@@ -94,13 +64,28 @@ namespace MyCar.Desktop.ViewModels
         public int CountPages = 0;
         public string Pages { get; set; }
 
+        public List<ActionTypeApi> ActionTypeFilter { get; set; }
+        public List<ActionTypeApi> ActionTypes { get; set; }
+        public List<OrderApi> Orders { get; set; }
+        public List<OrderApi> FullOrders { get; set; }
+        public CustomCommand BackPage { get; set; }
+        public CustomCommand ForwardPage { get; set; }
+
         public OrderViewModel()
         {
             Task.Run(GetOrders).Wait();
+
+            ActionTypeFilter = ActionTypes;
+            ActionTypeFilter.Add(new ActionTypeApi { ActionTypeName = "Все" });
+            SelectedActionTypeFilter = ActionTypeFilter.Last();
+
+            ViewCountRows = new List<string>();
+            ViewCountRows.AddRange(new string[] { "5", "Все" });
+            selectedViewCountRows = ViewCountRows.Last();
+
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Дата заказа", "Статус заказа", "Пользователь" });
-            selectedSearchType = SearchType.First();
-            SelectedTypeFilter = TypeFilter.First();
+            SearchType.AddRange(new string[] { "Дата", "Заказчик", "№ Заказа" });
+            SelectedSearchType = SearchType.First();
 
             BackPage = new CustomCommand(() => {
                 if (searchResult == null)
@@ -127,33 +112,29 @@ namespace MyCar.Desktop.ViewModels
                 Pagination();
             });
         }
-
-        private void UpdateOrder()
-        {
-            Orders = searchResult;
-            SignalChanged(nameof(searchResult));
-        }
-
-        public async Task GetOrders()
-        {
-            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            ActionTypes = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
-            TypeFilter = ActionTypes;
-            FullOrders = Orders;
-        }
-
         public async Task Search()
         {
             var search = SearchText.ToLower();
             if (search == "")
-                searchResult = await Api.SearchFilterAsync<List<OrderApi>>(SelectedSearchType, "$", "Order", SelectedTypeFilter.ActionTypeName);
+                searchResult = await Api.SearchFilterAsync<List<OrderApi>>(SelectedSearchType, "$", "Order", SelectedActionTypeFilter.ActionTypeName);
             else
-                searchResult = await Api.SearchFilterAsync<List<OrderApi>>(SelectedSearchType, search, "Order", SelectedTypeFilter.ActionTypeName);
-            UpdateOrder();
+                searchResult = await Api.SearchFilterAsync<List<OrderApi>>(SelectedSearchType, search, "Order", SelectedActionTypeFilter.ActionTypeName);
+            UpdateList();
             InitPagination();
             Pagination();
         }
+        private async Task GetOrders()
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            ActionTypes = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
 
+            FullOrders = Orders;
+        }
+        public void UpdateList()
+        {
+            Orders = searchResult;
+            SignalChanged(nameof(Orders));
+        }
         public void InitPagination()
         {
             SearchCountRows = $"Найдено записей: {searchResult.Count} из {FullOrders.Count()}";
@@ -175,16 +156,8 @@ namespace MyCar.Desktop.ViewModels
             int.TryParse(SelectedViewCountRows, out rows);
             if (rows == 0)
                 rows = FullOrders.Count;
-            if (rows > FullOrders.Count)
-            {
-                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Превышено количество объектов" });
-                SelectedViewCountRows = ViewCountRows.Last();
-                SignalChanged(nameof(SelectedViewCountRows));
-                return;
-            }
             CountPages = (searchResult.Count() - 1) / rows;
             Pages = $"{paginationPageIndex + 1} из {CountPages + 1}";
-
         }
     }
 }

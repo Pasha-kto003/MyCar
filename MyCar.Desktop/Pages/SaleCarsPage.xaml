@@ -60,6 +60,10 @@
                                     Binding="{Binding FullPrice, StringFormat={}{0:N2} ₽}"
                                     Width="*"
                                     />
+                <DataGridTextColumn Header="Кол-во"
+                                    Binding="{Binding Count}"
+                                    Width="100"
+                                    />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>

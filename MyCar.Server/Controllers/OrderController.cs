@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Server.DB;
 using MyCar.Server.DataModels;
@@ -52,14 +52,14 @@ namespace MyCar.Server.Controllers
             {
                 switch (type)
                 {
-                    case "Пользователь":
+                    case "Заказчик":
                         OrdersApi = OrdersApi.Where(s => s.User.UserName.ToLower().Contains(text)).ToList();
                         break;
-                    case "Дата заказа":
+                    case "Дата":
                         OrdersApi = OrdersApi.Where(s => s.DateOfOrder.ToString().ToLower().Contains(text)).ToList();
                         break;
-                    case "Статус заказа":
-                        OrdersApi = OrdersApi.Where(s => s.Status.StatusName.ToLower().Contains(text)).ToList();
+                    case "№ Заказа":
+                        OrdersApi = OrdersApi.Where(s => s.ID.ToString().ToLower().Contains(text)).ToList();
                         break;
                     default:
                         OrdersApi = OrdersApi.ToList();

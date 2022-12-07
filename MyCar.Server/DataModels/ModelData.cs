@@ -1,4 +1,4 @@
-﻿using ModelsApi;
+using ModelsApi;
 using MyCar.Server.DB;
 
 namespace MyCar.Server.DataModels
@@ -37,6 +37,10 @@ namespace MyCar.Server.DataModels
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
+            foreach (var item in dbContext.Warehouses.Where(s=>s.SaleCarId== saleCar.Id))
+            {
+                result.Count += item.CountChange;
+            }
             result.Car = GetCar(car, dbContext);
             return result;
         }
@@ -54,22 +58,16 @@ namespace MyCar.Server.DataModels
             var result = (OrderApi)orderIn;
             var user = dbContext.Users.FirstOrDefault(x => x.Id == orderIn.UserId);
             result.User = (UserApi)user;
-            var type = dbContext.ActionTypes.FirstOrDefault(s => s.Id == orderIn.ActionTypeId);
-            result.ActionType = (ActionTypeApi)type;
-            var status = dbContext.Statuses.FirstOrDefault(s => s.Id == orderIn.StatusId);
+            var status = dbContext.Statuses.FirstOrDefault(x => x.Id == orderIn.StatusId);
             result.Status = (StatusApi)status;
+            var actionType = dbContext.ActionTypes.FirstOrDefault(x => x.Id == orderIn.ActionTypeId);
+            result.ActionType = (ActionTypeApi)actionType;
             result.WareHouses = dbContext.Warehouses.Where(s => s.OrderId == orderIn.Id).Select(t => (WareHouseApi)t).ToList();
-            var warehouses = dbContext.Warehouses.Where(s=> s.OrderId == orderIn.Id).ToList().Select(s =>
+            var warehouses = dbContext.Warehouses.ToList().Select(s =>
             {
                 return WarehouseGet(s, dbContext);
             });
             result.WareHouses = warehouses.Select(s=> (WareHouseApi)s).ToList();
-            foreach (var warehouse in result.WareHouses)
-            {
-                result.CarOptions += $"{warehouse.SaleCar.Car.CarName}";
-                result.SumOrder = warehouse.SaleCar.FullPrice + warehouse.Price;
-            }
-
             return result;
         }
     }

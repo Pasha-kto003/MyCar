@@ -22,6 +22,7 @@
     <None Remove="Images\feature.png" />
     <None Remove="Images\icons8-close-30.png" />
     <None Remove="Images\mark_64px.png" />
+    <None Remove="Images\orders_64px.png" />
     <None Remove="Images\turbo.png" />
     <None Remove="Images\sedan_64px.png" />
     <None Remove="Images\user_64px.png" />
@@ -56,6 +57,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\mark_64px.png" />
+    <Resource Include="Images\orders_64px.png" />
     <Resource Include="Images\turbo.png" />
     <Resource Include="Images\sedan_64px.png" />
     <Resource Include="Images\user_64px.png" />

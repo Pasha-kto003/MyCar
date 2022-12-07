@@ -12,10 +12,7 @@ namespace MyCar.Desktop.ViewModels
 {
     public class OrderViewModel : BaseViewModel
     {
-        public List<OrderApi> Orders { get; set; } = new List<OrderApi>();
-        public List<StatusApi> Statuses { get; set; } = new List<StatusApi>();
-        public List<ActionTypeApi> ActionTypes { get; set; } = new List<ActionTypeApi>();
-        public List<ActionTypeApi> TypeFilter { get; set; } = new List<ActionTypeApi>();
+        public List<OrderApi> Orders { get; set; }  
 
         private List<OrderApi> searchResult;
         private List<OrderApi> FullOrders;
@@ -132,7 +129,7 @@ namespace MyCar.Desktop.ViewModels
             SignalChanged(nameof(searchResult));
         }
 
-        public async Task GetOrders()
+        private async Task GetOrders()
         {
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             ActionTypes = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");

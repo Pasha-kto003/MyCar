@@ -8,7 +8,6 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OrderPage">
 
-    <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition />
@@ -21,18 +20,13 @@
                     <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
                     <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                 </StackPanel>
-                <StackPanel>
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
-                <StackPanel Margin="10 0 0 0">
-                    <Label Grid.Column="1" FontSize="16" Content="Тип операции:"  FontFamily="Century Gothic"/>
-                    <ComboBox Width="180" FontSize="16" ItemsSource="{Binding TypeFilter}" SelectedItem="{Binding SelectedTypeFilter}" DisplayMemberPath="ActionTypeName"/>
                 </StackPanel>
             </StackPanel>
 
         </Grid>
-        <DataGrid Grid.Row="1" 
+        <DataGrid Grid.Row="1"
                   FontSize="{StaticResource FontSizeLarge}"
                   SelectedItem="{Binding SelectedOrder}"
                   IsReadOnly="True"
@@ -40,51 +34,38 @@
                   ItemsSource="{Binding Orders}"
             >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата заказа"
-                                    Binding="{Binding DateOfOrder}"
                                     Width="*"
                                     />
-                <DataGridTextColumn Header="Тип заказа"
                                     Binding="{Binding ActionType.ActionTypeName}"
-                                    Width="*"/>
-                <DataGridTextColumn Header="Статус заказа"
                                     Binding="{Binding Status.StatusName}"
-                                    Width="*"/>
-                <DataGridTextColumn Header="Стоимость заказа"
-                                    Binding="{Binding SumOrder}"
-                                    Width="*"/>
-                <DataGridTextColumn Header="Пользователь"
-                                    Binding="{Binding User.UserName}"
-                                    Width="*"/>
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Border Margin="5"
                 BorderThickness="1"
                 BorderBrush="{DynamicResource LightValorantRedBrush}">
-                        <TextBlock Text="{Binding CarOptions}"/>
                     </Border>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Редактировать заказ" Command="{Binding EditOrder}"/>
-                    <MenuItem Header="Удалить" Command="{Binding DeleteMark}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
 
         <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Label Content="{Binding SearchCountRows}" Foreground="White" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button FontSize="16" Content="&lt;" Foreground="White" Width="20" Command="{Binding BackPage}" Style="{StaticResource RegularButton}" Padding="0 10"/>
-                    <Label FontSize="16" Content="{Binding Pages}" Foreground="White" VerticalAlignment="Center"/>
-                    <Button  FontSize="16" Content=">" Foreground="White" Width="20" Command="{Binding ForwardPage}"  Style="{StaticResource RegularButton}" Padding="0 10"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                    <Label Content="Кол-во записей:" Foreground="White" FontSize="16" Height="30"/>
-                    <ComboBox Width="100" Height="30" Style="{StaticResource ComboBoxFlatStyle}" ItemsSource="{Binding ViewCountRows}" VerticalContentAlignment="Center" FontSize="16" SelectedItem="{Binding SelectedViewCountRows}"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Label Content="{Binding SearchCountRows}" Foreground="White" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button FontSize="16" Content="&lt;" Foreground="White" Width="20" Command="{Binding BackPage}" Style="{StaticResource RegularButton}" Padding="0 10"/>
+                        <Label FontSize="16" Content="{Binding Pages}" Foreground="White" VerticalAlignment="Center"/>
+                        <Button  FontSize="16" Content=">" Foreground="White" Width="20" Command="{Binding ForwardPage}"  Style="{StaticResource RegularButton}" Padding="0 10"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                        <Label Content="Кол-во записей:" Foreground="White" FontSize="16" Height="30"/>
+                        <ComboBox Width="100" Height="30" Style="{StaticResource ComboBoxFlatStyle}" ItemsSource="{Binding ViewCountRows}" VerticalContentAlignment="Center" FontSize="16" SelectedItem="{Binding SelectedViewCountRows}"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

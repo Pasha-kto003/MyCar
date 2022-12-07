@@ -63,6 +63,7 @@
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Редактировать" Command="{Binding EditUser}"/>
+                    <MenuItem Header="Назначить пароль" Command="{Binding EditPassword}"/>
                     <MenuItem Header="Удалить" Command="{Binding DeleteUser}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>

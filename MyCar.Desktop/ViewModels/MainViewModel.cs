@@ -85,7 +85,8 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand MarkPageCommand { get; set; }
         public CustomCommand CharcteristicPageCommand { get; set; }
         public CustomCommand CarSalesPageCommand { get; set; }
-
+        public CustomCommand OrdersPageCommand { get; set; }
+        
         public MainViewModel(Window window, UserApi user)
         {
             mWindow = window;
@@ -105,6 +106,8 @@ namespace MyCar.Desktop.ViewModels
             OpenCar = new CustomCommand(() => CurrentPage = new CarPage());
             OpenOrder = new CustomCommand(() => CurrentPage = new OrderPage());
             MarkPageCommand = new CustomCommand(() => CurrentPage = new MarkPage());
+            OrdersPageCommand = new CustomCommand(() => CurrentPage = new OrderPage());
+
             var resizer = new WindowResizer(mWindow);
             resizer.WindowDockChanged += (dock) =>
             {

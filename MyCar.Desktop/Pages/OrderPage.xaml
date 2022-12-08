@@ -26,8 +26,8 @@
                     <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding SearchType}" SelectedItem="{Binding SelectedSearchType}"/>
                 </StackPanel>
                 <StackPanel>
-                    <Label Grid.Column="1" FontSize="16" Content="Комплектация:"  FontFamily="Century Gothic"/>
-                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding EquipmentFilter}" DisplayMemberPath="NameEquipment" SelectedItem="{Binding SelectedEquipmentFilter}"/>
+                    <Label Grid.Column="1" FontSize="16" Content="Тип операции:"  FontFamily="Century Gothic"/>
+                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding ActionTypeFilter}" DisplayMemberPath="ActionTypeName" SelectedItem="{Binding SelectedActionTypeFilter}"/>
                 </StackPanel>
             </StackPanel>
 
@@ -50,10 +50,14 @@
                                     />
                 <DataGridTextColumn Header="Тип"
                                     Binding="{Binding ActionType.ActionTypeName}"
-                                     Width="*"
+                                    Width="*"
                                     />
                 <DataGridTextColumn Header="Статус"
                                     Binding="{Binding Status.StatusName}"
+                                    Width="*"
+                                    />
+                <DataGridTextColumn Header="Заказчик"
+                                    Binding="{Binding User.UserName}"
                                     Width="*"
                                     />
             </DataGrid.Columns>
@@ -66,11 +70,11 @@
                             IsReadOnly="True"
                             AutoGenerateColumns="False"
                             FontSize="{StaticResource FontSizeLarge}"
-                            ItemsSource="{Binding Warehouses}"
+                            ItemsSource="{Binding WareHouses}"
                             SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.SelectedWarehouse}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Авто"
-                                    Binding="{Binding SaleCar.CarName}"
+                                    Binding="{Binding SaleCar.Car.CarName}"
                                     Width="*"
                                     />
                                 <DataGridTextColumn Header="Кол-во"

@@ -1,31 +1,41 @@
 ﻿@model MyCar.Web.Models.RegisterModel
 
-<div class="container text-center align-middle d-flex justify-content-center">
-    <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+<div class="row" style="justify-content:center; align-items:center; display:block; height:100%; position: fixed; top: 50%; left: 50%; width: 50%; height: auto; margin: -200px 0 0 -25%;">
+    <div class="container text-center align-middle d-flex justify-content-center">
+        <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
         <h2>Регистрация</h2>
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>
-            <div>
-                <label asp-for="UserName">Введите Email</label><br />
-                <input type="email" required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Email адрес" />
-                <span asp-validation-for="UserName" />
+            <div style="margin-top:30px;">
+                <label asp-for="Email">Введите Email</label><br />
+                <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="User" />
+                <span asp-validation-for="Email" />
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
-            <div>
+            <div style="margin-top:30px;">
                 <h5 class="h3 mb-3 font-weight-normal">Введите пароль</h5>
                 <input type="password" id="password-input" class="form-control" placeholder="Введите пароль" asp-for="Password" />
                 <span asp-validation-for="Password" />
                 <label><input type="checkbox" class="password-checkbox" />Показать пароль</label>
                 <small id="emailHelp" class="form-text text-muted">Your password is our.</small>
             </div>
-            <div>
+            <div style="margin-top:30px;">
                 <label asp-for="ConfirmPassword">Повторите пароль</label><br />
                 <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" />
                 <span asp-validation-for="ConfirmPassword" />
             </div>
-            <div>
+            <div style="margin-top:30px;">
                 <input type="submit" value="Регистрация" class="btn btn-primary btn-lg active" style="width: 200px;" role="button" aria-pressed="true" />
             </div>
         </div>
     </form>
+    </div>
 </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

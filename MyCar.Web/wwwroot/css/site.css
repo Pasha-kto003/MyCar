@@ -76,3 +76,43 @@ body {
     z-index: 2;
     position: relative;
 }
+
+
+.atuin-btn {
+    display: inline-flex;
+    text-align:center;
+    align-content:center;
+    align-items:center;
+    justify-content:center;
+    width: 250px;
+    margin: 10px;
+    text-decoration: none;
+    position: relative;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 12px 30px;
+    color: #FFF;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Roboto', Òahoma, sans-serif;
+    background: #337AB7;
+    cursor: pointer;
+    border: 2px solid #BFE2FF;
+    outline: 1px solid;
+    outline-color: #337AB7;
+    outline-offset: 0px;
+    text-shadow: none;
+    transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.atuin-btn:hover,
+.atuin-btn:active,
+.atuin-btn:focus {
+    box-shadow: inset 0 0 20px #BFE2FF;
+    outline-color: rgba(255, 255, 255, 0);
+    outline-offset: 15px;
+    color: #FFF;
+}
+
+
+

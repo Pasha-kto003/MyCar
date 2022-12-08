@@ -24,6 +24,7 @@ namespace MyCar.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -40,18 +41,39 @@ namespace MyCar.Web.Controllers
                 if (User != null)
                 {
                     Authenticate(User);
+                    if(User.UserType.TypeName == "admin")
+                    {
+                        TempData["AllertMessage"] = "You log in as admin!!!";
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+
             }
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterModel model, UserApi user)
+        {
+            CreateUser(user);
+            if(User != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(model);
+        }
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookies");
             return RedirectToAction("Login", "Account");
+        }
+
+        private async Task CreateUser(UserApi userApi)
+        {
+            var user = await Api.RegistrationAsync<UserApi>(userApi, "Auth");
         }
 
         private async Task Authenticate(UserApi user)

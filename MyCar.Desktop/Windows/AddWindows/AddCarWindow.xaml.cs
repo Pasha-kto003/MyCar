@@ -32,10 +32,5 @@ namespace MyCar.Desktop.Windows
             InitializeComponent();
             DataContext = new AddCarViewModel(car);
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
     }
 }

@@ -98,7 +98,8 @@ namespace MyCar.Server.Controllers
             return Ok(order.Id);
         }
 
-        [HttpPut]
+        // PUT api/<OrderController>/5
+        [HttpPut("{id}")]
         public async Task<ActionResult<OrderApi>> Put(int id, [FromBody] OrderApi editOrder)
         {
             var order = (Order)editOrder;

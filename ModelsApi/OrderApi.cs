@@ -12,7 +12,6 @@ namespace ModelsApi
         public int? UserId { get; set; }
         public int? ActionTypeId { get; set; }
         public int? StatusId { get; set; }
-        public string CarOptions { get; set; }
 
         public UserApi User { get; set; }
         public ActionTypeApi ActionType { get; set; }

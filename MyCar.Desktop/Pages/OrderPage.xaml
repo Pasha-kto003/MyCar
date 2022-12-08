@@ -63,35 +63,32 @@
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <Border Margin="5"
-                BorderThickness="1"
-                BorderBrush="{DynamicResource LightValorantRedBrush}">
-                        <DataGrid
+                    <DataGrid 
+                            BorderThickness="0"
                             IsReadOnly="True"
                             AutoGenerateColumns="False"
                             FontSize="{StaticResource FontSizeLarge}"
                             ItemsSource="{Binding WareHouses}"
                             SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.SelectedWarehouse}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Авто"
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Авто"
                                     Binding="{Binding SaleCar.Car.CarName}"
                                     Width="*"
                                     />
-                                <DataGridTextColumn Header="Кол-во"
+                            <DataGridTextColumn Header="Кол-во"
                                     Binding="{Binding CountChange}"
                                     Width="*"
                                     />
-                                <DataGridTextColumn Header="Цена"
+                            <DataGridTextColumn Header="Цена"
                                     Binding="{Binding Price, StringFormat={}{0:N2} ₽}"
                                      Width="*"
                                     />
-                                <DataGridTextColumn Header="Скидка"
+                            <DataGridTextColumn Header="Скидка"
                                     Binding="{Binding Discount, StringFormat={}{0:N2} ₽}"
                                     Width="*"
                                     />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Border>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
             <DataGrid.ContextMenu>

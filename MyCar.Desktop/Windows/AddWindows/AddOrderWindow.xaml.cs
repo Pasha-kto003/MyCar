@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ModelsApi;
+using MyCar.Desktop.ViewModels.AddViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,15 @@ namespace MyCar.Desktop.Windows.AddWindows
     /// </summary>
     public partial class AddOrderWindow : Window
     {
+        public AddOrderWindow(OrderApi order)
+        {
+            InitializeComponent();
+            DataContext = new AddOrderViewModel(order);
+        }
         public AddOrderWindow()
         {
             InitializeComponent();
+            DataContext = new AddOrderViewModel(null);
         }
     }
 }

@@ -2,6 +2,11 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  @TempData["AllertMessage"];
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
 <div class="container-fluid">
 
 <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -55,11 +60,6 @@
     </button>
   </div>
 
-
-  <!-- Marketing messaging and featurettes
-  ================================================== -->
-  <!-- Wrap the rest of the page in another container to center all the content. -->
-
   <div class="container marketing">
 
     <!-- Three columns of text below the carousel -->
@@ -86,7 +86,6 @@
         <p><a class="btn btn-secondary" href="#">View details »</a></p>
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
-
 
     <!-- START THE FEATURETTES -->
 

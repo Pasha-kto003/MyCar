@@ -44,6 +44,8 @@ namespace MyCar.Web.Controllers
                     if(User.UserType.TypeName == "admin")
                     {
                         TempData["AllertMessage"] = "You log in as admin!!!";
+
+                        return RedirectToAction("Index", "Home");
                     }
                     return RedirectToAction("Index", "Home");
                 }
@@ -58,11 +60,18 @@ namespace MyCar.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model, UserApi user)
         {
-            CreateUser(user);
-            if(User != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            
+                await CreateUser(user, model);
+
+                if(user != null)
+                {
+                    await Authenticate(user);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            
             return View(model);
         }
         public async Task<IActionResult> Logout()
@@ -71,9 +80,9 @@ namespace MyCar.Web.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        private async Task CreateUser(UserApi userApi)
+        private async Task CreateUser(UserApi userapi, RegisterModel model)
         {
-            var user = await Api.RegistrationAsync<UserApi>(userApi, "Auth");
+            var user = await Api.RegistrationAsync<UserApi>(userapi, model.UserName, model.Password, "Auth");
         }
 
         private async Task Authenticate(UserApi user)

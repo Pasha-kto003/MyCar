@@ -31,20 +31,21 @@ namespace MyCar.Server.Controllers.Jwt
             return clientApi;
         }
 
-        [HttpPost("register")]
+        [HttpPost("UserName, Password")]
         public async Task<ActionResult<User>> Register(string userName, string Password)
         {
-            //Passport passport = (Passport)request.Passport;
-            //await dbContext.Passports.AddAsync(passport);
-            //await dbContext.SaveChangesAsync();
-            User user = new User();
-            //CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            User user = new User(); 
+            Passport passport = new Passport();
+            passport.Id = dbContext.Passports.Count() + 1;
+            await dbContext.Passports.AddAsync(passport);
+            await dbContext.SaveChangesAsync();
             CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
-            //user.UserName = request.Username;
             user.UserName = userName;
+            user.Email = null;
             user.PasswordHash = passwordHash;
             user.SaltHash = passwordSalt;
-            //user.PassportId = passport.Id;
+            user.UserTypeId = dbContext.UserTypes.FirstOrDefault(s=> s.TypeName == "user").Id;
+            user.PassportId = passport.Id;
             await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
 

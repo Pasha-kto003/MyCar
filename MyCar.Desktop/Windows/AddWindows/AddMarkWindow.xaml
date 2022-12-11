@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="AddMark" Height="550" Width="420" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">
-        <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
+        <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
             <Grid>
                 <Grid.RowDefinitions>

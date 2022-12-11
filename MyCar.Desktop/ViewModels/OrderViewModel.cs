@@ -1,5 +1,6 @@
 using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Windows.AddWindows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,10 +65,12 @@ namespace MyCar.Desktop.ViewModels
         public int CountPages = 0;
         public string Pages { get; set; }
 
+        public OrderApi SelectedOrder { get; set; }
         public List<ActionTypeApi> ActionTypeFilter { get; set; }
         public List<ActionTypeApi> ActionTypes { get; set; }
         public List<OrderApi> Orders { get; set; }
         public List<OrderApi> FullOrders { get; set; }
+        public CustomCommand EditOrder { get; set; }
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
 
@@ -86,6 +89,13 @@ namespace MyCar.Desktop.ViewModels
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Дата", "Заказчик", "№ Заказа" });
             SelectedSearchType = SearchType.First();
+
+            EditOrder = new CustomCommand(() => {
+                if (SelectedOrder == null || SelectedOrder.ID == 0) return;
+                AddOrderWindow addOrder = new AddOrderWindow(SelectedOrder);
+                addOrder.ShowDialog();
+                Task.Run(GetOrders);
+            });
 
             BackPage = new CustomCommand(() => {
                 if (searchResult == null)
@@ -135,6 +145,7 @@ namespace MyCar.Desktop.ViewModels
             Orders = searchResult;
             SignalChanged(nameof(Orders));
         }
+
         public void InitPagination()
         {
             SearchCountRows = $"Найдено записей: {searchResult.Count} из {FullOrders.Count()}";

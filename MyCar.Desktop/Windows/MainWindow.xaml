@@ -179,18 +179,6 @@
                         </StackPanel>
                     </RadioButton.Content>
                 </RadioButton>
-                <RadioButton Height="60"
-                             FontSize="20"
-                             Foreground="{StaticResource DarkGrayBrush}"
-                             Style="{StaticResource MenuButtonTheme}"
-                             Command="{Binding OpenOrder}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/catalog_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Заказы" VerticalAlignment="Center" Margin="10 0 0 0"/>
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
                 <RadioButton  Height="60"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
@@ -236,6 +224,18 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/Images/orders_64px.png" Margin="20 0 0 0"/>
                             <TextBlock Text="Заказы"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton  Height="60"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding AddOrderPageCommand}">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Images/add_order_64px.png" Margin="20 0 0 0"/>
+                            <TextBlock Text="Оформление"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
                         </StackPanel>
                     </RadioButton.Content>

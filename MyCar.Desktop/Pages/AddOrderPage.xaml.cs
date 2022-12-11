@@ -1,5 +1,4 @@
-﻿using ModelsApi;
-using MyCar.Desktop.ViewModels;
+﻿using MyCar.Desktop.ViewModels.AddViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,25 +11,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop.Windows
+namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для AddCarWindow.xaml
+    /// Логика взаимодействия для AddOrderPage.xaml
     /// </summary>
-    public partial class AddCarWindow : Window
+    public partial class AddOrderPage : Page
     {
-        public AddCarWindow()
+        public AddOrderPage()
         {
             InitializeComponent();
-            DataContext = new AddCarViewModel(null);
-        }
-
-        public AddCarWindow(CarApi car)
-        {
-            InitializeComponent();
-            DataContext = new AddCarViewModel(car);
+            DataContext = new AddOrderViewModel();
         }
     }
 }

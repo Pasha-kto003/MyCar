@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="AddEquipmentWindow" Height="250" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">
-        <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
+        <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
             <Grid>
                 <Grid.RowDefinitions>

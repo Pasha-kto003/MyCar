@@ -80,9 +80,7 @@ namespace MyCar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] OrderApi newOrder)
         {
-            foreach (var products in newOrder.WareHouses)
-                if (products.ID == 0)
-                    return BadRequest($"{products.ID} не существует");
+            var oldCount = dbContext.Orders.Count();
             var order = (Order)newOrder;
             await dbContext.Orders.AddAsync(order);
             await dbContext.SaveChangesAsync();
@@ -98,7 +96,8 @@ namespace MyCar.Server.Controllers
             return Ok(order.Id);
         }
 
-        [HttpPut]
+        // PUT api/<OrderController>/5
+        [HttpPut("{id}")]
         public async Task<ActionResult<OrderApi>> Put(int id, [FromBody] OrderApi editOrder)
         {
             var order = (Order)editOrder;

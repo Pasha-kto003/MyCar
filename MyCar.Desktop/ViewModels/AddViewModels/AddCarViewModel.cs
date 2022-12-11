@@ -73,6 +73,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand Save { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand AddImage { get; set; }
+        public CustomCommand Cancel { get; set; }
         public CustomCommand DeleteCharacteristic { get; set; }
 
         public AddCarViewModel(CarApi car)
@@ -223,6 +224,10 @@ namespace MyCar.Desktop.ViewModels
                     await EditCar(AddCarVM);
                 }
 
+                UIManager.CloseWindow(this);
+            });
+            Cancel = new CustomCommand(() =>
+            {
                 UIManager.CloseWindow(this);
             });
         }

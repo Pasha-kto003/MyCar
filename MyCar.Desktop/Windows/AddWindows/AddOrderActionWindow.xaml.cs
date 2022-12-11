@@ -14,22 +14,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop.Windows.AddWindows
+namespace MyCar.Desktop.Windows.OrderActions
 {
     /// <summary>
-    /// Логика взаимодействия для AddOrderWindow.xaml
+    /// Логика взаимодействия для AddOrderInWindow.xaml
     /// </summary>
-    public partial class AddOrderWindow : Window
+    public partial class AddOrderInWindow : Window
     {
-        public AddOrderWindow(OrderApi order)
+        public AddOrderInWindow(WareHouseApi wareHouse,ActionTypeApi actionType)
         {
             InitializeComponent();
-            DataContext = new EditOrderViewModel(order);
-        }
-        public AddOrderWindow()
-        {
-            InitializeComponent();
-            DataContext = new EditOrderViewModel(null);
+            DataContext = new AddOrderActionViewModel(wareHouse, actionType);
         }
     }
 }

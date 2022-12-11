@@ -80,9 +80,7 @@ namespace MyCar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] OrderApi newOrder)
         {
-            foreach (var products in newOrder.WareHouses)
-                if (products.ID == 0)
-                    return BadRequest($"{products.ID} не существует");
+            var oldCount = dbContext.Orders.Count();
             var order = (Order)newOrder;
             await dbContext.Orders.AddAsync(order);
             await dbContext.SaveChangesAsync();

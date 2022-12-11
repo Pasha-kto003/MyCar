@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyCar.Desktop.Windows"
         mc:Ignorable="d"
         Title="EditUser" Height="500" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
-    <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
+    <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
         <Grid>
             <Grid.RowDefinitions>

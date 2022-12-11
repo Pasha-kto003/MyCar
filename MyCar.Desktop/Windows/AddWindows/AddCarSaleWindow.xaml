@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyCar.Desktop.Windows.AddWindows"
         mc:Ignorable="d"
         Title="AddCarSaleWindow" Height="500" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
-    <Border BorderThickness="5" BorderBrush="{StaticResource ValorantRedBrush}" 
+    <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
         <Grid>
 

@@ -89,7 +89,7 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetSales).Wait();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Артикул", "Машина" });
+            SearchType.AddRange(new string[] { "Артикул", "Авто" });
             SelectedSearchType = SearchType.First();
 
             EquipmentFilter = Equipments;

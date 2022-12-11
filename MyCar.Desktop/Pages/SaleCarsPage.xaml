@@ -44,7 +44,7 @@
                                     Binding="{Binding Articul}"
                                     Width="*"
                                     />
-                <DataGridTextColumn Header="Машина"
+                <DataGridTextColumn Header="Авто"
                                     Binding="{Binding Car.CarName}"
                                     Width="*"
                                     />

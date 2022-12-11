@@ -37,7 +37,7 @@ namespace MyCar.Server.DB
         {
             if (!optionsBuilder.IsConfigured)
             {
-               optionsBuilder.UseSqlServer("Server=DESKTOP-USEKBLE;Initial Catalog=MyCar_DB;Trusted_Connection=True;");
+               optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo;");
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ModelsApi
@@ -15,7 +16,8 @@ namespace ModelsApi
         public byte[]? PasswordHash { get; set; }
         public byte[]? SaltHash { get; set; }
 
-        public virtual PassportApi? Passport { get; set; }
         public virtual UserTypeApi? UserType { get; set; }
+
+        public virtual PassportApi? Passport { get; set; }
     }
 }

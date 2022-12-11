@@ -60,17 +60,18 @@ namespace MyCar.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model, UserApi user)
         {
-            
+            if (ModelState.IsValid)
+            {
                 await CreateUser(user, model);
-
-                if(user != null)
+                if (user != null)
                 {
                     await Authenticate(user);
 
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
+            else
+                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             
             return View(model);
         }
@@ -82,6 +83,7 @@ namespace MyCar.Web.Controllers
 
         private async Task CreateUser(UserApi userapi, RegisterModel model)
         {
+            userapi.Passport = new PassportApi();
             var user = await Api.RegistrationAsync<UserApi>(userapi, model.UserName, model.Password, "Auth");
         }
 

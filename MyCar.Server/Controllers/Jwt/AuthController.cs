@@ -36,12 +36,19 @@ namespace MyCar.Server.Controllers.Jwt
         {
             User user = new User(); 
             Passport passport = new Passport();
+            passport.FirstName = "";
+            passport.LastName = "";
+            passport.Patronymic = "";
+            passport.DateStart =DateTime.Now;
+            passport.DateEnd = DateTime.Now;
+            passport.Seria = "";
+            passport.Number = "";
             passport.Id = dbContext.Passports.Count() + 1;
             await dbContext.Passports.AddAsync(passport);
             await dbContext.SaveChangesAsync();
             CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.UserName = userName;
-            user.Email = null;
+            user.Email = "mail@gmail";
             user.PasswordHash = passwordHash;
             user.SaltHash = passwordSalt;
             user.UserTypeId = dbContext.UserTypes.FirstOrDefault(s=> s.TypeName == "user").Id;

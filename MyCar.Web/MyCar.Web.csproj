@@ -12,6 +12,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ModelsApi\ModelsApi.csproj" />
+    <ProjectReference Include="..\MyCar.Server\MyCar.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

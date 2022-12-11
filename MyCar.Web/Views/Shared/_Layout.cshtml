@@ -19,7 +19,9 @@
 </svg>
         </a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          @if (User.Identity.IsAuthenticated)
+          {
           <li class="nav-item">
           <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
           </li>
@@ -29,8 +31,37 @@
           <li class="nav-item">
            <a class="nav-link text-white" asp-controller="Home" asp-action="CarView">Catalog</a>
           </li>
-        </ul>
+          }
+          else
+          {
+          <li class="nav-item">
+          <a class="nav-link text-white disabled" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+          </li>       
+          <li class="nav-item">
+          <a class="nav-link text-white disabled" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+          </li>
+          <li class="nav-item">
+           <a class="nav-link text-white disabled" asp-controller="Home" asp-action="CarView">Catalog</a>
+          </li>
+          }
+          </ul>
 
+          <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown button
+                            </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            @if (User.Identity.IsAuthenticated)
+                            {                               
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout (@User.Identity.Name)</a>                                
+                            }
+                            else
+                            {                               
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a>                                
+                            }
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Personal_Area">Your account</a>
+                    </div>
+          </div>
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
           <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
         </form>
@@ -44,6 +75,7 @@
   </header>
     <div class="container">
         <main role="main" class="pb-3">
+            
             @RenderBody()
         </main>
     </div>

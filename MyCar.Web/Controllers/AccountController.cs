@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DTO;
 using MyCar.Web.Core;
 using MyCar.Web.Models;
 using System.Security.Claims;
@@ -11,7 +13,9 @@ namespace MyCar.Web.Controllers
 {
     public class AccountController : Controller
     {
-        public UserApi User { get; set; }
+        public List<UserApi> Users { get; set; } = new List<UserApi>();
+        public int UserId = -1;
+        public UserApi Userex { get; set; }
         // GET: AccountController
         public ActionResult Index()
         {
@@ -36,12 +40,12 @@ namespace MyCar.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                User = await Api.Enter<UserApi>(model.UserName, model.Password, "Auth");
+                Userex = await Api.Enter<UserApi>(model.UserName, model.Password, "Auth");
 
                 if (User != null)
                 {
-                    Authenticate(User);
-                    if(User.UserType.TypeName == "admin")
+                    Authenticate(Userex);
+                    if(Userex.UserType.TypeName == "Администратор")
                     {
                         TempData["AllertMessage"] = "You log in as admin!!!";
 
@@ -58,17 +62,24 @@ namespace MyCar.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterModel model, UserApi user)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
-            if (ModelState.IsValid)
+            await CreateUser(model);
+            if (UserId != -1)
             {
-                await CreateUser(user, model);
-                if (user != null)
+                await GetUser(UserId);
+
+                await Authenticate(Userex);
+
+                if (Userex.UserType.TypeName == "admin")
                 {
-                    await Authenticate(user);
+                    TempData["AllertMessage"] = "You log in as admin!!!";
 
                     return RedirectToAction("Index", "Home");
                 }
+
+                return RedirectToAction("Index", "Home");
+
             }
             else
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
@@ -81,10 +92,15 @@ namespace MyCar.Web.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        private async Task CreateUser(UserApi userapi, RegisterModel model)
+        private async Task CreateUser(RegisterModel model)
         {
-            userapi.Passport = new PassportApi();
-            var user = await Api.RegistrationAsync<UserApi>(userapi, model.UserName, model.Password, "Auth");
+            UserDto userDto = new UserDto { Password = model.Password, Username = model.UserName };
+            UserId = await Api.RegistrationAsync<UserDto>(userDto, "Auth");
+        }
+
+        public async Task GetUser(int id)
+        {
+            Userex = await Api.GetAsync<UserApi>(id, "User");
         }
 
         private async Task Authenticate(UserApi user)
@@ -100,6 +116,24 @@ namespace MyCar.Web.Controllers
                 ClaimsIdentity.DefaultRoleClaimType);
             
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+
+
+        [Authorize(Roles = "Администратор, Клиент")]
+        public async Task<IActionResult> Personal_Area()
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var name = User.Identity.Name;
+            if (name != null)
+            {
+                var user = Users.FirstOrDefault(s => s.UserName == name);
+                var role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+                ViewData["content"] = $"Теперь ваша роль {role}";
+                return View(user);
+            }
+
+            return NotFound();
         }
     }
 }

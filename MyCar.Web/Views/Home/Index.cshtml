@@ -2,14 +2,23 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-  @TempData["AllertMessage"];
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+@if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    @TempData["AllertMessage"];
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+}
+else
+{
+    <div></div>
+}
 
 <div class="container-fluid">
-
-<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="row">
+        <div class="col-12">
+            <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
       <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class="active" aria-current="true"></button>
@@ -60,7 +69,8 @@
     </button>
   </div>
 
-  <div class="container marketing">
+        </div>
+          <div class="container marketing">
 
     <!-- Three columns of text below the carousel -->
     <div class="row">
@@ -97,8 +107,7 @@
         <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
       </div>
       <div class="col-md-5">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+        <img src="https://png.pngitem.com/pimgs/s/504-5047383_forza-wiki-mercedes-benz-300sl-png-transparent-png.png" width="500" height="300"/>
       </div>
     </div>
 
@@ -110,8 +119,7 @@
         <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+        <img src="https://www.mercedes-benz.com/en/art-and-culture/museum/sauber-mercedes-c11-group-c/_jcr_content/image/MQ6-12-image-20190114135224/classic_virtueller-rundgang_exponate_sauber-mercedes-gruppe-c-rennsportwagen-c11_2560x1440-2560x1440.jpeg" width="500" height="300"/>
       </div>
     </div>
 
@@ -130,14 +138,6 @@
 
     <hr class="featurette-divider">
 
-    <!-- /END THE FEATURETTES -->
-
-  </div><!-- /.container -->
-
-
-  <!-- FOOTER -->
-  <footer class="container">
-    <p class="float-end"><a href="#">Back to top</a></p>
-    <p>© 2017–2022 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-  </footer>
+  </div>
+    </div><!-- /.container -->
 </div>

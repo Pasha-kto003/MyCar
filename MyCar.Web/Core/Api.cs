@@ -62,12 +62,13 @@ namespace MyCar.Web.Core
                 return result;
             }
 
-            public static async Task<UserApi> RegistrationAsync<UserApi>(UserApi value, string login, string password, string controller) // http://localhost:5243/api/Auth/UserName, Password?userName=qq&Password=qq
+            public static async Task<int> RegistrationAsync<T>(T value, string controller)
             {
-                var str = JsonSerializer.Serialize(value, typeof(UserApi));
-                var answer = await client.PostAsync(server + controller + $"/UserName, Password?userName={login}&Password={password}", new StringContent(str, Encoding.UTF8, "application/json"));
+                var str = JsonSerializer.Serialize(value, typeof(T));
+                var answer = await client.PostAsync(server + controller, new StringContent(str, Encoding.UTF8, "application/json"));
                 string answerText = await answer.Content.ReadAsStringAsync();
-                var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
+                if (!int.TryParse(answerText, out int result))
+                    return -1;
                 return result;
             }
 

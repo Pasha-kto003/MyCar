@@ -37,7 +37,7 @@ namespace MyCar.Server.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserApi>> Get(long? id)
+        public async Task<ActionResult<UserApi>> Get(int id)
         {
             var client = await dbContext.Users.FindAsync(id);
             return GetUser(client);

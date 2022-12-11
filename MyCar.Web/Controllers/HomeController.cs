@@ -4,6 +4,7 @@ using ModelsApi;
 using MyCar.Web.Core;
 using MyCar.Web.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace MyCar.Web.Controllers
 {
@@ -16,12 +17,11 @@ namespace MyCar.Web.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
             return View();
         }
-        
+
         public async Task<IActionResult> CarView()
         {
             var cars = new List<CarApi>();

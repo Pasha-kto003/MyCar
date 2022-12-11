@@ -8,24 +8,24 @@
         <div>
             <div style="margin-top:30px;">
                 <label asp-for="UserName">Введите никнейм</label><br />
-                <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="User" />
+                <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="User" width="300px;"/>
                 <span asp-validation-for="UserName" />
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div style="margin-top:30px;">
                 <h5 class="h3 mb-3 font-weight-normal">Введите пароль</h5>
-                <input type="password" id="password-input" class="form-control" placeholder="Введите пароль" asp-for="Password" />
+                <input type="password" id="password-input" class="form-control" placeholder="Введите пароль" asp-for="Password" width="300px;/>
                 <span asp-validation-for="Password" />
                 <label><input type="checkbox" class="password-checkbox" />Показать пароль</label>
                 <small id="emailHelp" class="form-text text-muted">Your password is our.</small>
             </div>
             <div style="margin-top:30px;">
                 <label asp-for="ConfirmPassword">Повторите пароль</label><br />
-                <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" />
+                <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" width="300px;/>
                 <span asp-validation-for="ConfirmPassword" />
             </div>
             <div style="margin-top:30px;">
-                <input type="submit" value="Регистрация" class="btn btn-primary btn-lg active" style="width: 200px;" role="button" aria-pressed="true" />
+                <input type="submit" value="Регистрация" class="btn btn-primary btn-lg active" style="width: 300px;" role="button" aria-pressed="true" />
             </div>
         </div>
     </form>

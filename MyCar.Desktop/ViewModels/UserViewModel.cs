@@ -82,6 +82,10 @@ namespace MyCar.Desktop.ViewModels
             SearchType.AddRange(new string[] { "Логин", "Фамилия", "Email" });
             SelectedSearchType = SearchType.First();
 
+            UserTypeFilter = UserTypes;
+            UserTypeFilter.Add(new UserTypeApi { TypeName = "Все" });
+            SelectedUserTypeFilter = UserTypeFilter.Last();
+
             ViewCountRows = new List<string>();
             ViewCountRows.AddRange(new string[] { "5", "Все" });
             selectedViewCountRows = ViewCountRows.Last();
@@ -157,14 +161,7 @@ namespace MyCar.Desktop.ViewModels
             Users = await Api.GetListAsync<List<UserApi>>("User");
             UserTypes = await Api.GetListAsync<List<UserTypeApi>>("UserType");
             Passports = await Api.GetListAsync<List<PassportApi>>("Passport"); 
-            UserTypeFilter = UserTypes;
-            UserTypeFilter.Add(new UserTypeApi { TypeName = "Все" });
-            SelectedUserTypeFilter = UserTypeFilter.Last();
-
             FullUsers = Users;
-            searchResult = Users;
-            InitPagination();
-            Pagination();
         }
 
         public void InitPagination()

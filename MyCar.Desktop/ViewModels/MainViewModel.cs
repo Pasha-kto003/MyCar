@@ -71,8 +71,9 @@ namespace MyCar.Desktop.ViewModels
 
         #endregion
 
+        public Visibility UserPageVisibility { get; set; } = Visibility.Collapsed;
+        public string UserRole { get; set; }
         public string UserString { get; set; }
-
         public Page CurrentPage { get; set; }
 
         public CustomCommand MinimizeCommand { get; set; }
@@ -86,19 +87,19 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand CarSalesPageCommand { get; set; }
         public CustomCommand OrdersPageCommand { get; set; }
         public CustomCommand AddOrderPageCommand { get; set; }
-
-        public MainViewModel(Window window, UserApi user)
+        public CustomCommand SettingsPageCommand { get; set; }
+        public MainViewModel(Window window)
         {
             mWindow = window;
 
-            GetUserString(user);
+            GetUserInfo(Configuration.CurrentUser);
 
             MinimizeCommand = new CustomCommand(() => mWindow.WindowState = WindowState.Minimized);
             MaximizeCommand = new CustomCommand(() => mWindow.WindowState ^= WindowState.Maximized);
             CloseCommand = new CustomCommand(() => mWindow.Close());
             MenuCommand = new CustomCommand(() => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));
 
-            CurrentPage = new UserPage();
+            CurrentPage = new CarPage();
 
             CharcteristicPageCommand = new CustomCommand(() => CurrentPage = new CharacteristicPage());
             CarSalesPageCommand = new CustomCommand(() => CurrentPage = new SaleCarsPage());
@@ -107,6 +108,7 @@ namespace MyCar.Desktop.ViewModels
             MarkPageCommand = new CustomCommand(() => CurrentPage = new MarkPage());
             OrdersPageCommand = new CustomCommand(() => CurrentPage = new OrderPage());
             AddOrderPageCommand = new CustomCommand(() => CurrentPage = new AddOrderPage());
+            SettingsPageCommand = new CustomCommand(() => CurrentPage = new SettingsPage());
 
             var resizer = new WindowResizer(mWindow);
             resizer.WindowDockChanged += (dock) =>
@@ -119,8 +121,13 @@ namespace MyCar.Desktop.ViewModels
             };
         }
 
-        private void GetUserString(UserApi user)
+        private void GetUserInfo(UserApi user)
         {
+            if (user.UserType.TypeName == "Администратор")
+            {
+                UserPageVisibility = Visibility.Visible;
+            }
+            UserRole = user.UserType.TypeName;
             UserString = user.Passport.FirstName + " " + user.Passport.LastName;
             SignalChanged(nameof(UserString));
         }

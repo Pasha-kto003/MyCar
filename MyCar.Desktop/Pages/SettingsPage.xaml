@@ -1,0 +1,28 @@
+﻿<Page x:Class="MyCar.Desktop.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MyCar.Desktop.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SettingsPage">
+
+    <Grid Background="WhiteSmoke">
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Opacity="0.8"> 
+             <Hyperlink Command="{Binding Exit}" Style="{StaticResource HyperlinkDefault}" FontSize="14" Foreground="Black">
+                 <TextBlock Text="Выйти из акаунта" Opacity="0.5">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                 </TextBlock>
+             </Hyperlink>
+        </TextBlock>
+    </Grid>
+</Page>

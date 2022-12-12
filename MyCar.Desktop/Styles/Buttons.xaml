@@ -7,7 +7,16 @@
         <ResourceDictionary Source="Fonts.xaml"/>
         <ResourceDictionary Source="Texts.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
+    
+    <Style x:Key="HyperlinkDefault" TargetType="{x:Type Hyperlink}">
+        <Setter Property="TextDecorations" Value="Underline"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <Style TargetType="{x:Type CheckBox}" x:Key="styleCustomCheckBox" >
         <Setter Property="Template">
             <Setter.Value>

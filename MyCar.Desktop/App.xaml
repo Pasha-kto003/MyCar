@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Styles/DataGrid.xaml" />
                 <ResourceDictionary Source="Styles/Icons.xaml" />
                 <ResourceDictionary Source="Styles/Scroll.xaml" />
+                <ResourceDictionary Source="Styles/Datepicker.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
         <Style TargetType="ListView" x:Key="AlternativeListView">

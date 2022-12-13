@@ -1,0 +1,53 @@
+﻿@model ModelsApi.UserApi
+@{
+    ViewData["Title"] = "UserDetails";
+}
+
+<h1>UserDetails</h1>
+
+<div>
+    <h4>UserApi</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserTypeId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserType.TypeName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Passport.FirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model=> model.Passport.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Passport.LastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model=> model.Passport.LastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Passport.Patronimyc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model=> model.Passport.Patronimyc)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="EditUserView" asp-controller="Account" asp-route-id="@Model.ID">Подробнее</a>
+    <a asp-action="Index">Back to List</a>
+</div>

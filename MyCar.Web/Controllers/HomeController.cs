@@ -22,6 +22,13 @@ namespace MyCar.Web.Controllers
             return View();
         }
 
+        public async Task<IActionResult> UserView()
+        {
+            var users = new List<UserApi>();
+            users = await Api.GetListAsync<List<UserApi>>("User");
+            return View("UserView", users);
+        }
+
         public async Task<IActionResult> CarView()
         {
             var cars = new List<CarApi>();

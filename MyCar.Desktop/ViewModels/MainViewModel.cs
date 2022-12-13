@@ -103,7 +103,10 @@ namespace MyCar.Desktop.ViewModels
 
             CharcteristicPageCommand = new CustomCommand(() => CurrentPage = new CharacteristicPage());
             CarSalesPageCommand = new CustomCommand(() => CurrentPage = new SaleCarsPage());
-            UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage());
+            if(UserRole != null || UserRole != "")
+            {
+                UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage(UserRole));
+            }
             OpenCar = new CustomCommand(() => CurrentPage = new CarPage());
             MarkPageCommand = new CustomCommand(() => CurrentPage = new MarkPage());
             OrdersPageCommand = new CustomCommand(() => CurrentPage = new OrderPage());
@@ -124,6 +127,10 @@ namespace MyCar.Desktop.ViewModels
         private void GetUserInfo(UserApi user)
         {
             if (user.UserType.TypeName == "Администратор")
+            {
+                UserPageVisibility = Visibility.Visible;
+            }
+            else if(user.UserType.TypeName == "Сотрудник")
             {
                 UserPageVisibility = Visibility.Visible;
             }

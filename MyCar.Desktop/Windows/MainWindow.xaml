@@ -124,21 +124,25 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="120"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Background="white" >
-            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                <Rectangle  Width="70" Height="70" RadiusX="15" RadiusY="15" Margin="10" >
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource="/Images/user_64px.png" Stretch="UniformToFill" >
-                        </ImageBrush>
-                    </Rectangle.Fill>
-                </Rectangle>
-                <TextBlock Text="{Binding UserString}" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
-                       FontSize="18"  Foreground="{StaticResource DarkGrayBrush}" Width="150" />
-            </StackPanel>
-            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Fill="Gray" Height="0.5" Width="220"/>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal" >
+                    <Rectangle  Width="70" Height="70" RadiusX="15" RadiusY="15" Margin="10 0 10 0" >
+                        <Rectangle.Fill>
+                            <ImageBrush ImageSource="/Images/user_64px.png" Stretch="UniformToFill" >
+                            </ImageBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding UserString}" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
+                       FontSize="18"  Foreground="{StaticResource DarkGrayBrush}" Width="150" Margin="0 25 0 0"/>
+                        <TextBlock Text="{Binding UserRole}" VerticalAlignment="Center" FontFamily="{StaticResource CenturyGothicBold}"
+                       FontSize="14" Foreground="{StaticResource DarkGrayBrush}" Width="150" Opacity="0.7"/>
+                    </StackPanel>
+                </StackPanel>
+                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Fill="Gray" Height="0.5" Width="220"/>
         </Grid>
         <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Width="1" BorderThickness="0.4 0 0 0" >
             <Border.BorderBrush>
@@ -154,93 +158,110 @@
         </Border>
 
         <Grid Grid.Row="1">
-            <StackPanel Margin="0,20,0,0">
-                <RadioButton  Height="60"
-                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" IsChecked="True"
-                             Style="{StaticResource MenuButtonTheme}"
-                             Command="{Binding UserPageCommand}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/user_folder_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Пользователи"  VerticalAlignment="Center"
-                                       Margin="10 0 0 0" FontSize="{StaticResource FontSizeXLarge}"/>
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
-                <RadioButton  Height="60"
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <DockPanel Margin="0 20 0 0" >
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
+                                  IsChecked="True"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding OpenCar}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/sedan_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Каталог" FontSize="20"  VerticalAlignment="Center"
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/sedan_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Каталог" FontSize="20"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
-                <RadioButton  Height="60"
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding MarkPageCommand}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/mark_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Марки"  VerticalAlignment="Center"
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/mark_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Марки"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
 
-                <RadioButton  Height="60"
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding CarSalesPageCommand}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/catalog_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Склад"  VerticalAlignment="Center"
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/catalog_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Склад"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
-                <RadioButton  Height="60"
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding CharcteristicPageCommand}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/car_service_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Параметры авто"  VerticalAlignment="Center"
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/car_service_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Параметры авто"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
-                <RadioButton  Height="60"
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding OrdersPageCommand}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/orders_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Заказы"  VerticalAlignment="Center"
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/orders_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Заказы"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
-                <RadioButton  Height="60"
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding AddOrderPageCommand}">
-                    <RadioButton.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/add_order_64px.png" Margin="20 0 0 0"/>
-                            <TextBlock Text="Оформление"  VerticalAlignment="Center"
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/add_order_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Оформление"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
-                        </StackPanel>
-                    </RadioButton.Content>
-                </RadioButton>
-            </StackPanel>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top" Visibility="{Binding UserPageVisibility}"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding UserPageCommand}">
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/user_folder_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Пользователи"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" FontSize="{StaticResource FontSizeXLarge}"/>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton 
+                    VerticalAlignment="Bottom" DockPanel.Dock="Bottom"
+                    Height="60" Margin="0 0 0 10"
+                    FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
+                    Style="{StaticResource MenuButtonTheme}"
+                    Command="{Binding SettingsPageCommand}">
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/settings_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Настройки"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" />
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                </DockPanel>
+            </ScrollViewer>
         </Grid>
 
         <Border Grid.Column="2"  Grid.Row="0" Grid.RowSpan="2" CornerRadius="0 0 5 0">

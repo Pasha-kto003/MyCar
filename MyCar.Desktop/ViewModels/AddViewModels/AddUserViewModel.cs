@@ -71,7 +71,7 @@ namespace MyCar.Desktop.ViewModels
                     return;
                 }
                 EditUser.UserType = SelectedUserType;
-               
+                EditUser.UserTypeId = SelectedUserType.ID;
                 if (EditUser.ID == 0)
                 {
                     await CreateUser(EditUser);

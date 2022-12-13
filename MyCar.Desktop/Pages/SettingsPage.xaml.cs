@@ -1,8 +1,6 @@
-﻿using ModelsApi;
-using MyCar.Desktop.ViewModels;
+﻿using MyCar.Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
-using MyCar.Desktop.Core;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,18 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop
+namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для SettingsPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SettingsPage : Page
     {
-        public MainWindow()
+        public SettingsPage()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(this);
-            Configuration.CloseMainWindow = new Action(this.Close);
+            DataContext = new SettingsViewModel();
         }
     }
 }

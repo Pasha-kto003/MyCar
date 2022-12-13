@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Server.DTO;
 using MyCar.Web.Core;
+using MyCar.Web.Core.Hash;
 using MyCar.Web.Models;
 using System.Security.Claims;
 
@@ -16,6 +17,7 @@ namespace MyCar.Web.Controllers
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public int UserId = -1;
         public UserApi Userex { get; set; }
+        public User UserModel { get; set; }
         // GET: AccountController
         public ActionResult Index()
         {
@@ -34,6 +36,14 @@ namespace MyCar.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UserDetails()
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+            return View(user);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
@@ -42,7 +52,7 @@ namespace MyCar.Web.Controllers
             {
                 Userex = await Api.Enter<UserApi>(model.UserName, model.Password, "Auth");
 
-                if (User != null)
+                if (Userex != null)
                 {
                     Authenticate(Userex);
                     if(Userex.UserType.TypeName == "Администратор")
@@ -86,6 +96,25 @@ namespace MyCar.Web.Controllers
             
             return View(model);
         }
+
+        public async Task<IActionResult> EditUserView(int id)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            if (id != 0)
+            {
+                var user = Users.FirstOrDefault(s => s.ID == id);
+                return View(user);
+            }
+            return NotFound();
+        }
+
+        private async Task ChangeUser(UserApi userApi, PassportApi passportapi)
+        {
+            var user = await Api.PutAsync<UserApi>(userApi, "User");
+            var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
+        }
+
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookies");

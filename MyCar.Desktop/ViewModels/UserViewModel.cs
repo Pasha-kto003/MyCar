@@ -61,6 +61,8 @@ namespace MyCar.Desktop.ViewModels
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public UserApi SelectedUser { get; set; }
 
+        public Visibility MenuVisibility { get; set; } = Visibility.Collapsed;
+
         int paginationPageIndex = 0;
         private string searchCountRows;
         private string selectedViewCountRows;
@@ -74,8 +76,10 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
 
-        public UserViewModel()
+        public UserViewModel(string userRole)
         {
+            GetVisibility(userRole);
+
             Task.Run(GetUserList).Wait();
 
             SearchType = new List<string>();
@@ -154,6 +158,18 @@ namespace MyCar.Desktop.ViewModels
         {
             Users = searchResult;
             SignalChanged(nameof(Users));
+        }
+
+        private void GetVisibility(string userrole)
+        {
+            if (userrole == "Сотрудник")
+            {
+                MenuVisibility = Visibility.Hidden;
+            }
+            else
+            {
+                MenuVisibility = Visibility.Visible;
+            }
         }
 
         private async Task GetUserList()

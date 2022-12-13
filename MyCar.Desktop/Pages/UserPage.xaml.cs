@@ -21,10 +21,10 @@ namespace MyCar.Desktop.Pages
     /// </summary>
     public partial class UserPage : Page
     {
-        public UserPage()
+        public UserPage(string userRole)
         {
             InitializeComponent();
-            DataContext = new UserViewModel(); 
+            DataContext = new UserViewModel(userRole); 
         }
     }
 }

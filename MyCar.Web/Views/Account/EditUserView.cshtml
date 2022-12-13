@@ -1,0 +1,63 @@
+﻿@model ModelsApi.UserApi
+
+@{
+    ViewData["Title"] = "Редактирование пользователя";
+}
+
+<h1>Редактирование</h1>
+
+<h4>@User.Identity.Name</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditUserView">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID" class="control-label"></label>
+                <input asp-for="ID" class="form-control" />
+                <span asp-validation-for="ID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserTypeId" class="control-label"></label>
+                <input asp-for="UserTypeId" class="form-control" />
+                <span asp-validation-for="UserTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passport.FirstName" class="control-label"></label>
+                <input asp-for="Passport.LastName" class="form-control" />
+                <span asp-validation-for="PassportId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passport.LastName" class="control-label"></label>
+                <input asp-for="Passport.LastName" class="form-control" />
+                <span asp-validation-for="PassportId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passport.Patronimyc" class="control-label"></label>
+                <input asp-for="Passport.Patronimyc" class="form-control" />
+                <span asp-validation-for="PassportId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

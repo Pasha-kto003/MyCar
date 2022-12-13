@@ -234,7 +234,7 @@
                             </StackPanel>
                         </RadioButton.Content>
                     </RadioButton>
-                    <RadioButton  Height="60" DockPanel.Dock="Top" Visibility="{Binding UserPageVisibility}"
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}"
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding UserPageCommand}">

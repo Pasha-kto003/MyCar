@@ -19,7 +19,8 @@ namespace MyCar.Desktop.ViewModels
             Exit = new CustomCommand(() =>
             {
                 AuthWindow authWindow = new AuthWindow();
-                authWindow.Show();
+                authWindow.Show(); 
+                Configuration.CurrentUser = null;
                 Configuration.CloseMainWindow();
             });
         }

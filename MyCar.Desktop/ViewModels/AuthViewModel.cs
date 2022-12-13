@@ -71,9 +71,11 @@ namespace MyCar.Desktop.ViewModels
                 mWindow.Close();
             }
             else
+            {
                 UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Неправильный логин или пароль!" });
                 PasswordBox.Password = "";
                 UserName = "";
+            }    
         }
     }
 }

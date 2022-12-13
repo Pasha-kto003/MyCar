@@ -71,7 +71,6 @@ namespace MyCar.Desktop.ViewModels
 
         #endregion
 
-        public Visibility UserPageVisibility { get; set; } = Visibility.Collapsed;
         public string UserRole { get; set; }
         public string UserString { get; set; }
         public Page CurrentPage { get; set; }
@@ -103,10 +102,7 @@ namespace MyCar.Desktop.ViewModels
 
             CharcteristicPageCommand = new CustomCommand(() => CurrentPage = new CharacteristicPage());
             CarSalesPageCommand = new CustomCommand(() => CurrentPage = new SaleCarsPage());
-            if(UserRole != null || UserRole != "")
-            {
-                UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage(UserRole));
-            }
+            UserPageCommand = new CustomCommand(() => CurrentPage = new UserPage());
             OpenCar = new CustomCommand(() => CurrentPage = new CarPage());
             MarkPageCommand = new CustomCommand(() => CurrentPage = new MarkPage());
             OrdersPageCommand = new CustomCommand(() => CurrentPage = new OrderPage());
@@ -126,14 +122,6 @@ namespace MyCar.Desktop.ViewModels
 
         private void GetUserInfo(UserApi user)
         {
-            if (user.UserType.TypeName == "Администратор")
-            {
-                UserPageVisibility = Visibility.Visible;
-            }
-            else if(user.UserType.TypeName == "Сотрудник")
-            {
-                UserPageVisibility = Visibility.Visible;
-            }
             UserRole = user.UserType.TypeName;
             UserString = user.Passport.FirstName + " " + user.Passport.LastName;
             SignalChanged(nameof(UserString));

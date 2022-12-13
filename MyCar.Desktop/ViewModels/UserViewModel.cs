@@ -76,9 +76,9 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand BackPage { get; set; }
         public CustomCommand ForwardPage { get; set; }
 
-        public UserViewModel(string userRole)
+        public UserViewModel()
         {
-            GetVisibility(userRole);
+            GetVisibility();
 
             Task.Run(GetUserList).Wait();
 
@@ -160,9 +160,9 @@ namespace MyCar.Desktop.ViewModels
             SignalChanged(nameof(Users));
         }
 
-        private void GetVisibility(string userrole)
+        private void GetVisibility()
         {
-            if (userrole == "Сотрудник")
+            if (Configuration.CurrentUser.UserType.TypeName == "Сотрудник")
             {
                 MenuVisibility = Visibility.Hidden;
             }

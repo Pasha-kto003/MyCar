@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+@*
 @if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -13,64 +13,122 @@
 else
 {
     <div></div>
-}
+}*@
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class="active" aria-current="true"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+    <div class="row" >
+            <div class="col-12">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        
+                        <div class="carousel-item active">
+                            <img src="images/13.jpg" class="d-block w-100" alt="Надпись заглушка" >
+                        </div>
+                        
+                        <div class="carousel-item">
+                            <img src="images/ex_1.jpg" class="d-block w-100" alt="Надпись заглушка">
+                        </div>
+                        
+                        <div class="carousel-item">
+                            <img src="images/19.jpg" class="d-block w-100" alt="Надпись заглушка">
+                        </div>
+                        
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Назад</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Вперед</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+<div class="slider" id="slider"> 
+    <div class="slider-content" id="slider-content">
+        <div class="sl-img">
+            <div class="sl-img-item sl-img-item-active" data-id="1"><img src="https://toppng.com/uploads/preview/mercedes-benz-cls350-amg-mercedes-machine-white-buildings-city-11569995130t8e9jqggio.jpg"/></div>
+            <div class="sl-img-item" data-id="2"><img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Sauber-Mercedes_C9%2C_Bj._1988_%282009-08-07_Sp%29.jpg"/></div>
+            <div class="sl-img-item" data-id="3"><img src="https://motor.ru/imgs/2021/03/25/07/4577323/db922858561d4e3cb98cf37db34efbff8a42269a.jpg"/></div>
+            <div class="sl-img-item" data-id="4"><img src="photo-4.jpg"/></div>
+            <div class="sl-img-item" data-id="5"><img src="photo-5.jpg"/></div>
+            <div class="sl-img-item" data-id="6"><img src="photo-6.jpg"/></div>
+        </div>
+        <div class="sl-text">
+            <div class="sl-text-item sl-text-item-active" data-id="1">
+                <div class="sl-text-item-head">
+                    <h3>Mersedez-350 sl</h3>
+                </div>
+                <div class="sl-text-item-info">
+                    <p>Национальный Парк Йеллоустоун</p>
+                </div>
+            </div>
+            <div class="sl-text-item" data-id="2">
+                <div class="sl-text-item-head">
+                    <h3>Mersedez Group-C</h3>
+                </div>
+                <div class="sl-text-item-info">
+                    <p>Мальдивские Острова</p>
+                </div>
+            </div>
+            <div class="sl-text-item" data-id="3">
+                <div class="sl-text-item-head">
+                    <h3>Toyota Camry</h3>
+                </div>
+                <div class="sl-text-item-info">
+                    <p>Шотландия</p>
+                </div>
+            </div>
+            <div class="sl-text-item" data-id="4">
+                <div class="sl-text-item-head">
+                    <h3>Озеро Ирен</h3>
+                </div>
+                <div class="sl-text-item-info">
+                    <p>Национальный парк Роки-Маунтин</p>
+                </div>
+            </div>
+            <div class="sl-text-item" data-id="5">
+                <div class="sl-text-item-head">
+                    <h3>Енот</h3>
+                </div>
+                <div class="sl-text-item-info"></div>
+            </div>
+            <div class="sl-text-item" data-id="6">
+                <div class="sl-text-item-head"></div>
+                <div class="sl-text-item-info">
+                    <p>Синица</p>    
+                </div>
+            </div>            
+        </div>
     </div>
-    <div class="carousel-inner">
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
-
-        <div class="container h-500">
-          <div class="carousel-caption text-start">
-            <h1>Example headline.</h1>
-            <p>Some representative placeholder content for the first slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
-          </div>
+    <div class="slider__nav">
+        <div class="sl-nav-arrows">
+            <div class="sl-nav-arrow sl-nav-arrow-left" id="left">Лево</div>
+            <div class="sl-nav-arrow sl-nav-arrow-right" id="right">Право</div>
         </div>
-      </div>
-      <div class="carousel-item active">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
-
-        <div class="container">
-          <div class="carousel-caption">
-            <h1>Another example headline.</h1>
-            <p>Some representative placeholder content for the second slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
-          </div>
+        <div class="sl-nav-dots" id="sl-nav-dots">
+            <div class="sl-nav-dot sl-nav-dot-active" data-id="1"></div>
+            <div class="sl-nav-dot" data-id="2"></div>
+            <div class="sl-nav-dot" data-id="3"></div>
+            <div class="sl-nav-dot" data-id="4"></div>
+            <div class="sl-nav-dot" data-id="5"></div>
+            <div class="sl-nav-dot" data-id="6"></div>
         </div>
-      </div>
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
-
-        <div class="container">
-          <div class="carousel-caption text-end">
-            <h1>One more for good measure.</h1>
-            <p>Some representative placeholder content for the third slide of this carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
-          </div>
-        </div>
-      </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
+</div>
+    </div>
 
-        </div>
-          <div class="container marketing">
+  <!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- Wrap the rest of the page in another container to center all the content. -->
+
+  <div class="container marketing">
 
     <!-- Three columns of text below the carousel -->
     <div class="row">
@@ -97,6 +155,7 @@ else
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
+
     <!-- START THE FEATURETTES -->
 
     <hr class="featurette-divider">
@@ -107,7 +166,8 @@ else
         <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
       </div>
       <div class="col-md-5">
-        <img src="https://png.pngitem.com/pimgs/s/504-5047383_forza-wiki-mercedes-benz-300sl-png-transparent-png.png" width="500" height="300"/>
+        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+
       </div>
     </div>
 
@@ -119,7 +179,8 @@ else
         <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <img src="https://www.mercedes-benz.com/en/art-and-culture/museum/sauber-mercedes-c11-group-c/_jcr_content/image/MQ6-12-image-20190114135224/classic_virtueller-rundgang_exponate_sauber-mercedes-gruppe-c-rennsportwagen-c11_2560x1440-2560x1440.jpeg" width="500" height="300"/>
+        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+
       </div>
     </div>
 
@@ -137,7 +198,23 @@ else
     </div>
 
     <hr class="featurette-divider">
-
-  </div>
-    </div><!-- /.container -->
+  <footer class="container">
+    <p class="float-end"><a href="#">Back to top</a></p>
+    <p>© 2017–2022 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+  </footer>
 </div>
+
+@if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
+{
+    <div class="callout" data-bs-dismiss="alert" role="alert">
+    <div class="callout-header">Window Role</div>
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <div class="callout-container">
+    <p>You Sign In as Admin</p>
+    </div>
+    </div>
+}
+else
+{
+    <div></div>
+}

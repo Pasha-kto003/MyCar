@@ -25,12 +25,6 @@
                 @Html.DisplayNameFor(model => model.UserTypeId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PasswordHash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SaltHash)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ID)
             </th>
             <th></th>
@@ -52,19 +46,10 @@
                 @Html.DisplayFor(modelItem => item.UserTypeId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PasswordHash)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SaltHash)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
-                
-                <a asp-action="EditUserView" asp-controller="Account" asp-route-id="@item">Подробнее</a> |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-action="UserDetails" asp-controller="Account" asp-route-id="@item.ID">Подробнее</a>|
             </td>
         </tr>
 }

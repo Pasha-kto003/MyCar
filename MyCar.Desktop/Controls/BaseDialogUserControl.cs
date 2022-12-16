@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ namespace MyCar.Desktop.Controls
 {
     public class BaseDialogUserControl : UserControl
     {
+
         private DialogWindow mDialogWindow;
 
         public CustomCommand CloseCommand { get; private set; }

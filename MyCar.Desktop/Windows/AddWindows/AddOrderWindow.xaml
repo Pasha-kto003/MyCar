@@ -40,8 +40,9 @@
                     </StackPanel>
 
                     <DatePicker DataContext="{Binding AddOrderVM}" Width="200" HorizontalAlignment="Right" FontSize="16" 
-                                    Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Grid.Column="1"
-                                    SelectedDate="{Binding DateOfOrder, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                IsTodayHighlighted="False" CalendarStyle="{DynamicResource DatepickerCalendarStyle}" 
+                                Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Grid.Column="1"
+                                SelectedDate="{Binding DateOfOrder, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                 </Grid>
                 <Grid  Grid.Row="2">
                     <Grid.ColumnDefinitions>

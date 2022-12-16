@@ -1,15 +1,16 @@
 ﻿@model IEnumerable<ModelsApi.CarApi>
 
 @{
-    ViewData["Title"] = "CarView";
+    ViewData["Title"] = "Catalog";
 }
 
-<h1>CarView</h1>
+<h1>Catalog</h1>
+<div class="row" style="height:200px;">
+    <div class="card-body" style="width:75px; height:75px;" >
+    <img src="https://www.rolf.ru/uploads/stock/toyota/d0208dd5d03867f411e61c65b166fac9.png" width="60px;" height="50px;"/>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+</div>
+</div>
 <div class="row">
     @foreach (var item in Model)
     {

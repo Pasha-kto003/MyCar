@@ -30,7 +30,28 @@ html {
     }
 }
 
+.text-wp {
+    
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    position: relative;
+}
 
+.text-bg {
+    text-align: center;
+    position: absolute;
+    bottom: 10%;
+    width: 300px;
+    left: calc(50% - 150px);
+    background: rgba(0,0,0,0.3);
+    transform: skew(-20deg);
+}
+
+.text-bg-2 {
+    transform: skew(20deg);
+    color: #FFF;
+}
 
 body {
     margin-bottom: 60px;

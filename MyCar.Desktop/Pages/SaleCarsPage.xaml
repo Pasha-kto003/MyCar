@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyCar.Desktop.Pages"
+      xmlns:core="clr-namespace:MyCar.Desktop.Core"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SaleCarsPage">
@@ -39,7 +40,7 @@
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding SalesCar}"
             >
-            <DataGrid.Columns>
+            <DataGrid.Columns >
                 <DataGridTextColumn Header="Артикул"
                                     Binding="{Binding Articul}"
                                     Width="*"
@@ -65,6 +66,11 @@
                                     Width="100"
                                     />
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding Count, Converter={core:CountToColorConverter}}" />
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Редактировать" Command="{Binding EditSale}"/>

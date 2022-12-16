@@ -25,9 +25,10 @@
                 </StackPanel>
                 <StackPanel Margin="0 0 10 0">
                     <Label FontSize="16" Content="Дата:"  FontFamily="Century Gothic"/>
-                    <DatePicker  Width="200" HorizontalAlignment="Right"
+                    <DatePicker IsTodayHighlighted="False" CalendarStyle="{DynamicResource DatepickerCalendarStyle}"
+                                Width="200" HorizontalAlignment="Right"
                                 FontSize="16" VerticalAlignment="Center"
-                         SelectedDate="{Binding OrderDate, StringFormat='{}{0:dd.MM.yyyy}'}" 
+                                SelectedDate="{Binding OrderDate, StringFormat='{}{0:dd.MM.yyyy}'}" 
                          />
                 </StackPanel>
             </StackPanel>

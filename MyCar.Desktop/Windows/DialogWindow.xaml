@@ -26,7 +26,7 @@
                                         CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
 
                                 <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" 
-                                    Background="{Binding ForegroundLightBrush, FallbackValue=White}">
+                                    Background="White">
                                     <Border.Effect>
                                         <DropShadowEffect ShadowDepth="0" Opacity="0.2" />
                                     </Border.Effect>

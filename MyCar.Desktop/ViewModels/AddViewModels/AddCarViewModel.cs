@@ -185,6 +185,11 @@ namespace MyCar.Desktop.ViewModels
 
             Save = new CustomCommand(async () =>
             {
+                if (SelectedModel == null || SelectedBodyType == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Заполнены не все поля!" });
+                    return;
+                }
                 if (Cars.Exists(s=>s.ModelId == SelectedModel.ID))
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Выбранная модель уже используется!" });
@@ -194,7 +199,6 @@ namespace MyCar.Desktop.ViewModels
                 AddCarVM.Model = SelectedModel;
                 AddCarVM.BodyType = SelectedBodyType;
                 AddCarVM.TypeId = SelectedBodyType.ID;
-                AddCarVM.BodyType = SelectedBodyType;
                 
                 AddCarVM.CharacteristicCars = CharacteristicsCar.ToList();
 

@@ -7,9 +7,9 @@
 <h1>UserView</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="atuin-btn" asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="resp-tab">
     <thead>
         <tr>
             <th>
@@ -23,12 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UserTypeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PasswordHash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SaltHash)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ID)
@@ -52,21 +46,12 @@
                 @Html.DisplayFor(modelItem => item.UserTypeId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PasswordHash)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SaltHash)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
-                
-                <a asp-action="EditUserView" asp-controller="Account" asp-route-id="@item">Подробнее</a> |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a class="alert alert-success" style="width:250px;" asp-action="UserDetails" asp-controller="Account" asp-route-id="@item.ID">Подробнее</a>|
             </td>
         </tr>
 }
     </tbody>
-</table>
+</table>  

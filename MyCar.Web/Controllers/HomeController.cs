@@ -17,6 +17,7 @@ namespace MyCar.Web.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Администратор, Клиент")]
         public IActionResult Index()
         {
             return View();

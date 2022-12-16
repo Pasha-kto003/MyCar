@@ -1,4 +1,4 @@
-﻿@model MyCar.Web.Models.User
+﻿@model ModelsApi.UserApi
 @{
     ViewBag.Title = "О пользователе";
     ViewBag.Title = Model.UserName;
@@ -9,12 +9,10 @@
 <div>
     <dl class="dl-horizontal">
         <dt>Почта</dt>
+        <dd>@Model.Email</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Никнейм</dt>
         <dd>@Model.UserName</dd>
     </dl>
-    <div class="form-group">
-        <h5 class="h3 mb-3 font-weight-normal">Это ваш пароль</h5>
-        <input type="password" id="password-input" value="@Model.Password" readonly class="form-control" placeholder="Введите пароль" asp-for="Password" />
-        <span asp-validation-for="Password" />
-        <label><input type="checkbox" class="password-checkbox" />Показать пароль</label>
-    </div>
 </div>

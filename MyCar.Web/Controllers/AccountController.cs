@@ -37,11 +37,27 @@ namespace MyCar.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserDetails()
+        public async Task<IActionResult> UserDetails(int id)
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
-            var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+            var user = Users.FirstOrDefault(s => s.ID == id);
             return View(user);
+        }
+
+        [Authorize(Roles = "Администратор, Клиент")]
+        public async Task<IActionResult> PersonalArea()
+        {
+            var uname = User.Identity.Name;
+            if(uname != null)
+            {
+                Users = await Api.GetListAsync<List<UserApi>>("User");
+                var user = Users.FirstOrDefault(s => s.UserName == uname);
+                string role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+                ViewData["Content"] = $"Теперь ваша роль {role}";
+                if (user != null)
+                    return View(user);
+            }
+            return NotFound();
         }
 
         [HttpPost]
@@ -97,6 +113,7 @@ namespace MyCar.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditUserView(int id)
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");

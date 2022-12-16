@@ -1,0 +1,478 @@
+﻿@model ModelsApi.CarApi
+
+@{
+    ViewData["Title"] = "DetailsCarView";
+}
+
+<section class="content">
+    <div class="container">
+        <div class="inner-page inventory-listing">
+            <div class="inventory-heading margin-bottom-10 clearfix">
+                <div class="row">
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <h2>2014 Porsche Boxster Type S Convertible</h2>
+                        <span class="margin-top-10">Our template platform will maximize the exposure of your inventory online</span> </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 text-right">
+                        <h2>$ 69,995</h2>
+                        <em>Plus Taxes &amp; Licensing</em>
+                        <!-- <span class="sold_text">Sold</span> -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 left-content">
+                    <!--OPEN OF SLIDER-->
+                    <div class="listing-slider">
+                        <!-- <div class="angled_badge red">
+                            <span>Just Arrived</span>
+                        </div> -->
+                        <section class="slider home-banner">
+                            <div class="flexslider" id="home-slider-canvas">
+                                
+                            <div class="flex-viewport" style="overflow: hidden; position: relative;">
+                                <ul class="slides" style="transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
+                                    <li class="flex-active-slide" style="float: left; display: block;"> <a rel="gallery1" class="fancybox fancybox_listing_link" href="images/boxster1.jpg"><img src="https://ethics.org.au/wp-content/uploads/2019/04/automated-cars-ethics.jpg" alt="" data-full-image="images/boxster1.jpg" draggable="false"></a> </li>       
+                                </ul></div></div>
+                        </section>
+                    </div>
+                    <!--CLOSE OF SLIDER-->
+                    <!--Slider End-->
+                    <div class="clearfix"></div>
+                    <div class="bs-example bs-example-tabs example-tabs margin-top-50">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li><a href="#vehicle" data-toggle="tab" class="active">Vehicle Overview</a></li>
+                            <li><a href="#features" data-toggle="tab">Features &amp; Options</a></li>
+                            <li><a href="#technical" data-toggle="tab">Technical Specifications</a></li>
+                            <li><a href="#location" data-toggle="tab">Vehicle Location</a></li>
+                            <li><a href="#comments" data-toggle="tab">Other Comments</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content margin-top-15 margin-bottom-20">
+                            <div class="tab-pane in active" id="vehicle">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus tincidunt aliquam. Aliquam gravida massa at sem vulputate
+                                    interdum et vel eros. Maecenas eros enim, tincidunt vel turpis vel, dapibus tempus nulla. Donec vel nulla dui. Pellentesque sed ante
+                                    sed ligula hendrerit condimentum. Suspendisse rhoncus fringilla ipsum quis porta. Morbi tincidunt viverra pharetra.</p>
+                                <p>Vestibulum vel mauris et odio lobortis laoreet eget eu magna. Proin mauris erat, luctus at nulla ut, lobortis mattis magna. Morbi
+                                    a arcu lacus. Maecenas tristique velit vitae nisi consectetur, in mattis diam sodales. Mauris sagittis sem mattis justo bibendum, a
+                                    eleifend dolor facilisis. Mauris nec pharetra tortor, ac aliquam felis. Nunc pretium erat sed quam consectetur fringilla.</p>
+                                <p>Aliquam ultricies nunc porta metus interdum mollis. Donec porttitor libero augue, vehicula tincidunt lectus placerat a. Sed
+                                    tincidunt dolor non sem dictum dignissim. Nulla vulputate orci felis, ac ornare purus ultricies a. Fusce euismod magna orci,
+                                    sit amet aliquam turpis dignissim ac. In at tortor at ligula pharetra sollicitudin. Sed tincidunt, purus eget laoreet elementum,
+                                    felis est pharetra ante, tincidunt feugiat libero enim sed risus.</p>
+                                <p>Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent cursus varius odio,
+                                    non faucibus dui. Nunc vehicula lectus sed velit suscipit aliquam vitae eu ipsum. Curabitur hendrerit magna a quam semper, at tristique
+                                    mauris gravida. Donec consequat elementum lorem, ac luctus ligula. Quisque viverra fringilla mi vel aliquam. Class aptent taciti sociosqu
+                                    ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                            <div class="tab-pane" id="features">
+                                <ul class="fa-ul">
+                                    <li><i class="fa-li fa fa-check"></i> Adaptive Cruise Control</li>
+                                    <li><i class="fa-li fa fa-check"></i> Airbags</li>
+                                    <li><i class="fa-li fa fa-check"></i> Air Conditioning</li>
+                                    <li><i class="fa-li fa fa-check"></i> Alarm System</li>
+                                    <li><i class="fa-li fa fa-check"></i> Anti-theft Protection</li>
+                                    <li><i class="fa-li fa fa-check"></i> Audio Interface</li>
+                                    <li><i class="fa-li fa fa-check"></i> Automatic Climate Control</li>
+                                    <li><i class="fa-li fa fa-check"></i> Automatic Headlights</li>
+                                    <li><i class="fa-li fa fa-check"></i> Auto Start/Stop</li>
+                                    <li><i class="fa-li fa fa-check"></i> Bi-Xenon Headlights</li>
+                                    <li><i class="fa-li fa fa-check"></i> Bluetooth® Handset</li>
+                                    <li><i class="fa-li fa fa-check"></i> BOSE® Surround Sound</li>
+                                    <li><i class="fa-li fa fa-check"></i> Burmester® Surround Sound</li>
+                                    <li><i class="fa-li fa fa-check"></i> CD/DVD Autochanger</li>
+                                    <li><i class="fa-li fa fa-check"></i> CDR Audio</li>
+                                    <li><i class="fa-li fa fa-check"></i> Cruise Control</li>
+                                    <li><i class="fa-li fa fa-check"></i> Direct Fuel Injection</li>
+                                    <li><i class="fa-li fa fa-check"></i> Electric Parking Brake</li>
+                                    <li><i class="fa-li fa fa-check"></i> Floor Mats</li>
+                                    <li><i class="fa-li fa fa-check"></i> Garage Door Opener</li>
+                                    <li><i class="fa-li fa fa-check"></i> Leather Package</li>
+                                    <li><i class="fa-li fa fa-check"></i> Locking Rear Differential</li>
+                                    <li><i class="fa-li fa fa-check"></i> Luggage Compartments</li>
+                                    <li><i class="fa-li fa fa-check"></i> Manual Transmission</li>
+                                    <li><i class="fa-li fa fa-check"></i> Navigation Module</li>
+                                    <li><i class="fa-li fa fa-check"></i> Online Services</li>
+                                    <li><i class="fa-li fa fa-check"></i> ParkAssist</li>
+                                    <li><i class="fa-li fa fa-check"></i> Porsche Communication</li>
+                                    <li><i class="fa-li fa fa-check"></i> Power Steering</li>
+                                    <li><i class="fa-li fa fa-check"></i> Reversing Camera</li>
+                                    <li><i class="fa-li fa fa-check"></i> Roll-over Protection</li>
+                                    <li><i class="fa-li fa fa-check"></i> Seat Heating</li>
+                                    <li><i class="fa-li fa fa-check"></i> Seat Ventilation</li>
+                                    <li><i class="fa-li fa fa-check"></i> Sound Package Plus</li>
+                                    <li><i class="fa-li fa fa-check"></i> Sport Chrono Package</li>
+                                    <li><i class="fa-li fa fa-check"></i> Steering Wheel Heating</li>
+                                    <li><i class="fa-li fa fa-check"></i> Tire Pressure Monitoring</li>
+                                    <li><i class="fa-li fa fa-check"></i> Universal Audio Interface</li>
+                                    <li><i class="fa-li fa fa-check"></i> Voice Control System</li>
+                                    <li><i class="fa-li fa fa-check"></i> Wind Deflector</li>
+                                </ul>
+                            </div>
+                            <div class="tab-pane" id="technical">
+                                <table class="technical">
+                                    <thead>
+                                        <tr>
+                                            <th>Engine</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Layout / number of cylinders</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Displacement</td>
+                                            <td>3.4 l</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Engine Layout</td>
+                                            <td>Mid-engine</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Horespower</td>
+                                            <td>315 hp</td>
+                                        </tr>
+                                        <tr>
+                                            <td>rpm</td>
+                                            <td>6,700 rpm</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Torque</td>
+                                            <td>266 lb.-ft.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Compression ratio</td>
+                                            <td>12.5 : 1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="technical">
+                                    <thead>
+                                        <tr>
+                                            <th>Performance</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Top Track Speed</td>
+                                            <td>173 mph</td>
+                                        </tr>
+                                        <tr>
+                                            <td>0 - 60 mph</td>
+                                            <td>4.8 s</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="technical">
+                                    <thead>
+                                        <tr>
+                                            <th>Transmission</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Manual Gearbox</td>
+                                            <td>6-speed with dual-mass flywheel and self-adjusting clutch</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="technical">
+                                    <thead>
+                                        <tr>
+                                            <th>Fuel consumption</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>City (estimate)</td>
+                                            <td>20</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Highway (estimate)</td>
+                                            <td>28</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="technical">
+                                    <thead>
+                                        <tr>
+                                            <th>Body</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Length</td>
+                                            <td>172.2 in.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Width</td>
+                                            <td>70.9 in.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Height</td>
+                                            <td>50.4 in.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Wheelbase</td>
+                                            <td>97.4 in.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maximum payload</td>
+                                            <td>739 lbs</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Curb weight</td>
+                                            <td>2910 lbs</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="technical">
+                                    <thead>
+                                        <tr>
+                                            <th>Capacities</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Luggage compartment volume</td>
+                                            <td>5.3 cu. ft. (front) / 4.6 cu. ft. (rear)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fuel Tank Capacity</td>
+                                            <td>16.9 gal.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="location">
+                                <div id="google-map-listing" class="contact" data-longitude="-79.38" data-latitude="43.65" data-zoom="11" style="height: 350px; position: relative; overflow: hidden;" data-parallax="false"><div style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);"><div style="overflow: hidden;"></div><div class="gm-style" style="position: absolute; z-index: 0; left: 0px; top: 0px; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px;"><div tabindex="0" aria-label="Карта" aria-roledescription="карта" role="region" style="position: absolute; z-index: 0; left: 0px; top: 0px; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; cursor: url(&quot;https://maps.gstatic.com/mapfiles/openhand_8_8.cur&quot;), default; touch-action: pan-x pan-y;"><div style="z-index: 1; position: absolute; left: 50%; top: 50%; width: 100%; transform: translate(0px, 0px);"><div style="position: absolute; left: 0px; top: 0px; z-index: 100; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; z-index: 989; transform: matrix(1, 0, 0, 1, -106, -116);"><div style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px;"><div style="width: 256px; height: 256px;"></div></div></div></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 101; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 102; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 103; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: -1;"><div style="position: absolute; z-index: 989; transform: matrix(1, 0, 0, 1, -106, -116);"><div style="width: 256px; height: 256px; overflow: hidden; position: absolute; left: 0px; top: 0px;"></div></div></div><div style="width: 26px; height: 37px; overflow: hidden; position: absolute; left: -13px; top: -37px; z-index: 0;"><img alt="" src="https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi3.png" draggable="false" style="position: absolute; left: 0px; top: 0px; width: 26px; height: 37px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"></div></div><div style="z-index: 3; position: absolute; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; left: 0px; top: 0px; touch-action: pan-x pan-y;"><div style="z-index: 4; position: absolute; left: 50%; top: 50%; width: 100%; transform: translate(0px, 0px);"><div style="position: absolute; left: 0px; top: 0px; z-index: 104; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 105; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 106; width: 100%;"><span id="4C2B846B-1A15-4A96-A72B-11B0F0C375E3" style="display: none;">Для навигации используйте клавиши со стрелками.</span><div aria-label="Our Location" role="button" tabindex="0" aria-describedby="4C2B846B-1A15-4A96-A72B-11B0F0C375E3" style="width: 26px; height: 37px; overflow: hidden; position: absolute; left: -13px; top: -37px; z-index: 0;"><img alt="" src="https://maps.gstatic.com/mapfiles/transparent.png" draggable="false" usemap="#gmimap0" style="width: 26px; height: 37px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"><map name="gmimap0" id="gmimap0"><area log="miw" coords="13,0,4,3.5,0,12,2.75,21,13,37,23.5,21,26,12,22,3.5" shape="poly" tabindex="-1" title="Our Location" style="display: inline; position: absolute; left: 0px; top: 0px; cursor: pointer; touch-action: none;"></map></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 107; width: 100%;"></div></div></div><div class="gm-style-moc" style="z-index: 4; position: absolute; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; left: 0px; top: 0px; opacity: 0;"><p class="gm-style-mot"></p></div></div><iframe aria-hidden="true" frameborder="0" tabindex="-1" style="z-index: -1; position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; border: none;"></iframe><div style="pointer-events: none; width: 100%; height: 100%; box-sizing: border-box; position: absolute; z-index: 1000002; opacity: 0; border: 2px solid rgb(26, 115, 232);"></div></div></div></div>
+                            </div>
+                            <div class="tab-pane fade" id="comments">
+                                <p>Vestibulum sit amet ligula eget nibh cursus bibendum et id eros. Nam congue, dui quis consectetur blandit, neque neque mattis diam,
+                                    vitae egestas urna lectus eu turpis. In vitae commodo sem. Etiam vehicula sed ligula malesuada cursus. Cras augue elit, tempus at dignissim
+                                    sed, egestas eget leo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam mollis luctus nibh et
+                                    bibendum. Morbi congue lectus nec congue congue. Nulla molestie feugiat quam ac sollicitudin. Nulla sed congue lectus. Donec blandit elit
+                                    sit amet aliquet laoreet.</p>
+                                <p><img src="images/engine.png" alt="engine"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 right-content">
+                    <div class="side-content">
+                        <div class="car-info margin-bottom-50">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Body Style:</td>
+                                            <td>Convertible</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ENGINE:</td>
+                                            <td>3.4L Mid-Engine V6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>TRANSMISSION:</td>
+                                            <td>6-speed Manual</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DRIVETRAIN:</td>
+                                            <td>Rear Wheel Drive</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EXTERIOR:</td>
+                                            <td>Lime Gold Metallic</td>
+                                        </tr>
+                                        <tr>
+                                            <td>INTERIOR:</td>
+                                            <td>Agate Grey</td>
+                                        </tr>
+                                        <tr>
+                                            <td>MILES:</td>
+                                            <td>12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DOORS:</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>PASSENGERS:</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>STOCK #:</td>
+                                            <td>16115</td>
+                                        </tr>
+                                        <tr>
+                                            <td>VIN #:</td>
+                                            <td>WP0AB2E81EK190171</td>
+                                        </tr>
+                                        <tr>
+                                            <td>FUEL MILEAGE:</td>
+                                            <td>20 City / 28 Hwy</td>
+                                        </tr>
+                                        <tr>
+                                            <td>FUEL TYPE:</td>
+                                            <td>Gasoline</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CONDITION:</td>
+                                            <td>Brand New</td>
+                                        </tr>
+                                        <tr>
+                                            <td>OWNERS:</td>
+                                            <td>N/A</td>
+                                        </tr>
+                                        <tr>
+                                            <td>WARRANTY:</td>
+                                            <td>3 Years Limited</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="efficiency-rating text-center padding-vertical-15 margin-bottom-40">
+                            <h3>Fuel Efficiency Rating</h3>
+                            <ul>
+                                <li class="city_mpg"><small>City MPG:</small> <strong>20</strong></li>
+                                <li class="fuel"><img src="images/fuel-icon.png" alt="" class="aligncenter"></li>
+                                <li class="hwy_mpg"><small>Hwy MPG:</small> <strong>28</strong></li>
+                            </ul>
+                            <p>Actual rating will vary with options, driving conditions,
+                                driving habits and vehicle condition.</p>
+                        </div>
+                        <ul class="social-likes pull-right social-likes_visible social-likes_ready" data-url="http://themesuite.com" data-title="Blog Post">
+                            <li class="social-likes__widget social-likes__widget_facebook" title="Share link on Facebook"><span class="social-likes__button social-likes__button_facebook"><span class="social-likes__icon social-likes__icon_facebook"></span></span><span class="social-likes__counter social-likes__counter_facebook">0</span></li>
+                            <li class="social-likes__widget social-likes__widget_pinterest" title="Share image on Pinterest" data-media=""><span class="social-likes__button social-likes__button_pinterest"><span class="social-likes__icon social-likes__icon_pinterest"></span></span><span class="social-likes__counter social-likes__counter_pinterest">0</span></li>
+                            <li class="social-likes__widget social-likes__widget_twitter" title="Share link on Twitter"><span class="social-likes__button social-likes__button_twitter"><span class="social-likes__icon social-likes__icon_twitter"></span></span><span class="social-likes__counter social-likes__counter_twitter">0</span></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="recent-vehicles-wrap">
+                <div class="row">
+                    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12 recent-vehicles xs-padding-bottom-20">
+                        <h5 class="margin-top-none">Similar Vehicles</h5>
+                        <p>Browse through the vast
+                            selection of vehicles that
+                            have recently been added
+                            to our inventory.</p>
+                        <div class="arrow3 clearfix" id="slideControls3"><span class="prev-btn"><a class="bx-prev" href="">Prev</a></span><span class="next-btn"><a class="bx-next" href="">Next</a></span></div>
+                    </div>
+                    <div class="col-lg-10 col-md-8 col-sm-8">
+                        <div class="bx-wrapper" style="max-width: 1170px; margin: 0px auto;"><div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 180px;"><div class="carasouel-slider3" style="width: 1115%; position: relative; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <div class="angled_badge blue">
+                                    <span>405 HP</span>
+                                </div>
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car1.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2012 Porsche Cayenne GTS</strong></h6>
+                                        <h6>1 Owner, 26,273 miles</h6>
+                                        <h5>$ 79,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                    <div class="angled_badge red">
+                                        <span>Just Arrived</span>
+                                    </div>
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car2.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2009 Porsche Boxster</strong></h6>
+                                        <h6>New Tires, 26,273 miles</h6>
+                                        <h5>$ 34,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car3.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2019 Porsche Panamera S</strong></h6>
+                                        <h6>Demonstrator, 7,088 miles</h6>
+                                        <h5>$ 63,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car4.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2010 Porsche Carrera 4S</strong></h6>
+                                        <h6>AWD, 21,900 miles</h6>
+                                        <h5>$ 73,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car5.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2012 Porsche Carrera S</strong></h6>
+                                        <h6>Convertible, 22,158 miles</h6>
+                                        <h5>$ 56,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car6.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2019 Porsche GTS</strong></h6>
+                                        <h6>1 Owner, 3,914 miles</h6>
+                                        <h5>$ 94,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car7.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2014 Porsche Cayenne GTS</strong></h6>
+                                        <h6>1 Owner, 7 miles</h6>
+                                        <h5>$ 114,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <span class="sold_text">Sold</span>
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car8.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2014 Porsche GTS</strong></h6>
+                                        <h6>1 Owner, 5 miles</h6>
+                                        <h5>$ 99,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slide" style="float: left; list-style: none; position: relative; margin-right: 30px; width: 170px;">
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="inventory-listing.html"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> <img src="images/c-car9.jpg" alt="" class="img-responsive"> </div>
+                                    <div class="car-block-bottom">
+                                        <h6><strong>2009 Porsche Carrera 4S</strong></h6>
+                                        <h6>1 Owner, 114,239 miles</h6>
+                                        <h5>$ 39,995</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div></div><div class="bx-controls"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--container ends-->
+</section>

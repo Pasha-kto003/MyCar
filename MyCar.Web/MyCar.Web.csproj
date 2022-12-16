@@ -7,7 +7,34 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <Content Remove="wwwroot\images\1.png" />
+    <Content Remove="wwwroot\image\car-1.png" />
+    <Content Remove="wwwroot\image\car-2.png" />
+    <Content Remove="wwwroot\image\car-3.png" />
+    <Content Remove="wwwroot\image\car-4.png" />
+    <Content Remove="wwwroot\image\car-5.png" />
+    <Content Remove="wwwroot\image\car-6.png" />
+    <Content Remove="wwwroot\image\car-7.png" />
+    <Content Remove="wwwroot\image\car-8.png" />
+    <Content Remove="wwwroot\image\home-img.png" />
+    <Content Remove="wwwroot\image\letter-bg.png" />
+    <Content Remove="wwwroot\image\pic-1.png" />
+    <Content Remove="wwwroot\image\pic-2.png" />
+    <Content Remove="wwwroot\image\pic-3.png" />
+    <Content Remove="wwwroot\image\pic-4.png" />
+    <Content Remove="wwwroot\image\pic-5.png" />
+    <Content Remove="wwwroot\image\pic-6.png" />
+    <Content Remove="wwwroot\image\Sauber-MercedesC9.jpg" />
+    <Content Remove="wwwroot\image\vehicle-1.png" />
+    <Content Remove="wwwroot\image\vehicle-2.png" />
+    <Content Remove="wwwroot\image\vehicle-3.png" />
+    <Content Remove="wwwroot\image\vehicle-4.png" />
+    <Content Remove="wwwroot\image\vehicle-5.png" />
+    <Content Remove="wwwroot\image\vehicle-6.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,7 +43,83 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <Resource Include="wwwroot\images\1.png" />
+    <Resource Include="wwwroot\image\1.png" />
+    <Resource Include="wwwroot\image\car-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\car-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\car-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\car-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\car-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\car-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\car-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\car-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\home-img.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\letter-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\pic-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\pic-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\pic-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\pic-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\pic-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\pic-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\Sauber-MercedesC9.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\vehicle-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\vehicle-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\vehicle-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\vehicle-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\vehicle-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\image\vehicle-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\image\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

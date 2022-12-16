@@ -80,15 +80,15 @@
 <div class="cards">
     <div class="card">
         <div class="card-image">
-            <img src="https://www.freepnglogos.com/uploads/mercedes-logo-png/mercedes-logo-mercedes-benz-logo-png-transparent-svg-vector-bie-13.png" />
+            <img src="https://www.freepnglogos.com/uploads/mercedes-logo-png/mercedes-logo-mercedes-benz-logo-png-transparent-svg-vector-bie-13.png"/>
         </div> 
         <div class="card-content">
             <div class="card-title">
                 Mersedez-Benz
             </div>
-            <div class="card-text">
+            <a class="card-text">
                 Mersedez-Benz C9
-            </div>
+            </a>
         </div>
     </div>
         <div class="card">
@@ -104,24 +104,26 @@
             </div>
         </div>
     </div>
-        <div class="card">
-        <div class="card-image">
-            <img src="card-icon.png" />
-        </div> 
-        <div class="card-content">
-            <div class="card-title">
-                IMG
-            </div>
-            <div class="card-text">
-                Иконка установлена графическим файлом.
-            </div>
-        </div>
-    </div>
 </div>
 
-<div class="fix-bg" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg)"></div>
-
-
+<div class="fix-bg" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg)">
+<div class="text-wp">    
+    <div class="text-bg">
+        <div class="text-bg-2">
+            <h1>Sauber-Mercedez C9</h1>
+        </div>
+    </div>
+</div>   
+</div>
+<div class="fix-bg" style="background-image: url(https://upload.wikimedia.org/wikipedia/commons/f/f5/Mazda-787B-No55-July2011.jpg)">
+<div class="text-wp">    
+    <div class="text-bg">
+        <div class="text-bg-2">
+            <h1>Mazda 787B</h1>
+        </div>
+    </div>
+</div>   
+</div>
 </div>
 
   <div class="container marketing">
@@ -162,8 +164,7 @@
         <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
       </div>
       <div class="col-md-5">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+        <img src="~/image/MercedesC9.jpg" width="500" height="300"/>
       </div>
     </div>
 
@@ -192,12 +193,6 @@
 
       </div>
     </div>
-
-    <hr class="featurette-divider">
-  <footer class="container">
-    <p class="float-end"><a href="#">Back to top</a></p>
-    <p>© 2017–2022 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-  </footer>
 </div>
 
 @if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)

@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ModelsApi;
+using MyCar.Web.Core;
 
 namespace MyCar.Web.Controllers
 {
     public class CarController : Controller
     {
+        public List<CarApi> Cars { get; set; } = new List<CarApi>();
         // GET: CarController
         public ActionResult Index()
         {
@@ -18,9 +21,11 @@ namespace MyCar.Web.Controllers
 
 
         // GET: CarController/Details/5
-        public ActionResult DetailsCarView(int id)
+        public async Task<IActionResult> DetailsCarView(int id)
         {
-            return View();
+            Cars = await Api.GetListAsync<List<CarApi>>("Car");
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            return View(car);
         }
 
         // GET: CarController/Create

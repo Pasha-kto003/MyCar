@@ -18,7 +18,7 @@ namespace MyCar.Web.Controllers
 
 
         // GET: CarController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult DetailsCarView(int id)
         {
             return View();
         }

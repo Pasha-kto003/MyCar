@@ -7,9 +7,9 @@
 <h1>UserView</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="atuin-btn" asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="resp-tab">
     <thead>
         <tr>
             <th>
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
-                <a asp-action="UserDetails" asp-controller="Account" asp-route-id="@item.ID">Подробнее</a>|
+                <a class="alert alert-success" style="width:250px;" asp-action="UserDetails" asp-controller="Account" asp-route-id="@item.ID">Подробнее</a>|
             </td>
         </tr>
 }
     </tbody>
-</table>
+</table>  

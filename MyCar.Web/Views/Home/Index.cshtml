@@ -1,55 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@*
-@if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    @TempData["AllertMessage"];
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
 
-}
-else
-{
-    <div></div>
-}*@
-
-<div class="container-fluid">
-    <div class="row" >
-            <div class="col-12">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        
-                        <div class="carousel-item active">
-                            <img src="images/13.jpg" class="d-block w-100" alt="Надпись заглушка" >
-                        </div>
-                        
-                        <div class="carousel-item">
-                            <img src="images/ex_1.jpg" class="d-block w-100" alt="Надпись заглушка">
-                        </div>
-                        
-                        <div class="carousel-item">
-                            <img src="images/19.jpg" class="d-block w-100" alt="Надпись заглушка">
-                        </div>
-                        
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Назад</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Вперед</span>
-                    </button>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid" style="box-sizing:border-box; width:100%;">
 <div class="slider" id="slider"> 
     <div class="slider-content" id="slider-content">
         <div class="sl-img">
@@ -122,11 +75,54 @@ else
         </div>
     </div>
 </div>
-    </div>
 
-  <!-- Marketing messaging and featurettes
-  ================================================== -->
-  <!-- Wrap the rest of the page in another container to center all the content. -->
+<h2>Марки</h2>
+<div class="cards">
+    <div class="card">
+        <div class="card-image">
+            <img src="https://www.freepnglogos.com/uploads/mercedes-logo-png/mercedes-logo-mercedes-benz-logo-png-transparent-svg-vector-bie-13.png" />
+        </div> 
+        <div class="card-content">
+            <div class="card-title">
+                Mersedez-Benz
+            </div>
+            <div class="card-text">
+                Mersedez-Benz C9
+            </div>
+        </div>
+    </div>
+        <div class="card">
+        <div class="card-image">
+            <img src="https://www.freepnglogos.com/uploads/toyota-logo-png/toyota-logos-brands-logotypes-0.png" />
+        </div> 
+        <div class="card-content">
+            <div class="card-title">
+                Toyota
+            </div>
+            <div class="card-text">
+                Toyota
+            </div>
+        </div>
+    </div>
+        <div class="card">
+        <div class="card-image">
+            <img src="card-icon.png" />
+        </div> 
+        <div class="card-content">
+            <div class="card-title">
+                IMG
+            </div>
+            <div class="card-text">
+                Иконка установлена графическим файлом.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fix-bg" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg)"></div>
+
+
+</div>
 
   <div class="container marketing">
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Server.DTO;
@@ -14,6 +15,8 @@ namespace MyCar.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private UserManager<UserApi> userManager;
+
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public int UserId = -1;
         public UserApi Userex { get; set; }
@@ -125,10 +128,17 @@ namespace MyCar.Web.Controllers
             return NotFound();
         }
 
-        private async Task ChangeUser(UserApi userApi, PassportApi passportapi)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        private async Task<IActionResult> EditUserView(UserApi userApi)
         {
             var user = await Api.PutAsync<UserApi>(userApi, "User");
-            var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
+            var passport = await Api.PutAsync<PassportApi>(userApi.Passport, "Passport");
+            if (user != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return NotFound();
         }
 
 

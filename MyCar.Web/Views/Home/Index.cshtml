@@ -1,17 +1,18 @@
-﻿@{
+﻿@using ModelsApi
+@using MyCar.Web.Core
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container-fluid" style="box-sizing:border-box; width:100%;">
-<div class="slider" id="slider"> 
+<div class="container-fluid">
+    <div class="banner-container">
+</div>
+<div class="slider" id="slider" style="margin: 0px;"> 
     <div class="slider-content" id="slider-content">
         <div class="sl-img">
             <div class="sl-img-item sl-img-item-active" data-id="1"><img src="https://toppng.com/uploads/preview/mercedes-benz-cls350-amg-mercedes-machine-white-buildings-city-11569995130t8e9jqggio.jpg"/></div>
             <div class="sl-img-item" data-id="2"><img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Sauber-Mercedes_C9%2C_Bj._1988_%282009-08-07_Sp%29.jpg"/></div>
             <div class="sl-img-item" data-id="3"><img src="https://motor.ru/imgs/2021/03/25/07/4577323/db922858561d4e3cb98cf37db34efbff8a42269a.jpg"/></div>
-            <div class="sl-img-item" data-id="4"><img src="photo-4.jpg"/></div>
-            <div class="sl-img-item" data-id="5"><img src="photo-5.jpg"/></div>
-            <div class="sl-img-item" data-id="6"><img src="photo-6.jpg"/></div>
         </div>
         <div class="sl-text">
             <div class="sl-text-item sl-text-item-active" data-id="1">
@@ -45,22 +46,10 @@
                 <div class="sl-text-item-info">
                     <p>Национальный парк Роки-Маунтин</p>
                 </div>
-            </div>
-            <div class="sl-text-item" data-id="5">
-                <div class="sl-text-item-head">
-                    <h3>Енот</h3>
-                </div>
-                <div class="sl-text-item-info"></div>
-            </div>
-            <div class="sl-text-item" data-id="6">
-                <div class="sl-text-item-head"></div>
-                <div class="sl-text-item-info">
-                    <p>Синица</p>    
-                </div>
-            </div>            
+            </div>          
         </div>
     </div>
-    <div class="slider__nav">
+    <div class="slider__nav" style="height: 900px;">
         <div class="sl-nav-arrows">
             <div class="sl-nav-arrow sl-nav-arrow-left" id="left">Лево</div>
             <div class="sl-nav-arrow sl-nav-arrow-right" id="right">Право</div>
@@ -76,46 +65,41 @@
     </div>
 </div>
 
+@model IEnumerable<ModelsApi.MarkCarApi>
+
 <h2>Марки</h2>
 <div class="cards">
-    <div class="card">
-        <div class="card-image">
-            <img src="https://www.freepnglogos.com/uploads/mercedes-logo-png/mercedes-logo-mercedes-benz-logo-png-transparent-svg-vector-bie-13.png"/>
-        </div> 
-        <div class="card-content">
-            <div class="card-title">
-                Mersedez-Benz
-            </div>
-            <a class="card-text">
-                Mersedez-Benz C9
-            </a>
-        </div>
-    </div>
+        @foreach(MarkCarApi markCar in Model)
+        {
         <div class="card">
         <div class="card-image">
-            <img src="https://www.freepnglogos.com/uploads/toyota-logo-png/toyota-logos-brands-logotypes-0.png" />
+            <img src="~/MarkImages/@markCar.MarkPhoto"/>
         </div> 
         <div class="card-content">
             <div class="card-title">
-                Toyota
+                @markCar.MarkName
             </div>
-            <div class="card-text">
-                Toyota
-            </div>
+            <a asp-action="GetAuto" asp-controller="Home" asp-route-id="@markCar.ID">
+                Подробнее
+            </a>
         </div>
-    </div>
+        </div>
+        }
 </div>
 
-<div class="fix-bg" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg)">
+<div class="fix-bg" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg); background-size:cover;">
 <div class="text-wp">    
     <div class="text-bg">
         <div class="text-bg-2">
             <h1>Sauber-Mercedez C9</h1>
+            <a asp-action="CarView" asp-controller="Home">
+                Каталог
+            </a>
         </div>
     </div>
 </div>   
 </div>
-<div class="fix-bg" style="background-image: url(https://upload.wikimedia.org/wikipedia/commons/f/f5/Mazda-787B-No55-July2011.jpg)">
+<div class="fix-bg" style="background-image: url(https://upload.wikimedia.org/wikipedia/commons/f/f5/Mazda-787B-No55-July2011.jpg); background-size:cover;" >
 <div class="text-wp">    
     <div class="text-bg">
         <div class="text-bg-2">

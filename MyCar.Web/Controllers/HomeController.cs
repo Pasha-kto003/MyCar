@@ -18,11 +18,19 @@ namespace MyCar.Web.Controllers
         }
 
         [Authorize(Roles = "Администратор, Клиент")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            return View(marks);
         }
 
+        public async Task<IActionResult> MarkView()
+        {
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            return View("MarkView", marks);
+        }
 
         public async Task<IActionResult> UserView()
         {
@@ -31,15 +39,26 @@ namespace MyCar.Web.Controllers
             return View("UserView", users);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAuto(int id)
+        {
+            var marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            var mark = marks.FirstOrDefault(s => s.ID == id);
+            var cars = await Api.GetListAsync<List<CarApi>>("Car");
+            cars = cars.Where(s => s.Model.MarkId == mark.ID).ToList();
+            return View("CarView", cars);
+        }
+
         public async Task<IActionResult> CarView()
         {
             var cars = new List<CarApi>();
             cars = await Api.GetListAsync<List<CarApi>>("Car");
-            foreach(CarApi car in cars)
-            {
-                car.PhotoCar = $@"C:/Users/User/source/repos/MyCar/MyCar.Web/bin/Debug/net6.0/CarImages/{car.PhotoCar}";
-            }
             return View("CarView", cars);
+        }
+
+        public IActionResult SpecialCarView()
+        {
+            return View();
         }
 
         public IActionResult Privacy()

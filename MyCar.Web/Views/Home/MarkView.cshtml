@@ -1,0 +1,25 @@
+﻿@model IEnumerable<ModelsApi.MarkCarApi>
+@{
+    ViewData["Title"] = "Marks";
+}
+<div class="container">
+    <div class="row">
+<section class="grid">
+            @foreach(var mark in Model)
+            {
+                <article class="grid-item">
+                <div class="image">
+                <img src="~/MarkImages/@mark.MarkPhoto" width="300" height="350"/>
+                </div>
+                <div class="info">
+                <h2>@mark.MarkName</h2>
+                <div class="button-wrap">
+                <a class="atuin-btn" asp-controller="Home" asp-action="GetAuto" asp-route-id="@mark.ID">Каталог авто</a>
+                </div>
+                </div>
+                </article>   
+            }
+         
+</section>
+    </div>
+</div>

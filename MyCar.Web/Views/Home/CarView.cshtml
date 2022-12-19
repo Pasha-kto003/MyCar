@@ -5,22 +5,21 @@
 }
 
 <h1>Catalog</h1>
-<div class="row" style="height:200px;">
-    <div class="card-body" style="width:75px; height:75px;" >
-    <img src="https://www.rolf.ru/uploads/stock/toyota/d0208dd5d03867f411e61c65b166fac9.png" width="60px;" height="50px;"/>
-
-</div>
-</div>
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="corner-box-1 card col-sm-3 m-1" style=" width: 300px; height: 400px; margin-top: 10px;">
             <div class="corner-box-1-content">
-                <div class="card-body">
+                <div class="card-body img-responsive">
                     <h4 class="card-title">
-                        <img src="@item.PhotoCar" style="width:200px; height:200px;" />
+                        <img src="~/CarImages/@item.PhotoCar" style="width:200px; height:200px; position:relative;"/>
                         <br />
                         <h5>@item.CarName</h5>
+                        <button class="imageButton">
+                            <h1>
+                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@item.ID">+</a>
+                            </h1>
+                        </button>
                     </h4>
                     <h5>@item.CarPrice &#8381</h5>
                     <p class="card-text">@item.CarOptions</p>

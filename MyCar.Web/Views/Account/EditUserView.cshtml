@@ -10,7 +10,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+
         <form asp-action="UpdateMethod" method="post">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ID" class="control-label"></label>
@@ -28,11 +30,6 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserTypeId" class="control-label"></label>
-                <input asp-for="UserTypeId" class="form-control" />
-                <span asp-validation-for="UserTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Passport.FirstName" class="control-label"></label>
                 <input asp-for="Passport.LastName" class="form-control" />
                 <span asp-validation-for="PassportId" class="text-danger"></span>
@@ -48,7 +45,7 @@
                 <span asp-validation-for="PassportId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" asp-route-id="@Model.ID" asp-controller="Account" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

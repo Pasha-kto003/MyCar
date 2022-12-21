@@ -272,3 +272,24 @@ for (let i = 0; i < cards.length; i++) {
         };
     }
 }
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+});
+
+$('body').on('click', '.password-checkbox', function () {
+    if ($(this).is(':checked')) {
+        $('#password-input').attr('type', 'text');
+    } else {
+        $('#password-input').attr('type', 'password');
+    }
+});
+
+function myFunction() {
+    var x = document.getElementById("myInput");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}

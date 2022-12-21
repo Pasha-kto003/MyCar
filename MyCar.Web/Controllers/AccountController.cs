@@ -167,20 +167,20 @@ namespace MyCar.Web.Controllers
 
             return View(model);
         }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        private async Task<IActionResult> EditUserView(UserApi userApi)
-        {
-            var user = await Api.PutAsync<UserApi>(userApi, "User");
-            var passport = await Api.PutAsync<PassportApi>(userApi.Passport, "Passport");
-            if (user != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return NotFound();
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> EditUserView(int id)
+        //{
+        //    Users = await Api.GetListAsync<List<UserApi>>("User");
+        //    if (id != 0)
+        //    {
+        //        var user = Users.FirstOrDefault(s => s.ID == id);
+        //        return View(user);
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
 
         public async Task<IActionResult> Logout()
@@ -189,7 +189,7 @@ namespace MyCar.Web.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        private async Task CreateUser(RegisterModel model)
+        private async Task CreateUser(RegisterModel model) 
         {
             UserDto userDto = new UserDto { Password = model.Password, Username = model.UserName };
             UserId = await Api.RegistrationAsync<UserDto>(userDto, "Auth");

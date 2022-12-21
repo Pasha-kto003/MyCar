@@ -92,7 +92,12 @@ namespace MyCar.Web.Controllers
             {
                 user.UserName = newUser.UserName;
                 user.Email = newUser.Email;
-                UserEdit(user);
+                user.Passport.FirstName = newUser.Passport.FirstName;
+                user.Passport.LastName = newUser.Passport.LastName;
+                user.Passport.Patronimyc = newUser.Passport.Patronimyc;
+                user.Passport.DateStart = newUser.Passport.DateStart;
+                user.Passport.DateEnd = newUser.Passport.DateEnd;
+                UserEdit(user, user.Passport);
                 Authenticate(user);
                 return RedirectToAction("Index", "Home");
             }
@@ -101,9 +106,10 @@ namespace MyCar.Web.Controllers
                 return BadRequest();
             }
         }
-        public async Task UserEdit(UserApi userApi)
+        public async Task UserEdit(UserApi userApi, PassportApi passportapi)
         {
             var user = await Api.PutAsync<UserApi>(userApi, "User");
+            var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
         #endregion
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DB;
 using MyCar.Server.DTO;
 using MyCar.Web.Core;
 using MyCar.Web.Core.Hash;
@@ -20,7 +21,7 @@ namespace MyCar.Web.Controllers
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public int UserId = -1;
         public UserApi Userex { get; set; }
-        public User UserModel { get; set; }
+        //public User UserModel { get; set; }
         // GET: AccountController
         public ActionResult Index()
         {
@@ -47,11 +48,13 @@ namespace MyCar.Web.Controllers
             return View(user);
         }
 
+
+
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> PersonalArea()
         {
             var uname = User.Identity.Name;
-            if(uname != null)
+            if (uname != null)
             {
                 Users = await Api.GetListAsync<List<UserApi>>("User");
                 var user = Users.FirstOrDefault(s => s.UserName == uname);
@@ -62,6 +65,50 @@ namespace MyCar.Web.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserView(int id)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var user = Users.FirstOrDefault(s => s.ID == id);
+            //UserEdit(user);
+            if (user != null)
+            {
+                return View(user);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        //public async Task UserEdit(UserApi userApi)
+        //{
+        //    var user = await Api.PutAsync<UserApi>(userApi, "User");
+        //}
+        #region updating
+        public async Task<IActionResult> UpdateMethod(UserApi newUser)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var user = Users.FirstOrDefault(s => s.ID == newUser.ID);
+            if (user != null)
+            {
+                user.UserName = newUser.UserName;
+                user.Email = newUser.Email;
+                UserEdit(user);
+                Authenticate(user);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        public async Task UserEdit(UserApi userApi)
+        {
+            var user = await Api.PutAsync<UserApi>(userApi, "User");
+        }
+        #endregion
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -116,17 +163,20 @@ namespace MyCar.Web.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EditUserView(int id)
-        {
-            Users = await Api.GetListAsync<List<UserApi>>("User");
-            if (id != 0)
-            {
-                var user = Users.FirstOrDefault(s => s.ID == id);
-                return View(user);
-            }
-            return NotFound();
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> EditUserView(int id)
+        //{
+        //    Users = await Api.GetListAsync<List<UserApi>>("User");
+        //    if (id != 0)
+        //    {
+        //        var user = Users.FirstOrDefault(s => s.ID == id);
+        //        return View(user);
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -148,7 +198,7 @@ namespace MyCar.Web.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        private async Task CreateUser(RegisterModel model)
+        private async Task CreateUser(RegisterModel model) 
         {
             UserDto userDto = new UserDto { Password = model.Password, Username = model.UserName };
             UserId = await Api.RegistrationAsync<UserDto>(userDto, "Auth");
@@ -177,19 +227,16 @@ namespace MyCar.Web.Controllers
 
 
         [Authorize(Roles = "Администратор, Клиент")]
-        public async Task<IActionResult> Personal_Area()
+        public async Task<IActionResult> Personal_Area(string name)
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
-            var name = User.Identity.Name;
-            if (name != null)
-            {
-                var user = Users.FirstOrDefault(s => s.UserName == name);
-                var role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
-                ViewData["content"] = $"Теперь ваша роль {role}";
-                return View(user);
-            }
+            name = User.Identity.Name;
+            var user = Users.FirstOrDefault(s => s.UserName == name);
+            var role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+            ViewData["content"] = $"Теперь ваша роль {role}";
+            return View(user);
 
-            return NotFound();
+            //return NotFound();
         }
     }
 }

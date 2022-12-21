@@ -10,7 +10,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditUserView" asp-controller="Account" asp-route-id="@Model.ID">
+
+        <form asp-action="UpdateMethod" method="post">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ID" class="control-label"></label>
@@ -29,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Passport.FirstName" class="control-label"></label>
-                <input asp-for="Passport.LastName" class="form-control" />
+                <input asp-for="Passport.FirstName" class="form-control" />
                 <span asp-validation-for="PassportId" class="text-danger"></span>
             </div>
             <div class="form-group">

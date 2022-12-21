@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DB;
 using MyCar.Server.DTO;
 using MyCar.Web.Core;
 using MyCar.Web.Core.Hash;
@@ -20,7 +21,7 @@ namespace MyCar.Web.Controllers
         public List<UserApi> Users { get; set; } = new List<UserApi>();
         public int UserId = -1;
         public UserApi Userex { get; set; }
-        public User UserModel { get; set; }
+        //public User UserModel { get; set; }
         // GET: AccountController
         public ActionResult Index()
         {
@@ -47,11 +48,13 @@ namespace MyCar.Web.Controllers
             return View(user);
         }
 
+
+
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> PersonalArea()
         {
             var uname = User.Identity.Name;
-            if(uname != null)
+            if (uname != null)
             {
                 Users = await Api.GetListAsync<List<UserApi>>("User");
                 var user = Users.FirstOrDefault(s => s.UserName == uname);
@@ -64,6 +67,55 @@ namespace MyCar.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> EditUserView(int id)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var user = Users.FirstOrDefault(s => s.ID == id);
+            //UserEdit(user);
+            if (user != null)
+            {
+                return View(user);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        //public async Task UserEdit(UserApi userApi)
+        //{
+        //    var user = await Api.PutAsync<UserApi>(userApi, "User");
+        //}
+        #region updating
+        public async Task<IActionResult> UpdateMethod(UserApi newUser)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var user = Users.FirstOrDefault(s => s.ID == newUser.ID);
+            if (user != null)
+            {
+                user.UserName = newUser.UserName;
+                user.Email = newUser.Email;
+                user.Passport.FirstName = newUser.Passport.FirstName;
+                user.Passport.LastName = newUser.Passport.LastName;
+                user.Passport.Patronimyc = newUser.Passport.Patronimyc;
+                user.Passport.DateEnd = newUser.Passport.DateEnd;
+                user.Passport.DateStart = newUser.Passport.DateStart;
+                UserEdit(user);
+                Authenticate(user);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        public async Task UserEdit(UserApi userApi)
+        {
+            var user = await Api.PutAsync<UserApi>(userApi, "User");
+        }
+        #endregion
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
@@ -74,7 +126,7 @@ namespace MyCar.Web.Controllers
                 if (Userex != null)
                 {
                     Authenticate(Userex);
-                    if(Userex.UserType.TypeName == "Администратор")
+                    if (Userex.UserType.TypeName == "Администратор")
                     {
                         TempData["AllertMessage"] = "You log in as admin!!!";
 
@@ -100,7 +152,7 @@ namespace MyCar.Web.Controllers
 
                 await Authenticate(Userex);
 
-                if (Userex.UserType.TypeName == "admin")
+                if (Userex.UserType.TypeName == "Администратор")
                 {
                     TempData["AllertMessage"] = "You log in as admin!!!";
 
@@ -112,21 +164,10 @@ namespace MyCar.Web.Controllers
             }
             else
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
-            
+
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EditUserView(int id)
-        {
-            Users = await Api.GetListAsync<List<UserApi>>("User");
-            if (id != 0)
-            {
-                var user = Users.FirstOrDefault(s => s.ID == id);
-                return View(user);
-            }
-            return NotFound();
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -161,35 +202,32 @@ namespace MyCar.Web.Controllers
 
         private async Task Authenticate(UserApi user) //
         {
-            
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.UserType?.TypeName)
             };
-           
+
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
-            
+
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
 
 
         [Authorize(Roles = "Администратор, Клиент")]
-        public async Task<IActionResult> Personal_Area()
+        public async Task<IActionResult> Personal_Area(string name)
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
-            var name = User.Identity.Name;
-            if (name != null)
-            {
-                var user = Users.FirstOrDefault(s => s.UserName == name);
-                var role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
-                ViewData["content"] = $"Теперь ваша роль {role}";
-                return View(user);
-            }
+            name = User.Identity.Name;
+            var user = Users.FirstOrDefault(s => s.UserName == name);
+            var role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+            ViewData["content"] = $"Теперь ваша роль {role}";
+            return View(user);
 
-            return NotFound();
+            //return NotFound();
         }
     }
 }

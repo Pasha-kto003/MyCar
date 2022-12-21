@@ -95,6 +95,11 @@ namespace MyCar.Web.Controllers
             {
                 user.UserName = newUser.UserName;
                 user.Email = newUser.Email;
+                user.Passport.FirstName = newUser.Passport.FirstName;
+                user.Passport.LastName = newUser.Passport.LastName;
+                user.Passport.Patronimyc = newUser.Passport.Patronimyc;
+                user.Passport.DateEnd = newUser.Passport.DateEnd;
+                user.Passport.DateStart = newUser.Passport.DateStart;
                 UserEdit(user);
                 Authenticate(user);
                 return RedirectToAction("Index", "Home");
@@ -121,7 +126,7 @@ namespace MyCar.Web.Controllers
                 if (Userex != null)
                 {
                     Authenticate(Userex);
-                    if(Userex.UserType.TypeName == "Администратор")
+                    if (Userex.UserType.TypeName == "Администратор")
                     {
                         TempData["AllertMessage"] = "You log in as admin!!!";
 
@@ -147,7 +152,7 @@ namespace MyCar.Web.Controllers
 
                 await Authenticate(Userex);
 
-                if (Userex.UserType.TypeName == "admin")
+                if (Userex.UserType.TypeName == "Администратор")
                 {
                     TempData["AllertMessage"] = "You log in as admin!!!";
 
@@ -159,10 +164,9 @@ namespace MyCar.Web.Controllers
             }
             else
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
-            
+
             return View(model);
         }
-
         //[HttpGet]
         //public async Task<IActionResult> EditUserView(int id)
         //{
@@ -177,19 +181,6 @@ namespace MyCar.Web.Controllers
         //        return NotFound();
         //    }
         //}
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        private async Task<IActionResult> EditUserView(UserApi userApi)
-        {
-            var user = await Api.PutAsync<UserApi>(userApi, "User");
-            var passport = await Api.PutAsync<PassportApi>(userApi.Passport, "Passport");
-            if (user != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return NotFound();
-        }
 
 
         public async Task<IActionResult> Logout()
@@ -211,16 +202,16 @@ namespace MyCar.Web.Controllers
 
         private async Task Authenticate(UserApi user) //
         {
-            
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.UserType?.TypeName)
             };
-           
+
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
-            
+
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 

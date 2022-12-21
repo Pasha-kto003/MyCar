@@ -23,6 +23,7 @@
                     </h4>
                     <h5>@item.CarPrice &#8381</h5>
                     <p class="card-text">@item.CarOptions</p>
+                    <div class="container-3">
                     @if (User.IsInRole("admin"))
                     {
                         <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.ID">Изменить</a>
@@ -30,6 +31,8 @@
                     }
                     <a asp-action="AddBuy" asp-controller="Home" asp-route-id="@item.ID"> Купить</a>
                     <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@item.ID">Подробнее</a>
+                    </div>
+                    
                 </div>
             </div>
         </div>

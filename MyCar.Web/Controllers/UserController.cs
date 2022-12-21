@@ -1,3 +1,4 @@
+
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,6 @@ namespace MyCar.Web.Controllers
             {
                 return BadRequest();
             }
-            
 
         }
 
@@ -39,7 +39,5 @@ namespace MyCar.Web.Controllers
         {
             return View();
         }
-
-
     }
 }

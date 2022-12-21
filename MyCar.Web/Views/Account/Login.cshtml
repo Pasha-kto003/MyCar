@@ -10,9 +10,12 @@
                 <span asp-validation-for="UserName" />
             </div>
             <div class="form-group" style="margin-top: 50px;" >
-                <input type="password" id="password-input" class="form-control" placeholder="Введите пароль" asp-for="Password" />
+                <input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" />
                 <span asp-validation-for="Password" />
-                <label style="margin-top:20px; margin-bottom:20px;"><input type="checkbox" class="password-checkbox" />Показать пароль</label>
+                <label style="margin-top:20px; margin-bottom:20px;">
+                    <input type="checkbox" onclick="myFunction()" class="password-checkbox"/>
+                        Показать пароль
+                </label>
             </div>
             <div class="form-group" style="margin-bottom:20px; width: 300px;">
                 

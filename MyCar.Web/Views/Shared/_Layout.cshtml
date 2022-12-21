@@ -23,13 +23,13 @@
           @if (User.Identity.IsAuthenticated)
           {
           <li class="nav-item">
-          <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+          <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
           </li>
           <li class="nav-item">
           <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
           </li>
           <li class="nav-item">
-           <a class="nav-link text-white" asp-controller="Home" asp-action="CarView">Catalog</a>
+           <a class="nav-link text-white" asp-controller="Home" asp-action="CarView">Каталог</a>
           </li>
                         @if (User.IsInRole("Администратор"))
                         {
@@ -50,34 +50,37 @@
           }
           </ul>
 
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                <input type="search" class="form-control form-control-dark" placeholder="Поиск по сайту.." aria-label="Search">
+            </form>
+
           <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown button
+                                Аккаунт
                             </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Personal_Area" asp-route-data="@User.Identity.Name">Профиль</a>
+                        <a class="dropdown-item" asp-controller="Cart" asp-action="CartPage">Корзина</a>
                             @if (User.Identity.IsAuthenticated)
                             {                               
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout (@User.Identity.Name)</a>                                
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход (@User.Identity.Name)</a>
                             }
                             else
                             {                               
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a>                                
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>                                
                             }
-                            <a class="dropdown-item" asp-controller="Account" asp-action="Personal_Area">Your account</a>
                     </div>
           </div>
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-          <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-        </form>
+                
+
       </div>
     </div>
   </header>
-    <div class="container w-100" style="box-sizing:border-box;">
+
         <main role="main" class="pb-3 w-100" style="box-sizing">
             
             @RenderBody()
         </main>
-    </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">

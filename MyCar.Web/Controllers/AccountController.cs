@@ -11,6 +11,7 @@ using MyCar.Web.Core;
 using MyCar.Web.Core.Hash;
 using MyCar.Web.Models;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace MyCar.Web.Controllers
 {
@@ -82,10 +83,6 @@ namespace MyCar.Web.Controllers
             }
         }
 
-        //public async Task UserEdit(UserApi userApi)
-        //{
-        //    var user = await Api.PutAsync<UserApi>(userApi, "User");
-        //}
         #region updating
         public async Task<IActionResult> UpdateMethod(UserApi newUser)
         {
@@ -100,7 +97,7 @@ namespace MyCar.Web.Controllers
                 user.Passport.Patronimyc = newUser.Passport.Patronimyc;
                 user.Passport.DateEnd = newUser.Passport.DateEnd;
                 user.Passport.DateStart = newUser.Passport.DateStart;
-                UserEdit(user);
+                UserEdit(user, user.Passport);
                 Authenticate(user);
                 return RedirectToAction("Index", "Home");
             }
@@ -146,6 +143,12 @@ namespace MyCar.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
         {
+            EmailIsValid(model.Email);
+            if (EmailIsValid(model.Email) == false)
+            {
+                ModelState.AddModelError("", "Данные почты введены неккоректно");
+            }
+
             await CreateUser(model);
             if (UserId != -1)
             {
@@ -168,21 +171,6 @@ namespace MyCar.Web.Controllers
 
             return View(model);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> EditUserView(int id)
-        //{
-        //    Users = await Api.GetListAsync<List<UserApi>>("User");
-        //    if (id != 0)
-        //    {
-        //        var user = Users.FirstOrDefault(s => s.ID == id);
-        //        return View(user);
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-
 
         public async Task<IActionResult> Logout()
         {
@@ -192,7 +180,7 @@ namespace MyCar.Web.Controllers
 
         private async Task CreateUser(RegisterModel model) 
         {
-            UserDto userDto = new UserDto { Password = model.Password, Username = model.UserName };
+            UserDto userDto = new UserDto { Password = model.Password, Username = model.UserName, Email = model.Email };
             UserId = await Api.RegistrationAsync<UserDto>(userDto, "Auth");
         }
 
@@ -201,7 +189,7 @@ namespace MyCar.Web.Controllers
             Userex = await Api.GetAsync<UserApi>(id, "User");
         }
 
-        private async Task Authenticate(UserApi user) //
+        private async Task Authenticate(UserApi user)
         {
 
             var claims = new List<Claim>
@@ -230,5 +218,24 @@ namespace MyCar.Web.Controllers
 
             //return NotFound();
         }
+
+        public bool EmailIsValid(string email)
+        {
+            //string expression = "\\w+([-+.']\\w+)@\\w+([-.]\\w+)\\.\\w+([-.]\\w+)*";
+            string expression = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
+            //"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+            //@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$"
+            //@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"
+
+            if (Regex.IsMatch(email, expression))
+            {
+                if (Regex.Replace(email, expression, string.Empty).Length == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

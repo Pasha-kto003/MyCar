@@ -41,7 +41,7 @@ namespace MyCar.Server.Controllers.Jwt
             await dbContext.SaveChangesAsync();
             CreatePasswordHash(userDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.UserName = userDTO.Username;
-            user.Email = "mail@gmail";
+            user.Email = userDTO.Email;
             user.PasswordHash = passwordHash;
             user.SaltHash = passwordSalt;
             user.UserTypeId = dbContext.UserTypes.FirstOrDefault(s=> s.TypeName == "Клиент").Id;

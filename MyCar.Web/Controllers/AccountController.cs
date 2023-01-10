@@ -111,7 +111,6 @@ namespace MyCar.Web.Controllers
             var user = await Api.PutAsync<UserApi>(userApi, "User");
             var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
-        #endregion
 
         [HttpPost]
         [ValidateAntiForgeryToken]

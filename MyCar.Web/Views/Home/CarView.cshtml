@@ -24,7 +24,7 @@
                         <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.ID">Удалить</a>
                     }
                     <a asp-action="AddBuy" asp-controller="Home" asp-route-id="@item.ID"> Купить</a>
-                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@item.ID">Подробнее</a>
+                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">Подробнее</a>
         </div>            
         </div>
         </div>

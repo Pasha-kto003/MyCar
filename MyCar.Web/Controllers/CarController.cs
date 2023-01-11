@@ -21,10 +21,11 @@ namespace MyCar.Web.Controllers
 
 
         // GET: CarController/Details/5
-        public async Task<IActionResult> DetailsCarView(int id)
+        [Route("/Car/DetailsCarView/CarName/{CarName?}")]
+        public async Task<IActionResult> DetailsCarView(string CarName)
         {
             Cars = await Api.GetListAsync<List<CarApi>>("Car");
-            var car = Cars.FirstOrDefault(s => s.ID == id);
+            var car = Cars.FirstOrDefault(s => s.CarName == CarName);
             return View(car);
         }
 

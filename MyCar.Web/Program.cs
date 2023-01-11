@@ -39,5 +39,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
+app.MapControllerRoute(
+    name: "car",
+    pattern: "{controller=Car}/{action=DetailsCarView}/{CarName?}");
+
 
 app.Run();

@@ -39,6 +39,14 @@ namespace MyCar.Server.Controllers
             return GetCar(car);
         }
 
+        [HttpGet("CarName")]
+        public async Task<ActionResult<CarApi>> GetName(string name) // for test
+        {
+            var car = dbContext.Cars.FirstOrDefault(s => s.Model.ModelName.ToLower().Contains(name) || s.Model.Mark.MarkName.ToLower().Contains(name));
+
+            return GetCar(car);
+        }
+
         [HttpGet("Type, Text, Filter")]
         public IEnumerable<CarApi> SearchByCar(string type, string text, string filter)
         {

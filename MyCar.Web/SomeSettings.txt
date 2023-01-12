@@ -1,0 +1,17 @@
+﻿@*<div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+               Аккаунт
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Personal_Area" asp-route-data="@User.Identity.Name">Профиль</a>
+                        <a class="dropdown-item" asp-controller="Cart" asp-action="CartPage">Корзина</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {                               
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход (@User.Identity.Name)</a>
+                            }
+                            else
+                            {                               
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>                                
+                            }
+          </div>
+</div>*@

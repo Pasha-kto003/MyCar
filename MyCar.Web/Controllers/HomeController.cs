@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Web.Core;
 using MyCar.Web.Models;
+using SmartBreadcrumbs.Attributes;
 using System.Diagnostics;
 using System.Security.Claims;
 
 namespace MyCar.Web.Controllers
 {
+    [DefaultBreadcrumb]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -25,6 +27,7 @@ namespace MyCar.Web.Controllers
             return View(marks);
         }
 
+        [Breadcrumb(FromAction = "Index", Title = "Marks")]
         public async Task<IActionResult> MarkView()
         {
             var marks = new List<MarkCarApi>();
@@ -32,6 +35,7 @@ namespace MyCar.Web.Controllers
             return View("MarkView", marks);
         }
 
+        [Breadcrumb(FromAction = "Index", Title = "Users")]
         public async Task<IActionResult> UserView()
         {
             var users = new List<UserApi>();
@@ -39,6 +43,7 @@ namespace MyCar.Web.Controllers
             return View("UserView", users);
         }
 
+        [Breadcrumb(FromAction = "Index", Title = "Auto")]
         [HttpGet]
         public async Task<IActionResult> GetAuto(int id)
         {
@@ -49,6 +54,7 @@ namespace MyCar.Web.Controllers
             return View("CarView", cars);
         }
 
+        [Breadcrumb(FromAction = "Index", Title = "CarView")]
         public async Task<IActionResult> CarView()
         {
             var cars = new List<CarApi>();
@@ -60,7 +66,7 @@ namespace MyCar.Web.Controllers
         {
             return View();
         }
-
+        [Breadcrumb("ViewData.Title")]
         public IActionResult Privacy()
         {
             return View();

@@ -2,11 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Web.Core;
+using SmartBreadcrumbs.Attributes;
+using SmartBreadcrumbs.Nodes;
 
 namespace MyCar.Web.Controllers
 {
+    [DefaultBreadcrumb]
     public class CarController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+
+        public CarController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
         public List<CarApi> Cars { get; set; } = new List<CarApi>();
         // GET: CarController
         public ActionResult Index()
@@ -14,18 +24,18 @@ namespace MyCar.Web.Controllers
             return View();
         }
 
-        public IActionResult CarView()
-        {
-            return View();
-        }
-
-
         // GET: CarController/Details/5
         [Route("/Car/DetailsCarView/CarName/{CarName?}")]
+        [Breadcrumb("DetailsCarView", FromController = typeof(HomeController), FromAction = "CarView")]
         public async Task<IActionResult> DetailsCarView(string CarName)
         {
             Cars = await Api.GetListAsync<List<CarApi>>("Car");
             var car = Cars.FirstOrDefault(s => s.CarName == CarName);
+            var page = new MvcBreadcrumbNode("Index", "Home", "Home");
+            var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "CarView") { Parent = page };
+            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"DetailsCarView / {CarName}") { Parent = articlesPage };
+            ViewData["BreadcrumbNode"] = articlePage;
+            ViewData["Title"] = $"CarName - {CarName}";
             return View(car);
         }
 

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SmartBreadcrumbs.Extensions;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,17 @@ builder.Services.AddMvc().AddRazorPagesOptions(options =>
     options.Conventions.AddPageRoute("/Account/Login", "");
     
 });
+
+builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
+{
+    options.TagName = "nav";
+    options.TagClasses = "";
+    options.OlClasses = "breadcrumb";
+    options.LiClasses = "breadcrumb-item";
+    options.ActiveLiClasses = "breadcrumb-item active";
+    options.DontLookForDefaultNode = true;
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -42,6 +55,5 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "car",
     pattern: "{controller=Car}/{action=DetailsCarView}/{CarName?}");
-
 
 app.Run();

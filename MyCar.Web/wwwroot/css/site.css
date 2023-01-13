@@ -1480,4 +1480,17 @@ body {
         color: #FFF;
     }
 
+.imageCardHover {
+    opacity: 100%;
+}
+.imageCardHover :hover {
+    opacity: 60%;
+    filter: brightness(50%);
+}
 
+.value {
+    font-size: 150px;
+    display: block;
+    font-weight: bold;
+    color: #fff;
+}

@@ -1480,4 +1480,14 @@ body {
         color: #FFF;
     }
 
+.myContainer {
+    position: relative;
+    text-align: center;
+}
 
+.textCenterLeft {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    font-size: 4vw;
+}

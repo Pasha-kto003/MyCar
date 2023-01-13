@@ -18,6 +18,12 @@
                 <span asp-validation-for="UserName" />
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
+                <div style="margin-top:30px;">
+                    <label asp-for="Email">Введите почтовый адрес</label><br />
+                    <input type="text" required="" autofocus="" id="imputserName" asp-for="Email" class="form-control" placeholder="User" width="300px;" />
+                    <span asp-validation-for="Email" />
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
             <div style="margin-top:30px;">
                 <h5 class="h3 mb-3 font-weight-normal">Введите пароль</h5>
                 <input type="password" id="password-input" class="form-control" placeholder="Введите пароль" asp-for="Password" width="300px;/>

@@ -18,5 +18,7 @@ namespace MyCar.Web.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         public string ConfirmPassword { get; set; }
+
+        
     }
 }

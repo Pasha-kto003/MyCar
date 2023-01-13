@@ -83,7 +83,7 @@ namespace MyCar.Web.Controllers
             }
         }
 
-        #region updating
+        
         public async Task<IActionResult> UpdateMethod(UserApi newUser)
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");

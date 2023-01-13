@@ -19,7 +19,6 @@ namespace MyCar.Web.Models
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Не указан почтовый адрес")]
-        public string Email { get; set; }
+        
     }
 }

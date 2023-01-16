@@ -1491,7 +1491,7 @@ body {
     top: 50%;
     left: 10%;
     font-size: 4vw;
-
+}
 .imageCardHover {
     opacity: 100%;
 }
@@ -1523,4 +1523,19 @@ body {
 .control-width {
     width: 70%;
     margin: auto;
+}
+
+.content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #030303;
+    height: 100vh;
+}
+
+.value {
+    font-size: 150px;
+    display: block;
+    font-weight: bold;
+    color: #fff;
 }

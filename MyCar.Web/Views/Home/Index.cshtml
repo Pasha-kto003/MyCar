@@ -8,9 +8,9 @@
 <div class="wow bounceInDown slider" id="slider" style="margin: 0px;"> 
     <div class="slider-content" id="slider-content">
         <div class="sl-img">
-            <div class="sl-img-item sl-img-item-active" data-id="1"><img src="https://toppng.com/uploads/preview/mercedes-benz-cls350-amg-mercedes-machine-white-buildings-city-11569995130t8e9jqggio.jpg"/></div>
-            <div class="sl-img-item" data-id="2"><img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Sauber-Mercedes_C9%2C_Bj._1988_%282009-08-07_Sp%29.jpg"/></div>
-            <div class="sl-img-item" data-id="3"><img src="https://motor.ru/imgs/2021/03/25/07/4577323/db922858561d4e3cb98cf37db34efbff8a42269a.jpg"/></div>
+            <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg"/></div>
+            <div class="sl-img-item" data-id="2"><img src="/image/sliderPhoto2.jpg" /></div>
+            <div class="sl-img-item" data-id="3"><img src="/image/sliderPhoto3.jpg"/></div>
         </div>
         <div class="sl-text">
             <div class="sl-text-item sl-text-item-active" data-id="1">
@@ -37,14 +37,6 @@
                     <p>Шотландия</p>
                 </div>
             </div>
-            <div class="sl-text-item" data-id="4">
-                <div class="sl-text-item-head">
-                    <h3>Озеро Ирен</h3>
-                </div>
-                <div class="sl-text-item-info">
-                    <p>Национальный парк Роки-Маунтин</p>
-                </div>
-            </div>          
         </div>
     </div>
     <div class="slider__nav" style="height: 900px;">
@@ -56,12 +48,24 @@
             <div class="sl-nav-dot sl-nav-dot-active" data-id="1"></div>
             <div class="sl-nav-dot" data-id="2"></div>
             <div class="sl-nav-dot" data-id="3"></div>
-            <div class="sl-nav-dot" data-id="4"></div>
-            <div class="sl-nav-dot" data-id="5"></div>
-            <div class="sl-nav-dot" data-id="6"></div>
         </div>
     </div>
 </div>
+
+
+@*@model IEnumerable<ModelsApi.MarkCarApi>
+
+<h2 class="wow rollIn">Марки</h2>
+<div class="cards">
+        @foreach(MarkCarApi markCar in Model)
+        {
+        <div class="card wow rollIn">
+        <div class="card-image">
+            <img src="~/MarkImages/@markCar.MarkPhoto"/>
+        </div> 
+        <div class="card-content">
+            <div class="card-title">
+                @markCar.MarkName
 
 <section class="row w-100">
     <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12 recent-vehicles padding-left-none">
@@ -85,6 +89,7 @@
                     <h5>2 000 000 &#8381</h5>
                     
                 </div>
+
             </div>
         </div>
         <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
@@ -105,6 +110,113 @@
                 </div>
             </div>
         </div>
+
+        }
+</div>*@
+
+    <div class="row p-3 mt-5 mb-5">
+        <div class="col">
+                <p class="h1 text-white text-center"></p>
+        </div>
+    </div>
+
+    <section class="w-100" >
+        <div class="myContainer w-100">
+            <img src="/image/landingText.jpg" style="width: 100%;"/>
+            <div class="textCenterLeft">Новая ЛАМБА</div>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <div class="row mb-5 mt-5">
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">Финансирование</h4>
+                    <a href="#">
+                        <img src="/image/sectionPhoto3.png" style="max-width: 8rem; " />
+                        <div class="mask"></div>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">Гарантия</h4>
+                    <a href="#">
+                        <img src="/image/sectionPhoto2.png" style="max-width: 8rem; " />
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">О нас</h4>
+                    <a href="#"> 
+                        <img src="/image/sectionPhoto1.png" style="max-width: 8rem; " />
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">Местонахождение</h4>
+                    <a href="#">
+                        <img src="/image/sectionPhoto4.png" style="max-width: 8rem; " />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="container">
+            <div class="row">
+                <div class="col-md-4 col-xs-4">
+                    <div class="thumbnail">
+                        <div class="picture1">
+                            <img class="img-responsive" src="http://frontendfreecode.com/img/pizza.jpeg" alt="...">
+                        </div>
+                        <div class="picture2">
+                            <img class="img-responsive" src="http://frontendfreecode.com/img/salad-square.jpg" alt="">
+                        </div>
+                        <div class="caption">
+                            <h3>Thumbnail label</h3>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>*@
+
+
+    </div>
+
+    @*<div class="slider" id="slider">
+        <div class="slider-content" id="slider-content">
+            <div class="sl-img">
+                <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg" /></div>
+                <div class="sl-img-item" data-id="2"><img src="/image/landingText2.jpg" /></div>
+            </div>
+        </div>
+
+        <div class="slider__nav" style="height: 900px;">
+            <div class="sl-nav-arrows">
+                <div class="sl-nav-arrow sl-nav-arrow-left" id="left">Лево</div>
+                <div class="sl-nav-arrow sl-nav-arrow-right" id="right">Право</div>
+            </div>
+            <div class="sl-nav-dots" id="sl-nav-dots">
+                <div class="sl-nav-dot sl-nav-dot-active" data-id="1"></div>
+                <div class="sl-nav-dot" data-id="2"></div>
+                <div class="sl-nav-dot" data-id="3"></div>
+            </div>
+        </div>
+
+    </div>*@
+
         <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
             <div class="corner-box-1-content" style="background-color:#171717">
                 <div class="card-body img-responsive">
@@ -143,6 +255,7 @@
         </div>
 </section>
 
+
 <div class="fix-bg wow slideInLeft" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg); background-size:cover;">
 <div class="text-wp">    
     <div class="text-bg">
@@ -168,6 +281,12 @@
 </div>   
 </div>
 
+</div>
+<section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
+  <div class="container">
+
+
+
 
 <section class="row">
     <div class="col-4">
@@ -188,6 +307,7 @@
 </div>
 <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
   <div class="container">
+
     <!-- START THE FEATURETTES -->
 
     <hr class="featurette-divider">
@@ -243,6 +363,44 @@
         </div>
     </div>
 </div>
+
+    @*<div class="row" style="margin-bottom: 85px; margin-top: 85px">
+        <div class="col p-1">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                Вопрос 1
+                            </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">Член <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                Вопрос 2
+                            </button>
+                        </h2>
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">Член <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                Вопрос 3
+                            </button>
+                        </h2>
+                        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">Член <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>*@
+
 
 <!--  Предзагрузка картинок  -->
 <div style="height: 0; width: 0; overflow: hidden">

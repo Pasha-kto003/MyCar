@@ -15,3 +15,56 @@
                             }
           </div>
 </div>*@
+
+
+        @*<div class="corner-box-1 card col-sm-3 m-1" style=" width: 300px; height: 400px; margin-top: 10px;">
+            <div class="corner-box-1-content">
+                <div class="card-body img-responsive">
+                    <h4 class="card-title">
+                        <img src="~/CarImages/@item.PhotoCar" style="width:200px; height:200px; position:relative;"/>
+                        <br />
+                        <h5>@item.CarName</h5>
+                        <button class="imageButton">
+                            <h1>
+                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@item.ID">+</a>
+                            </h1>
+                        </button>
+                    </h4>
+                    <h5>@item.CarPrice &#8381</h5>
+                    <p class="card-text">@item.CarOptions</p>
+                    <div class="container-3">
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.ID">Изменить</a>
+                        <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.ID">Удалить</a>
+                    }
+                    <a asp-action="AddBuy" asp-controller="Home" asp-route-id="@item.ID"> Купить</a>
+                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@item.ID">Подробнее</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>*@
+
+@*        <div class="flip-card">
+        <div class="flip-card-inner">
+        <div class="flip-card-front">
+        <img src="~/CarImages/@item.PhotoCar" style="width:300px; height:300px; position:relative;">
+         </div>
+        <div class="flip-card-back">
+        <h4>@item.CarName</h4>
+        <p>@item.CarPrice &#8381</p>
+        <p>@item.CarOptions</p>
+        <div class="container-3">
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.ID">Изменить</a>
+                        <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.ID">Удалить</a>
+                    }
+                    <a asp-action="AddBuy" asp-controller="Home" asp-route-id="@item.ID"> Купить</a>
+                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">Подробнее</a>
+        </div>            
+        </div>
+        </div>
+        </div>
+*@

@@ -4,90 +4,172 @@
     ViewData["Title"] = "DetailsCarView";
 }
 
-    <div class="container w-100">
-        <div class="inner-page inventory-listing">
-            <div class="inventory-heading margin-bottom-10 clearfix">
-                <div class="row">
-                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <h2>@Model.CarName</h2>
-                        <span class="margin-top-10">Our template platform will maximize the exposure of your inventory online</span> </div>
-                    <div class="col-lg-2 col-md-2 col-sm-12 text-right">
-                        <h2>@Model.CarPrice</h2>
-                        <em>Plus Taxes &amp; Licensing</em>
-                    </div>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col">
+            <div class="position-relative overflow-hidden text-center" style="background-image: url(/CarImage/1.png)">
+                <div class="col-md-5 p-lg-5 mx-auto my-5">
+                    <h1 style="color: white;" class="display-4 font-weight-normal">@Model.CarMark</h1>
+                    <p style="color: white;" class="lead font-weight-normal">@Model.CarName</p>
+                    @*<a class="btn btn-outline-secondary" href="#">Купить</a>*@
+                </div>
+                <div class="product-device shadow-sm d-none d-md-block"></div>
+                <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+            </div>
+            </div>
+        </div>
+
+
+    <div class="item mt-5 ml-2">
+        <div class="row g-3 g-xl-0">
+            <div class="col-2 col-xl-3">
+                <img class="img-fluid post-thumb p-4" src="/CarImages/@Model.PhotoCar" alt="image">
+            </div>
+            <div class="col">
+                <h3 style="color: white;" class="title mb-1 ">Lorem ipsum dolor sit amet, cons</h3>
+                <div class="intro Textovik4 p-4 mr-2">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis p Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis p
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <section class="About-area section-gap" id="about">
+        <div class="container">
+            <div class="row d-flex align-items-center">
+                <div class="col-lg-6 about-left">
+                    <img class="img-fluid" src="/CarImages/1.png" alt="image">
+                </div>
+                <div class="col-lg-6 about-right">
+                    <h1 style="color: white;">
+                        We Believe that <br>
+                        Interior beautifies the
+                    </h1>
+                    <p style="color: white;">
+                        inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct standards especially in the workplace. That’s why it’s crucial that, as women, our behavior on the job is beyond reproach. inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct standards especially in the workplace. That’s why it’s crucial that.
+                    </p>
+                    <button type="button" class="btn btn-secondary">Узнать больше</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 center-content">
-                    <!--OPEN OF SLIDER-->
-                    <div class="listing-slider">
-                        <section class="slider home-banner">
-                            <div class="flexslider" id="home-slider-canvas">
-                                
-                            <div class="flex-viewport" style="overflow: hidden; position: relative;">
-                                <ul class="slides" style="transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
-                                    <li class="flex-active-slide" style="float: left; display: block;">
-                                        <a rel="gallery1" class="fancybox fancybox_listing_link" href="~/CarImages/@Model.PhotoCar">
-                                            <img src="~/CarImages/@Model.PhotoCar" alt="" draggable="false" width="500" height="500">
-                                        </a> 
-                                    </li>       
-                                </ul>
-                            </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!--CLOSE OF SLIDER-->
-                    <!--Slider End-->
-                    <div class="clearfix"></div>
-                    <div class="bs-example bs-example-tabs example-tabs margin-top-50">
-                        <h3>Описание:</h3>
-                        <div id="myTabContent" class="tab-content margin-top-15 margin-bottom-20">
-                            <div class="tab-pane in active" id="vehicle">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus tincidunt aliquam. Aliquam gravida massa at sem vulputate
-                                    interdum et vel eros. Maecenas eros enim, tincidunt vel turpis vel, dapibus tempus nulla. Donec vel nulla dui. Pellentesque sed ante
-                                    sed ligula hendrerit condimentum. Suspendisse rhoncus fringilla ipsum quis porta. Morbi tincidunt viverra pharetra.</p>
-                                <p>Vestibulum vel mauris et odio lobortis laoreet eget eu magna. Proin mauris erat, luctus at nulla ut, lobortis mattis magna. Morbi
-                                    a arcu lacus. Maecenas tristique velit vitae nisi consectetur, in mattis diam sodales. Mauris sagittis sem mattis justo bibendum, a
-                                    eleifend dolor facilisis. Mauris nec pharetra tortor, ac aliquam felis. Nunc pretium erat sed quam consectetur fringilla.</p>
-                                <p>Aliquam ultricies nunc porta metus interdum mollis. Donec porttitor libero augue, vehicula tincidunt lectus placerat a. Sed
-                                    tincidunt dolor non sem dictum dignissim. Nulla vulputate orci felis, ac ornare purus ultricies a. Fusce euismod magna orci,
-                                    sit amet aliquam turpis dignissim ac. In at tortor at ligula pharetra sollicitudin. Sed tincidunt, purus eget laoreet elementum,
-                                    felis est pharetra ante, tincidunt feugiat libero enim sed risus.</p>
-                                <p>Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent cursus varius odio,
-                                    non faucibus dui. Nunc vehicula lectus sed velit suscipit aliquam vitae eu ipsum. Curabitur hendrerit magna a quam semper, at tristique
-                                    mauris gravida. Donec consequat elementum lorem, ac luctus ligula. Quisque viverra fringilla mi vel aliquam. Class aptent taciti sociosqu
-                                    ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
+        </div>
+    </section>
+    
+
+    <section class="hero-section mt-3 mb-3" style="background: url(/CarImages/4.png); position: relative; background-position: center; background-repeat: no-repeat ">
+        <div class="hero-mask">
+        </div>
+        <div class="container text-center py-5">
+            <div class="single-col-max mx-auto">
+                <div class="hero-heading-upper pt-3 mb-3" style="color:white;">Ограниченная серия <br class="d-md-none" style="color:white;">комплектов</div>
+                <h1 style="color: white;" class="hero-heading mb-5">
+                    <span class="brand mb-4 d-block"><span class="name" style="color:white;">@Model.CarPrice</span></span>
+                    <span class="desc d-block" style="color:white;">@Model.CarOptions</span>
+                </h1>
+                <div class="text-center mb-5">
+                    <a href="#section-pricing" class="btn btn-primary btn-lg scrollto">Купить</a>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 right-content">
-                    <div class="side-content">
-                        <div class="car-info margin-bottom-50">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tbody>
-                                    @foreach(var setting in Model.CharacteristicCars)
-                                    {
-                                        <tr>
-                                            <td>@setting.Characteristic.CharacteristicName:</td>
-                                            <td>@setting.CharacteristicValue</td>
-                                            <td>@setting.Characteristic.Unit.UnitName</td>
-                                        </tr>
-                                    }
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="container flex-column align-items-center justify-content-center" style="margin-top: 200px;">                             
-                                <a class="alert alert-warning" style="width:250px;" asp-action="Index" asp-controller="Home">Назад</a>|
-                                <a class="alert alert-success" style="width:250px;">Купить</a>|
-                            </div>
+
+                <div class="hero-summary">
+                    <div class="row">
+                        <div class="item col-4">
+                            <div class="summary-desc mb-1" style="color:white;"><i class="icon fas fa-video me-2" style="color:white;"></i>Поле</div>
+                            <h4  class="summary-heading" style="color:white;">Данные</h4>
+                            @*<h4 class="summary-heading" style="color:white;">Данные <span class="desc" style="color:white;">Данные</span></h4>*@
+
+                        </div><!--//col-->
+                        <div class="item col-4">
+                            <div class="summary-desc mb-1" style="color:white;"><i class="icon fas fa-clock me-2" style="color:white;"></i>Поле</div>
+                            <h4 class="summary-heading" style="color:white;">Данные</h4>
+
+                        </div><!--//col-->
+                        <div class="item col-4">
+                            <div class="summary-desc mb-1" style="color:white;"><i class="icon fas fa-user-circle me-2" style="color:white;"></i>Поле</div>
+                            <h4 class="summary-heading" style="color:white;">Данные</h4>
+
                         </div>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <section class="services-area section-gap">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="menu-content  col-lg-7">
+                    <div class="title text-center">
+                        <h1 style="color: white;" class="mb-10">My Offered Services</h1>
+                        <p style="color: white;">At about this time of year, some months after New Year’s resolutions have been made and kept, or made and neglected.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-services">
+                        <span class="lnr lnr-pie-chart"></span>
+                        <a href="#"><h4>Web Design</h4></a>
+                        <p style="color: white;">
+                            “It is not because things are difficult that we do not dare; it is because we do not dare that they are difficult.”
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-services">
+                        <span class="lnr lnr-laptop-phone"></span>
+                        <a href="#"><h4>Web Development</h4></a>
+                        <p style="color: white;">
+                            If you are an entrepreneur, you know that your success cannot depend on the opinions of others. Like the wind, opinions.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-services">
+                        <span class="lnr lnr-camera"></span>
+                        <a href="#"><h4>Photography</h4></a>
+                        <p style="color: white;">
+                            Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-services">
+                        <span class="lnr lnr-picture"></span>
+                        <a href="#"><h4>Clipping Path</h4></a>
+                        <p style="color: white;">
+                            Hypnosis quit smoking methods maintain caused quite a stir in the medical world over the last two decades. There is a lot of argument.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-services">
+                        <span class="lnr lnr-tablet"></span>
+                        <a href="#"><h4>Apps Interface</h4></a>
+                        <p style="color: white;">
+                            Do you sometimes have the feeling that you’re running into the same obstacles over and over again? Many of my conflicts.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-services">
+                        <span class="lnr lnr-rocket"></span>
+                        <a href="#"><h4>Graphic Design</h4></a>
+                        <p style="color: white;">
+                            You’ve heard the expression, “Just believe it and it will come.” Well, technically, that is true, however, ‘believing’ is not just thinking that.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="row">
+        <div class="col-6">
+
+        </div>
+        <div class="col-6">
+        </div>
     </div>
-    <!--container ends-->
+
+    </div>

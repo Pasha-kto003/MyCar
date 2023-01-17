@@ -51,69 +51,6 @@
         </div>
     </div>
 </div>
-
-
-@*@model IEnumerable<ModelsApi.MarkCarApi>
-
-<h2 class="wow rollIn">Марки</h2>
-<div class="cards">
-        @foreach(MarkCarApi markCar in Model)
-        {
-        <div class="card wow rollIn">
-        <div class="card-image">
-            <img src="~/MarkImages/@markCar.MarkPhoto"/>
-        </div> 
-        <div class="card-content">
-            <div class="card-title">
-                @markCar.MarkName
-
-<section class="row w-100">
-    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12 recent-vehicles padding-left-none">
-                            <h5 class="margin-top-none" style="color:white;">Popular Vehicles</h5>
-                            <p style="color: white;">Our most popular cars</p>
-                            <div class="arrow3 clearfix margin-top-15 xs-margin-bottom-25" id="slideControls3"><span class="prev-btn"><a class="bx-prev" href="">Prev</a></span><span class="next-btn"><a class="bx-next" href="">Next</a></span></div>
-    </div>
-    <div style="width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img class="imageCardHover" src="~/CarImages/toyota_camry2019_grey.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5>2 000 000 &#8381</h5>
-                    
-                </div>
-
-            </div>
-        </div>
-        <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img src="~/CarImages/ToyotaCrown.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5>5 000 000 &#8381</h5>
-                    
-                </div>
-            </div>
-        </div>
-
-        }
-</div>*@
-
     <div class="row p-3 mt-5 mb-5">
         <div class="col">
                 <p class="h1 text-white text-center"></p>
@@ -217,6 +154,7 @@
 
     </div>*@
 
+    <section class="row w-100">
         <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
             <div class="corner-box-1-content" style="background-color:#171717">
                 <div class="card-body img-responsive">
@@ -253,8 +191,7 @@
                 </div>
             </div>
         </div>
-</section>
-
+    </section>
 
 <div class="fix-bg wow slideInLeft" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg); background-size:cover;">
 <div class="text-wp">    
@@ -280,29 +217,6 @@
     </div>
 </div>   
 </div>
-
-</div>
-<section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
-  <div class="container">
-
-
-
-
-<section class="row">
-    <div class="col-4">
-        <h4 style="color: white;">Happy Clients</h4>
-        <div class="value" akhi="1000">0</div>
-    </div>
-    <div class="col-4">
-        <h4 style="color: white;">Sold Cars</h4>
-        <div class="value" akhi="1000">0</div>
-    </div>
-    <div class="col-4">
-        <h4 style="color: white;">Collect money</h4>
-        <div class="value" akhi="200000">0</div>
-    </div>
-
-</section>
 
 </div>
 <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">

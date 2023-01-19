@@ -1524,3 +1524,9 @@ body {
     width: 70%;
     margin: auto;
 }
+
+.bottom-rightHeader {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}

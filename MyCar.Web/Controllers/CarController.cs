@@ -37,6 +37,7 @@ namespace MyCar.Web.Controllers
             var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"DetailsCarView / {CarName}") { Parent = articlesPage };
             ViewData["BreadcrumbNode"] = articlePage;
             ViewData["Title"] = $"CarName - {CarName}";
+            ViewBag.Cars = Cars.Where(s=> s.CarMark.Contains(car.CarMark));
             var carModel = new CarModel() { CarName = car.CarName };
             return View(car);
         }

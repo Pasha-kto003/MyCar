@@ -55,10 +55,21 @@ namespace MyCar.Web.Controllers
         }
 
         [Breadcrumb(FromAction = "Index", Title = "CarView")]
-        public async Task<IActionResult> CarView()
+        public async Task<IActionResult> CarView(string? Name)
         {
+            string name = Name ?? string.Empty;
             var cars = new List<CarApi>();
-            cars = await Api.GetListAsync<List<CarApi>>("Car");
+            if (name == "" || name == null)
+            {
+                cars = await Api.GetListAsync<List<CarApi>>("Car");
+            }
+            else
+            {
+                string type = "Название";
+                string filter = "Все";
+                //cars = await Api.SearchFilterAsync<List<CarApi>>(type, name, "Car", filter);
+                cars = cars.Where(s=> s.CarName.Contains(name)).ToList();
+            }
             return View("CarView", cars);
         }
 

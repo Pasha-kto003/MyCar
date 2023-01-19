@@ -65,7 +65,9 @@ namespace MyCar.Server.Controllers
                     case "Модель":
                         CarsApi = CarsApi.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList();
                         break;
-
+                    case "Название":
+                        CarsApi = CarsApi.Where(s => s.CarName.ToLower().Contains(text)).ToList();
+                        break;
                     case "Цена":
                         CarsApi = CarsApi.Where(s => s.CarPrice.ToString().ToLower().Contains(text)).ToList();
                         break;

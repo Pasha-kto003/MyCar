@@ -3,14 +3,18 @@
 @{
     ViewData["Title"] = "Catalog";
 }
-
+<form asp-action="CarView" asp-controller="Home" style="margin: 0 auto; width:100%; text-align:center; align-content:center; justify-content:center; display:block">
+         <div class="form-group">
+            <input type="text" name="Name" class="form-control text-center" style="display:block text-align: center; width: 300px; align-content:center; justify-content:center;"/>
+            <input type="submit" value="Выполнить" class="btn btn-primary" role="button" style="margin-top: 50px; height:30px; width:200px;"/>
+        </div>
+    </form>
 <h1 class="wow bounceInUp">Catalog</h1>
 <div class="row wow bounceInUp align-items-center justify-content-center">
     @foreach (var item in Model)
     {
         <div class="card" style=" width: 300px; height: 400px; margin-top: 10px; background-color: #171717">
             <div class="card-body img-responsive" style="background-color: #171717;">
-                    <h4 class="card-title" style="color: white;">
                         <img src="~/CarImages/@item.PhotoCar" style="width:200px; height:200px; position:relative;"/>
                         <br />
                         <h5 style="color: white;">@item.CarName</h5>
@@ -19,9 +23,12 @@
                                 <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">+</a>
                             </h1>
                         </button>
-                        <table>
+                    <table>
                         <tbody>
-                                @foreach(var characteristic in item.CharacteristicCars)
+                                @foreach(var characteristic in item.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
+                                s.Characteristic.CharacteristicName.Contains("Объем") || 
+                                s.Characteristic.CharacteristicName.Contains("0-100") || 
+                                s.Characteristic.CharacteristicName.Contains("Макс. Скорость") ))
                                 {
                                     <tr>
                                     <td class="m-lg-5" style="color: white;">
@@ -40,14 +47,13 @@
 
                         </tbody>
                     </table>
-                    </h4>
                     <div class="container-3">
                     @if (User.IsInRole("admin"))
                     {
                         <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.ID">Изменить</a>
                         <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.ID">Удалить</a>
                     }
-                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-data="@item.CarName">Купить</a>
+                    <a class="stretched-link" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">Купить</a>
                     </div>
                     
             </div>

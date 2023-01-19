@@ -1,8 +1,14 @@
-﻿@model ModelsApi.CarApi
+﻿@using ModelsApi
+
+@model ModelsApi.CarApi
 @{
     ViewData["Title"] = "DetailsCarView";
 }
 
+@*        <div class="row w-100" style="height: 300px; background-image: url(https://demo.themesuite.com/automotive/images/dynamic-header-1.jpg); background-position: center; background-repeat: no-repeat; background-size: cover;">
+            <breadcrumb class="bottom-rightHeader" style="color: white;">
+            </breadcrumb>
+        </div>*@
     <div class="container-fluid mt-5"> 
         <div class="row w-100">
             <div class="col-10">
@@ -49,7 +55,9 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                             </thead>
                             <tbody>
                                 @foreach(var characteristic in @Model.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
-                                s.Characteristic.CharacteristicName.Contains("Объем")))
+                                s.Characteristic.CharacteristicName.Contains("Объем") || 
+                                s.Characteristic.CharacteristicName.Contains("Вместительность топливного бака") || 
+                                s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров") ))
                                 {
                                     <tr>
                                         <td style="color: white;">
@@ -61,12 +69,65 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                     </tr>
                                 }
                             </tbody>
-                        </table>                
+                        </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="color: white;">
+                                        Speed
+                                    </th>
+                                    <th style="color: white;">
+                                        Unit
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var characteristic in @Model.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Макс. Скорость") ||
+                                s.Characteristic.CharacteristicName.Contains("0-100")))
+                                {
+                                    <tr>
+                                        <td style="color: white;">
+                                            @characteristic.Characteristic.CharacteristicName:
+                                        </td>
+                                        <td style="color: white;">
+                                            @characteristic.CharacteristicValue
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="color: white;">
+                                        Body
+                                    </th>
+                                    <th style="color: white;">
+                                        Unit
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach(var characteristic in @Model.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Высота 2") ||
+                                s.Characteristic.CharacteristicName.Contains("Длина") || s.Characteristic.CharacteristicName.Contains("Колесная база")))
+                                {
+                                    <tr>
+                                        <td style="color: white;">
+                                            @characteristic.Characteristic.CharacteristicName:
+                                        </td>
+                                        <td style="color: white;">
+                                            @characteristic.CharacteristicValue
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
                 </div>
             </div>
-            <div class="col-4 align-items-center justify-content-center text-center mb-auto" style="height: 100%;">
+            <div class="col-4 align-items-center justify-content-center text-center" style="height: 100%;">
                 <div class="table-responsive align-items-center justify-content-center">
                     <table class="table">
                         <tbody>
@@ -90,5 +151,30 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                     </table>
                 </div>
             </div>
+        </div>
+        <div class="row w-100">
+            <h4 style="color: white;">
+                Рекомендованное авто
+            </h4>
+        </div>
+        <div class="row w-100">
+                @foreach(var cars in ViewBag.Cars)
+                {
+                    <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
+                        <div class="corner-box-1-content" style="background-color:#171717">
+                            <div class="card-body img-responsive">
+                                    <img src="~/CarImages/@cars.PhotoCar" style="width:200px; height:200px; position:relative;"/>
+                                    <br />
+                                    <h5 style="color:white;">@cars.CarName</h5>
+                                    <button class="imageButton">
+                                        <h1>
+                                            <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
+                                        </h1>
+                                    </button>
+                                <h5 style="color: white;">@cars.CarPrice &#8381</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
         </div>
     </div>

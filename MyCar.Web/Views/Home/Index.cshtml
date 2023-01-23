@@ -51,69 +51,6 @@
         </div>
     </div>
 </div>
-
-
-@*@model IEnumerable<ModelsApi.MarkCarApi>
-
-<h2 class="wow rollIn">Марки</h2>
-<div class="cards">
-        @foreach(MarkCarApi markCar in Model)
-        {
-        <div class="card wow rollIn">
-        <div class="card-image">
-            <img src="~/MarkImages/@markCar.MarkPhoto"/>
-        </div> 
-        <div class="card-content">
-            <div class="card-title">
-                @markCar.MarkName
-
-<section class="row w-100">
-    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12 recent-vehicles padding-left-none">
-                            <h5 class="margin-top-none" style="color:white;">Popular Vehicles</h5>
-                            <p style="color: white;">Our most popular cars</p>
-                            <div class="arrow3 clearfix margin-top-15 xs-margin-bottom-25" id="slideControls3"><span class="prev-btn"><a class="bx-prev" href="">Prev</a></span><span class="next-btn"><a class="bx-next" href="">Next</a></span></div>
-    </div>
-    <div style="width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img class="imageCardHover" src="~/CarImages/toyota_camry2019_grey.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5>2 000 000 &#8381</h5>
-                    
-                </div>
-
-            </div>
-        </div>
-        <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img src="~/CarImages/ToyotaCrown.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5>5 000 000 &#8381</h5>
-                    
-                </div>
-            </div>
-        </div>
-
-        }
-</div>*@
-
     <div class="row p-3 mt-5 mb-5">
         <div class="col">
                 <p class="h1 text-white text-center"></p>
@@ -216,45 +153,79 @@
         </div>
 
     </div>*@
-
-        <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img src="~/CarImages/ToyotaCamry.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5 style="color: white;">4 000 000 &#8381</h5>
-                    
+    <section class="row w-100">
+        <h2>
+            Recommend Auto
+        </h2>
+    </section>
+    <section class="row w-100">
+        <div class="col-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                    <img src="~/CarImages/10.png" style="width:300px; height:300px; position:relative;">
+                    </div>
+                    <div class="flip-card-back">
+                        <h4>.CarName</h4>
+                        <p>.CarPrice &#8381</p>
+                        <p>Mazda NSX. This is Best and fast Mazda which we have in our store. You can buy this!
+                        </p>
+                        <div class="container-3">
+                            <a href="/Home/CarView">В каталог</a>
+                        </div>           
+                    </div>
                 </div>
             </div>
         </div>
-        <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img src="~/CarImages/MazdaRx-7.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5 style="color: white;">12 000 000 &#8381</h5>
-                    
+        <div class="col-3 mx-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                    <img src="~/CarImages/SauberMercedes-03.png" style="width:300px; height:300px; position:relative;">
+                    </div>
+                    <div class="flip-card-back">
+                        <h4>Mercedez C9 Le Mans</h4>
+                        <p>.CarPrice &#8381</p>
+                        <p>Mercedez C9 Le Mans. Legendary race car now in sale! You can find this in Catalog!
+                        </p>
+                        <div class="container-3">
+                            <a href="/Home/CarView">В каталог</a>
+                        </div>
+                        <div class="container-3">
+
+                        </div>            
+                    </div>
                 </div>
             </div>
         </div>
-</section>
+        <div class="col-3 mx-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                    <img src="~/CarImages/2.png" style="width:300px; height:300px; position:relative;">
+                    </div>
+                    <div class="flip-card-back">
+                        <h4>Tesla Type A</h4>
+                        <p>.CarPrice &#8381</p>
+                        <p>If you like electric car, maybe you buy Tesla! You can find this in Catalog!
+                        </p>
+                        <div class="container-3">
+                            <a href="/Home/CarView">В каталог</a>
+                        </div>            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <div class="row w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
+        <h4 style="color: white;">Электрокары</h4>
+        <h5>Более экологичный вид транспорта</h5>
+        <div class="glass-btn glass-btn-red">
+            <a href="#url">Подробнее</a>
+        </div>
+        <img src="https://electrek.co/wp-content/uploads/sites/3/2020/11/Tesla-hero-Supercharger-charging.jpg?quality=82&strip=all&w=1600" width="100%" height="100%"/>
+    </div>
 
 <div class="fix-bg wow slideInLeft" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg); background-size:cover;">
 <div class="text-wp">    
@@ -280,8 +251,6 @@
     </div>
 </div>   
 </div>
-
-</div>
 <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
   <div class="container">
 
@@ -290,23 +259,8 @@
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2447.3968671385614!2d131.93022815076606!3d43.1578304312577!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5fb391623a672f83%3A0xf27dcac12572fe03!2sTukhachevskogo%20St%2C%2030%2C%20Vladivostok%2C%20Primorskiy%20kray%2C%20690089!5e0!3m2!1sen!2sru!4v1673944977896!5m2!1sen!2sru" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
-<section class="row">
-    <div class="col-4">
-        <h4 style="color: white;">Happy Clients</h4>
-        <div class="value" akhi="1000">0</div>
-    </div>
-    <div class="col-4">
-        <h4 style="color: white;">Sold Cars</h4>
-        <div class="value" akhi="1000">0</div>
-    </div>
-    <div class="col-4">
-        <h4 style="color: white;">Collect money</h4>
-        <div class="value" akhi="200000">0</div>
-    </div>
-
-</section>
-
 </div>
+
 <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
   <div class="container">
 
@@ -412,15 +366,14 @@
 </div>
 </section>
 
-
 @if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
 {
-    <div class="callout" data-bs-dismiss="alert" role="alert">
-    <div class="callout-header">Window Role</div>
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    <div class="callout-container">
-    <p>You Sign In as Admin</p>
-    </div>
+    <div class="callout bg-danger bg-gradient" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Window Role</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p>You Sign In as Admin</p>
+        </div>
     </div>
 }
 else

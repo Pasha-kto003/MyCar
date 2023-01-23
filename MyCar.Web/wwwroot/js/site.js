@@ -426,3 +426,4 @@ counters.forEach(counter => {
     }
     animate();
 });
+

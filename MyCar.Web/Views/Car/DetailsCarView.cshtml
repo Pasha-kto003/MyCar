@@ -1,174 +1,180 @@
-﻿@model ModelsApi.CarApi
+﻿@using ModelsApi
+
+@model ModelsApi.CarApi
 @{
     ViewData["Title"] = "DetailsCarView";
 }
 
-    <div class="container-fluid">
-
-        <div class="row">
-            <div class="col">
-            <div class="position-relative overflow-hidden text-center" style="background-image: url(/CarImage/1.png)">
-                <div class="col-md-5 p-lg-5 mx-auto my-5">
-                    <h1 style="color: white;" class="display-4 font-weight-normal">@Model.CarMark</h1>
-                    <p style="color: white;" class="lead font-weight-normal">@Model.CarName</p>
-                    @*<a class="btn btn-outline-secondary" href="#">Купить</a>*@
-                </div>
-                <div class="product-device shadow-sm d-none d-md-block"></div>
-                <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+@*        <div class="row w-100" style="height: 300px; background-image: url(https://demo.themesuite.com/automotive/images/dynamic-header-1.jpg); background-position: center; background-repeat: no-repeat; background-size: cover;">
+            <breadcrumb class="bottom-rightHeader" style="color: white;">
+            </breadcrumb>
+        </div>*@
+    <div class="container-fluid mt-5"> 
+        <div class="row w-100">
+            <div class="col-10">
+                <h2 style="color: white;">
+                    @Model.CarName
+                </h2>
+                <h4 style="color: white;">Our template platform will maximize the exposure of your inventory online</h4>
             </div>
-            </div>
-        </div>
-
-
-    <div class="item mt-5 ml-2">
-        <div class="row g-3 g-xl-0">
-            <div class="col-2 col-xl-3">
-                <img class="img-fluid post-thumb p-4" src="/CarImages/@Model.PhotoCar" alt="image">
-            </div>
-            <div class="col">
-                <h3 style="color: white;" class="title mb-1 ">Lorem ipsum dolor sit amet, cons</h3>
-                <div class="intro Textovik4 p-4 mr-2">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis p Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis p
-                </div>
-
+            <div class="col-2">
+                <h2 style="color: white;">
+                    @Model.CarPrice
+                </h2>
             </div>
         </div>
-    </div>
-
-    <section class="About-area section-gap" id="about">
-        <div class="container">
-            <div class="row d-flex align-items-center">
-                <div class="col-lg-6 about-left">
-                    <img class="img-fluid" src="/CarImages/1.png" alt="image">
+        <div class="row justify-content-center text-center">
+            <div class="col-8 align-items-center justify-content-center">
+                <div class="container align-items-center justify-content-center w-100 text-center">
+                    <img src="~/CarImages/@Model.PhotoCar" width="755" height="450" class="w-50 justify-content-center"/>
                 </div>
-                <div class="col-lg-6 about-right">
-                    <h1 style="color: white;">
-                        We Believe that <br>
-                        Interior beautifies the
-                    </h1>
-                    <p style="color: white;">
-                        inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct standards especially in the workplace. That’s why it’s crucial that, as women, our behavior on the job is beyond reproach. inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct standards especially in the workplace. That’s why it’s crucial that.
-                    </p>
-                    <button type="button" class="btn btn-secondary">Узнать больше</button>
+                <br/>
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Description</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Technical Specification</button>
+                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Car Location</button>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="color: white;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus tincidunt aliquam. Aliquam gravida massa at sem vulputate interdum et vel eros. Maecenas eros enim, tincidunt vel turpis vel, dapibus tempus nulla. Donec vel nulla dui. Pellentesque sed ante sed ligula hendrerit condimentum. Suspendisse rhoncus fringilla ipsum quis porta. Morbi tincidunt viverra pharetra.
+Vestibulum vel mauris et odio lobortis laoreet eget eu magna. Proin mauris erat, luctus at nulla ut, lobortis mattis magna. Morbi a arcu lacus. Maecenas tristique velit vitae nisi consectetur, in mattis diam sodales. Mauris sagittis sem mattis justo bibendum, a eleifend dolor facilisis. Mauris nec pharetra tortor, ac aliquam felis. Nunc pretium erat sed quam consectetur fringilla.
+Aliquam ultricies nunc porta metus interdum mollis. Donec porttitor libero augue, vehicula tincidunt lectus placerat a. Sed tincidunt dolor non sem dictum dignissim. Nulla vulputate orci felis, ac ornare purus ultricies a. Fusce euismod magna orci, sit amet aliquam turpis dignissim ac. In at tortor at ligula pharetra sollicitudin. Sed tincidunt, purus eget laoreet elementum, felis est pharetra ante, tincidunt feugiat libero enim sed risus.
+Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent cursus varius odio, non faucibus dui. Nunc vehicula lectus sed velit suscipit aliquam vitae eu ipsum. Curabitur hendrerit magna a quam semper, at tristique mauris gravida. Donec consequat elementum lorem, ac luctus ligula. Quisque viverra fringilla mi vel aliquam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="color: white;">
+                                        Engine
+                                    </th>
+                                    <th style="color: white;">
+                                        Unit
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var characteristic in @Model.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
+                                s.Characteristic.CharacteristicName.Contains("Объем") || 
+                                s.Characteristic.CharacteristicName.Contains("Вместительность топливного бака") || 
+                                s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров") ))
+                                {
+                                    <tr>
+                                        <td style="color: white;">
+                                            @characteristic.Characteristic.CharacteristicName:
+                                        </td>
+                                        <td style="color: white;">
+                                            @characteristic.CharacteristicValue
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="color: white;">
+                                        Speed
+                                    </th>
+                                    <th style="color: white;">
+                                        Unit
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var characteristic in @Model.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Макс. Скорость") ||
+                                s.Characteristic.CharacteristicName.Contains("0-100")))
+                                {
+                                    <tr>
+                                        <td style="color: white;">
+                                            @characteristic.Characteristic.CharacteristicName:
+                                        </td>
+                                        <td style="color: white;">
+                                            @characteristic.CharacteristicValue
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="color: white;">
+                                        Body
+                                    </th>
+                                    <th style="color: white;">
+                                        Unit
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach(var characteristic in @Model.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Высота 2") ||
+                                s.Characteristic.CharacteristicName.Contains("Длина") || s.Characteristic.CharacteristicName.Contains("Колесная база")))
+                                {
+                                    <tr>
+                                        <td style="color: white;">
+                                            @characteristic.Characteristic.CharacteristicName:
+                                        </td>
+                                        <td style="color: white;">
+                                            @characteristic.CharacteristicValue
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+                </div>
+            </div>
+            <div class="col-4 align-items-center justify-content-center text-center" style="height: 100%;">
+                <div class="table-responsive align-items-center justify-content-center">
+                    <table class="table">
+                        <tbody>
+                        @foreach(var characteristic in @Model.CharacteristicCars)
+                        {
+                            <tr>
+                                    <td class="m-lg-5" style="color: white;">
+                                        <b>
+                                            @characteristic.Characteristic.CharacteristicName:
+                                        </b>
+                                    </td>
+                                    <td class="m-lg-5" style="color: white;">
+                                        @characteristic.CharacteristicValue
+                                    </td>
+                                    <td class="m-lg-5" style="color: white;">
+                                        @characteristic.Characteristic.Unit.UnitName
+                                    </td>
+                            </tr>
+                        }
+                    </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </section>
-    
-
-    <section class="hero-section mt-3 mb-3" style="background: url(/CarImages/4.png); position: relative; background-position: center; background-repeat: no-repeat ">
-        <div class="hero-mask">
+        <div class="row w-100">
+            <h4 style="color: white;">
+                Рекомендованное авто
+            </h4>
         </div>
-        <div class="container text-center py-5">
-            <div class="single-col-max mx-auto">
-                <div class="hero-heading-upper pt-3 mb-3" style="color:white;">Ограниченная серия <br class="d-md-none" style="color:white;">комплектов</div>
-                <h1 style="color: white;" class="hero-heading mb-5">
-                    <span class="brand mb-4 d-block"><span class="name" style="color:white;">@Model.CarPrice</span></span>
-                    <span class="desc d-block" style="color:white;">@Model.CarOptions</span>
-                </h1>
-                <div class="text-center mb-5">
-                    <a href="#section-pricing" class="btn btn-primary btn-lg scrollto">Купить</a>
-                </div>
-
-                <div class="hero-summary">
-                    <div class="row">
-                        <div class="item col-4">
-                            <div class="summary-desc mb-1" style="color:white;"><i class="icon fas fa-video me-2" style="color:white;"></i>Поле</div>
-                            <h4  class="summary-heading" style="color:white;">Данные</h4>
-                            @*<h4 class="summary-heading" style="color:white;">Данные <span class="desc" style="color:white;">Данные</span></h4>*@
-
-                        </div><!--//col-->
-                        <div class="item col-4">
-                            <div class="summary-desc mb-1" style="color:white;"><i class="icon fas fa-clock me-2" style="color:white;"></i>Поле</div>
-                            <h4 class="summary-heading" style="color:white;">Данные</h4>
-
-                        </div><!--//col-->
-                        <div class="item col-4">
-                            <div class="summary-desc mb-1" style="color:white;"><i class="icon fas fa-user-circle me-2" style="color:white;"></i>Поле</div>
-                            <h4 class="summary-heading" style="color:white;">Данные</h4>
-
+        <div class="row w-100">
+                @foreach(var cars in ViewBag.Cars)
+                {
+                    <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
+                        <div class="corner-box-1-content" style="background-color:#171717">
+                            <div class="card-body img-responsive">
+                                    <img src="~/CarImages/@cars.PhotoCar" style="width:200px; height:200px; position:relative;"/>
+                                    <br />
+                                    <h5 style="color:white;">@cars.CarName</h5>
+                                    <button class="imageButton">
+                                        <h1>
+                                            <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
+                                        </h1>
+                                    </button>
+                                <h5 style="color: white;">@cars.CarPrice &#8381</h5>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                }
         </div>
-    </section>
-
-    <section class="services-area section-gap">
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="menu-content  col-lg-7">
-                    <div class="title text-center">
-                        <h1 style="color: white;" class="mb-10">My Offered Services</h1>
-                        <p style="color: white;">At about this time of year, some months after New Year’s resolutions have been made and kept, or made and neglected.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <span class="lnr lnr-pie-chart"></span>
-                        <a href="#"><h4>Web Design</h4></a>
-                        <p style="color: white;">
-                            “It is not because things are difficult that we do not dare; it is because we do not dare that they are difficult.”
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <span class="lnr lnr-laptop-phone"></span>
-                        <a href="#"><h4>Web Development</h4></a>
-                        <p style="color: white;">
-                            If you are an entrepreneur, you know that your success cannot depend on the opinions of others. Like the wind, opinions.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <span class="lnr lnr-camera"></span>
-                        <a href="#"><h4>Photography</h4></a>
-                        <p style="color: white;">
-                            Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <span class="lnr lnr-picture"></span>
-                        <a href="#"><h4>Clipping Path</h4></a>
-                        <p style="color: white;">
-                            Hypnosis quit smoking methods maintain caused quite a stir in the medical world over the last two decades. There is a lot of argument.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <span class="lnr lnr-tablet"></span>
-                        <a href="#"><h4>Apps Interface</h4></a>
-                        <p style="color: white;">
-                            Do you sometimes have the feeling that you’re running into the same obstacles over and over again? Many of my conflicts.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <span class="lnr lnr-rocket"></span>
-                        <a href="#"><h4>Graphic Design</h4></a>
-                        <p style="color: white;">
-                            You’ve heard the expression, “Just believe it and it will come.” Well, technically, that is true, however, ‘believing’ is not just thinking that.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <div class="row">
-        <div class="col-6">
-
-        </div>
-        <div class="col-6">
-        </div>
-    </div>
-
     </div>

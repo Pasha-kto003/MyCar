@@ -153,45 +153,79 @@
         </div>
 
     </div>*@
-
     <section class="row w-100">
-        <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img src="~/CarImages/ToyotaCamry.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5 style="color: white;">4 000 000 &#8381</h5>
-                    
+        <h2>
+            Recommend Auto
+        </h2>
+    </section>
+    <section class="row w-100">
+        <div class="col-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                    <img src="~/CarImages/10.png" style="width:300px; height:300px; position:relative;">
+                    </div>
+                    <div class="flip-card-back">
+                        <h4>.CarName</h4>
+                        <p>.CarPrice &#8381</p>
+                        <p>Mazda NSX. This is Best and fast Mazda which we have in our store. You can buy this!
+                        </p>
+                        <div class="container-3">
+                            <a href="/Home/CarView">В каталог</a>
+                        </div>           
+                    </div>
                 </div>
             </div>
         </div>
-        <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-            <div class="corner-box-1-content" style="background-color:#171717">
-                <div class="card-body img-responsive">
-                    <h4 class="card-title">
-                        <img src="~/CarImages/MazdaRx-7.png" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color:white;">CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a class="imageLink" asp-action="DetailsCarView" asp-controller="Car">+</a>
-                            </h1>
-                        </button>
-                    </h4>
-                    <h5 style="color: white;">12 000 000 &#8381</h5>
-                    
+        <div class="col-3 mx-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                    <img src="~/CarImages/SauberMercedes-03.png" style="width:300px; height:300px; position:relative;">
+                    </div>
+                    <div class="flip-card-back">
+                        <h4>Mercedez C9 Le Mans</h4>
+                        <p>.CarPrice &#8381</p>
+                        <p>Mercedez C9 Le Mans. Legendary race car now in sale! You can find this in Catalog!
+                        </p>
+                        <div class="container-3">
+                            <a href="/Home/CarView">В каталог</a>
+                        </div>
+                        <div class="container-3">
+
+                        </div>            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 mx-lg-3">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                    <img src="~/CarImages/2.png" style="width:300px; height:300px; position:relative;">
+                    </div>
+                    <div class="flip-card-back">
+                        <h4>Tesla Type A</h4>
+                        <p>.CarPrice &#8381</p>
+                        <p>If you like electric car, maybe you buy Tesla! You can find this in Catalog!
+                        </p>
+                        <div class="container-3">
+                            <a href="/Home/CarView">В каталог</a>
+                        </div>            
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="row w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
+        <h4 style="color: white;">Электрокары</h4>
+        <h5>Более экологичный вид транспорта</h5>
+        <div class="glass-btn glass-btn-red">
+            <a href="#url">Подробнее</a>
+        </div>
+        <img src="https://electrek.co/wp-content/uploads/sites/3/2020/11/Tesla-hero-Supercharger-charging.jpg?quality=82&strip=all&w=1600" width="100%" height="100%"/>
+    </div>
 
 <div class="fix-bg wow slideInLeft" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg); background-size:cover;">
 <div class="text-wp">    
@@ -219,6 +253,7 @@
 </div>
 
 </div>
+
 <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
   <div class="container">
 
@@ -324,15 +359,14 @@
 </div>
 </section>
 
-
 @if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
 {
-    <div class="callout" data-bs-dismiss="alert" role="alert">
-    <div class="callout-header">Window Role</div>
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    <div class="callout-container">
-    <p>You Sign In as Admin</p>
-    </div>
+    <div class="callout bg-danger bg-gradient" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Window Role</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p>You Sign In as Admin</p>
+        </div>
     </div>
 }
 else

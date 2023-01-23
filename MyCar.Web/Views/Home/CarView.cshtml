@@ -13,7 +13,7 @@
 <div class="row wow bounceInUp align-items-center justify-content-center">
     @foreach (var item in Model)
     {
-        <div class="card" style=" width: 300px; height: 400px; margin-top: 10px; background-color: #171717">
+        <div class="myHovercard" style=" width: 300px; height: 400px; margin-top: 10px; background-color: #171717">
             <div class="card-body img-responsive" style="background-color: #171717;">
                         <img src="~/CarImages/@item.PhotoCar" style="width:200px; height:200px; position:relative;"/>
                         <br />
@@ -59,7 +59,7 @@
             </div>
         </div>
 
-@*        <div class="flip-card">
+@*      <div class="flip-card">
         <div class="flip-card-inner">
         <div class="flip-card-front">
         <img src="~/CarImages/@item.PhotoCar" style="width:300px; height:300px; position:relative;">

@@ -1751,4 +1751,13 @@ body {
     margin-left: 10px;
 }
 
+.centered {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+}
+
 

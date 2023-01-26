@@ -1,0 +1,106 @@
+﻿@model IEnumerable<ModelsApi.CarApi>
+
+<div class="container-fluid">
+    <div class="row w-100 h-auto" style="position: relative; text-align:center; color: black; font-size: 32px; height: 50px;">
+        <img src="https://electrek.co/wp-content/uploads/sites/3/2020/01/bmw-electrified-models.jpg?quality=82&strip=all&w=1600"/>
+        <div class="centered">
+            <h1>
+                ELECTRIFIED
+            </h1>
+        </div>
+    </div>
+    <div class="row w-100" style="height: 50px; text-align:center;">
+        <h2>
+            All Electrified Vehicles
+        </h2>
+    </div>
+    <div class="row w-100 text-center" style="background-color: #171717">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Hybrid</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">All-Electronic</button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Battery electric</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent" style="background-color: #171717">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
+                        <div class="row w-100 h-auto" style="position: relative; text-align:center; color: black; font-size: 32px; height: 50px;">
+                            <img src="https://assets-eu-01.kc-usercontent.com/3b3d460e-c5ae-0195-6b86-3ac7fb9d52db/a0164fe5-cc2b-4193-9175-8cefb3a73f49/Toyota%20Prius%20%286%29.jpg?width=1750&fm=jpg&auto=format"/>
+                            <div class="centered" style="top: 20%;">
+                                <h1>
+                                    Our Hybrid cars!
+                                </h1>
+                            </div>
+                        </div>
+                    <div class="container mt-5" style="background-color: #171717">
+                        <div class="row w-100">
+                            @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Гибрид")))
+                            {
+                                <div class="card col-5 m-5" style="background-color:transparent;">
+                                    <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px;"/>
+                                    <div class="card-title" style="color: white;">
+                                        <h3>
+                                            @car.CarName
+                                        </h3>
+                                    </div>
+                                    <p class="card-text" style="color: white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <div class="card-title" style="color: white;">
+                                        <h3>
+                                            @car.CarPrice
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="glass-btn glass-btn-red" style="justify-content:center;">
+                                            <a href="#" class="stretched-link" style="color: white;">Посмотерть</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        
+                    </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="row w-100 h-auto" style="position: relative; text-align:center; color: white; font-size: 32px; height: 50px;">
+                            <img src="https://thedriven.io/wp-content/uploads/2018/10/tesla-model-3.jpg"/>
+                            <div class="centered" style="top: 20%;">
+                                <h1>
+                                    Our electric cars
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="container-fluid mt-5" style="background-color: #171717">
+                            <div class="row w-100">
+                                @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Электрокар полный")))
+                                {
+                                    <div class="card col-5 m-5" style="background-color:transparent; align-items:center; justify-content:center; text-align:center;">
+                                        <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px; width: 500px; justify-content: center;"/>
+                                        <div class="card-title" style="color: white;">
+                                            <h3>
+                                                @car.CarName
+                                            </h3>
+                                        </div>
+                                        <p class="card-text" style="color: white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                        <div class="card-title" style="color: white;">
+                                            <h3>
+                                                @car.CarPrice
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="glass-btn glass-btn-red" style="justify-content:center;">
+                                                <a href="#" class="stretched-link" style="color: white;">Посмотерть</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                    </div>
+        </div>
+    </div>
+</div>

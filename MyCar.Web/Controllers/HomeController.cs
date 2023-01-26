@@ -73,10 +73,12 @@ namespace MyCar.Web.Controllers
             return View("CarView", cars);
         }
 
-        public IActionResult SpecialCarView()
+        public async Task<IActionResult> ElectricCarView()
         {
-            return View();
+            var cars = await Api.GetListAsync<List<CarApi>>("Car");
+            return View("ElectricCarView", cars);
         }
+
         [Breadcrumb("ViewData.Title")]
         public IActionResult Privacy()
         {

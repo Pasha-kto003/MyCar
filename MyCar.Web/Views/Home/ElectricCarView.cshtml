@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ModelsApi.CarApi>
+﻿@model IEnumerable<ModelsApi.SaleCarApi>
 
 <div class="container-fluid">
     <div class="row w-100 h-auto" style="position: relative; text-align:center; color: black; font-size: 32px; height: 50px;">
@@ -34,24 +34,24 @@
                         </div>
                     <div class="container mt-5" style="background-color: #171717">
                         <div class="row w-100">
-                            @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Гибрид")))
+                            @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")))
                             {
                                 <div class="card col-5 m-5" style="background-color:transparent;">
-                                    <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px;"/>
+                                    <img src="~/CarImages/@car.Car.PhotoCar" class="card-img-top" alt="..." style="height: 340px;"/>
                                     <div class="card-title" style="color: white;">
                                         <h3>
-                                            @car.CarName
+                                            @car.Car.CarName
                                         </h3>
                                     </div>
                                     <p class="card-text" style="color: white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                     <div class="card-title" style="color: white;">
                                         <h3>
-                                            @car.CarPrice
+                                            @car.FullPrice
                                         </h3>
                                     </div>
                                     <div class="card-body">
                                         <div class="glass-btn glass-btn-red" style="justify-content:center;">
-                                            <a href="#" class="stretched-link" style="color: white;">Посмотерть</a>
+                                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.Car.CarName" class="stretched-link" style="color: white;">Посмотерть</a>
                                         </div>
                                     </div>
                                 </div>
@@ -72,19 +72,19 @@
                         </div>
                         <div class="container-fluid mt-5" style="background-color: #171717">
                             <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Электрокар полный")))
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")))
                                 {
                                     <div class="card col-5 m-5" style="background-color:transparent; align-items:center; justify-content:center; text-align:center;">
-                                        <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px; width: 500px; justify-content: center;"/>
+                                        <img src="~/CarImages/@car.Car.PhotoCar" class="card-img-top" alt="..." style="height: 340px; width: 500px; justify-content: center;"/>
                                         <div class="card-title" style="color: white;">
                                             <h3>
-                                                @car.CarName
+                                                @car.Car.CarName
                                             </h3>
                                         </div>
                                         <p class="card-text" style="color: white;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                         <div class="card-title" style="color: white;">
                                             <h3>
-                                                @car.CarPrice
+                                                @car.FullPrice
                                             </h3>
                                         </div>
                                         <div class="card-body">

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ModelsApi.CarApi>
+﻿@model IEnumerable<ModelsApi.SaleCarApi>
 
 @{
     ViewData["Title"] = "Catalog";
@@ -28,17 +28,17 @@
                         <div class="MySingle-product mt-3 mb-3">
 
                             <div class="product-Photo">
-                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@i.CarName"><img src="~/CarImages/@i.PhotoCar" /></a>
+                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@i.Car.CarName"><img src="~/CarImages/@i.Car.PhotoCar"/></a>
                             </div>
 
                             <div class="product-Details">
-                                <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@i.CarName"><h3 class="product-title text-white">@i.CarName</h3></a>
+                                <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@i.Car.CarName"><h3 class="product-title text-white">@i.Car.CarName</h3></a>
                                 @*<h2 class="product-title text-white">@i.CarName</h2>*@
 
                                 <div class="product-addons-Details d-flex justify-content-between">
 
                                     <div class="product-price">
-                                        <h2 class="text-white">@i.CarPrice</h2>
+                                        <h2 class="text-white">@i.FullPrice</h2>
                                     </div>
 
                                     <div class="product-links">
@@ -75,115 +75,3 @@
     </section>
 
 </div>
-
-    @*@foreach (var item in Model)
-    {
-
-        <div class="card" style=" width: 300px; height: 400px; margin-top: 10px; background-color: #171717">
-            <div class="card-body img-responsive" style="background-color: #171717;">
-                        <img src="~/CarImages/@item.PhotoCar" style="width:200px; height:200px; position:relative;"/>
-                        <br />
-                        <h5 style="color: white;">@item.CarName</h5>
-                        <button class="imageButton">
-                            <h1>
-                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">+</a>
-                            </h1>
-                        </button>
-                    <table>
-                        <tbody>
-                                @foreach(var characteristic in item.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
-                                s.Characteristic.CharacteristicName.Contains("Объем") || 
-                                s.Characteristic.CharacteristicName.Contains("0-100") || 
-                                s.Characteristic.CharacteristicName.Contains("Макс. Скорость") ))
-                                {
-                                    <tr>
-                                    <td class="m-lg-5" style="color: white;">
-                                        <b>
-                                            @characteristic.Characteristic.CharacteristicName
-                                        </b>
-                                    </td>
-                                    <td class="m-lg-5" style="color: white;">
-                                        @characteristic.CharacteristicValue
-                                    </td>
-                                    <td class="m-lg-5" style="color: white;">
-                                        @characteristic.Characteristic.Unit.UnitName
-                                    </td>
-                                    </tr>
-                                }                            
-
-                        </tbody>
-                    </table>
-                    <div class="container-3">
-                    @if (User.IsInRole("admin"))
-                    {
-                        <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.ID">Изменить</a>
-                        <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.ID">Удалить</a>
-                    }
-                    <a class="stretched-link" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">Купить</a>
-                    </div>
-                    
-            </div>
-        </div>*@
-
-@*      <div class="flip-card">
-        <div class="flip-card-inner">
-        <div class="flip-card-front">
-        <img src="~/CarImages/@item.PhotoCar" style="width:300px; height:300px; position:relative;">
-         </div>
-        <div class="flip-card-back">
-        <h4>@item.CarName</h4>
-        <p>@item.CarPrice &#8381</p>
-        <p>@item.CarOptions</p>
-        <div class="container-3">
-                    @if (User.IsInRole("admin"))
-                    {
-                        <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.ID">Изменить</a>
-                        <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.ID">Удалить</a>
-                    }
-                    <a asp-action="AddBuy" asp-controller="Home" asp-route-id="@item.ID"> Купить</a>
-                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">Подробнее</a>
-        </div>            
-        </div>
-        </div>
-        </div>
-*@
-  @*  }
-</div>*@
-
-      @* <div class="card m-3" style="max-width: 70%; background-color: #171717">
-        <div class="row g-0">
-            <div class="col-md-2">
-                <img src="~/CarImages/@item.PhotoCar" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title" style="color: white;">@item.CarName</h5>
-                    <table>
-                        <tbody>
-                                @foreach(var characteristic in item.CharacteristicCars)
-                                {
-                                    <tr>
-                                    <td class="m-lg-5">
-                                        <b>
-                                            @characteristic.Characteristic.CharacteristicName
-                                        </b>
-                                    </td>
-                                    <td>
-                                        @characteristic.CharacteristicValue
-                                    </td>
-                                    <td>@characteristic.Characteristic.Unit.UnitName</td>
-                                    </tr>
-                                }                            
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card-body">
-                    <h5 class="card-title" style="color: white;">@item.CarPrice</h5>
-                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@item.CarName">Купить</a>
-                </div>
-            </div>
-        </div>
-    </div>*@

@@ -20,7 +20,7 @@ namespace MyCar.Server.DataModels
             result.Model = (ModelApi)model;
             var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
             result.CarMark = mark.MarkName;
-            //result.Model.MarkCar = (MarkCarApi)mark;
+            result.Model.MarkCar = (MarkCarApi)mark;
             var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);
             result.BodyType = (BodyTypeApi)body;
             foreach (var characteristic in dbContext.CharacteristicCars.Where(s => s.CarId == car.Id).ToList())

@@ -49,8 +49,8 @@ namespace MyCar.Web.Controllers
         {
             var marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             var mark = marks.FirstOrDefault(s => s.ID == id);
-            var cars = await Api.GetListAsync<List<CarApi>>("Car");
-            cars = cars.Where(s => s.Model.MarkId == mark.ID).ToList();
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            cars = cars.Where(s => s.Car.Model.MarkId == mark.ID).ToList();
             return View("CarView", cars);
         }
 
@@ -58,26 +58,28 @@ namespace MyCar.Web.Controllers
         public async Task<IActionResult> CarView(string? Name)
         {
             string name = Name ?? string.Empty;
-            var cars = new List<CarApi>();
+            var cars = new List<SaleCarApi>();
             if (name == "" || name == null)
             {
-                cars = await Api.GetListAsync<List<CarApi>>("Car");
+                cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             }
             else
             {
                 string type = "Название";
                 string filter = "Все";
                 //cars = await Api.SearchFilterAsync<List<CarApi>>(type, name, "Car", filter);
-                cars = cars.Where(s=> s.CarName.Contains(name)).ToList();
+                cars = cars.Where(s=> s.Car.CarName.Contains(name)).ToList();
             }
             return View("CarView", cars);
         }
 
         public async Task<IActionResult> ElectricCarView()
         {
-            var cars = await Api.GetListAsync<List<CarApi>>("Car");
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             return View("ElectricCarView", cars);
         }
+
+
 
         [Breadcrumb("ViewData.Title")]
         public IActionResult Privacy()

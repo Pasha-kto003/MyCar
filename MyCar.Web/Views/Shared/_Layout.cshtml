@@ -22,7 +22,8 @@
         <div class="side-title">Данные вашего аккаунта:</div>
         <h4>Никнейм: @User.Identity.Name</h4>
         <a class="dropdown-item" style="color: white;" asp-controller="Account" asp-action="Personal_Area" asp-route-data="@User.Identity.Name">Профиль</a>
-        <a class="dropdown-item" style="color: white;" asp-controller="Cart" asp-route-data="@User.Identity.Name" asp-action="CartPage">Корзина</a>
+        <a class="dropdown-item" style="color: white;" asp-controller="Cart" asp-route-data="@User.Identity.Name" asp-action="CartPage">Список ваших заказов</a>
+        <a claclass="dropdown-item" style="color: white;" asp-controller="Cart" asp-route-Name="@User.Identity.Name" asp-action="DetailsCart">Текущая корзина</a>
         @if (User.Identity.IsAuthenticated)
         {                               
             <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход (@User.Identity.Name)</a>

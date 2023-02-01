@@ -62,23 +62,6 @@ namespace MyCar.Web.Controllers
             return View(order);
         }
 
-        //public async Task<IActionResult> AddOrder(SaleCarApi saleCar)
-        //{
-        //    WareHouseApi wareHouse = new WareHouseApi { SaleCar = saleCar, SaleCarId = saleCar.ID, CountChange = -1 };
-        //    if(wareHouse.CountChange != 0)
-        //    {
-        //        WareHouses.Add(wareHouse);
-        //    }
-        //    await CreateWareHouse(wareHouse);
-        //    var user = Users.FirstOrDefault(s=> s.UserName == User.Identity.Name);
-        //    OrderApi order = new OrderApi();
-        //    order.User = user;
-        //    order.UserId = user.ID;
-        //    order.WareHouses = WareHouses;
-        //    await CreateOrder(order);
-        //    return View("DetailsCart", order);
-        //}
-
         public async Task<IActionResult> AddOrder(int id)
         {
             Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
@@ -111,6 +94,8 @@ namespace MyCar.Web.Controllers
             await CreateWareHouse(wareHouse);
             return View("DetailsCart", order);
         }
+
+
 
         public async Task CreateOrder(OrderApi orderApi)
         {

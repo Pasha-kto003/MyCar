@@ -68,8 +68,66 @@ namespace MyCar.Web.Controllers
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
 
             var us = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-            var ord = Orders.LastOrDefault();
-            if (ord.Status.StatusName == "Завершен") 
+            if (Orders.Count != 0)
+            {
+                var ord = Orders.LastOrDefault();
+
+                if (ord.Status.StatusName == "Завершен")
+                {
+                    var car = Cars.FirstOrDefault(s => s.ID == id);
+
+                    WareHouseApi wareHouse = new WareHouseApi();
+                    wareHouse.ID = Warehouses.Count() + 1;
+                    wareHouse.SaleCar = car;
+                    wareHouse.SaleCarId = car.ID;
+                    wareHouse.CountChange = -1;
+                    wareHouse.Discount = 0;
+                    wareHouse.Price = car.FullPrice;
+
+                    OrderApi order = new OrderApi();
+                    order.WareHouses = new List<WareHouseApi>();
+                    order.WareHouses.Add(wareHouse);
+                    order.SumOrder = car.FullPrice - wareHouse.Discount;
+                    var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+                    order.User = user;
+                    order.UserId = user.ID;
+
+                    order.DateOfOrder = DateTime.Now;
+                    order.StatusId = 1;
+                    order.Status = Statuses.FirstOrDefault(s => s.ID == order.StatusId);
+                    order.ActionTypeId = 2;
+                    order.ActionType = Types.FirstOrDefault(s => s.ID == order.ActionTypeId);
+                    await CreateOrder(order);
+                    wareHouse.OrderId = order.ID;
+                    await CreateWareHouse(wareHouse);
+                    return View("DetailsCart", order);
+                }
+
+                else
+                {
+                    var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+                    var order = Orders.LastOrDefault(s => s.UserId == user.ID);
+                    var car = Cars.FirstOrDefault(s => s.ID == id);
+
+                    WareHouseApi wareHouse = new WareHouseApi
+                    {
+                        ID = Warehouses.Count() + 1,
+                        SaleCar = car,
+                        SaleCarId = car.ID,
+                        CountChange = -1,
+                        Discount = 0,
+                        Price = car.FullPrice,
+                        OrderId = order.ID,
+                    };
+                    order.WareHouses.Add(wareHouse);
+                    order.SumOrder = car.FullPrice - wareHouse.Discount;
+                    await EditOrder(order);
+                    await CreateWareHouse(wareHouse);
+                    return View("DetailsCart", order);
+                }
+
+            }
+            else
             {
                 var car = Cars.FirstOrDefault(s => s.ID == id);
 
@@ -99,32 +157,7 @@ namespace MyCar.Web.Controllers
                 await CreateWareHouse(wareHouse);
                 return View("DetailsCart", order);
             }
-
-            else
-            {
-                var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-                var order = Orders.LastOrDefault(s=> s.UserId == user.ID);
-                var car = Cars.FirstOrDefault(s => s.ID == id);
-
-                WareHouseApi wareHouse = new WareHouseApi
-                {
-                    ID = Warehouses.Count() + 1,
-                    SaleCar = car,
-                    SaleCarId = car.ID,
-                    CountChange = -1,
-                    Discount = 0,
-                    Price = car.FullPrice,
-                    OrderId = order.ID,
-                };
-                order.WareHouses.Add(wareHouse);
-                order.SumOrder = car.FullPrice - wareHouse.Discount;
-                await EditOrder(order);
-                await CreateWareHouse(wareHouse);
-                return View("DetailsCart", order);
-            }         
-            
-
-            return await AddCars(id);
+                return await AddCars(id);
         }
 
         public async Task<IActionResult> AddCars(int id)

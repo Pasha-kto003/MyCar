@@ -1784,3 +1784,30 @@ body {
     max-width: 100%;
     max-height: 100%;
 }
+
+/*Для заказа*/
+
+.titleOrder {
+    margin-bottom: 5vh;
+}
+
+.cartOrder {
+    background-color: #fff;
+    padding: 4vh 5vh;
+    border-bottom-left-radius: 1rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+@media(max-width:767px) {
+    .cartOrder {
+        padding: 4vh;
+        border-bottom-left-radius: unset;
+        border-top-right-radius: 1rem;
+    }
+}
+
+
+
+/*Для заказа*/

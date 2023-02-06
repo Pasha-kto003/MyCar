@@ -175,10 +175,27 @@ namespace MyCar.Web.Controllers
             Users = await Api.GetListAsync<List<UserApi>>("User");
             var user = Users.FirstOrDefault(s => s.UserName == name);
             var order = Orders.LastOrDefault(s => s.User.UserName == name && s.Status.StatusName == "Новый");
+            if(order == null)
+            {
+                return View("Error");
+            }
             order.WareHouses = Warehouses.Where(s=> s.OrderId == order.ID).ToList();
             return View("DetailsCart", order);
         }
 
+        public async Task<IActionResult> ConfirmOrder(int id)
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            var order = Orders.FirstOrDefault(s=> s.ID == id);
+            var status = Statuses.FirstOrDefault(s=> s.StatusName == "Завершен");
+            order.Status = status;
+            order.StatusId = status.ID;
+            await EditOrder(order);
+            return View("DetailsCart", order);
+        }
 
         public async Task CreateOrder(OrderApi orderApi)
         {

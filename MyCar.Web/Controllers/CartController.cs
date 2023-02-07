@@ -183,6 +183,35 @@ namespace MyCar.Web.Controllers
             return View("DetailsCart", order);
         }
 
+        public async Task<IActionResult> DeleteCar(int id)
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            var deleteCar = Warehouses.FirstOrDefault(s=> s.ID == id);
+            var order = Orders.FirstOrDefault(s=> s.ID == deleteCar.OrderId);
+            order.WareHouses.Remove(deleteCar);
+            await EditWareHouse(deleteCar);
+            await EditOrder(order);
+            return View("DetailsCart", order);
+        }
+
+        public async Task<IActionResult> DetailsOrder(int id)
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var order = Orders.LastOrDefault(s => s.ID == id);
+            if (order == null)
+            {
+                return View("Error");
+            }
+            order.WareHouses = Warehouses.Where(s => s.OrderId == order.ID).ToList();
+            order.SumOrder = order.WareHouses.Sum(s=>s.Price);
+            return View("DetailsOrder", order);
+        }
+
         public async Task<IActionResult> ConfirmOrder(int id)
         {
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
@@ -190,6 +219,10 @@ namespace MyCar.Web.Controllers
             Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
             var order = Orders.FirstOrDefault(s=> s.ID == id);
+            if (order == null)
+            {
+                return View("Error");
+            }
             var status = Statuses.FirstOrDefault(s=> s.StatusName == "Завершен");
             order.Status = status;
             order.StatusId = status.ID;
@@ -210,6 +243,11 @@ namespace MyCar.Web.Controllers
         public async Task CreateWareHouse(WareHouseApi wareHouse)
         {
             var order = await Api.PostAsync<WareHouseApi>(wareHouse, "Warehouse");
+        }
+
+        public async Task EditWareHouse(WareHouseApi wareHouse)
+        {
+            var order = await Api.PutAsync<WareHouseApi>(wareHouse, "Warehouse");
         }
 
         // GET: CartController/Edit/5

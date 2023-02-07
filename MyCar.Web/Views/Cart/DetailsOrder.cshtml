@@ -1,24 +1,32 @@
 ﻿@model ModelsApi.OrderApi
 
 <div class="container-fluid">
-
-    <div class="row justify-content-center text-center">
-        <div class="col-md-12 col-lg-12">
-            <div class="header mb-5 mt-5">
-                <h1 class="text-white">Оформление заказа</h1>
-            </div>
+    <div class="row w-100 text-center align-items-center" style="height: 100px;">
+        <div class="col-3">
+            <h2 style="color: white;">
+                Заказ номер №@Model.ID
+            </h2>
+        </div>
+        <div class="col-3">
+            @if(@Model.Status.StatusName == "Завершен")
+            {
+                <h2 class="text-success">
+                    Заказ оплачен
+                </h2>
+            }
+            else
+            {
+                <h2 class="text-danger">
+                    Заказ не оплачен
+                </h2>
+            }
+        </div>
+        <div class="col-3">
+            <h2 style="color: white;">
+                Сумма заказа: @Model.SumOrder
+            </h2>
         </div>
     </div>
-
-    <div class="row justify-content-center text-center">
-        <div class="col-md-8 col-lg-6"></div>
-        <div class="col-4 text-center justify-content-center align-content-center">
-            <div class="glass-btn glass-btn-red w-100">
-                <a asp-action="ConfirmOrder" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Оплатить заказ</a>
-            </div>
-        </div>
-    </div>
-
     <div class="row w-100">
         @foreach(var car in @Model.WareHouses)
         {
@@ -31,12 +39,15 @@
                         <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><h3 class="product-title text-white">@car.SaleCar.Car.CarName</h3></a>
 
                         <div class="product-addons-Details d-flex justify-content-between">
+
                             <div class="product-price">
                                 <h2 class="text-white">@car.SaleCar.FullPrice</h2>
                             </div>
+
                             <div class="product-links">
-                                <a asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.ID"><i class="fas fa-heart"></i></a>
+                                <a asp-action="AddOrder" asp-controller="Cart"><i class="fas fa-heart"></i></a>
                             </div>
+
                         </div>
                     </div>
                 </div>

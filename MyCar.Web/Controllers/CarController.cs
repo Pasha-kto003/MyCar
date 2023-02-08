@@ -28,15 +28,17 @@ namespace MyCar.Web.Controllers
         // GET: CarController/Details/5
         [Route("/Car/DetailsCarView/CarName/{CarName?}")]
         [Breadcrumb("DetailsCarView", FromController = typeof(HomeController), FromAction = "CarView")]
-        public async Task<IActionResult> DetailsCarView(string CarName)
+        public async Task<IActionResult> DetailsCarView(int id)
         {
             Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            var car = Cars.FirstOrDefault(s => s.Car.CarName == CarName);
+            var car = Cars.FirstOrDefault(s => s.ID == id);
             var page = new MvcBreadcrumbNode("Index", "Home", "Home");
             var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "CarView") { Parent = page };
-            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"DetailsCarView / {CarName}") { Parent = articlesPage };
+            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"DetailsCarView / {car.Car.CarName}") { Parent = articlesPage };
+            RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.Car.CarName}");
             ViewData["BreadcrumbNode"] = articlePage;
-            ViewData["Title"] = $"CarName - {CarName}";
+            ViewData["Title"] = $"CarName - {car.Car.CarName}";
+            ViewData["Route"] = $"/Car/DetailsCarView/CarName/{car.Car.CarName}";
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));
             var carModel = new CarModel() { CarName = car.Car.CarName };
             return View(car);

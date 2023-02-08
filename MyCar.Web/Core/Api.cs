@@ -108,4 +108,4 @@ namespace MyCar.Web.Core
                 return answer.StatusCode == System.Net.HttpStatusCode.OK;
             }
         }
-    }
+}

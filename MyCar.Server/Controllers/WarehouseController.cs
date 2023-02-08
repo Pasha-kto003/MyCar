@@ -69,10 +69,10 @@ namespace MyCar.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var model = await dbContext.Models.FindAsync(id);
-            if (model == null)
+            var result = await dbContext.Warehouses.FindAsync(id);
+            if (result == null)
                 return NotFound();
-            dbContext.Remove(model);
+            dbContext.Remove(result);
             await dbContext.SaveChangesAsync();
             return Ok();
         }

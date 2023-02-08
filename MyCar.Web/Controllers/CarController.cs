@@ -38,13 +38,10 @@ namespace MyCar.Web.Controllers
             RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.Car.CarName}");
             ViewData["BreadcrumbNode"] = articlePage;
             ViewData["Title"] = $"CarName - {car.Car.CarName}";
-            ViewData["Route"] = $"/Car/DetailsCarView/CarName/{car.Car.CarName}";
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));
             var carModel = new CarModel() { CarName = car.Car.CarName };
             return View(car);
         }
-
-        
 
         [HttpGet]
         public IActionResult CartView()

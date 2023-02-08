@@ -79,8 +79,6 @@ namespace MyCar.Web.Controllers
             return View("ElectricCarView", cars);
         }
 
-
-
         [Breadcrumb("ViewData.Title")]
         public IActionResult Privacy()
         {

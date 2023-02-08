@@ -16,7 +16,7 @@ namespace MyCar.Web.Controllers
         public List<UserApi> Users { get; set; } = new List<UserApi>();
 
         public List<ActionTypeApi> Types { get; set; }
-        
+
         public List<StatusApi> Statuses { get; set; }
 
         public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
@@ -27,7 +27,7 @@ namespace MyCar.Web.Controllers
         }
 
         // GET: CartController/Details/5
-        
+
         // GET: CartController/Create
         public ActionResult Create()
         {
@@ -54,13 +54,18 @@ namespace MyCar.Web.Controllers
         {
             name = User.Identity.Name;
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            var order = Orders.Where(s=> s.User.UserName == name);
+            var order = Orders.Where(s => s.User.UserName == name);
             return View(order);
         }
 
         public async Task<IActionResult> AddOrder(int id)
         {
-            await GetCart();
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            Types = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
 
             var us = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
             if (Orders.Count != 0)
@@ -118,7 +123,7 @@ namespace MyCar.Web.Controllers
                     order.SumOrder = car.FullPrice - wareHouse.Discount;
                     await EditOrder(order);
                     await CreateWareHouse(wareHouse);
-                    return View("DetailsCart", order);
+                    return View("CartPage", Orders);
                 }
 
             }
@@ -150,9 +155,8 @@ namespace MyCar.Web.Controllers
                 await CreateOrder(order);
                 wareHouse.OrderId = order.ID;
                 await CreateWareHouse(wareHouse);
-                return View("DetailsCart", order);
+                return View("CartPage", Orders);
             }
-                return await AddCars(id);
         }
 
         public async Task<IActionResult> AddCars(int id)
@@ -164,50 +168,61 @@ namespace MyCar.Web.Controllers
 
         public async Task<IActionResult> DetailsCart(string name)
         {
-            await GetCart();
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Users = await Api.GetListAsync<List<UserApi>>("User");
             var user = Users.FirstOrDefault(s => s.UserName == name);
             var order = Orders.LastOrDefault(s => s.User.UserName == name && s.Status.StatusName == "Новый");
-            if(order == null || order.WareHouses.Count == 0)
+            if (order == null)
             {
                 return View("Error");
             }
-            order.WareHouses = Warehouses.Where(s=> s.OrderId == order.ID).ToList();
+            order.WareHouses = Warehouses.Where(s => s.OrderId == order.ID).ToList();
             return View("DetailsCart", order);
         }
 
         public async Task<IActionResult> DeleteCar(int id)
         {
-            await GetCart();
-            var deleteCar = Warehouses.FirstOrDefault(s=> s.ID == id);
-            var order = Orders.FirstOrDefault(s=> s.ID == deleteCar.OrderId);
-            //order.WareHouses.Remove(deleteCar);
-            await DeleteWarehouse(deleteCar);
-            //await EditOrder(order);
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            var deleteCar = Warehouses.FirstOrDefault(s => s.ID == id);
+            var order = Orders.FirstOrDefault(s => s.ID == deleteCar.OrderId);
+            order.WareHouses.Remove(deleteCar);
+            await EditWareHouse(deleteCar);
+            await EditOrder(order);
             return View("DetailsCart", order);
         }
 
         public async Task<IActionResult> DetailsOrder(int id)
         {
-            await GetCart();
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Users = await Api.GetListAsync<List<UserApi>>("User");
             var order = Orders.LastOrDefault(s => s.ID == id);
-            if (order == null || order.WareHouses.Count == 0)
+            if (order == null)
             {
                 return View("Error");
             }
             order.WareHouses = Warehouses.Where(s => s.OrderId == order.ID).ToList();
-            order.SumOrder = order.WareHouses.Sum(s=>s.Price);
+            order.SumOrder = order.WareHouses.Sum(s => s.Price);
             return View("DetailsOrder", order);
         }
 
         public async Task<IActionResult> ConfirmOrder(int id)
         {
-            await GetCart();
-            var order = Orders.FirstOrDefault(s=> s.ID == id);
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            var order = Orders.FirstOrDefault(s => s.ID == id);
             if (order == null)
             {
                 return View("Error");
             }
-            var status = Statuses.FirstOrDefault(s=> s.StatusName == "Завершен");
+            var status = Statuses.FirstOrDefault(s => s.StatusName == "Завершен");
             order.Status = status;
             order.StatusId = status.ID;
             await EditOrder(order);
@@ -224,11 +239,6 @@ namespace MyCar.Web.Controllers
             var order = await Api.PutAsync<OrderApi>(orderApi, "Order");
         }
 
-        public async Task DeleteWarehouse(WareHouseApi wareHouse)
-        {
-            var warehouse = await Api.DeleteAsync<WareHouseApi>(wareHouse, "Warehouse");
-        }
-
         public async Task CreateWareHouse(WareHouseApi wareHouse)
         {
             var order = await Api.PostAsync<WareHouseApi>(wareHouse, "Warehouse");
@@ -237,16 +247,6 @@ namespace MyCar.Web.Controllers
         public async Task EditWareHouse(WareHouseApi wareHouse)
         {
             var order = await Api.PutAsync<WareHouseApi>(wareHouse, "Warehouse");
-        }
-
-        public async Task GetCart()
-        {
-            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
-            Users = await Api.GetListAsync<List<UserApi>>("User");
-            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
-            Types = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
-            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
         }
 
         // GET: CartController/Edit/5

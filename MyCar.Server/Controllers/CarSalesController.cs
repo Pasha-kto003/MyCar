@@ -55,7 +55,7 @@ namespace MyCar.Server.Controllers
                         SalesApi = SalesApi.Where(s => s.Articul.ToLower().Contains(text)).ToList();
                         break;
                     case "Авто":
-                        SalesApi = SalesApi.Where(s => s.Car.Model.ModelName.ToLower().Contains(text)).ToList();
+                        SalesApi = SalesApi.Where(s => s.Car.CarName.ToLower().Contains(text)).ToList();
                         break;
                     case "Цена комплектации":
                         SalesApi = SalesApi.Where(s => s.EquipmentPrice.ToString().ToLower().Contains(text)).ToList();
@@ -107,5 +107,7 @@ namespace MyCar.Server.Controllers
             await dbContext.SaveChangesAsync();
             return Ok();
         }
+
+        
     }
 }

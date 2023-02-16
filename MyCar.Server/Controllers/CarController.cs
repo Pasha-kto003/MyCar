@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelsApi;
 using MyCar.Server.DataModels;
 using MyCar.Server.DB;
@@ -23,12 +24,10 @@ namespace MyCar.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<CarApi> GetCars()
+        public IEnumerable<Car> GetCars()
         {
-            return dbContext.Cars.ToList().Select(s =>
-            {
-                return GetCar(s);
-            });
+            return dbContext.Cars.Include(s => s.Model).Include(s => s.Type).Include(s => s.Model.Mark)
+                .Include(s => s.CharacteristicCars).Include("CharacteristicCars.Characteristic").Include("CharacteristicCars.Characteristic.Unit");
         }
 
         // GET api/<CarController>/5

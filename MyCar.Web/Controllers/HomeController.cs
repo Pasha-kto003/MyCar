@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DB;
 using MyCar.Web.Core;
 using MyCar.Web.Models;
 using SmartBreadcrumbs.Attributes;
@@ -13,6 +14,9 @@ namespace MyCar.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        public List<SaleCarApi> Cars { get; set; }
+        public List<MarkCarApi> Marks { get; set; }
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -54,24 +58,24 @@ namespace MyCar.Web.Controllers
             return View("CarView", cars);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "CarView")]
-        public async Task<IActionResult> CarView(string? Name)
-        {
-            string name = Name ?? string.Empty;
-            var cars = new List<SaleCarApi>();
-            if (name == "" || name == null)
-            {
-                cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            }
-            else
-            {
-                string type = "Название";
-                string filter = "Все";
-                //cars = await Api.SearchFilterAsync<List<CarApi>>(type, name, "Car", filter);
-                cars = cars.Where(s=> s.Car.CarName.Contains(name)).ToList();
-            }
-            return View("CarView", cars);
-        }
+        //[Breadcrumb(FromAction = "Index", Title = "CarView")]
+        //public async Task<IActionResult> CarView(string? Name)
+        //{
+        //    string name = Name ?? string.Empty;
+        //    var cars = new List<SaleCarApi>();
+        //    if (name == "" || name == null)
+        //    {
+        //        cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+        //    }
+        //    else
+        //    {
+        //        string type = "Название";
+        //        string filter = "Все";
+        //        //cars = await Api.SearchFilterAsync<List<CarApi>>(type, name, "Car", filter);
+        //        cars = cars.Where(s=> s.Car.CarName.Contains(name)).ToList();
+        //    }
+        //    return View("CarView", cars);
+        //}
 
         public async Task<IActionResult> ElectricCarView()
         {
@@ -90,6 +94,32 @@ namespace MyCar.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        [HttpGet]
+        public async Task<IActionResult> CarView(string SearchString)
+        {
+            List<SaleCarApi> cars;
+            cars = GetCar().Result;
+            string type = "Авто";
+            string filter = "Все";
+            if (SearchString == null)
+            {
+                await GetCar();
+            }
+            else
+            {
+                cars = await Api.SearchFilterAsync<List<SaleCarApi>>(type, SearchString, "CarSales", filter);
+            }
+            return View("CarView", cars);
+        }
+
+        private async Task<List<SaleCarApi>> GetCar()
+        {
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            return Cars;
         }
     }
 }

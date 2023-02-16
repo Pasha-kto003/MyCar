@@ -50,15 +50,20 @@ namespace MyCar.Web.Controllers
         }
 
         [Authorize(Roles = "Администратор, Клиент")]
-        public async Task<IActionResult> CartPage(string name)
+        public IActionResult CartPage(string name)
         {
             name = User.Identity.Name;
-            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            var order = Orders.Where(s => s.User.UserName == name);
-            return View(order);
+            return View("CartPage", GetPage(name).Result);
         }
 
-        public async Task<IActionResult> AddOrder(int id)
+        public async Task<List<OrderApi>> GetPage(string name)
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            var order = Orders.Where(s => s.User.UserName == name).ToList();
+            return order;
+        }
+
+        public async Task GetOrders()
         {
             Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
@@ -66,6 +71,11 @@ namespace MyCar.Web.Controllers
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
             Types = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+        }
+
+        public async Task<IActionResult> AddOrder(int id)
+        {
+            await GetOrders();
 
             var us = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
             if (Orders.Count != 0)
@@ -123,7 +133,7 @@ namespace MyCar.Web.Controllers
                     order.SumOrder = car.FullPrice - wareHouse.Discount;
                     await EditOrder(order);
                     await CreateWareHouse(wareHouse);
-                    return View("CartPage", Orders);
+                    return View("DetailsCart", order);
                 }
 
             }
@@ -247,48 +257,6 @@ namespace MyCar.Web.Controllers
         public async Task EditWareHouse(WareHouseApi wareHouse)
         {
             var order = await Api.PutAsync<WareHouseApi>(wareHouse, "Warehouse");
-        }
-
-        // GET: CartController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CartController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CartController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CartController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -23,6 +23,9 @@ namespace MyCar.Web.Controllers
             _logger = logger;
         }
 
+        public List<SaleCarApi> Cars = new List<SaleCarApi>();
+        public List<MarkCarApi> Marks = new List<MarkCarApi>();
+
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> Index()
         {

@@ -63,7 +63,7 @@ namespace MyCar.Server.DataModels
             var actionType = dbContext.ActionTypes.FirstOrDefault(x => x.Id == orderIn.ActionTypeId);
             result.ActionType = (ActionTypeApi)actionType;
             var thisWarehouses = dbContext.Warehouses.Where(s => s.OrderId == orderIn.Id).ToList();
-            result.WareHouses = thisWarehouses.Select(s=> (WarehouseGet(s, dbContext))).ToList();
+            result.WareHouses = thisWarehouses.Select(s=> (WarehouseGet(s, dbContext))).ToList(); //result.WareHouses = thisWarehouses.Select(s=> (WareHouseApi)s).ToList();
             return result;
         }
     }

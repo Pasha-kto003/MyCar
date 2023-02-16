@@ -77,6 +77,13 @@
              </section>
 
             <div class="row">
+                <form method="get" asp-action="CarView" asp-controller="Home">
+                    <input type="search" name="SearchString"/>
+                    <input type="submit" />
+                </form>
+            </div>
+
+            <div class="row">
 
                 @foreach (var i in Model)
                 {

@@ -73,15 +73,32 @@
 
                         </div>
                     </form>
+                    <section class="main-content mb-5 mt-5">
+                        <div class="container">
+                            <div class="row row-cols-6">
+                                @foreach (var i in ViewBag.MarkCars)
+                                {
+                                    <div class="col">
+
+                                        <div class="m-3 d-flex justify-content-center">
+                                            <div class="mark-Photo">
+                                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="~/MarkImages/@i.MarkPhoto" /></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </section>
                 </div>
              </section>
-
+@*
             <div class="row">
                 <form method="get" asp-action="CarView" asp-controller="Home">
                     <input type="search" name="SearchString"/>
                     <input type="submit" />
                 </form>
-            </div>
+            </div>*@
 
             <div class="row">
 

@@ -1,51 +1,46 @@
 ﻿@model MyCar.Web.Models.RegisterModel
 
-<div class="row" style="justify-content:center; align-items:center; display:block; height:100%; position: fixed; top: 50%; left: 50%; width: 50%; height: auto; margin: -200px 0 0 -25%;">
-    <div class="container text-center align-middle d-flex justify-content-center">
+<div class="row" style="justify-content:center; align-items:center; display:block; height:100%;">
+    <div class="container text-center align-content-center align-items-center d-flex justify-content-center">
         <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
         <h2>Регистрация</h2>
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>
             <div style="margin-top:30px;">
-                <label asp-for="Email">Введите почту</label><br />
+                <label asp-for="Email" style="color: white;">Введите почту</label><br />
                 <input type="text" required="" autofocus="" id="imputserName" asp-for="Email" class="form-control" placeholder="User" width="300px;"/>
                 <span asp-validation-for="Email" />
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div style="margin-top:30px;">
-                <label asp-for="UserName">Введите никнейм</label><br />
+                <label asp-for="UserName" style="color: white;">Введите никнейм</label><br />
                 <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="User" width="300px;"/>
                 <span asp-validation-for="UserName" />
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
                 <div style="margin-top:30px;">
-                    <label asp-for="Email">Введите почтовый адрес</label><br />
+                    <label asp-for="Email" style="color: white;">Введите почтовый адрес</label><br />
                     <input type="text" required="" autofocus="" id="imputserName" asp-for="Email" class="form-control" placeholder="User" width="300px;" />
                     <span asp-validation-for="Email" />
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
             <div style="margin-top:30px;">
-                <h5 class="h3 mb-3 font-weight-normal">Введите пароль</h5>
+                <h5 class="h3 mb-3 font-weight-normal" style="color: white;">Введите пароль</h5>
                 <input type="password" id="password-input" class="form-control" placeholder="Введите пароль" asp-for="Password" width="300px;/>
                 <span asp-validation-for="Password" />
-                <label><input type="checkbox" class="password-checkbox" />Показать пароль</label>
-                <small id="emailHelp" class="form-text text-muted">Your password is our.</small>
+                <label style="margin-top:20px; margin-bottom:20px; color:white;">
+                    <input type="checkbox" onclick="myFunction()" class="password-checkbox"/>
+                        Показать пароль
+                </label>
             </div>
             <div style="margin-top:30px;">
-                <label asp-for="ConfirmPassword">Повторите пароль</label><br />
+                <label asp-for="ConfirmPassword" style="color: white;">Повторите пароль</label><br />
                 <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" width="300px;/>
                 <span asp-validation-for="ConfirmPassword" />
             </div>
-            <div style="margin-top:30px;">
-                <input type="submit" value="Регистрация" class="btn btn-primary btn-lg active" style="width: 300px;" role="button" aria-pressed="true" />
+            <div style="margin-top:20px;">
+                <input type="submit" value="Регистрация" class="btn btn-primary btn-lg active" style="width: 300px; color:white;" role="button" aria-pressed="true" />
             </div>
         </div>
     </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

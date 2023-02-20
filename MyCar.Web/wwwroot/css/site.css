@@ -1833,6 +1833,7 @@ body {
     border-radius: 0;
 }
 
+
 .PhotoScale {
     display: inline-block;
     overflow: hidden;
@@ -1861,4 +1862,9 @@ body {
 
 .scalePh:hover {
 transform: scale(1.2); /* Увеличиваем масштаб */
+
+.zoomimg:hover {
+    transform: scale(1.2);
+    transition-duration: 2s;
+
 }

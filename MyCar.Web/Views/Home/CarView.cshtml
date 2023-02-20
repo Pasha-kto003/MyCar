@@ -92,6 +92,37 @@
                     </section>
                 </div>
              </section>
+
+             <section class="main-content mb-5 mt-5">
+
+                <div class="container">
+
+                    <div class="row row-cols-6">
+
+                        @foreach (var i in Model)
+                        {
+
+                            <div class="col">
+
+                                <div class="m-3 d-flex justify-content-center">
+                                    <div class="text-center">
+                                        <div class="mark-Photo scalePh">
+                                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@i.ID"><img src="~/CarImages/@i.Car.PhotoCar"/></a>
+                                        </div>
+                                        <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@i.ID">
+                                            <div class="text-white">@i.Car.Model.ModelName</div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </section>
 @*
             <div class="row">
                 <form method="get" asp-action="CarView" asp-controller="Home">

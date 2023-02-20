@@ -1833,7 +1833,38 @@ body {
     border-radius: 0;
 }
 
+
+.PhotoScale {
+    display: inline-block;
+    overflow: hidden;
+}
+.PhotoScale img {
+    transition: 1s;
+    display:block;
+}
+.PhotoScale img:hover {
+    transform: scale(1.1)
+}
+
+.ZoomPh {
+    overflow:hidden;
+}
+.ZoomPh img {
+    transition: transform .5s ease;
+}
+.ZoomPh:hover img {
+    transform: scale(1.5);
+}
+
+.scalePh {
+    transition: 1s; /* Время эффекта */
+}
+
+.scalePh:hover {
+transform: scale(1.2); /* Увеличиваем масштаб */
+
 .zoomimg:hover {
     transform: scale(1.2);
     transition-duration: 2s;
+
 }

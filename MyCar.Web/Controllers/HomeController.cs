@@ -27,9 +27,11 @@ namespace MyCar.Web.Controllers
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> Index()
         {
-            var marks = new List<MarkCarApi>();
+            var marks = new List<MarkCarApi>();          
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-            return View(marks);
+            ViewBag.Marks = marks;
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");   
+            return View("Index", cars);
         }
 
         [Breadcrumb(FromAction = "Index", Title = "Marks")]

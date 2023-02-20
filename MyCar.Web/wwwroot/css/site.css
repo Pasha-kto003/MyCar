@@ -1832,3 +1832,8 @@ body {
     height: calc(3rem + 2px) !important;
     border-radius: 0;
 }
+
+.zoomimg:hover {
+    transform: scale(1.2);
+    transition-duration: 2s;
+}

@@ -1,6 +1,6 @@
 ﻿@using ModelsApi
 @using MyCar.Web.Core
-@model IEnumerable<ModelsApi.MarkCarApi>
+@model IEnumerable<ModelsApi.SaleCarApi>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -60,9 +60,8 @@
 
             <div class="row row-cols-6">
 
-                @foreach (var i in Model)
+                @foreach (var i in ViewBag.Marks)
                 {
-
                     <div class="col">
 
                         <div class="m-3 d-flex justify-content-center">
@@ -188,14 +187,14 @@
         </div>
 
     </div>*@
-    <section class="row w-100">
+    <section class="row w-100 text-center">
         <h2 style="color:white;">
             Рекомендованные авто
         </h2>
     </section>
     <div class="row w-100 align-items-center align-content-center justify-content-center">
         <div class="card col-4" style="background-color: #171717">
-            <img src="/CarImages/2015-Toyota-Prius.png" class="card-img-top">
+            <img src="/CarImages/2015-Toyota-Prius.png" class="card-img-top zoomimg">
             <div class="card-body">
                 <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
                 <p class="card-text text-center" style="color: white;">Car Text.</p>
@@ -207,7 +206,7 @@
             </div>
         </div>
         <div class="card col-4" style="background-color: #171717;">
-            <img src="/CarImages/PorscheTaycan.png" class="card-img-top">
+            <img src="/CarImages/PorscheTaycan.png" class="card-img-top zoomimg">
             <div class="card-body">
                 <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
                 <p class="card-text text-center" style="color: white;">Car Text.</p>
@@ -219,7 +218,7 @@
             </div>
         </div>
         <div class="card col-4" style="background-color: #171717">
-            <img src="/CarImages/AudiQ5.png" class="card-img-top">
+            <img src="/CarImages/AudiQ5.png" class="card-img-top zoomimg">
             <div class="card-body">
                 <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
                 <p class="card-text text-center" style="color: white;">Car Text.</p>
@@ -231,7 +230,48 @@
             </div>
         </div>
     </div>
+    <section class="row w-100 text-center justify-content-center align-items-center">
+        <h3>Explore your car</h3>
+                <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Hybrid</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">All-Electronic</button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Battery electric</button>
+            </div>
+        </nav>
+        <div class="tab-content text-center justify-content-center" id="nav-tabContent" style="background-color: #171717">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
+                        <div class="container mt-5" style="background-color: #171717">
+                            <div class="row w-100">
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")))
+                                {
+                                    <div class="card" style="width:140px; height: 110px; background-color: #171717">
+                                        <img src="/CarImages/@car.Car.PhotoCar"/>
+                                    </div>  
+                                }
+                            </div>
+                        
+                        </div>
+                    </div>
 
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="container-fluid mt-5" style="background-color: #171717">
+                            <div class="row w-100">
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")))
+                                {
+                                    <div class="card" style="width:140px; height: 110px; background-color: #171717;">
+                                        <img src="/CarImages/@car.Car.PhotoCar"/>
+                                    </div>  
+                                }
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                    </div>
+        </div>
+    </section>
     <div class="row w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
         <h4 style="color: white;">Электрокары</h4>
         <h5 style="color: white;">Более экологичный вид транспорта</h5>

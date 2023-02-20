@@ -16,7 +16,6 @@ namespace MyCar.Desktop.Core
     {
         static HttpClient client = new HttpClient(); //
         static string server = "http://localhost:5243/api/";
-        
         static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -57,8 +56,10 @@ namespace MyCar.Desktop.Core
         {
             var answer = await client.GetAsync(server + controller + $"/UserName, Password?userName={UserName}&Password={Password}");
             if (answer.StatusCode == System.Net.HttpStatusCode.NotFound || answer.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                //тут хз че в ретерне
+            {
+                await UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Error" });
                 return default(UserApi);
+            }
             string answerText = await answer.Content.ReadAsStringAsync();
             var result = (UserApi)JsonSerializer.Deserialize(answerText, typeof(UserApi), jsonOptions);
             return result;

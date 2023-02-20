@@ -54,37 +54,6 @@
     </div>
 </div>
 
-        @*<section class="main-content mb-5 mt-5">
-            
-            <div class="container">
-                
-                <div class="row">
-
-                    @foreach(var i in Model)
-                    {
-                        
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-
-                        <div class="d-flex m-3 MySingle-product">
-                                <div>
-                                    <a><img style="width: 40px; height: 40px;" src="~/MarkImages/@i.MarkPhoto"/></a>
-                                </div>
-
-                                <div style="margin-left: 10px;">
-                                    <a style="text-decoration:none;" href="#"><h3 class="text-white"> @i.MarkName </h3></a>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    }
-
-                </div>
-
-            </div>
-
-        </section>*@
-
     <section class="main-content mb-5 mt-5">
 
         <div class="container">
@@ -121,7 +90,7 @@
         <div class="myContainer w-100">
             <img src="/image/landingText.jpg" style="width: 100%;"/>
             <div class="textCenterLeft">
-                <h2>Ноое гоночное авто ежедненвно</h2>
+                <h2>Новое гоночное авто ежедненвно</h2>
                 <div class="glass-btn glass-btn-red">
                     <a href="#" style="color: black">Перейти в катлог</a>
                 </div>
@@ -220,74 +189,52 @@
 
     </div>*@
     <section class="row w-100">
-        <h2>
-            Recommend Auto
+        <h2 style="color:white;">
+            Рекомендованные авто
         </h2>
     </section>
-    <section class="row w-100 justify-content-center ">
-        <div class="card mb-5" style=" width: 600px; background-color: #363949; padding: 0px; margin-right: 25px; margin-left: 25px;">
-          <div class="row g-0" style="margin: 0px;">
-            <div class="col-md-6 ">
-              <img src="/CarImages/8.png" style="width: 100%; height: 100%;" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-6 ml-5">
-              <div class="card-body">
-                <h5 class="card-title" style="color: white;">Audi</h5>
-                <p class="card-text" style="color: white;">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <h5 class="card-text" style="color: white;">8 000 000 </h5>
-                <div class="glass-btn glass-btn-red">
-                    <a href="#" class="stretched-link" style="color: black">Перейти в катлог</a>
+    <div class="row w-100 align-items-center align-content-center justify-content-center">
+        <div class="card col-4" style="background-color: #171717">
+            <img src="/CarImages/2015-Toyota-Prius.png" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
+                <p class="card-text text-center" style="color: white;">Car Text.</p>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" style="color: black;">Приобрести</a>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-
-        <div class="card mb-5" style=" width: 600px; background-color: #363949; padding: 0px; margin-right: 25px; margin-left: 25px;">
-          <div class="row g-0" style="margin: 0px;">
-            <div class="col-md-6">
-              <img src="/CarImages/toyota_camry2019_grey.png" style="width: 100%; height: 100%;" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-6">
-              <div class="card-body">
-                <h5 class="card-title" style="color: white;">Honda NSX</h5>
-                <p class="card-text" style="color: white;">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <h5 class="card-text" style="color: white;">4 000 000 </h5>
-                <div class="glass-btn glass-btn-red">
-                    <a href="#" class="stretched-link" style="color: black">
-                        <i class="fa fa-cart-plus" style="width: 30px; height: 30px;"></i>
-                    </a>
+        <div class="card col-4" style="background-color: #171717;">
+            <img src="/CarImages/PorscheTaycan.png" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
+                <p class="card-text text-center" style="color: white;">Car Text.</p>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" style="color: black;">Приобрести</a>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-
-        <div class="card mb-5" style=" width: 600px; background-color: #363949; padding: 0px; margin-right: 25px; margin-left: 25px;">
-          <div class="row g-0" style="margin: 0px;">
-            <div class="col-md-6">
-              <img src="/CarImages/toyota_camry2019_grey.png" style="width: 100%; height: 100%;" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-6 ml-5">
-              <div class="card-body">
-                <h5 class="card-title" style="color: white;">Honda NSX</h5>
-                <p class="card-text" style="color: white;">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <h5 class="card-text" style="color: white;">4 000 000 </h5>
-                <div class="glass-btn glass-btn-red">
-                    <a href="#" class="stretched-link" style="color: black">
-                        <i class="fa fa-cart-plus" style="width: 30px; height: 30px;"></i>
-                    </a>
+        <div class="card col-4" style="background-color: #171717">
+            <img src="/CarImages/AudiQ5.png" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
+                <p class="card-text text-center" style="color: white;">Car Text.</p>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" style="color: black;">Приобрести</a>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-
-    </section>
+    </div>
 
     <div class="row w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
         <h4 style="color: white;">Электрокары</h4>
-        <h5>Более экологичный вид транспорта</h5>
+        <h5 style="color: white;">Более экологичный вид транспорта</h5>
         <div class="glass-btn glass-btn-red">
             <a asp-action="ElectricCarView" asp-controller="Home">
                 Подробнее

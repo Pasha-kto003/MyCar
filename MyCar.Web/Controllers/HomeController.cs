@@ -30,7 +30,20 @@ namespace MyCar.Web.Controllers
             var marks = new List<MarkCarApi>();          
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             ViewBag.Marks = marks;
-            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");   
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            return View("Index", cars);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DetailsCar(string CarName)
+        {
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            var car = cars.FirstOrDefault(s=> s.Car.CarName == CarName);
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.Marks = marks;
+            ViewBag.CarName = car.Car.CarName;
+            ViewBag.PhotoCar = car.Car.PhotoCar;
             return View("Index", cars);
         }
 

@@ -68,3 +68,406 @@
         </div>
         </div>
 *@
+
+
+
+@using ModelsApi
+@using MyCar.Web.Core
+@model IEnumerable<ModelsApi.SaleCarApi>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid">
+<div class="wow bounceInDown slider" id="slider" style="margin: 0px;"> 
+    <div class="slider-content" id="slider-content">
+        <div class="sl-img">
+            <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg"/></div>
+            <div class="sl-img-item" data-id="2"><img src="/image/sliderPhoto2.jpg" /></div>
+            <div class="sl-img-item" data-id="3"><img src="/image/sliderPhoto3.jpg"/></div>
+        </div>
+        <div class="sl-text">
+            <div class="sl-text-item sl-text-item-active" data-id="1">
+                <div class="sl-text-item-head">
+                    <h3>Mersedez-350 sl</h3>
+                </div>
+                <div class="sl-text-item-info">
+                    <p>Национальный Парк Йеллоустоун</p>
+                </div>
+            </div>
+            <div class="sl-text-item" data-id="2">
+                <div class="sl-text-item-head">
+                    <h3>Mersedez Group-C</h3>
+                </div>
+                <div class="sl-text-item-info">
+                    <p>Мальдивские Острова</p>
+                </div>
+            </div>
+            <div class="sl-text-item" data-id="3">
+                <div class="sl-text-item-head">
+                    <h3>Toyota Camry</h3>
+                </div>
+                <div class="sl-text-item-info">
+                    <p>Шотландия</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slider__nav" style="height: 900px;">
+        <div class="sl-nav-arrows">
+            <div class="sl-nav-arrow sl-nav-arrow-left" id="left">Лево</div>
+            <div class="sl-nav-arrow sl-nav-arrow-right" id="right">Право</div>
+        </div>
+        <div class="sl-nav-dots" id="sl-nav-dots">
+            <div class="sl-nav-dot sl-nav-dot-active" data-id="1"></div>
+            <div class="sl-nav-dot" data-id="2"></div>
+            <div class="sl-nav-dot" data-id="3"></div>
+        </div>
+    </div>
+</div>
+
+    <section class="main-content mb-5 mt-5">
+
+        <div class="container">
+
+            <div class="row row-cols-6">
+
+                @foreach (var i in ViewBag.Marks)
+                {
+                    <div class="col">
+
+                        <div class="m-3 d-flex justify-content-center">
+                            <div class="mark-Photo">
+                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="~/MarkImages/@i.MarkPhoto" /></a>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="row p-3 mt-5 mb-5">
+        <div class="col">
+                <p class="h1 text-white text-center"></p>
+        </div>
+    </div>
+
+    <section class="w-100" >
+        <div class="myContainer w-100">
+            <img src="/image/landingText.jpg" style="width: 100%;"/>
+            <div class="textCenterLeft">
+                <h2>Новое гоночное авто ежедненвно</h2>
+                <div class="glass-btn glass-btn-red">
+                    <a href="#" style="color: black">Перейти в катлог</a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <div class="container">
+
+        <div class="row mb-5 mt-5">
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">Финансирование</h4>
+                    <a href="#">
+                        <img src="/image/sectionPhoto3.png" style="max-width: 8rem; " />
+                        <div class="mask"></div>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">Гарантия</h4>
+                    <a href="#">
+                        <img src="/image/sectionPhoto2.png" style="max-width: 8rem; " />
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">О нас</h4>
+                    <a href="#"> 
+                        <img src="/image/sectionPhoto1.png" style="max-width: 8rem; " />
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+
+                <div class="justify-content-center">
+                    <h4 class="p3 text-white " style="margin-bottom: 7%;">Местонахождение</h4>
+                    <a href="#">
+                        <img src="/image/sectionPhoto4.png" style="max-width: 8rem; " />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="container">
+            <div class="row">
+                <div class="col-md-4 col-xs-4">
+                    <div class="thumbnail">
+                        <div class="picture1">
+                            <img class="img-responsive" src="http://frontendfreecode.com/img/pizza.jpeg" alt="...">
+                        </div>
+                        <div class="picture2">
+                            <img class="img-responsive" src="http://frontendfreecode.com/img/salad-square.jpg" alt="">
+                        </div>
+                        <div class="caption">
+                            <h3>Thumbnail label</h3>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>*@
+
+
+    </div>
+
+    @*<div class="slider" id="slider">
+        <div class="slider-content" id="slider-content">
+            <div class="sl-img">
+                <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg" /></div>
+                <div class="sl-img-item" data-id="2"><img src="/image/landingText2.jpg" /></div>
+            </div>
+        </div>
+
+        <div class="slider__nav" style="height: 900px;">
+            <div class="sl-nav-arrows">
+                <div class="sl-nav-arrow sl-nav-arrow-left" id="left">Лево</div>
+                <div class="sl-nav-arrow sl-nav-arrow-right" id="right">Право</div>
+            </div>
+            <div class="sl-nav-dots" id="sl-nav-dots">
+                <div class="sl-nav-dot sl-nav-dot-active" data-id="1"></div>
+                <div class="sl-nav-dot" data-id="2"></div>
+                <div class="sl-nav-dot" data-id="3"></div>
+            </div>
+        </div>
+
+    </div>*@
+    <section class="row w-100 text-center">
+        <h2 style="color:white;">
+            Рекомендованные авто
+        </h2>
+    </section>
+    <div class="row w-100 align-items-center align-content-center justify-content-center">
+        <div class="card col-4" style="background-color: #171717">
+            <img src="/CarImages/2015-Toyota-Prius.png" class="card-img-top zoomimg">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
+                <p class="card-text text-center" style="color: white;">Car Text.</p>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" style="color: black;">Приобрести</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card col-4" style="background-color: #171717;">
+            <img src="/CarImages/PorscheTaycan.png" class="card-img-top zoomimg">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
+                <p class="card-text text-center" style="color: white;">Car Text.</p>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" style="color: black;">Приобрести</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card col-4" style="background-color: #171717">
+            <img src="/CarImages/AudiQ5.png" class="card-img-top zoomimg">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="color: white;">Audi Q5</h5>
+                <p class="card-text text-center" style="color: white;">Car Text.</p>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" style="color: black;">Приобрести</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="row w-100 text-center justify-content-center align-items-center">
+        <h3>Explore your car</h3>
+                <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Hybrid</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">All-Electronic</button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Battery electric</button>
+            </div>
+        </nav>
+        <div class="tab-content text-center justify-content-center" id="nav-tabContent" style="background-color: #171717">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
+                        <div class="container mt-5" style="background-color: #171717">
+                            <div class="row w-100">
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")))
+                                {
+                                    <div class="card" style="width:140px; height: 110px; background-color: #171717">
+                                        <img src="/CarImages/@car.Car.PhotoCar"/>
+                                    </div>  
+                                }
+                            </div>
+                        
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="container-fluid mt-5" style="background-color: #171717">
+                            <div class="row w-100">
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")))
+                                {
+                                    <div class="card" style="width:140px; height: 110px; background-color: #171717;">
+                                        <img src="/CarImages/@car.Car.PhotoCar"/>
+                                    </div>  
+                                }
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                    </div>
+        </div>
+    </section>
+    <div class="row w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
+        <h4 style="color: white;">Электрокары</h4>
+        <h5 style="color: white;">Более экологичный вид транспорта</h5>
+        <div class="glass-btn glass-btn-red">
+            <a asp-action="ElectricCarView" asp-controller="Home">
+                Подробнее
+            </a>
+        </div>
+        <img src="https://electrek.co/wp-content/uploads/sites/3/2020/11/Tesla-hero-Supercharger-charging.jpg?quality=82&strip=all&w=1600" width="100%" height="100%"/>
+    </div>
+
+<div class="fix-bg wow slideInLeft" style="background-image: url(https://i.pinimg.com/originals/3d/ac/a6/3daca6799278592596d12bd9d1086174.jpg); background-size:cover;">
+<div class="text-wp">    
+    <div class="text-bg">
+        <div class="text-bg-2">
+            <h1>Sauber-Mercedez C9</h1>
+            <a asp-action="CarView" asp-controller="Home">
+                Каталог
+            </a>
+        </div>
+    </div>
+</div>   
+</div>
+<div class="fix-bg wow slideInRight" style="background-image: url(https://upload.wikimedia.org/wikipedia/commons/f/f5/Mazda-787B-No55-July2011.jpg); background-size:cover;" >
+<div class="text-wp">    
+    <div class="text-bg">
+        <div class="text-bg-2">
+            <h1>Mazda 787B</h1>
+            <a asp-action="CarView" asp-controller="Home">
+                Каталог
+            </a>
+        </div>
+    </div>
+</div>   
+</div>
+<section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
+  <div class="container-fluid">
+        <div class="google-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2447.3968671385614!2d131.93022815076606!3d43.1578304312577!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5fb391623a672f83%3A0xf27dcac12572fe03!2sTukhachevskogo%20St%2C%2030%2C%20Vladivostok%2C%20Primorskiy%20kray%2C%20690089!5e0!3m2!1sen!2sru!4v1673944977896!5m2!1sen!2sru" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+</div>
+</section>
+<div class="row">
+<section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
+  <div class="container">
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider">
+    <div class="tabs3d">
+    <div class="tabs3d-control"></div>
+    <div class="tabs3d-stage">
+        <div class="spinner spinner-left">
+            <div class="spinner-face" data-bg="#2b4356" data-menu="Sauber-Mercedes C9">
+                <div class="content">
+                    <div class="content-left">
+                        <img src="~/image/MercedesC9.jpg" width="650px;" height="460px;"/>
+                        <div class="content-title">
+                            <div>Mercedes C9</div>
+                        </div>
+                    </div>
+                    <div class="content-right">
+                        <div class="content-main">
+                            <p>C9 был развитием предыдущей конструкции Sauber C8 с сохранением монокока .он в основном состоял из алюминия, хотя и был значительно жестче и с множеством других улучшений. Задняя подвеска была изменена с вертикально расположенных пружинно-демпферных блоков, расположенных над коробкой передач, на горизонтальную компоновку, выровненную с продольной осью автомобиля. Аэродинамические изменения включали перемещение комбинации масляно-водяного радиатора в носовую часть автомобиля, что позволило использовать модифицированную разделительную пластину. 
+                            В соответствии с изменением положения радиаторов большие воздуховоды NACA были удалены из верхней части дверных порогов. Задняя палуба была значительно перепрофилирована, а заднее крыло теперь устанавливалось исключительно на центральной опоре. Аэродинамически автомобиль имел две конфигурации: одну для спринтерских гонок и версию с низким сопротивлением для 5,8-километровой трассы Mulsanne Straight в Ле-Мане. 
+                            В спринтерской конфигурации он производил 2222,1 кг (4899 фунтов) прижимной силы на скорости 320 км / ч (200 миль в час) при 555,7 кг (1225 фунтов) сопротивления. Конфигурация спринтерской схемы имела отношение L / D 4: 1, а версия с низким сопротивлением - около 3: 
+                            1. Ранние двигатели снова были подготовлены швейцарским специалистом по двигателям Хайни Мадером, хотя теперь известно, что это было прикрытием для участия Mercedes в проекте позже. Он был постепенно облегчен за счет использования нового коленчатого вала, более эффективных турбокомпрессоров KKK и блока без гильзы. Это была полунапряженная часть шасси с сухим картером . Не было никаких специальных квалификационных двигателей, и при давлении наддува 2,2 бар он, как говорили, имел мощность «почти 800 л.с. (811 л.с., 597 кВт)». 
+                            Максимальный гоночный наддув составлял 1,9 бар. 
+                            Максимальное число оборотов в минуту составляло 7000, но гонщики обычно держались на уровне 6500 во время гонок. Кривая крутящего момента была почти одинаковой в диапазоне от 3000 до 6000 об/мин, что давало двигателю достаточную гибкость. [2]Двигатель сохранил поперечный коленчатый вал, а порядок зажигания был 1-5-4-8-6-3-7-2. Более поздние двигатели M119HL поставлялись с завода двигателей Mercedes в Унтертюркхайме , которым руководил Герман Хирет. 
+                            Добавление 16 клапанных головок в 1989 году увеличило мощность примерно на 20 л.с. (20 л.с., 15 кВт) до примерно 720 л.с. (730 л.с., 537 кВт) при 1,6 бар и 7000 об/мин. 
+                            Повышение топливной экономичности означало, что абсолютная мощность также может быть увеличена с чуть менее 800 л.с. при давлении наддува 2,2 бара до примерно 820 л.с. (831 л.с., 611 кВт).</p>
+                            <p class="content-autor">Автор</p>
+                        </div>
+                    </div>
+                </div>
+            </div>                
+            <div class="spinner-face" data-bg="#353f49" data-menu="Mazda 787B">
+                <div class="content">
+                    <div class="content-left">
+                        <img src="~/image/MazdaGroupC.jpg" width="650px;" height="460px;"/>
+                        <div class="content-title">
+                            <div>Mazda 787B</div>
+                        </div>
+                    </div>
+                    <div class="content-right">
+                        <div class="content-main">
+                            <p>Mazda 787 и ее производная 787B — это спортивные прототипы гоночных автомобилей группы C, которые были разработаны японским производителем автомобилей Mazda для использования в чемпионате мира по спортивным автомобилям , всеяпонском чемпионате по спортивным прототипам и гонках « 24 часа Ле-Мана» с 1990 по 1991 год. объединив смесь правил Международной федерации спортивных автомобилей (FISA) группы C с правилами GTP Международной ассоциации автоспорта (IMSA) , 787-е были последними роторными двигателями Ванкеля. 
+                            Гоночные автомобили для участия в чемпионатах мира и Японии с двигателем Mazda R26B.
+                            Хотя моделям 787 и 787B не хватало скорости на одном круге участников чемпионата мира, таких как Mercedes-Benz , Jaguar и Porsche , а также участников чемпионата Японии Nissan и Toyota , модели 787 обладали надежностью, которая позволяла им бороться за свои соответствующие чемпионаты. 
+                            Надежность автомобилей в конечном итоге окупилась в 1991 году, когда 787B, управляемый Джонни Гербертом , Фолькером Вайдлером и Бертраном Гашо , одержал победу в гонке «24 часа Ле-Мана» 1991 года . 
+                            По состоянию на 2021 год это остается единственной победой автомобиля без поршневого двигателя .дизайн. 
+                            Это была первая победа японского производителя и единственная такая победа до победы Toyota в гонке «24 часа Ле-Мана» 2018 года .
+                        </p>
+                            <p class="content-autor">Автор</p>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>
+<!--  Предзагрузка картинок  -->
+<div style="height: 0; width: 0; overflow: hidden">
+    <img src="~/image/MercedesC9.jpg">
+    <img src="image-n.jpg">
+</div>    
+</div>
+</section>
+</div>
+</div>
+
+</div>
+@if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
+{
+    <div class="callout bg-danger bg-gradient" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Window Role</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p>You Sign In as Admin</p>
+        </div>
+    </div>
+}
+else
+{
+    <div></div>
+}

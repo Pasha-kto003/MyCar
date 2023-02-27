@@ -37,8 +37,8 @@ namespace MyCar.Server.DB
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseInMemoryDatabase("db1"); //тестовый запуск базы данных для севера
-                optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo;");
+                //optionsBuilder.UseInMemoryDatabase("db1"); //тестовый запуск базы данных для севера DESKTOP-2KIP198 ^^ DESKTOP-CAGO29I
+                optionsBuilder.UseSqlServer("Server=DESKTOP-CAGO29I\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo;");
             }
         }
 

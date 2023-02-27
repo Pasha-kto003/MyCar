@@ -246,97 +246,108 @@
     </div>
     <section class="row w-100 text-center justify-content-center align-items-center">
         <h3>Explore your car</h3>
-                <nav>
+        <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Hybrid</button>
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Sedan</button>
+                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Hybrid</button>
                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">All-Electronic</button>
                 <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Battery electric</button>
             </div>
         </nav>
         <div class="tab-content text-center justify-content-center" id="nav-tabContent" style="background-color: #171717">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
-                        <div class="container mt-5" style="background-color: #171717">
-                            <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Купе")).Take(5))
-                                {
-                                    <div class="col">
-                                        <div class="m-3 d-flex justify-content-center">
-                                            <div class="text-center">
-                                                <div class="mark-Photo scalePh">
-                                                    <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
-                                                </div>
-                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
-                                                    <div class="text-white">@car.Car.Model.ModelName</div>
-                                                </a>
-                                            </div>
+                <div class="container mt-5" style="background-color: #171717">
+                    <div class="row w-100">
+                        @foreach (var car in Model.Where(s => s.Car.BodyType.TypeName.Contains("Седан")))
+                        {
+                            <div class="col">
+                                <div class="m-3 d-flex justify-content-center">
+                                    <div class="text-center">
+                                        <div class="mark-Photo scalePh">
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar" /></a>
                                         </div>
-                                    </div> 
-                                }
+                                        <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
+                                            <div class="text-white">@car.Car.Model.ModelName</div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
-                        <div class="container mt-5" style="background-color: #171717">
-                            <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")).Take(5))
-                                {
-                                    <div class="col">
-                                        <div class="m-3 d-flex justify-content-center">
-                                            <div class="text-center">
-                                                <div class="mark-Photo scalePh">
-                                                    <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
-                                                </div>
-                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
-                                                    <div class="text-white">@car.Car.Model.ModelName</div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                }
-                            </div>
-                        
-                        </div>
+                        }
                     </div>
 
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <div class="container-fluid mt-5" style="background-color: #171717">
-                            <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")).Take(5))
-                                {
-                                    <div class="col-5">
-                                        <div class="m-3 d-flex justify-content-center">
-                                            <div class="text-center">
-                                                <div class="mark-Photo scalePh">
-                                                    <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
-                                                </div>
-                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
-                                                    <div class="text-white">@car.Car.Model.ModelName</div>
-                                                </a>
-                                            </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="nav-view" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
+                <div class="container mt-5" style="background-color: #171717">
+                    <div class="row w-100">
+                        @foreach (var car in Model.Where(s => s.Car.BodyType.TypeName.Contains("Гибрид")))
+                        {
+                            <div class="col">
+                                <div class="m-3 d-flex justify-content-center">
+                                    <div class="text-center">
+                                        <div class="mark-Photo scalePh">
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar" /></a>
                                         </div>
-
-                                    </div> 
-                                }
+                                        <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
+                                            <div class="text-white">@car.Car.Model.ModelName</div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        
-                        </div>
+                        }
                     </div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
 
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="container-fluid mt-5" style="background-color: #171717">
+                    <div class="row w-100">
+                        @foreach (var car in Model.Where(s => s.Car.BodyType.TypeName.Contains("Электрокар полный")).Take(5))
+                        {
+                            <div class="col-5">
+                                <div class="m-3 d-flex justify-content-center">
+                                    <div class="text-center">
+                                        <div class="mark-Photo scalePh">
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar" /></a>
+                                        </div>
+                                        <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
+                                            <div class="text-white">@car.Car.Model.ModelName</div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
                     </div>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+            </div>
         </div>
     </section>
-    <section action="" class="row w-100" style="height: 650px; width: 1600px; background-image: url('/image/MountainBackground.jpeg'); background-repeat: no-repeat;">
-        @*<img src="~/image/MountainBackground.jpeg" style="width: 100%; height 100%"/>*@
-        <div class="col-4">
-            <h3>@ViewBag.CarName</h3>
+
+    <section class="row w-100" style="height:536px;">
+
+        <div class="h-100 w-100 position-relative">
+
+            <video playsinline="" autoplay="" loop="" aria-hidden="true" class="videoMainStyle position-absolute w-100" style="object-fit:cover;">
+                <source src="/image/Homepage-VS-suvs-background_video.mp4" type="video/mp4">
+            </video>
+            
+            <div class="col-5 position-relative text-center justify-content-center align-items-center" style="top:50%;">
+                <h3 class="text-white">@ViewBag.CarName</h3>
+            </div>
+            <div class="col-7 position-relative text-center justify-content-center align-items-center" >
+                <img src="~/CarImages/@ViewBag.PhotoCar" />
+            </div>
+             
         </div>
-        <div class="col-8">
-            <img src="~/CarImages/@ViewBag.PhotoCar"/>
-        </div>
+
     </section>
-    <div class="row w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
+
+    <div class="row mt-5 w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
         <h4 style="color: white;">Электрокары</h4>
         <h5 style="color: white;">Более экологичный вид транспорта</h5>
         <div class="glass-btn glass-btn-red">
@@ -371,6 +382,45 @@
     </div>
 </div>   
 </div>
+
+@*section*@
+    <div class="tabs">
+        <div class="tab">
+            <div class="tab-toggle">
+                <span class="tab-nums">
+                    <span class="tab-num">1</span>
+                    <span class="tab-tab">Пункт</span>
+                </span>
+                <span class="tab-name">Название вкладки</span>
+            </div>
+        </div>
+        <div class="Tabscontent wow bounceInUp">
+            <p class="text-white">
+                Описание вкладки
+
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </div>
+
+        <!-- Еще вкладки -->
+
+        <div class="tab">
+            <div class="tab-toggle">
+                <span class="tab-nums">
+                    <span class="tab-num">2</span>
+                    <span class="tab-tab">Пункт</span>
+                </span>
+                <span class="tab-name">Название вкладки</span>
+            </div>
+        </div>
+        <div class="Tabscontent wow bounceInUp">
+            <p class="text-white">Описание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладки</p>
+        </div>
+    </div>
+@*section*@
+
 <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
   <div class="container-fluid">
         <div class="google-map">

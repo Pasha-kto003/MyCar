@@ -44,7 +44,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
         public AddCarSaleViewModel(SaleCarApi saleCar)
         {
-            Task.Run(GetList).Wait();
+            Task.Run(GetList);
             if (saleCar == null)
             {
                 AddSaleVM = new SaleCarApi { };

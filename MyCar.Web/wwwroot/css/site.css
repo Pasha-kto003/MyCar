@@ -19,7 +19,7 @@ html {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center center;
+    background-position: bottom bottom;
     margin: 20px 0;
 }
 
@@ -44,12 +44,10 @@ html {
     bottom: 10%;
     width: 300px;
     left: calc(50% - 150px);
-    background: rgba(0,0,0,0.3);
-    transform: skew(-20deg);
+    background: rgba(0,0,0,0.0);
 }
 
 .text-bg-2 {
-    transform: skew(20deg);
     color: #FFF;
 }
 
@@ -1860,13 +1858,41 @@ body {
     transition: 1s; /* Время эффекта */
 }
 
-    .scalePh:hover {
-        transform: scale(1.2); /* Увеличиваем масштаб */
-    }
+.scalePh:hover {
+    transform: scale(1.2); /* Увеличиваем масштаб */
+}
 .zoomimg:hover {
     transform: scale(1.2);
     transition-duration: 2s;
 
+}
+
+
+
+
+ul.list6b {
+    display: inline-block;
+    text-align: center;
+}
+
+.list6b li {
+    padding: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+.list6b li:before {
+    padding-right: 10px;
+    font-weight: bold;
+    color: #C0C0C0;
+    content: "\2714";
+    transition-duration: 0.5s;
+}
+
+.list6b li:hover:before {
+    color: #337AB7;
+    content: "\2714";
+} 
 }
 
 .videoMainStyle {

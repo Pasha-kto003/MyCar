@@ -94,6 +94,11 @@ namespace MyCar.Web.Controllers
             return View("ElectricCarView", cars);
         }
 
+        public async Task<IActionResult> LexusGXView()
+        {
+            return View("LexusGXView");
+        }
+
         [Breadcrumb("ViewData.Title")]
         public IActionResult Privacy()
         {

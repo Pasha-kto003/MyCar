@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    var models = Model.Where(s=> s.Car.BodyType.TypeName.Contains("Седан"));
 }
 
 <div class="container-fluid">
@@ -246,18 +247,20 @@
     </div>
     <section class="row w-100 text-center justify-content-center align-items-center">
         <h3>Explore your car</h3>
-                <nav>
+        <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Hybrid</button>
+                <button class="nav-link" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Car</button>
+                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Sedan</button>
+                <button class="nav-link" id="nav-view-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-view" aria-selected="true">Hybrid</button>
                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">All-Electronic</button>
                 <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Battery electric</button>
             </div>
         </nav>
         <div class="tab-content text-center justify-content-center" id="nav-tabContent" style="background-color: #171717">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
+                    <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" style="background-color: #171717">
                         <div class="container mt-5" style="background-color: #171717">
                             <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Купе")).Take(5))
+                                @foreach(var car in Model.ToList())
                                 {
                                     <div class="col">
                                         <div class="m-3 d-flex justify-content-center">
@@ -270,7 +273,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 }
                             </div>
                         
@@ -279,7 +282,37 @@
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
                         <div class="container mt-5" style="background-color: #171717">
                             <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")).Take(5))
+                                @foreach(var car in models.ToList())
+                                {
+                                    @if (car.Car.BodyType.TypeName.Contains("Седан"))
+                                    {
+                                        <div class="col">
+                                            <div class="m-3 d-flex justify-content-center">
+                                                <div class="text-center">
+                                                    <div class="mark-Photo scalePh">
+                                                        <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                                    </div>
+                                                    <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
+                                                        <div class="text-white">@car.Car.Model.ModelName</div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        
+                                        <div class="col"></div>
+                                    }
+                                }
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show active" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab" style="background-color: #171717">
+                        <div class="container mt-5" style="background-color: #171717">
+                            <div class="row w-100">
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")).ToList())
                                 {
                                     <div class="col">
                                         <div class="m-3 d-flex justify-content-center">
@@ -298,11 +331,10 @@
                         
                         </div>
                     </div>
-
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <div class="container-fluid mt-5" style="background-color: #171717">
                             <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")).Take(5))
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")))
                                 {
                                     <div class="col-5">
                                         <div class="m-3 d-flex justify-content-center">
@@ -322,18 +354,65 @@
                         
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-
-                    </div>
         </div>
     </section>
-    <section action="" class="row w-100" style="height: 650px; width: 1600px; background-image: url('/image/MountainBackground.jpeg'); background-repeat: no-repeat;">
-        @*<img src="~/image/MountainBackground.jpeg" style="width: 100%; height 100%"/>*@
-        <div class="col-4">
-            <h3>@ViewBag.CarName</h3>
+    <section action="" class="row mt-5 w-100 align-items-center text-center align-content-center align-items-center justify-content-center" style="height: 455px;">
+        <div class="row" style="height: 455px;">
+            @*<video playsinline="" autoplay="" loop="" aria-hidden="true" class="w-100 position-absolute" style="min-height:455px;background-position:center;">
+                <source src="/image/Homepage-VS-suvs-background_video.mp4" type="video/mp4" style="width:100%; max-width:455px;">
+            </video>*@
+            <img src="~/image/MountainBackground.jpeg" style="width: 100%; position:absolute; background-position:center; background-repeat:no-repeat; max-height:455px; margin-right: 20px; padding-right: 40px;"/>
+            <div class="col-5 position-relative text-center justify-content-center align-items-center" style="top:50%;">
+                <h3 class="text-white">@ViewBag.CarName</h3>
+            </div>
+            <div class="col-7 position-relative text-center justify-content-center align-items-center" >
+                <img src="~/CarImages/@ViewBag.PhotoCar" style="bottom:50%;max-height:420px;max-width:750px;" />
+            </div>
+
         </div>
-        <div class="col-8">
-            <img src="~/CarImages/@ViewBag.PhotoCar"/>
+    </section>
+    <section class="row row-cols-3 w-100 mt-5" style="height: 500px;">
+        <div class="col h-100">
+            <div class="wow slideInLeft" style="background-image: url('/image/lexus-homepage.jpg'); width:100%; height: 100%; background-position:center;">
+                <div class="text-wp">    
+                    <div class="text-bg">
+                        <div class="text-bg-2">
+                            <h1>Lexus GX Special Edition</h1>
+                            <a asp-action="LexusGXView" asp-controller="Home">
+                                Каталог
+                            </a>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+        <div class="col h-100">
+            <div class="wow bounceInUp" style="background-image: url('/image/Toyota-camry-exterieur_Medium-Landscape.jpg'); width:100%; height: 100%; background-position:center; object-fit: cover">
+                <div class="text-wp">    
+                    <div class="text-bg">
+                        <div class="text-bg-2">
+                            <h1>New Toyota Camry</h1>
+                            <a asp-action="ToyotaView" asp-controller="Home">
+                                Каталог
+                            </a>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+        <div class="col h-100">
+            <div class="wow slideInRight" style="background-image: url('/image/RCF.jpg'); width:100%; height: 100%; background-position:center;">
+                <div class="text-wp">    
+                    <div class="text-bg">
+                        <div class="text-bg-2">
+                            <h1>Lexus RCF</h1>
+                            <a asp-action="PorscheView" asp-controller="Home">
+                                Каталог
+                            </a>
+                        </div>
+                    </div>
+                </div>   
+            </div>
         </div>
     </section>
     <div class="row w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
@@ -376,7 +455,7 @@
         <div class="google-map">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2447.3968671385614!2d131.93022815076606!3d43.1578304312577!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5fb391623a672f83%3A0xf27dcac12572fe03!2sTukhachevskogo%20St%2C%2030%2C%20Vladivostok%2C%20Primorskiy%20kray%2C%20690089!5e0!3m2!1sen!2sru!4v1673944977896!5m2!1sen!2sru" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-</div>
+  </div>
 </section>
 <div class="row">
 <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">

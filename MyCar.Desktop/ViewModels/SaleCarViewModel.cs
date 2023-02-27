@@ -86,7 +86,7 @@ namespace MyCar.Desktop.ViewModels
 
         public SaleCarViewModel()
         {
-            Task.Run(GetSales).Wait();
+            Task.Run(GetSales);
 
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Артикул", "Авто" });

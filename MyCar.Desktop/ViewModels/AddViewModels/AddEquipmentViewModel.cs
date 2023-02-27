@@ -24,7 +24,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public AddEquipmentViewModel(EquipmentApi equipment)
         {
 
-            Task.Run(Get).Wait();
+            Task.Run(Get);
 
             if (equipment == null)
             {

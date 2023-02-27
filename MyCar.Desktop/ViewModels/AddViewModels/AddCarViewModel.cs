@@ -78,7 +78,7 @@ namespace MyCar.Desktop.ViewModels
 
         public AddCarViewModel(CarApi car)
         {
-            Task.Run(GetList).Wait();
+            Task.Run(GetList);
 
             if (car == null)
             {

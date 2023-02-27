@@ -61,6 +61,7 @@ namespace MyCar.Desktop.ViewModels
         {
             User = await Api.Enter<UserApi>(UserName, Password, "Auth");
         }
+
         private void ShowWindow()
         {
             if (User != null && User.ID != 0 && (User.UserType.TypeName == "Сотрудник" || User.UserType.TypeName == "Администратор"))

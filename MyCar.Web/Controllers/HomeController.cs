@@ -100,6 +100,13 @@ namespace MyCar.Web.Controllers
             return View("LexusGXView");
         }
 
+        public async Task<IActionResult> LexusRCFView()
+        {
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            ViewBag.Cars = cars.Where(s=> s.Car.CarName.Contains("Lexus RCF"));
+            return View("LexusRCFView");
+        }
+
         [Breadcrumb("ViewData.Title")]
         public IActionResult Privacy()
         {

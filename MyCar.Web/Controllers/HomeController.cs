@@ -43,6 +43,7 @@ namespace MyCar.Web.Controllers
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             ViewBag.Marks = marks;
             ViewBag.CarName = car.Car.CarName;
+            ViewBag.FullPrice = car.FullPrice;
             ViewBag.PhotoCar = car.Car.PhotoCar;
             return View("Index", cars);
         }

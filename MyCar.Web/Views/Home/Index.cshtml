@@ -301,7 +301,6 @@
                                     }
                                     else
                                     {
-                                        
                                         <div class="col"></div>
                                     }
                                 }
@@ -362,8 +361,15 @@
                 <source src="/image/Homepage-VS-suvs-background_video.mp4" type="video/mp4" style="width:100%; max-width:455px;">
             </video>*@
             <img src="~/image/MountainBackground.jpeg" style="width: 100%; position:absolute; background-position:center; background-repeat:no-repeat; max-height:455px; margin-right: 20px; padding-right: 40px;"/>
-            <div class="col-5 position-relative text-center justify-content-center align-items-center" style="top:50%;">
-                <h3 class="text-white">@ViewBag.CarName</h3>
+            <div class="col-5 position-relative text-center justify-content-center align-items-center" style="top:30%;">
+                <h2 class="text-white text-decoration-underline text-uppercase">@ViewBag.CarName</h2>
+                <small class="text-white">Начальная цена от</small>
+                <h3 class="text-white">@ViewBag.FullPrice &#8381</h3>
+                <div class="glass-btn glass-btn-red">
+                    <a asp-action="ElectricCarView" asp-controller="Home">
+                        Купить
+                    </a>
+                </div>
             </div>
             <div class="col-7 position-relative text-center justify-content-center align-items-center" >
                 <img src="~/CarImages/@ViewBag.PhotoCar" style="bottom:50%;max-height:420px;max-width:750px;" />

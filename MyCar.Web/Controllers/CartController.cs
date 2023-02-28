@@ -129,6 +129,12 @@ namespace MyCar.Web.Controllers
                         Price = car.FullPrice,
                         OrderId = order.ID,
                     };
+
+                    if(wareHouse.SaleCar.Car.CarMark.Contains("Toyota") || wareHouse.SaleCar.Car.CarMark.Contains("Lexus"))
+                    {
+                        wareHouse.Discount = car.FullPrice * 10 / 100;
+                    }
+
                     order.WareHouses.Add(wareHouse);
                     order.SumOrder = car.FullPrice - wareHouse.Discount;
                     await EditOrder(order);
@@ -188,6 +194,11 @@ namespace MyCar.Web.Controllers
             {
                 return View("Error");
             }
+            else if(order.WareHouses == null || order.WareHouses.Count == 0)
+            {
+                DeleteOrder(order);
+                return View("Error");
+            }
             order.WareHouses = Warehouses.Where(s => s.OrderId == order.ID).ToList();
             return View("DetailsCart", order);
         }
@@ -200,8 +211,7 @@ namespace MyCar.Web.Controllers
             var deleteCar = Warehouses.FirstOrDefault(s => s.ID == id);
             var order = Orders.FirstOrDefault(s => s.ID == deleteCar.OrderId);
             order.WareHouses.Remove(deleteCar);
-            await EditWareHouse(deleteCar);
-            await EditOrder(order);
+            await DeleteCar(deleteCar);
             return View("DetailsCart", order);
         }
 
@@ -247,6 +257,16 @@ namespace MyCar.Web.Controllers
         public async Task EditOrder(OrderApi orderApi)
         {
             var order = await Api.PutAsync<OrderApi>(orderApi, "Order");
+        }
+
+        private async Task DeleteCar(WareHouseApi wareHouse)
+        {
+            var warehouse = await Api.DeleteAsync<WareHouseApi>(wareHouse, "Warehouse");
+        }
+
+        private async Task DeleteOrder(OrderApi orderApi)
+        {
+            var order = await Api.DeleteAsync<OrderApi>(orderApi, "Order");
         }
 
         public async Task CreateWareHouse(WareHouseApi wareHouse)

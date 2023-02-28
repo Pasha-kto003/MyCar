@@ -471,7 +471,10 @@ var Boxlayout = (function () {
 })();
 Boxlayout.init();    
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 35d5d4ab21124ebe257107379471e04322e10b47
 let wrapper = $(".tabs");
 let tabToggle = wrapper.find(".tab-toggle");
 function openTab() {
@@ -487,7 +490,18 @@ function openTab() {
     }
 };
 tabToggle.on('click', openTab);
+<<<<<<< HEAD
 tabToggle.first().trigger('click');  
 
 
 
+=======
+tabToggle.first().trigger('click');
+
+
+
+function hide(obj) {
+    var el = document.getElementById(obj);
+    el.style.display = 'none';
+}
+>>>>>>> 35d5d4ab21124ebe257107379471e04322e10b47

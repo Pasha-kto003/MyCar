@@ -43,6 +43,7 @@ namespace MyCar.Web.Controllers
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             ViewBag.Marks = marks;
             ViewBag.CarName = car.Car.CarName;
+            ViewBag.FullPrice = car.FullPrice;
             ViewBag.PhotoCar = car.Car.PhotoCar;
             return View("Index", cars);
         }
@@ -97,6 +98,13 @@ namespace MyCar.Web.Controllers
         public async Task<IActionResult> LexusGXView()
         {
             return View("LexusGXView");
+        }
+
+        public async Task<IActionResult> LexusRCFView()
+        {
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            ViewBag.Cars = cars.Where(s=> s.Car.CarName.Contains("Lexus RCF"));
+            return View("LexusRCFView");
         }
 
         [Breadcrumb("ViewData.Title")]

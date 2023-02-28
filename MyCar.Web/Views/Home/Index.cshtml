@@ -459,7 +459,7 @@
 </div>
 
 @*section*@
-<section class="h-auto w-100">
+@*<section class="h-auto w-100">
     <div class="tabs">
         <div class="tab">
             <div class="tab-toggle">
@@ -495,7 +495,9 @@
             <p style="color: white;" class="text-white">Описание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладки</p>
         </div>
     </div>
-</section>
+</section>*@
+
+
 @*section*@
 
 <div class="row">
@@ -567,7 +569,6 @@
 </div>
 </div>
 
-</div>
 @if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
 {
     <div class="callout bg-danger bg-gradient" data-bs-dismiss="alert" role="alert">

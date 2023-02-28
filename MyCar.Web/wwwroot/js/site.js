@@ -471,37 +471,11 @@ var Boxlayout = (function () {
 })();
 Boxlayout.init();    
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 35d5d4ab21124ebe257107379471e04322e10b47
-let wrapper = $(".tabs");
-let tabToggle = wrapper.find(".tab-toggle");
-function openTab() {
-    let content = $(this).parent().next(".Tabscontent"),
-        activeItems = wrapper.find(".active");
-    if ($(window).width() > 991) {
-        if (!$(this).hasClass('active')) {
-            $(this).add(content).add(activeItems).toggleClass('active');
-            wrapper.css('min-height', content.outerHeight());
-        }
-    } else {
-        $(this).add(content).toggleClass('active');
-    }
-};
-tabToggle.on('click', openTab);
-<<<<<<< HEAD
-tabToggle.first().trigger('click');  
-
-
-
-=======
-tabToggle.first().trigger('click');
-
 
 
 function hide(obj) {
     var el = document.getElementById(obj);
     el.style.display = 'none';
 }
->>>>>>> 35d5d4ab21124ebe257107379471e04322e10b47
+
+

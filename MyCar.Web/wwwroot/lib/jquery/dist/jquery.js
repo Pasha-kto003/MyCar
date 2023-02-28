@@ -10881,11 +10881,3 @@ jQuery(document).ready(function () {
 		}
 	});
 });
-
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 35d5d4ab21124ebe257107379471e04322e10b47
-
-

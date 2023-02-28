@@ -1894,6 +1894,7 @@ ul.list6b {
     content: "\2714";
 } 
 
+
 .videoMainStyle {
     position: absolute;
     width: 100%;
@@ -2079,6 +2080,12 @@ ul.list6b {
     transition: opacity 0.4s;
 }
 
+
+.tabs .Tabscontent.active {
+    opacity: 1;
+    padding: 0 0 10px 40px;
+}
+
 .tabs .Tabscontent.active {
     opacity: 1;
     padding: 0 0 10px 40px;
@@ -2090,3 +2097,5 @@ ul.list6b {
     top: 8px;
     left: 16px;
 }
+
+

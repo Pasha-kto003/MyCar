@@ -107,6 +107,21 @@ namespace MyCar.Web.Controllers
             return View("LexusRCFView");
         }
 
+        public async Task<IActionResult> SearchLexus()
+        {
+            var models = await Api.GetListAsync<List<ModelApi>>("Model");
+            var text = "RC F";
+            var type = "Модель";
+            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            string filter = "Все";
+            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
+            List<MarkCarApi> markCars;
+            markCars = GetMark().Result;
+            ViewBag.MarkCars = markCars;
+            return View("CarView", cars);
+        }
+
         [Breadcrumb("ViewData.Title")]
         public IActionResult Privacy()
         {

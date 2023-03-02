@@ -95,6 +95,7 @@ namespace MyCar.Web.Controllers
                 user.Passport.FirstName = newUser.Passport.FirstName;
                 user.Passport.LastName = newUser.Passport.LastName;
                 user.Passport.Patronimyc = newUser.Passport.Patronimyc;
+                user.Passport.Number = newUser.Passport.Number;
                 user.Passport.DateEnd = newUser.Passport.DateEnd;
                 user.Passport.DateStart = newUser.Passport.DateStart;
                 UserEdit(user, user.Passport);

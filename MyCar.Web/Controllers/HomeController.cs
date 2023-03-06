@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Validations;
 using ModelsApi;
 using MyCar.Server.DB;
 using MyCar.Web.Core;
+using MyCar.Web.Core.Paging;
 using MyCar.Web.Models;
 using SmartBreadcrumbs.Attributes;
 using System.Diagnostics;
@@ -137,8 +139,9 @@ namespace MyCar.Web.Controllers
 
         [Breadcrumb(FromAction = "Index", Title = "CarView")]
         [HttpGet]
-        public async Task<IActionResult> CarView(string SearchString)
+        public async Task<IActionResult> CarView(string SearchString)//int? pageNumber
         {
+
             List<SaleCarApi> cars;
             List<MarkCarApi> markCars;
             cars = GetCar().Result;
@@ -154,7 +157,18 @@ namespace MyCar.Web.Controllers
             {
                 cars = await Api.SearchFilterAsync<List<SaleCarApi>>(type, SearchString, "CarSales", filter);
             }
+
+            //if (SearchString != null)
+            //{
+            //    pageNumber = 1;
+            //}
+            //else
+            //{
+            //    SearchString = filter;
+            //}
+            //int pageSize = 3;
             return View("CarView", cars);
+            //return View("CarView", await PaginatedList<SaleCarApi>.CreateAsync(cars, pageNumber ?? 1, pageSize));
         }
 
         private async Task<List<SaleCarApi>> GetCar()

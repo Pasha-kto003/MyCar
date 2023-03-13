@@ -24,10 +24,12 @@ namespace MyCar.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Car> GetCars()
+        public IEnumerable<CarApi> GetCars()
         {
-            return dbContext.Cars.Include(s => s.Model).Include(s => s.Type).Include(s => s.Model.Mark)
-                .Include(s => s.CharacteristicCars).Include("CharacteristicCars.Characteristic").Include("CharacteristicCars.Characteristic.Unit");
+            return dbContext.Cars.ToList().Select(s =>
+            {
+                return GetCar(s);
+            });
         }
 
         // GET api/<CarController>/5

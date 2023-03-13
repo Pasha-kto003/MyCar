@@ -1919,21 +1919,21 @@ ul.list6b {
     clear: both;
 }
 
-.tabs .tab .tab-toggle {
-    display: flex;
-    border: 2px solid #BFE2FF;
-    padding: 4px 40px 4px 0;
-    border-radius: 16px;
-    margin-bottom: 8px;
-    position: relative;
-    outline: none;
-    width: 100%;
-    background: #FFF;
-    line-height: 1.2;
-    margin-left: 10px;
-    align-items: center;
-    cursor: pointer;
-}
+    .tabs .tab .tab-toggle {
+        display: flex;
+        border: 2px solid #D2042D;
+        padding: 4px 40px 4px 0;
+        border-radius: 16px;
+        margin-bottom: 8px;
+        position: relative;
+        outline: none;
+        width: 100%;
+        background: #171717;
+        line-height: 1.2;
+        margin-left: 10px;
+        align-items: center;
+        cursor: pointer;
+    }
 
 .tabs .tab .tab-toggle .tab-nums {
     padding: 0 10px 0 0;
@@ -1943,22 +1943,22 @@ ul.list6b {
     border-radius: 16px 0 0 16px;
 }
 
-.tabs .tab .tab-toggle .tab-nums .tab-num {
-    color: #337AB7;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 50%;
-    background: #FFF;
-    border: 3px solid #337AB7;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -20px;
-    position: relative;
-    z-index: 1;
-}
+    .tabs .tab .tab-toggle .tab-nums .tab-num {
+        color: #337AB7;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 50%;
+        background: #171717;
+        border: 3px solid #D2042D;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: -20px;
+        position: relative;
+        z-index: 1;
+    }
 
 .tabs .tab .tab-toggle .tab-nums .tab-tab {
     padding: 0 12px 0 24px;
@@ -1998,25 +1998,25 @@ ul.list6b {
     transform: rotate(0deg) translateY(-50%);
 }
 
-.tabs .tab .tab-toggle.active {
-    color: #000;
-    background-color: white;
-    cursor: default;
-}
+        .tabs .tab .tab-toggle.active {
+            color: #000;
+            background-color: #808080;
+            cursor: default;
+        }
 
 .tabs .tab .tab-toggle.active .tab-nums .tab-num {
-    color: #FFF;
-    background: #337AB7;
+    color: #D3D3D3;
+    background: #171717;
 }
 
 .tabs .tab .tab-toggle.active .tab-nums .tab-tab {
-    border: 2px solid #337AB7;
+    border: 2px solid #FFF;
     background: #337AB7;
     color: #FFF;
 }
 
 .tabs .tab .tab-toggle.active .tab-name {
-    color: #337AB7;
+    color: white;
 }
 
 .tabs .tab .tab-toggle.active:after {

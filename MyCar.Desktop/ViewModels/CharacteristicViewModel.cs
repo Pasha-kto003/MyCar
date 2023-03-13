@@ -95,6 +95,26 @@ namespace MyCar.Desktop.ViewModels
         public UnitApi SelectedUnit { get; set;  }
         #endregion
 
+        #region PhotoProperties
+        public List<CarPhotoApi> CarPhotos { get; set; } = new List<CarPhotoApi>();
+        private CarPhotoApi selectedPhotoCar { get; set; }
+        public CarPhotoApi SelectedPhotoCar
+        {
+            get => selectedPhotoCar;
+            set
+            {
+                selectedPhotoCar = value;
+                SignalChanged();
+            }
+        }
+
+        private List<CarPhotoApi> FullPhotoCars { get; set; }
+
+        public CustomCommand AddPhotoCar { get; set; }
+        public CustomCommand EditPhotoCar { get; set; }
+        public CustomCommand DeletePhotoCar { get; set; }
+        #endregion
+
         public CustomCommand AddType { get; set; }
         public CustomCommand EditType { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
@@ -113,6 +133,8 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetBodyTypes).Wait();
 
             Task.Run(GetUnit).Wait();
+
+            Task.Run(GetPhotoCar).Wait();
 
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Характеристика" });
@@ -205,6 +227,28 @@ namespace MyCar.Desktop.ViewModels
                     Task.Run(GetBodyTypes).Wait();
                 }
             });
+
+            AddPhotoCar = new CustomCommand(() =>
+            {
+                AddPhotoCarWindow addPhotoCar = new AddPhotoCarWindow();
+                addPhotoCar.ShowDialog();
+                Task.Run(GetPhotoCar);
+            });
+
+            EditPhotoCar = new CustomCommand(() =>
+            {
+                if(SelectedPhotoCar == null || SelectedPhotoCar.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
+                    return;
+                }
+                else
+                {
+                    AddPhotoCarWindow addPhotoCar = new AddPhotoCarWindow(SelectedPhotoCar);
+                    addPhotoCar.ShowDialog();
+                    Task.Run(GetPhotoCar);
+                }
+            });
         }
 
         #region Characteristic
@@ -228,6 +272,15 @@ namespace MyCar.Desktop.ViewModels
             else
                 searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic", SelectedUnitFilter.UnitName);
             UpdateList();
+        }
+        #endregion
+
+        #region PhotoCars
+        private async Task GetPhotoCar()
+        {
+            CarPhotos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+            FullPhotoCars = CarPhotos;
+            SignalChanged(nameof(CarPhotos));
         }
         #endregion
 

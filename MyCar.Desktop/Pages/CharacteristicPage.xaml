@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:MyCar.Desktop.Pages"
+      xmlns:local="clr-namespace:MyCar.Desktop.Pages" xmlns:core="clr-namespace:MyCar.Desktop.Core"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CharacteristicPage">
@@ -211,6 +211,52 @@
                                 </Button.Content>
                             </Button>
 
+                        </StackPanel>
+                        <Grid/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Изображение авто" FontSize="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <ListView Grid.Row="1" ItemsSource="{Binding CarPhotos}"  FontSize="16" SelectedItem="{Binding SelectedPhotoCar}"
+                        Background="WhiteSmoke" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" >
+                        <ListView.ItemsPanel >
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="10" Background="White" BorderBrush="{StaticResource ValorantRedBrush}" BorderThickness="1">
+                                    <Grid Width="200" Height="250" Background="Transparent" MouseUp="Grid_MouseUp" Margin="15">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="100"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Source="{Binding PhotoName, Converter={core:StringToImageConverter}}" Margin="0 0 0 10"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить" Command="{Binding DeletePhotoCar}"/>
+                                <MenuItem Header="Редактировать" Command="{Binding EditPhotoCar}"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
+                        Command="{Binding AddPhotoCar}" ToolTip="Добавить">
+                                <Button.Content>
+                                    <Image Source="/Images/add.png" />
+                                </Button.Content>
+                            </Button>
                         </StackPanel>
                         <Grid/>
                     </Grid>

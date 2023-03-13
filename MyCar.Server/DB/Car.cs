@@ -15,8 +15,8 @@ namespace MyCar.Server.DB
         public int? ModelId { get; set; }
         public int? TypeId { get; set; }
         public string? Articul { get; set; }
-        public string? PhotoCar { get; set; }
         public decimal? CarPrice { get; set; }
+        public string? PhotoCar { get; set; }
 
         public virtual Model? Model { get; set; }
         public virtual BodyType? Type { get; set; }

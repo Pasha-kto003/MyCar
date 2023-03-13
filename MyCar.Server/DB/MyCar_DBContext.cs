@@ -19,6 +19,7 @@ namespace MyCar.Server.DB
         public virtual DbSet<ActionType> ActionTypes { get; set; } = null!;
         public virtual DbSet<BodyType> BodyTypes { get; set; } = null!;
         public virtual DbSet<Car> Cars { get; set; } = null!;
+        public virtual DbSet<CarPhoto> CarPhotos { get; set; } = null!;
         public virtual DbSet<Characteristic> Characteristics { get; set; } = null!;
         public virtual DbSet<CharacteristicCar> CharacteristicCars { get; set; } = null!;
         public virtual DbSet<Equipment> Equipment { get; set; } = null!;
@@ -37,8 +38,8 @@ namespace MyCar.Server.DB
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseInMemoryDatabase("db1"); //тестовый запуск базы данных для севера DESKTOP-2KIP198 ^^ DESKTOP-CAGO29I
-                optionsBuilder.UseSqlServer("Server=DESKTOP-CAGO29I\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo;");
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo");
             }
         }
 
@@ -87,6 +88,20 @@ namespace MyCar.Server.DB
                     .WithMany(p => p.Cars)
                     .HasForeignKey(d => d.TypeId)
                     .HasConstraintName("FK_Car_BodyType");
+            });
+
+            modelBuilder.Entity<CarPhoto>(entity =>
+            {
+                entity.ToTable("CarPhoto");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.PhotoName).IsUnicode(false);
+
+                entity.HasOne(d => d.SaleCar)
+                    .WithMany(p => p.CarPhotos)
+                    .HasForeignKey(d => d.SaleCarId)
+                    .HasConstraintName("FK_CarPhoto_SaleCar");
             });
 
             modelBuilder.Entity<Characteristic>(entity =>

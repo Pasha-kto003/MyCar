@@ -47,7 +47,7 @@ namespace MyCar.Desktop.ViewModels
 
         public MarkViewModel()
         {
-            Task.Run(GetMarkList);
+            Task.Run(GetMarkList).Wait();
 
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Марка" });

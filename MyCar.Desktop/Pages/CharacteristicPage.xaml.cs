@@ -26,5 +26,10 @@ namespace MyCar.Desktop.Pages
             InitializeComponent();
             DataContext = new CharacteristicViewModel();
         }
+
+        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

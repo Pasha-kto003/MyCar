@@ -85,7 +85,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     Car = saleCar.Car,
                     EquipmentId = saleCar.EquipmentId,
                     Equipment = saleCar.Equipment,
-                    EquipmentPrice = saleCar.EquipmentPrice
+                    EquipmentPrice = saleCar.EquipmentPrice,
+                    ColorCar = saleCar.ColorCar
                 };
                 Get();
                 SaleCars.RemoveAll(s => s.ID == AddSaleVM.ID);

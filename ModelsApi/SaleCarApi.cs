@@ -12,7 +12,8 @@ namespace ModelsApi
         public int? CarId { get; set; }
         public int? EquipmentId { get; set; }
         public decimal? EquipmentPrice { get; set; }
-        
+        public string? ColorCar { get; set; }
+
         public int? Count { get; set; } = 0;
 
         public CarApi Car { get; set; }

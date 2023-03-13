@@ -13,6 +13,7 @@ namespace MyCar.Server.DB
                 CarId = saleCar.CarId,
                 EquipmentId = saleCar.EquipmentId,
                 EquipmentPrice = saleCar.EquipmentPrice,
+                ColorCar = saleCar.ColorCar
             };
         }
 
@@ -25,6 +26,7 @@ namespace MyCar.Server.DB
                 CarId = saleCar.CarId,
                 EquipmentId = saleCar.EquipmentId,
                 EquipmentPrice = saleCar.EquipmentPrice,
+                ColorCar = saleCar.ColorCar
             };
         }
     }

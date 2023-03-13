@@ -82,7 +82,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <ListBox Grid.Column="1" ItemsSource="{Binding ThisCarPhotos, Converter={core:StringToImageConverter}}" SelectedItem="{Binding SelectedThisPhoto}">
+                <ListBox Grid.Column="1" ItemsSource="{Binding ThisCarPhotos}" SelectedItem="{Binding SelectedThisPhoto}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">

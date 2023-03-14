@@ -249,6 +249,37 @@ namespace MyCar.Desktop.ViewModels
                     Task.Run(GetPhotoCar);
                 }
             });
+
+            DeletePhotoCar = new CustomCommand(async () =>
+            {
+                if(SelectedPhotoCar == null || SelectedPhotoCar.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
+                    return;
+                }
+                else if(SelectedPhotoCar.SaleCarId != 0 || SelectedPhotoCar.SaleCarId != null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Данное изображение используется для авто, его нельзя удалить!" });
+                    return;
+                }
+                else
+                {
+                    MessageBoxDialogViewModel result = new MessageBoxDialogViewModel
+                    { Title = "Подтверждение", Message = $"Данное изображение будет удалено" };
+                    UIManager.ShowMessageYesNo(result);
+                    if (!result.Result)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        await DeletePhoto(SelectedPhotoCar);
+                        await GetPhotoCar();
+                        UIManager.ShowMessage(new MessageBoxDialogViewModel { Message = $"Изображение: {SelectedPhotoCar.PhotoName} удалено" });
+                        return;
+                    }
+                }
+            });
         }
 
         #region Characteristic
@@ -282,6 +313,12 @@ namespace MyCar.Desktop.ViewModels
             FullPhotoCars = CarPhotos;
             SignalChanged(nameof(CarPhotos));
         }
+
+        private async Task DeletePhoto(CarPhotoApi carPhoto)
+        {
+            var photo = await Api.DeleteAsync<CarPhotoApi>(carPhoto, "CarPhoto");
+        }
+
         #endregion
 
         #region Equipment

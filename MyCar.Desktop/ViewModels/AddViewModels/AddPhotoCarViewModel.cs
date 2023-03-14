@@ -26,7 +26,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 AddCarPhoto = new CarPhotoApi
                 {
-                    PhotoName = "picture.png"
+                    PhotoName = "picture.png",
+                    IsMainPhoto = 0
                 };
             }
             else
@@ -36,6 +37,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     ID = carPhoto.ID,
                     PhotoName = carPhoto.PhotoName,
                     SaleCarId = carPhoto.SaleCarId,
+                    IsMainPhoto = carPhoto.IsMainPhoto
                 };
 
                 ImageSaleCar = AddCarPhoto.PhotoName;

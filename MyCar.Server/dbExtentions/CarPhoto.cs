@@ -10,7 +10,8 @@ namespace MyCar.Server.DB
             {
                 ID = carPhoto.Id,
                 PhotoName = carPhoto.PhotoName,
-                SaleCarId = carPhoto.SaleCarId
+                SaleCarId = carPhoto.SaleCarId,
+                IsMainPhoto = carPhoto.IsMainPhoto
             };
         }
         public static explicit operator CarPhoto(CarPhotoApi carPhoto)
@@ -19,7 +20,8 @@ namespace MyCar.Server.DB
             {
                 Id = carPhoto.ID,
                 PhotoName = carPhoto.PhotoName,
-                SaleCarId = carPhoto.SaleCarId
+                SaleCarId = carPhoto.SaleCarId,
+                IsMainPhoto= carPhoto.IsMainPhoto
             };
         }
     }

@@ -10,6 +10,8 @@ namespace ModelsApi
     {
         public string? PhotoName { get; set; }
         public int? SaleCarId { get; set; }
+        public int? IsMainPhoto { get; set; }
+        public string? PhotoReady { get; set; }
 
         public SaleCarApi? SaleCar { get; set; }
     }

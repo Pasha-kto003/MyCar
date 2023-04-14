@@ -1,4 +1,6 @@
+using DotNetEd.CoreAdmin;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MyCar.Server.DB;
 using SmartBreadcrumbs.Extensions;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -27,7 +29,9 @@ builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
     options.ActiveLiClasses = "breadcrumb-item active";
     options.DontLookForDefaultNode = true;
 });
-
+builder.Services.AddSqlServer<MyCar_DBContext>(builder.Configuration.GetConnectionString("Database"));
+builder.Services.AddCoreAdmin("Администратор");//admin panel
+builder.Services.AddCoreAdmin(new CoreAdminOptions() { IgnoreEntityTypes = new List<Type>() { typeof(CharacteristicCar) } });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -47,6 +51,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//app.UseCoreAdminCustomUrl("MyCarAdminPanel");// Задание url для админ панели
+
+app.MapDefaultControllerRoute();// admpnl
+
 
 app.MapControllerRoute(
     name: "default",

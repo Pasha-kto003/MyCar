@@ -1,10 +1,12 @@
-﻿using ModelsApi;
+﻿using Microsoft.Win32;
+using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -95,26 +97,37 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 ThisCarPhotos = new ObservableCollection<CarPhotoApi>(list);
             }
 
-            AddPhotoCar = new CustomCommand(async () =>
+            AddPhotoCar = new CustomCommand(() =>
             {
-                if(SelectedPhoto == null || SelectedPhoto.ID == 0)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение автомобиля!" });
-                    return;
-                }
-                if (CheckContains(ThisCarPhotos.ToList(), SelectedPhoto))
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Модель {SelectedPhoto.PhotoName} уже содержится в машине" });
-                    return;
-                }
-                else
-                {
-                    ThisCarPhotos.Add(SelectedPhoto);
-                    var photoCar = SelectedPhoto;
-                    photoCar.SaleCarId = AddSaleVM.ID;
-                    await EditPhoto(photoCar);
-                }
+                MethodResult result = UIManager.AddImage("SaleCarImages");
+                if (result.IsSuccess)
+                ThisCarPhotos.Add(new CarPhotoApi { PhotoName = result.Data.ToString(), SaleCarId = AddSaleVM.ID });
             });
+            DeletePhoto = new CustomCommand(() =>
+            {
+                if (SelectedThisPhoto != null)
+                    ThisCarPhotos.Remove(SelectedThisPhoto);
+            });
+            //AddPhotoCar = new CustomCommand(async () =>
+            //{
+            //    if(SelectedPhoto == null || SelectedPhoto.ID == 0)
+            //    {
+            //        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение автомобиля!" });
+            //        return;
+            //    }
+            //    if (CheckContains(ThisCarPhotos.ToList(), SelectedPhoto))
+            //    {
+            //        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Модель {SelectedPhoto.PhotoName} уже содержится в машине" });
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        ThisCarPhotos.Add(SelectedPhoto);
+            //        var photoCar = SelectedPhoto;
+            //        photoCar.SaleCarId = AddSaleVM.ID;
+            //        await EditPhoto(photoCar);
+            //    }
+            //});
 
             Save = new CustomCommand(async () =>
             {

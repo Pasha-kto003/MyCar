@@ -14,8 +14,15 @@ namespace MyCar.Desktop.Core
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string defaultPath = Environment.CurrentDirectory + "/CarImages/";
-            if (File.Exists(defaultPath + value))
-                return UIManager.GetImageFromPath(defaultPath + value);
+            string path = defaultPath;
+            if (parameter != null)
+            {
+                if(Directory.Exists(Environment.CurrentDirectory + $"/{parameter.ToString()}/"))
+                path = Environment.CurrentDirectory + $"/{parameter.ToString()}/";
+            }
+            
+            if (File.Exists(path + value))
+                return UIManager.GetImageFromPath(path + value);
             else
                 return UIManager.GetImageFromPath(defaultPath + "picture.png");
         }

@@ -67,6 +67,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand Cancel { get; set; }
         public CustomCommand AddPhotoCar { get; set; }
         public CustomCommand DeletePhoto { get; set; }
+        public CustomCommand AddMainPhoto { get; set; }
 
         public SaleCarApi AddSaleVM { get; set; }
 
@@ -128,6 +129,75 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             //        await EditPhoto(photoCar);
             //    }
             //});
+
+            AddMainPhoto = new CustomCommand(async () =>
+            {
+                var list = CarPhotos.Where(s=> s.IsMainPhoto == 1).ToList();
+                if(SelectedThisPhoto == null || SelectedThisPhoto.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
+                    return;
+                }
+                else if(SelectedThisPhoto.IsMainPhoto == 1)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Данная фотография уже является основной для {AddSaleVM.Car.CarName}!" });
+                    return;
+                }
+                else if(SelectedThisPhoto.SaleCarId != 0 || SelectedThisPhoto.SaleCarId != null)
+                {
+                    var car = SaleCars.FirstOrDefault(s=> s.ID == SelectedThisPhoto.SaleCarId);
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Данная фотография уже принадлежит машине: {car.Car.CarName}!" });
+                    return;
+                }
+                if(list.Count > 1)
+                {
+                    MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить главное фото?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var oldphoto = CarPhotos.FirstOrDefault(s => s.IsMainPhoto == 1);
+                        if(oldphoto == null)
+                        {
+                            MessageBox.Show("У этой машины нет главного изображения");
+                            return;
+                        }
+                        else
+                        {
+                            oldphoto.IsMainPhoto = 0;
+                            await EditPhoto(oldphoto);
+                            SelectedThisPhoto.IsMainPhoto = 1;
+                            SelectedThisPhoto.PhotoReady = "Основное фото";
+                            SignalChanged(nameof(SelectedThisPhoto));
+                            await EditPhoto(SelectedThisPhoto);
+                        }
+                    }
+                }
+                else
+                {
+                    var oldphoto = CarPhotos.FirstOrDefault(s => s.IsMainPhoto == 1);
+                    if (oldphoto == null)
+                    {
+                        SelectedThisPhoto.IsMainPhoto = 1;
+                        SelectedThisPhoto.PhotoReady = "Основное фото";
+                        SignalChanged(nameof(SelectedThisPhoto));
+                        await EditPhoto(SelectedThisPhoto);
+                    }
+                }
+            });
+
+            DeletePhoto = new CustomCommand(async () =>
+            {
+                if(SelectedThisPhoto == null || SelectedThisPhoto.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
+                    return;
+                }
+                else
+                {
+                    ThisCarPhotos.Remove(SelectedThisPhoto);
+                    SelectedThisPhoto.SaleCarId = 0;
+                    await EditPhoto(SelectedThisPhoto);
+                }
+            });
 
             Save = new CustomCommand(async () =>
             {
@@ -202,6 +272,17 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Cars = await Api.GetListAsync<List<CarApi>>("Car");
             SaleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             CarPhotos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+            foreach(var photo in CarPhotos)
+            {
+                if(photo.IsMainPhoto == 1)
+                {
+                    photo.PhotoReady = "Основное фото";
+                }
+                else
+                {
+                    photo.PhotoReady = "Доп. фото";
+                }
+            }
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             Models = await Api.GetListAsync<List<ModelApi>>("Model");
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");

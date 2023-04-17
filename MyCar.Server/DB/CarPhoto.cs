@@ -8,6 +8,7 @@ namespace MyCar.Server.DB
         public int Id { get; set; }
         public string? PhotoName { get; set; }
         public int? SaleCarId { get; set; }
+        public int? IsMainPhoto { get; set; }
 
         public virtual SaleCar? SaleCar { get; set; }
     }

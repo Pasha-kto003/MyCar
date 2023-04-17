@@ -116,10 +116,16 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <ListBox Grid.Column="1" ItemsSource="{Binding ThisCarPhotos}" SelectedItem="{Binding SelectedThisPhoto}">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Сделать фотографию основной для авто" Command="{Binding AddMainPhoto}"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <Image Source="{Binding PhotoName,  Converter={core:StringToImageConverter}}" Width="100" Height="60"/>
+                                <TextBlock Text="{Binding PhotoReady}" Width="100" Height="30"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

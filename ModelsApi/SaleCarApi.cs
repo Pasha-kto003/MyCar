@@ -16,7 +16,10 @@ namespace ModelsApi
         public int? Count { get; set; } = 0;
         public int? MinCount { get; set; }
         public CarApi Car { get; set; }
+        public string? ColorCarForXaml { get => "#" + ColorCar; }
         public decimal? FullPrice { get => EquipmentPrice + Car.CarPrice; }
+        //public string? MainPhotoCar { get => CarPhotos.FirstOrDefault(s=>s.); set; }
+        public string? MainPhotoCar { get; set; }
         public EquipmentApi Equipment { get; set; }
         public List<CarPhotoApi> CarPhotos { get; set; }
     }

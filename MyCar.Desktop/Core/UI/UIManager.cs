@@ -1,4 +1,6 @@
-﻿using MyCar.Desktop.Controls;
+﻿using Microsoft.Win32;
+using ModelsApi;
+using MyCar.Desktop.Controls;
 using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows;
 using System;
@@ -14,6 +16,7 @@ namespace MyCar.Desktop.Core.UI
 {
     public static class UIManager
     {
+        public static List<Color> Colors = new List<Color>();
         public static Task ShowMessage(MessageBoxDialogViewModel viewModel)
         {
             var tcs = new TaskCompletionSource<bool>();
@@ -94,5 +97,48 @@ namespace MyCar.Desktop.Core.UI
             }
             return img;
         }
+
+        public static MethodResult AddImage(string dir)
+        {
+            string fileName = "";
+            if (!Directory.Exists(Environment.CurrentDirectory + @$"\{dir}\"))
+                Directory.CreateDirectory(Environment.CurrentDirectory + @$"\{dir}\");
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = Environment.CurrentDirectory + @$"\{dir}\";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    var info = new FileInfo(openFileDialog.FileName);
+                    fileName = info.Name;
+                    var newPath = Environment.CurrentDirectory + @$"\{dir}\" + info.Name;
+                    if (File.Exists(newPath))
+                    {
+                        MessageBoxDialogViewModel result = new MessageBoxDialogViewModel
+                        { Title = "Подтверждение", Message = $"Файл с именем {info.Name} уже содержится в папке назначения\n                  Назначить уже существующий файл?" };
+                        UIManager.ShowMessageYesNo(result);
+                        if (!result.Result)
+                        {
+                            return new MethodResult { IsSuccess = false };
+                        }
+                    }
+                    else
+                    {
+                        File.Copy(openFileDialog.FileName, newPath);
+                    }
+                }
+                catch (Exception e)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = e.Message });
+                }
+                return new MethodResult { IsSuccess = true, Data = fileName };
+            }
+            return new MethodResult { IsSuccess = false, Data = "" };
+        }
+    }
+    public class MethodResult 
+    {
+        public bool IsSuccess { get; set; }   
+        public object? Data { get; set; }
     }
 }

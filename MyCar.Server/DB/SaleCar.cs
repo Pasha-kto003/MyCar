@@ -27,6 +27,7 @@ namespace MyCar.Server.DB
         public int? EquipmentId { get; set; }
         public decimal? EquipmentPrice { get; set; }
         public string? ColorCar { get; set; }
+        public int? MinCount { get; set; }
 
         [ForeignKey("CarId")]
         public virtual Car? Car { get; set; }

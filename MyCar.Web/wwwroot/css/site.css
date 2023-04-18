@@ -2123,43 +2123,72 @@ ul.list6b {
         transition: transform 0.5s, -webkit-transform 0.5s;
     }
 
-        .carousel-3d figure img,
-        .carousel-3d figure div {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 0;
-        }
+.carousel-3d figure img,
+.carousel-3d figure div {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+}
 
-        .carousel-3d figure img {
-            user-select: none;
-        }
+.carousel-3d figure img {
+    user-select: none;
+}
 
-            .carousel-3d figure div:not(:first-of-type),
-            .carousel-3d figure img:not(:first-of-type) {
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-
-    .carousel-3d nav {
-        display: flex;
-        justify-content: center;
-        margin: 20px 0 0;
+    .carousel-3d figure div:not(:first-of-type),
+    .carousel-3d figure img:not(:first-of-type) {
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 
-        .carousel-3d nav button {
-            flex: 0 0 auto;
-            margin: 0 5px;
-            cursor: pointer;
-            color: #337AB7;
-            background: #BFE2FF;
-            border: 1px solid #337AB7;
-            padding: 5px 10px;
-            font-weight: bold;
-            transition: all .3s ease;
-        }
+.carousel-3d nav {
+display: flex;
+justify-content: center;
+margin: 20px 0 0;
+}
 
-            .carousel-3d nav button:hover {
-                color: #FFF;
-                background: #337AB7;
-            }
+.carousel-3d nav button {
+    flex: 0 0 auto;
+    margin: 0 5px;
+    cursor: pointer;
+    color: #337AB7;
+    background: #BFE2FF;
+    border: 1px solid #337AB7;
+    padding: 5px 10px;
+    font-weight: bold;
+    transition: all .3s ease;
+}
+
+.carousel-3d nav button:hover {
+    color: #FFF;
+    background: #337AB7;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap');
+
+.btn {
+    font-family: Roboto, sans-serif;
+    font-weight: 100;
+    font-size: 16px;
+    color: #fff;
+    background-color: #171717;
+    padding: 10px 30px;
+    border: solid #171717 2px;
+    box-shadow: none;
+    border-radius: 15px;
+    transition: 390ms;
+    transform: translateY(0);
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transition: 390ms;
+    padding: 10px 35px;
+    transform: translateY(-0px);
+    background-color: #d62828;
+    color: #ffffff;
+    border: solid 2px #d62828;
+}

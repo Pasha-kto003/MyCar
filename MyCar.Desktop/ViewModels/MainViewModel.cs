@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.Pages;
 
 namespace MyCar.Desktop.ViewModels
@@ -92,6 +93,7 @@ namespace MyCar.Desktop.ViewModels
             mWindow = window;
 
             GetUserInfo(Configuration.CurrentUser);
+            Task.Run(GetColors).Wait();
 
             MinimizeCommand = new CustomCommand(() => mWindow.WindowState = WindowState.Minimized);
             MaximizeCommand = new CustomCommand(() => mWindow.WindowState ^= WindowState.Maximized);
@@ -119,7 +121,11 @@ namespace MyCar.Desktop.ViewModels
                 WindowResized();
             };
         }
-
+        private async Task GetColors()
+        {
+            UIManager.Colors = await Api.GetListAsync<List<Color>>("Color");
+        }
+       
         private void GetUserInfo(UserApi user)
         {
             UserRole = user.UserType.TypeName;

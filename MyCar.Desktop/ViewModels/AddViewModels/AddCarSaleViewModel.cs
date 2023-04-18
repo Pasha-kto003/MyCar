@@ -49,6 +49,28 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             }
         }
 
+        public List<Color> CarColors { get; set; } = new List<Color>();
+        private Color selectedCarColor { get; set; }
+        public Color SelectedCarColor
+        {
+            get => selectedCarColor;
+            set
+            {
+                selectedCarColor = value;
+                SignalChanged();
+            }
+        }
+        private ObservableCollection<CarPhotoApi> thisCarPhotos { get; set; } = new ObservableCollection<CarPhotoApi>();
+        public ObservableCollection<CarPhotoApi> ThisCarPhotos
+        {
+            get => thisCarPhotos;
+            set
+            {
+                thisCarPhotos = value;
+                SignalChanged();
+            }
+        }
+
         private List<CarApi> searchResult;
 
         public List<SaleCarApi> SaleCars { get; set; } = new List<SaleCarApi>();
@@ -58,7 +80,6 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public List<ModelApi> Models { get; set; } = new List<ModelApi>();
         public List<MarkCarApi> Marks { get; set; } = new List<MarkCarApi>();
         public List<CarPhotoApi> CarPhotos { get; set; } = new List<CarPhotoApi>();
-        public ObservableCollection<CarPhotoApi> ThisCarPhotos { get; set; } = new ObservableCollection<CarPhotoApi>();
         public CarApi SelectedCar { get; set; }
 
         public EquipmentApi SelectedEquipment { get; set; }
@@ -67,7 +88,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public CustomCommand Cancel { get; set; }
         public CustomCommand AddPhotoCar { get; set; }
         public CustomCommand DeletePhoto { get; set; }
-        public CustomCommand AddMainPhoto { get; set; }
+        public CustomCommand SetMainPhoto { get; set; }
 
         public SaleCarApi AddSaleVM { get; set; }
 
@@ -94,108 +115,44 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 Get();
                 SaleCars.RemoveAll(s => s.ID == AddSaleVM.ID);
 
+                SelectedCarColor = CarColors.FirstOrDefault(s=>s.Name == AddSaleVM.ColorCar);
+
                 var list = CarPhotos.Where(s => s.SaleCarId == AddSaleVM.ID).ToList();
                 ThisCarPhotos = new ObservableCollection<CarPhotoApi>(list);
             }
 
-            AddPhotoCar = new CustomCommand(() =>
+            AddPhotoCar = new CustomCommand(async () =>
             {
                 MethodResult result = UIManager.AddImage("SaleCarImages");
                 if (result.IsSuccess)
-                ThisCarPhotos.Add(new CarPhotoApi { PhotoName = result.Data.ToString(), SaleCarId = AddSaleVM.ID });
-            });
-            DeletePhoto = new CustomCommand(() =>
-            {
-                if (SelectedThisPhoto != null)
-                    ThisCarPhotos.Remove(SelectedThisPhoto);
-            });
-            //AddPhotoCar = new CustomCommand(async () =>
-            //{
-            //    if(SelectedPhoto == null || SelectedPhoto.ID == 0)
-            //    {
-            //        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение автомобиля!" });
-            //        return;
-            //    }
-            //    if (CheckContains(ThisCarPhotos.ToList(), SelectedPhoto))
-            //    {
-            //        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Модель {SelectedPhoto.PhotoName} уже содержится в машине" });
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        ThisCarPhotos.Add(SelectedPhoto);
-            //        var photoCar = SelectedPhoto;
-            //        photoCar.SaleCarId = AddSaleVM.ID;
-            //        await EditPhoto(photoCar);
-            //    }
-            //});
-
-            AddMainPhoto = new CustomCommand(async () =>
-            {
-                var list = CarPhotos.Where(s=> s.IsMainPhoto == 1).ToList();
-                if(SelectedThisPhoto == null || SelectedThisPhoto.ID == 0)
                 {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
-                    return;
-                }
-                else if(SelectedThisPhoto.IsMainPhoto == 1)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Данная фотография уже является основной для {AddSaleVM.Car.CarName}!" });
-                    return;
-                }
-                else if(SelectedThisPhoto.SaleCarId != 0 || SelectedThisPhoto.SaleCarId != null)
-                {
-                    var car = SaleCars.FirstOrDefault(s=> s.ID == SelectedThisPhoto.SaleCarId);
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = $"Данная фотография уже принадлежит машине: {car.Car.CarName}!" });
-                    return;
-                }
-                if(list.Count > 1)
-                {
-                    MessageBoxResult result = MessageBox.Show("Вы точно желаете заменить главное фото?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        var oldphoto = CarPhotos.FirstOrDefault(s => s.IsMainPhoto == 1);
-                        if(oldphoto == null)
-                        {
-                            MessageBox.Show("У этой машины нет главного изображения");
-                            return;
-                        }
-                        else
-                        {
-                            oldphoto.IsMainPhoto = 0;
-                            await EditPhoto(oldphoto);
-                            SelectedThisPhoto.IsMainPhoto = 1;
-                            SelectedThisPhoto.PhotoReady = "Основное фото";
-                            SignalChanged(nameof(SelectedThisPhoto));
-                            await EditPhoto(SelectedThisPhoto);
-                        }
-                    }
-                }
-                else
-                {
-                    var oldphoto = CarPhotos.FirstOrDefault(s => s.IsMainPhoto == 1);
-                    if (oldphoto == null)
-                    {
-                        SelectedThisPhoto.IsMainPhoto = 1;
-                        SelectedThisPhoto.PhotoReady = "Основное фото";
-                        SignalChanged(nameof(SelectedThisPhoto));
-                        await EditPhoto(SelectedThisPhoto);
-                    }
+                    CarPhotoApi carPhoto = new CarPhotoApi { PhotoName = result.Data.ToString(), SaleCarId = AddSaleVM.ID, ID = 0, IsMainPhoto = 0};
+                    ThisCarPhotos.Add(carPhoto);
+                    //await EditPhoto(carPhoto);
                 }
             });
 
             DeletePhoto = new CustomCommand(async () =>
             {
-                if(SelectedThisPhoto == null || SelectedThisPhoto.ID == 0)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
-                    return;
-                }
-                else
+                if (SelectedThisPhoto != null)
                 {
                     ThisCarPhotos.Remove(SelectedThisPhoto);
-                    SelectedThisPhoto.SaleCarId = 0;
-                    await EditPhoto(SelectedThisPhoto);
+                    //SelectedThisPhoto.SaleCarId = 0;
+                    //await EditPhoto(SelectedThisPhoto);
+                }
+            });
+
+            SetMainPhoto = new CustomCommand(async () =>
+            {
+                if (SelectedThisPhoto != null)
+                {
+                    foreach (CarPhotoApi photo in ThisCarPhotos)
+                        photo.IsMainPhoto = 0;
+                    SelectedThisPhoto.IsMainPhoto = 1;
+
+                    var a = new ObservableCollection<CarPhotoApi>(ThisCarPhotos);
+                    ThisCarPhotos.Clear();
+                    ThisCarPhotos = new ObservableCollection<CarPhotoApi>(a);
                 }
             });
 
@@ -211,7 +168,10 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана комплектация!" });
                     return;
                 }
-
+                if (SelectedCarColor != null)
+                {
+                    AddSaleVM.ColorCar = SelectedCarColor.Name;
+                }
                 if (!CheckUnique())
                     return;
 
@@ -272,7 +232,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Cars = await Api.GetListAsync<List<CarApi>>("Car");
             SaleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             CarPhotos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
-            foreach(var photo in CarPhotos)
+            CarColors = await Api.GetListAsync<List<Color>>("Color");
+            foreach (var photo in CarPhotos)
             {
                 if(photo.IsMainPhoto == 1)
                 {
@@ -301,6 +262,27 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         private async Task EditSale(SaleCarApi saleCar)
         {
             var sale = await Api.PutAsync<SaleCarApi>(saleCar, "CarSales");
+            var oldPhotoList = CarPhotos.Where(s => s.SaleCarId == saleCar.ID).ToList();
+            foreach (CarPhotoApi photo in ThisCarPhotos.ToList())
+            {
+                if (photo.ID == 0)
+                    await AddPhoto(photo);
+                else if (oldPhotoList.Any(s=>s.ID == photo.ID))
+                    await EditPhoto(photo);
+            }
+            var noMatchingList = oldPhotoList.Where(item1 => !ThisCarPhotos.Any(item2 => item1.ID == item2.ID));
+            foreach (CarPhotoApi photo in noMatchingList)
+            {
+                await DeletePhotoAsync(photo);
+            }
+        }
+        private async Task AddPhoto(CarPhotoApi carPhoto)
+        {
+            var photo = await Api.PostAsync<CarPhotoApi>(carPhoto, "CarPhoto");
+        }
+        private async Task DeletePhotoAsync(CarPhotoApi carPhoto)
+        {
+            var photo = await Api.DeleteAsync<CarPhotoApi>(carPhoto, "CarPhoto");
         }
 
         private async Task EditPhoto(CarPhotoApi carPhoto)
@@ -311,6 +293,15 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public async Task AddSale(SaleCarApi saleCar)
         {
             var sale = await Api.PostAsync<SaleCarApi>(saleCar, "CarSales");
+            List<SaleCarApi> LastCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            foreach (CarPhotoApi photo in ThisCarPhotos.ToList())
+            {
+                if (photo.ID == 0)
+                {
+                    photo.SaleCarId = LastCars.Max(obj => obj.ID);
+                    await AddPhoto(photo);
+                } 
+            }
         }
         private void SelectedMarkChanged(MarkCarApi mark)
         {

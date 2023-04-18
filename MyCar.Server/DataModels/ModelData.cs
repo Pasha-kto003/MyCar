@@ -34,6 +34,11 @@ namespace MyCar.Server.DataModels
         public static SaleCarApi SaleGet(SaleCar saleCar, MyCar_DBContext dbContext)
         {
             var result = (SaleCarApi)saleCar;
+            var mainPhoto = dbContext.CarPhotos.FirstOrDefault(s => s.SaleCarId == saleCar.Id && s.IsMainPhoto == 1);
+            if (mainPhoto != null && mainPhoto.PhotoName != null)
+            {
+                result.MainPhotoCar = mainPhoto.PhotoName;
+            }
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);

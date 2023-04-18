@@ -59,7 +59,7 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(Search);
             }
         }
-
+        public List<CarPhotoApi> CarPhotos { get; set; } = new List<CarPhotoApi>();
         public List<SaleCarApi> SalesCar { get; set; } = new List<SaleCarApi>();
         public List<CarApi> Cars { get; set; } = new List<CarApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
@@ -121,6 +121,7 @@ namespace MyCar.Desktop.ViewModels
             SalesCar = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             Cars = await Api.GetListAsync<List<CarApi>>("Car");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
+            CarPhotos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
             FullSales = SalesCar;
         }
 

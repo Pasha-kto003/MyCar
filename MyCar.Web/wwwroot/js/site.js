@@ -294,6 +294,19 @@ function myFunction() {
     }
 }
 
+function myClickFunction() {
+    var x = document.getElementById("myDIV");
+    var y = document.getElementById("myDIV1");
+    if (y.style.display === "none") {
+        y.style.display = "inline";
+        x.style.display = "none";
+    }
+    else {
+        y.style.display = "none";
+        x.style.display = "flex";
+    }
+}
+
 let activeIndex = 0
 let limit = 0
 let disabled = false
@@ -477,5 +490,3 @@ function hide(obj) {
     var el = document.getElementById(obj);
     el.style.display = 'none';
 }
-
-

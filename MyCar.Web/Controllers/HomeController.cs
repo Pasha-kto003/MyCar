@@ -139,7 +139,7 @@ namespace MyCar.Web.Controllers
 
         [Breadcrumb(FromAction = "Index", Title = "CarView")]
         [HttpGet]
-        public async Task<IActionResult> CarView(string SearchString)//int? pageNumber
+        public async Task<IActionResult> CarView()//int? pageNumber
         {
 
             List<SaleCarApi> cars;
@@ -147,28 +147,27 @@ namespace MyCar.Web.Controllers
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
+            return View("CarView", cars);
+        }
+
+        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        [HttpGet]
+        public async Task<IActionResult> SearchCar(string SearchString)
+        {
+            List<SaleCarApi> cars;
+            List<MarkCarApi> markCars;
+            cars = GetCar().Result;
+            markCars = GetMark().Result;
+            ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            if (SearchString == null)
-            {
-                await GetCar();
-            }
-            else
-            {
-                cars = await Api.SearchFilterAsync<List<SaleCarApi>>(type, SearchString, "CarSales", filter);
-            }
-
-            //if (SearchString != null)
-            //{
-            //    pageNumber = 1;
-            //}
-            //else
-            //{
-            //    SearchString = filter;
-            //}
-            //int pageSize = 3;
+            cars = cars.Where(s => s.Car.CarName.ToLower().Contains(SearchString)).ToList();
             return View("CarView", cars);
-            //return View("CarView", await PaginatedList<SaleCarApi>.CreateAsync(cars, pageNumber ?? 1, pageSize));
+        }
+
+        public async Task<IActionResult> SetListFilter()
+        {
+            return View("CarView");
         }
 
         private async Task<List<SaleCarApi>> GetCar()

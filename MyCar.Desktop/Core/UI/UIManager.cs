@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ModelsApi;
 using MyCar.Desktop.Controls;
 using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows;
@@ -15,6 +16,7 @@ namespace MyCar.Desktop.Core.UI
 {
     public static class UIManager
     {
+        public static List<Color> Colors = new List<Color>();
         public static Task ShowMessage(MessageBoxDialogViewModel viewModel)
         {
             var tcs = new TaskCompletionSource<bool>();
@@ -117,7 +119,7 @@ namespace MyCar.Desktop.Core.UI
                         UIManager.ShowMessageYesNo(result);
                         if (!result.Result)
                         {
-                           return new MethodResult { IsSuccess = false};
+                            return new MethodResult { IsSuccess = false };
                         }
                     }
                     else
@@ -129,8 +131,9 @@ namespace MyCar.Desktop.Core.UI
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = e.Message });
                 }
+                return new MethodResult { IsSuccess = true, Data = fileName };
             }
-            return new MethodResult { IsSuccess = true , Data = fileName };
+            return new MethodResult { IsSuccess = false, Data = "" };
         }
     }
     public class MethodResult 

@@ -268,7 +268,7 @@
                                                 <div class="mark-Photo scalePh">
                                                     <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
                                                 </div>
-                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
+                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.ID">
                                                     <div class="text-white">@car.Car.Model.ModelName</div>
                                                 </a>
                                             </div>
@@ -366,7 +366,7 @@
                 <small class="text-white">Начальная цена от</small>
                 <h3 class="text-white">@ViewBag.FullPrice &#8381</h3>
                 <div class="glass-btn glass-btn-red">
-                    <a asp-action="ElectricCarView" asp-controller="Home">
+                    <a asp-action="DetailsCar" asp-controller="Car" asp-route-CarName="@ViewBag.CarName">
                         Купить
                     </a>
                 </div>
@@ -459,7 +459,7 @@
 </div>
 
 @*section*@
-@*<section class="h-auto w-100">
+<section class="h-auto w-100">
     <div class="tabs">
         <div class="tab">
             <div class="tab-toggle">
@@ -495,7 +495,7 @@
             <p style="color: white;" class="text-white">Описание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладки</p>
         </div>
     </div>
-</section>*@
+</section>
 
 
 @*section*@

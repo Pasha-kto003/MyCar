@@ -39,6 +39,8 @@ namespace MyCar.Server.DataModels
             {
                 result.MainPhotoCar = mainPhoto.PhotoName;
             }
+            var carPhotos = dbContext.CarPhotos.Where(s => s.SaleCarId == saleCar.Id).Select(t => (CarPhotoApi)t).ToList();
+            result.CarPhotos = carPhotos;
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);

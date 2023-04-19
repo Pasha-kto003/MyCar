@@ -44,6 +44,36 @@ namespace MyCar.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> DetailsCar(string CarName)
+        {
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            var car = cars.FirstOrDefault(s => s.Car.CarName == CarName);
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.Marks = marks;
+            ViewBag.CarName = car.Car.CarName;
+            ViewBag.FullPrice = car.FullPrice;
+            ViewBag.PhotoCar = car.Car.PhotoCar;
+            ViewBag.SaleCars = cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark));
+            return View("DetailsCarView", car);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchLexus()
+        {
+            var models = await Api.GetListAsync<List<ModelApi>>("Model");
+            var text = "RC F";
+            var type = "Модель";
+            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            string filter = "Все";
+            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
+            var markCars = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.MarkCars = markCars;
+            return View("CarView", cars);
+        }
+
+        [HttpGet]
         public IActionResult CartView()
         {
             return View();

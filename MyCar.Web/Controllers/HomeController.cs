@@ -83,14 +83,6 @@ namespace MyCar.Web.Controllers
             return View("CarView", cars);
         }
 
-        //[Breadcrumb(FromAction = "Index", Title = "CarView")]
-        //public async Task<IActionResult> CarView()
-        //{
-        //    var cars = new List<SaleCarApi>();
-        //    cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-        //    return View("CarView", cars);
-        //}
-
         public async Task<IActionResult> ElectricCarView()
         {
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
@@ -107,21 +99,6 @@ namespace MyCar.Web.Controllers
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             ViewBag.Cars = cars.Where(s=> s.Car.CarName.Contains("Lexus RCF"));
             return View("LexusRCFView");
-        }
-
-        public async Task<IActionResult> SearchLexus()
-        {
-            var models = await Api.GetListAsync<List<ModelApi>>("Model");
-            var text = "RC F";
-            var type = "Модель";
-            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
-            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            string filter = "Все";
-            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
-            List<MarkCarApi> markCars;
-            markCars = GetMark().Result;
-            ViewBag.MarkCars = markCars;
-            return View("CarView", cars);
         }
 
         [Breadcrumb("ViewData.Title")]

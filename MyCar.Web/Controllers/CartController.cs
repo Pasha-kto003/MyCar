@@ -77,92 +77,21 @@ namespace MyCar.Web.Controllers
         {
             await GetOrders();
 
-            var us = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-            if (Orders.Count != 0)
-            {
-                var ord = Orders.LastOrDefault();
-
-                if (ord.Status.StatusName == "Завершен")
-                {
-                    var car = Cars.FirstOrDefault(s => s.ID == id);
-
-                    WareHouseApi wareHouse = new WareHouseApi();
-                    wareHouse.ID = Warehouses.Count() + 1;
-                    wareHouse.SaleCar = car;
-                    wareHouse.SaleCarId = car.ID;
-                    wareHouse.CountChange = -1;
-                    wareHouse.Discount = 0;
-                    wareHouse.Price = car.FullPrice;
-
-                    OrderApi order = new OrderApi();
-                    order.WareHouses = new List<WareHouseApi>();
-                    order.WareHouses.Add(wareHouse);
-                    order.SumOrder = car.FullPrice - wareHouse.Discount;
-                    var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-                    order.User = user;
-                    order.UserId = user.ID;
-
-                    order.DateOfOrder = DateTime.Now;
-                    order.StatusId = 1;
-                    order.Status = Statuses.FirstOrDefault(s => s.ID == order.StatusId);
-                    order.ActionTypeId = 2;
-                    order.ActionType = Types.FirstOrDefault(s => s.ID == order.ActionTypeId);
-                    await CreateOrder(order);
-                    wareHouse.OrderId = order.ID;
-                    await CreateWareHouse(wareHouse);
-                    return View("DetailsCart", order);
-                }
-
-                else
-                {
-                    var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-                    var order = Orders.LastOrDefault(s => s.UserId == user.ID);
-                    var car = Cars.FirstOrDefault(s => s.ID == id);
-
-                    WareHouseApi wareHouse = new WareHouseApi
-                    {
-                        ID = Warehouses.Count() + 1,
-                        SaleCar = car,
-                        SaleCarId = car.ID,
-                        CountChange = -1,
-                        Discount = 0,
-                        Price = car.FullPrice,
-                        OrderId = order.ID,
-                    };
-
-                    if(wareHouse.SaleCar.Car.CarMark.Contains("Toyota") || wareHouse.SaleCar.Car.CarMark.Contains("Lexus"))
-                    {
-                        wareHouse.Discount = car.FullPrice * 10 / 100;
-                    }
-
-                    order.WareHouses.Add(wareHouse);
-                    order.SumOrder = car.FullPrice - wareHouse.Discount;
-                    await EditOrder(order);
-                    await CreateWareHouse(wareHouse);
-                    return View("DetailsCart", order);
-                }
-
-            }
-            else
+            var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+            
+            var ord = Orders.LastOrDefault();
+            if (ord.Status.StatusName == "Завершен")
             {
                 var car = Cars.FirstOrDefault(s => s.ID == id);
-
-                WareHouseApi wareHouse = new WareHouseApi();
-                wareHouse.ID = Warehouses.Count() + 1;
-                wareHouse.SaleCar = car;
-                wareHouse.SaleCarId = car.ID;
-                wareHouse.CountChange = -1;
-                wareHouse.Discount = 0;
-                wareHouse.Price = car.FullPrice;
+                WareHouseApi wareHouse = new WareHouseApi { ID = Warehouses.Count() + 1, CountChange = -1, SaleCar = car, SaleCarId = car.ID, Price = car.FullPrice, Discount = 0};
 
                 OrderApi order = new OrderApi();
                 order.WareHouses = new List<WareHouseApi>();
                 order.WareHouses.Add(wareHouse);
                 order.SumOrder = car.FullPrice - wareHouse.Discount;
-                var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+                    
                 order.User = user;
                 order.UserId = user.ID;
-
                 order.DateOfOrder = DateTime.Now;
                 order.StatusId = 1;
                 order.Status = Statuses.FirstOrDefault(s => s.ID == order.StatusId);
@@ -171,7 +100,34 @@ namespace MyCar.Web.Controllers
                 await CreateOrder(order);
                 wareHouse.OrderId = order.ID;
                 await CreateWareHouse(wareHouse);
-                return View("CartPage", Orders);
+                return View("DetailsCart", order);
+            }
+
+            else
+            {
+                var order = Orders.LastOrDefault(s => s.UserId == user.ID);
+                var car = Cars.FirstOrDefault(s => s.ID == id);
+
+                WareHouseApi wareHouse = new WareHouseApi
+                {
+                    ID = Warehouses.Count() + 1,
+                    SaleCar = car,
+                    SaleCarId = car.ID,
+                    CountChange = -1,
+                    Discount = 0,
+                    Price = car.FullPrice,
+                    OrderId = order.ID,
+                };
+                if (wareHouse.SaleCar.Car.CarMark.Contains("Toyota") || wareHouse.SaleCar.Car.CarMark.Contains("Lexus"))
+                {
+                    wareHouse.Discount = car.FullPrice * 10 / 100;
+                }
+                order.WareHouses.Add(wareHouse);
+                order.SumOrder = car.FullPrice - wareHouse.Discount;
+                await EditOrder(order);
+                await CreateWareHouse(wareHouse);
+                return View("DetailsCart", order);
+
             }
         }
 
@@ -194,7 +150,7 @@ namespace MyCar.Web.Controllers
             {
                 return View("Error");
             }
-            else if(order.WareHouses == null || order.WareHouses.Count == 0)
+            else if (order.WareHouses == null || order.WareHouses.Count == 0)
             {
                 DeleteOrder(order);
                 return View("Error");

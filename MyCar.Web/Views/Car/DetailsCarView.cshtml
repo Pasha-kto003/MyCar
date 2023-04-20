@@ -10,7 +10,7 @@
                 <h2 style="color: white;">
                     @Model.Car.CarName
                 </h2>
-                <h4 style="color: white;">Our template platform will maximize the exposure of your inventory online</h4>
+                <h4 style="color: white;">Наша платформа шаблонов позволит максимально увеличить доступность вашего инвентаря в Интернете.</h4>
             </div>
             <div class="col-2">
                 <h2 style="color: white;">
@@ -29,14 +29,29 @@
         <div class="row justify-content-center text-center">
             <div class="col-8 align-items-center justify-content-center">
                 <div class="container align-items-center justify-content-center w-100 text-center">
-                    <img src="~/CarImages/@Model.Car.PhotoCar" width="755" height="450" class="w-50 justify-content-center"/>
-                </div>
+                    @*<img src="~/CarImages/@Model.Car.PhotoCar" width="755" height="450" class="w-50 justify-content-center"/>*@
+                
+                    <div class="carousel-3d">
+                        <figure>
+                            <div><a href="#any"><img src="~/CarImages/@Model.Car.PhotoCar" alt="" /></a></div>
+                        @foreach(var img in @Model.CarPhotos)
+                        {
+                                <div><a href="#any"><img src="~/CarImages/@img.PhotoName" alt="" /></a></div>
+                        }
+                        </figure>
+                        <nav>
+                            <button class="nav prev"> > </button>
+                            <button class="nav next"> < </button>
+                        </nav>
+                    </div>
+                
+            </div>
                 <br/>
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Description</button>
-                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Technical Specification</button>
-                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Car Location</button>
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Описание авто</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Технические характеристики</button>
+                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Место положение авто</button>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -49,10 +64,10 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                             <thead>
                                 <tr>
                                     <th style="color: white; width: 60%">
-                                        Engine
+                                        Характеристики двигателя
                                     </th>
                                     <th style="color: white; width: 40%">
-                                        Unit
+                                        Ед. измерения
                                     </th>
                                 </tr>
                             </thead>
@@ -77,10 +92,10 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                             <thead>
                                 <tr>
                                     <th style="color: white; width: 60%">
-                                        Speed
+                                        Скоростные характеристики
                                     </th>
                                     <th style="color: white; width: 40%">
-                                        Unit
+                                        Ед. измерения
                                     </th>
                                 </tr>
                             </thead>
@@ -103,10 +118,10 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                             <thead>
                                 <tr>
                                     <th style="color: white; width: 60%">
-                                        Body
+                                        Кузовные характеристики
                                     </th>
                                     <th style="color: white; width: 40%">
-                                        Unit
+                                        Ед. измерения
                                     </th>
                                 </tr>
                             </thead>
@@ -155,6 +170,71 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 </div>
             </div>
         </div>
+    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
+        <h1>Комплектации @Model.Car.CarName</h1>
+    </div>
+    <div class="row w-100">
+        <div class="tabs">
+            @foreach(var cars in ViewBag.Cars)
+            {
+                <div class="tab">
+                    <div class="tab-toggle">
+                        <span class="tab-name" style="margin-left: 10%;">@cars.Car.CarName</span>
+                    </div>
+                </div>
+                <div class="Tabscontent">
+                    <div class="row w-100" style="background-image: url('/image/DesertViewBacground.jpg'); height: 320px; background-repeat: no-repeat;">
+                        <div class="col-3 justify-content-center align-items-center mt-5">
+                            <h3 class="text-white text-decoration-underline" style="font-size: 40px;">
+                                @cars.Car.CarName
+                            </h3>
+                            <p class="text-white">
+                                <small>
+                                    Начальная цена от
+                                </small></p>
+                            <h3 class="text-white text-decoration-underline" style="font-size: 36px;">
+                                @cars.FullPrice &#8381
+                            </h3>
+                        </div>
+                        <div class="col-9 justify-content-center">
+                            <img src="~/CarImages/@cars.Car.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                        </div>
+                    </div>
+                    <div class="row w-100">
+                        <div class="col-6">
+                            <h4 class="text-white" style="font-size: 16px;">Ключевые характеристики</h4>
+                            @foreach(var characteristic in @Model.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
+                                s.Characteristic.CharacteristicName.Contains("Объем") || 
+                                s.Characteristic.CharacteristicName.Contains("Вместительность топливного бака") || 
+                               s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров")))
+                            {
+                                
+                            }
+                            @{
+                                var count = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров"));
+                                var racing = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("0-100"));
+                                var power = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Мощность"));
+                                var v3 = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Объем"));
+                            }
+                            <p class="text-white" style="font-size: 11px;">@v3?.CharacteristicValue-ЛИТРОВЫЙ ДВИГАТЕЛЬ V-@count?.CharacteristicValue МОЩНОСТЬЮ @power?.CharacteristicValue Л.С.</p>
+                            <p class="text-white" style="font-size: 11px;">РАЗГОН ДО 100 км/ч ЗА @racing?.CharacteristicValue СЕКУНДЫ</p>
+                        </div>
+                        <div class="col-6 text-white">
+                            <h3>ЛУЧШИЙ В КЛАССЕ V8</h3>
+                            <p style="font-size: 14px;">Мощный 472-сильный* 5,0-литровый двигатель — это не только единственный безнаддувный двигатель V8 в своем классе*, но и самый мощный двигатель Lexus V8 за всю историю. RC F издает хриплый, специально настроенный звук впуска и выхлопа, когда он кричит до впечатляющей красной черты в 7300 об/мин.</p>
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <div class="col-5">
+                            <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                                <a asp-action="SearchLexus" asp-controller="Home" class="stretched-link" style="color: black;">Искать в каталоге</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
         <div class="row w-100">
             <h4 style="color: white;">
                 Рекомендованное авто
@@ -171,7 +251,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                     <h5 style="color:white;">@cars.Car.CarName</h5>
                                     <button class="imageButton">
                                         <h1>
-                                            <a class="imageLink" asp-action="DetailsCarView" asp-route-CarName="@cars.Car.ID" asp-controller="Car">+</a>
+                                            <a class="imageLink" asp-action="DetailsCarView" asp-route-id="@cars.ID" asp-controller="Car">+</a>
                                         </h1>
                                     </button>
                                 <h5 style="color: white;">@cars.Car.CarPrice &#8381</h5>

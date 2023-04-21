@@ -118,12 +118,15 @@ namespace MyCar.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> CarView()//int? pageNumber
         {
-
             List<SaleCarApi> cars;
             List<MarkCarApi> markCars;
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
+            foreach(var car in cars)
+            {
+                GetDiscount(car);
+            }
             return View("CarView", cars);
         }
 
@@ -157,6 +160,44 @@ namespace MyCar.Web.Controllers
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return Marks;
+        }
+
+        private void GetDiscount(SaleCarApi saleCars)
+        {
+            var date = DateTime.Now;
+            if(saleCars != null)
+            {
+                if(date.DayOfWeek == DayOfWeek.Monday)
+                {
+                    //ViewBag.DiscountPrice = 
+                    if (saleCars.Car.CarMark.Contains("Toyota") || saleCars.Car.CarMark.Contains("Lexus") || saleCars.Car.CarMark.Contains("Honda"))
+                    {
+                        ViewBag.DiscountPrice = saleCars.FullPrice * 10 / 100;
+                    }
+                    else
+                    {
+                        ViewBag.DiscountPrice = "";
+                    }
+                }
+                else if(date.DayOfWeek == DayOfWeek.Tuesday || date.DayOfWeek == DayOfWeek.Friday)
+                {
+                    if (saleCars.Car.CarMark.Contains("Porsche") || saleCars.Car.CarMark.Contains("Audi") || saleCars.Car.CarMark.Contains("Honda"))
+                    {
+                        var diff = saleCars.FullPrice * 10 / 100;
+                        ViewBag.DiscountPrice = saleCars.FullPrice - diff;
+                    }
+                    else
+                    {
+                        ViewBag.DiscountPrice = "";
+                    }
+                }
+                else
+                {
+                    ViewBag.DiscountPrice = "";
+                }
+
+            }
+            
         }
     }
 }

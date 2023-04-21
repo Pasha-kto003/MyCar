@@ -79,11 +79,11 @@ namespace MyCar.Web.Controllers
 
             var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
             
-            var ord = Orders.LastOrDefault();
-            if (ord.Status.StatusName == "Завершен")
+            var ord = Orders.LastOrDefault(s => s.UserId == user.ID);
+            if (ord == null || ord.Status.StatusName == "Завершен")
             {
                 var car = Cars.FirstOrDefault(s => s.ID == id);
-                WareHouseApi wareHouse = new WareHouseApi { ID = Warehouses.Count() + 1, CountChange = -1, SaleCar = car, SaleCarId = car.ID, Price = car.FullPrice, Discount = 0};
+                WareHouseApi wareHouse = new WareHouseApi { ID = Warehouses.Count() + 1, CountChange = -1, SaleCar = car, SaleCarId = car.ID, Price = car.FullPrice, Discount = DiscountCounter.GetDiscount(car)};
 
                 OrderApi order = new OrderApi();
                 order.WareHouses = new List<WareHouseApi>();
@@ -99,7 +99,6 @@ namespace MyCar.Web.Controllers
                 order.ActionType = Types.FirstOrDefault(s => s.ID == order.ActionTypeId);
                 await CreateOrder(order);
                 wareHouse.OrderId = order.ID;
-                await CreateWareHouse(wareHouse);
                 return View("DetailsCart", order);
             }
 
@@ -114,7 +113,7 @@ namespace MyCar.Web.Controllers
                     SaleCar = car,
                     SaleCarId = car.ID,
                     CountChange = -1,
-                    Discount = 0,
+                    Discount = DiscountCounter.GetDiscount(car),
                     Price = car.FullPrice,
                     OrderId = order.ID,
                 };

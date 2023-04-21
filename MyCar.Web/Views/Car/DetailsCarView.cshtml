@@ -16,6 +16,9 @@
                 <h2 style="color: white;">
                     @Model.FullPrice
                 </h2>
+                <h4 style="color: white;">
+                    @ViewBag.DiscountPrice
+                </h4>
             </div>
         </div>
         <div class="row w-100">
@@ -203,13 +206,6 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                     <div class="row w-100">
                         <div class="col-6">
                             <h4 class="text-white" style="font-size: 16px;">Ключевые характеристики</h4>
-                            @foreach(var characteristic in @Model.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
-                                s.Characteristic.CharacteristicName.Contains("Объем") || 
-                                s.Characteristic.CharacteristicName.Contains("Вместительность топливного бака") || 
-                               s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров")))
-                            {
-                                
-                            }
                             @{
                                 var count = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров"));
                                 var racing = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("0-100"));

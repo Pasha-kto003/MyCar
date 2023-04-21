@@ -219,6 +219,18 @@ namespace MyCar.Web.Controllers
             //return NotFound();
         }
 
+        [Authorize(Roles = "Администратор, Клиент")]
+        public async Task<IActionResult> PersonalUser(int id)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");      
+            var user = Users.FirstOrDefault(s => s.ID == id);
+            var role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+            ViewData["content"] = $"Теперь ваша роль {role}";
+            return View("Personal_Area", user);
+
+            //return NotFound();
+        }
+
         public bool EmailIsValid(string email)
         {
             //string expression = "\\w+([-+.']\\w+)@\\w+([-.]\\w+)\\.\\w+([-.]\\w+)*";

@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Web.Core;
+using Newtonsoft.Json;
 using System.Data;
+using System.Net;
+using System.Web;
 
 namespace MyCar.Web.Controllers
 {
@@ -76,103 +79,33 @@ namespace MyCar.Web.Controllers
         public async Task<IActionResult> AddOrder(int id)
         {
             await GetOrders();
-
-            var us = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-            if (Orders.Count != 0)
+            List<WareHouseApi> orderItems = new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            var order = Orders.LastOrDefault(s => s.Status.StatusName == "Завершен");
+            //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
+            if(order != null)
             {
-                var ord = Orders.LastOrDefault();
-
-                if (ord.Status.StatusName == "Завершен")
+                WareHouseApi warehouse = new WareHouseApi
                 {
-                    var car = Cars.FirstOrDefault(s => s.ID == id);
+                    SaleCarId = id,
+                    CountChange = -1,
+                    Discount = 0,
+                    SaleCar = car,
+                    Price = car.FullPrice
+                };
 
-                    WareHouseApi wareHouse = new WareHouseApi();
-                    wareHouse.ID = Warehouses.Count() + 1;
-                    wareHouse.SaleCar = car;
-                    wareHouse.SaleCarId = car.ID;
-                    wareHouse.CountChange = -1;
-                    wareHouse.Discount = 0;
-                    wareHouse.Price = car.FullPrice;
-
-                    OrderApi order = new OrderApi();
-                    order.WareHouses = new List<WareHouseApi>();
-                    order.WareHouses.Add(wareHouse);
-                    order.SumOrder = car.FullPrice - wareHouse.Discount;
-                    var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-                    order.User = user;
-                    order.UserId = user.ID;
-
-                    order.DateOfOrder = DateTime.Now;
-                    order.StatusId = 1;
-                    order.Status = Statuses.FirstOrDefault(s => s.ID == order.StatusId);
-                    order.ActionTypeId = 2;
-                    order.ActionType = Types.FirstOrDefault(s => s.ID == order.ActionTypeId);
-                    await CreateOrder(order);
-                    wareHouse.OrderId = order.ID;
-                    await CreateWareHouse(wareHouse);
-                    return View("DetailsCart", order);
-                }
-
-                else
+                string json = JsonConvert.SerializeObject(warehouse);
+                Response.Cookies.Append("OrderItem", json, new CookieOptions
                 {
-                    var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-                    var order = Orders.LastOrDefault(s => s.UserId == user.ID);
-                    var car = Cars.FirstOrDefault(s => s.ID == id);
-
-                    WareHouseApi wareHouse = new WareHouseApi
-                    {
-                        ID = Warehouses.Count() + 1,
-                        SaleCar = car,
-                        SaleCarId = car.ID,
-                        CountChange = -1,
-                        Discount = 0,
-                        Price = car.FullPrice,
-                        OrderId = order.ID,
-                    };
-
-                    if(wareHouse.SaleCar.Car.CarMark.Contains("Toyota") || wareHouse.SaleCar.Car.CarMark.Contains("Lexus"))
-                    {
-                        wareHouse.Discount = car.FullPrice * 10 / 100;
-                    }
-
-                    order.WareHouses.Add(wareHouse);
-                    order.SumOrder = car.FullPrice - wareHouse.Discount;
-                    await EditOrder(order);
-                    await CreateWareHouse(wareHouse);
-                    return View("DetailsCart", order);
+                    Expires = DateTimeOffset.Now.AddDays(1) // устанавливаем время жизни куки на 1 день
+                });
+                Request.Cookies.TryGetValue("OrderItem", out string answer);
+                if (!string.IsNullOrEmpty(answer))
+                {
+                    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(answer);
                 }
-
             }
-            else
-            {
-                var car = Cars.FirstOrDefault(s => s.ID == id);
-
-                WareHouseApi wareHouse = new WareHouseApi();
-                wareHouse.ID = Warehouses.Count() + 1;
-                wareHouse.SaleCar = car;
-                wareHouse.SaleCarId = car.ID;
-                wareHouse.CountChange = -1;
-                wareHouse.Discount = 0;
-                wareHouse.Price = car.FullPrice;
-
-                OrderApi order = new OrderApi();
-                order.WareHouses = new List<WareHouseApi>();
-                order.WareHouses.Add(wareHouse);
-                order.SumOrder = car.FullPrice - wareHouse.Discount;
-                var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-                order.User = user;
-                order.UserId = user.ID;
-
-                order.DateOfOrder = DateTime.Now;
-                order.StatusId = 1;
-                order.Status = Statuses.FirstOrDefault(s => s.ID == order.StatusId);
-                order.ActionTypeId = 2;
-                order.ActionType = Types.FirstOrDefault(s => s.ID == order.ActionTypeId);
-                await CreateOrder(order);
-                wareHouse.OrderId = order.ID;
-                await CreateWareHouse(wareHouse);
-                return View("CartPage", Orders);
-            }
+            return View("DetailsCart", orderItems);
         }
 
         public async Task<IActionResult> AddCars(int id)
@@ -231,22 +164,34 @@ namespace MyCar.Web.Controllers
             return View("DetailsOrder", order);
         }
 
-        public async Task<IActionResult> ConfirmOrder(int id)
+        public async Task<IActionResult> ConfirmOrder()
         {
-            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
-            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
-            var order = Orders.FirstOrDefault(s => s.ID == id);
-            if (order == null)
+            await GetOrders();
+            var user = Users.FirstOrDefault(s=> s.UserName == User.Identity.Name);
+            var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
+            var actionType = Types.FirstOrDefault(s => s.ID == 3);
+            var status = Statuses.FirstOrDefault(s => s.ID == 2);
+            //List<WareHouseApi> orderItems = new List<WareHouseApi>();
+            //Request.Cookies.TryGetValue("OrderItem", out string answer);
+            //if (!string.IsNullOrEmpty(answer))
+            //{
+            //    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(answer);
+            //}
+            OrderApi order = new OrderApi
             {
-                return View("Error");
-            }
-            var status = Statuses.FirstOrDefault(s => s.StatusName == "Завершен");
-            order.Status = status;
-            order.StatusId = status.ID;
-            await EditOrder(order);
-            return View("DetailsCart", order);
+                UserId = user.ID,
+                DateOfOrder = DateTime.Now,
+                ActionTypeId = 3,
+                StatusId = 2,
+                WareHouses = warehouses,
+                ActionType = actionType,
+                Status = status,
+                User = user
+            };
+            await CreateOrder(order);
+
+
+            return View("DetailsCart", warehouses);
         }
 
         public async Task CreateOrder(OrderApi orderApi)

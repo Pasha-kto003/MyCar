@@ -14,6 +14,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
 });
 
+//builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddSession(options =>
+//{
+//    options.IdleTimeout = TimeSpan.FromSeconds(10);
+//    options.Cookie.HttpOnly = true;
+//    options.Cookie.IsEssential = true;
+//});
+
 builder.Services.AddMvc().AddRazorPagesOptions(options =>
 {
     options.Conventions.AddPageRoute("/Account/Login", "");
@@ -31,7 +39,7 @@ builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
 });
 builder.Services.AddSqlServer<MyCar_DBContext>(builder.Configuration.GetConnectionString("Database"));
 builder.Services.AddCoreAdmin("Администратор");//admin panel
-builder.Services.AddCoreAdmin(new CoreAdminOptions() { IgnoreEntityTypes = new List<Type>() { typeof(CharacteristicCar) } });
+//builder.Services.AddCoreAdmin(new CoreAdminOptions() { IgnoreEntityTypes = new List<Type>() { typeof(CharacteristicCar) } });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -52,6 +60,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+//app.UseSession();
 //app.UseCoreAdminCustomUrl("MyCarAdminPanel");// Задание url для админ панели
 
 app.MapDefaultControllerRoute();// admpnl

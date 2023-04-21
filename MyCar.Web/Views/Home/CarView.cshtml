@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ModelsApi.SaleCarApi>
-
+@using MyCar.Web.Core;
 @{
     ViewData["Title"] = "Catalog";
 }
@@ -191,20 +191,44 @@
                                 @*<h2 class="product-title text-white">@i.CarName</h2>*@
 
                                 <div class="product-addons-Details d-flex justify-content-between">
+                                    @{
+                                        ViewBag.DiscountPrice = DiscountCounter.GetDiscount(i);
+                                        if(ViewBag.DiscountPrice == 0)
+                                        {
+                                            ViewBag.DiscountPrice = null;
+                                        }
+                                        <div class="product-price">
+                                            @if(ViewBag.DiscountPrice != null)
+                                            {
+                                                <h2 class="text-white">
+                                                    <s class="text-white">
+                                                        @i.FullPrice
+                                                    </s>
+                                                </h2>
 
-                                    <div class="product-price">
-                                        <h2 class="text-white">@i.FullPrice</h2>
-                                    </div>
+                                            }
+                                            else
+                                            {
+                                                <h2 class="text-white">
+                                                    @i.FullPrice
+                                                </h2>
+                                            }
 
-@*                                    <div class="product-links">
+                                        
+                                            <h4 class="text-white">
+                                                @ViewBag.DiscountPrice
+                                            </h4>
+                                        </div>
+                                     }
+                                    
+
+                                   @*<div class="product-links">
                                         <a href="#"><i class="fas fa-heart"></i></a>
                                         <a href="#"><i class="fa fa-cart-plus"></i></a>
                                     </div>*@
 
                                 </div>
                             </div>
-
-                            
 
                             @*<div class="part-1">
                                 <ul>

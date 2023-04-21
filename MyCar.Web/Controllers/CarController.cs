@@ -5,6 +5,7 @@ using MyCar.Web.Core;
 using MyCar.Web.Models;
 using SmartBreadcrumbs.Attributes;
 using SmartBreadcrumbs.Nodes;
+using MyCar.Web.Core;
 
 namespace MyCar.Web.Controllers
 {
@@ -40,6 +41,7 @@ namespace MyCar.Web.Controllers
             ViewData["Title"] = $"CarName - {car.Car.CarName}";
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));
             ViewBag.Cars = Cars.Where(s=> s.Car.ModelId == car.Car.ModelId);
+            ViewBag.DiscountPrice = DiscountCounter.GetDiscount(car);
             var carModel = new CarModel() { CarName = car.Car.CarName };
             return View(car);
         }

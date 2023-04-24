@@ -37,6 +37,9 @@ builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
     options.ActiveLiClasses = "breadcrumb-item active";
     options.DontLookForDefaultNode = true;
 });
+
+builder.Services.AddSession();
+
 builder.Services.AddSqlServer<MyCar_DBContext>(builder.Configuration.GetConnectionString("Database"));
 builder.Services.AddCoreAdmin("Администратор");//admin panel
 //builder.Services.AddCoreAdmin(new CoreAdminOptions() { IgnoreEntityTypes = new List<Type>() { typeof(CharacteristicCar) } });
@@ -56,7 +59,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 

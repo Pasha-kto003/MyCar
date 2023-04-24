@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Data;
 using System.Net;
 using System.Web;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace MyCar.Web.Controllers
 {
@@ -79,6 +80,7 @@ namespace MyCar.Web.Controllers
         public async Task<IActionResult> AddOrder(int id)
         {
             await GetOrders();
+            List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
             List<WareHouseApi> orderItems = new List<WareHouseApi>();
             var car = Cars.FirstOrDefault(s => s.ID == id);
             var order = Orders.LastOrDefault(s => s.Status.StatusName == "Завершен");
@@ -94,16 +96,43 @@ namespace MyCar.Web.Controllers
                     Price = car.FullPrice
                 };
 
-                string json = JsonConvert.SerializeObject(warehouse);
-                Response.Cookies.Append("OrderItem", json, new CookieOptions
-                {
-                    Expires = DateTimeOffset.Now.AddDays(1) // устанавливаем время жизни куки на 1 день
-                });
-                Request.Cookies.TryGetValue("OrderItem", out string answer);
-                if (!string.IsNullOrEmpty(answer))
-                {
-                    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(answer);
-                }
+                // Получаем текущий список из Session
+                string json = HttpContext.Session.GetString("OrderItem");
+                if (json != null)
+                    orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+
+                // Добавляем новый объект в список
+                orderItemsOld.Add(warehouse);
+
+                // Сохраняем список обратно в Session
+                string json1 = JsonConvert.SerializeObject(orderItemsOld);
+                HttpContext.Session.SetString("OrderItem", json1);
+
+                // Получаем текущий список из Session
+                string json2 = HttpContext.Session.GetString("OrderItem");
+                if (json2 != null)
+                    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
+
+
+                //Request.Cookies.TryGetValue("OrderItem", out string answerOld);
+                //if (!string.IsNullOrEmpty(answerOld))
+                //{
+                //   orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(answerOld);
+                //}
+
+                //orderItemsOld.Add(warehouse);
+                //string json = JsonConvert.SerializeObject(orderItemsOld);
+                //Response.Cookies.Append("OrderItem", json, new CookieOptions
+                //{
+                //    Expires = DateTimeOffset.Now.AddDays(1) // устанавливаем время жизни куки на 1 день
+                //});
+
+                //Request.Cookies.TryGetValue("OrderItem", out string answer);
+                //if (!string.IsNullOrEmpty(answer))
+                //{
+                //    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(answer);
+                //}
+
             }
             return View("DetailsCart", orderItems);
         }

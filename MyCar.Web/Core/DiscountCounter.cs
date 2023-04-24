@@ -15,7 +15,8 @@ namespace MyCar.Web.Core
                     //ViewBag.DiscountPrice = 
                     if (saleCar.Car.CarMark.Contains("Toyota") || saleCar.Car.CarMark.Contains("Lexus") || saleCar.Car.CarMark.Contains("Honda"))
                     {
-                        finalPrice = saleCar.FullPrice * 10 / 100;
+                        var diff = saleCar.FullPrice * 10 / 100;
+                        finalPrice = saleCar.FullPrice - diff;
                         return finalPrice;
                     }
                     else

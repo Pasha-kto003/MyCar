@@ -1,4 +1,5 @@
 ﻿@using ModelsApi
+@using MyCar.Web.Core
 
 @model ModelsApi.SaleCarApi
 @{
@@ -13,12 +14,32 @@
                 <h4 style="color: white;">Наша платформа шаблонов позволит максимально увеличить доступность вашего инвентаря в Интернете.</h4>
             </div>
             <div class="col-2">
-                <h2 style="color: white;">
-                    @Model.FullPrice
-                </h2>
-                <h4 style="color: white;">
-                    @ViewBag.DiscountPrice
-                </h4>
+                @{
+                    ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
+                    if(ViewBag.DiscountPrice == 0)
+                    {
+                        ViewBag.DiscountPrice = null;
+                    }
+                    <div class="product-price">
+                        @if(ViewBag.DiscountPrice != null)
+                        {
+                            <h2 class="text-white">
+                                <s class="text-white">
+                                    @Model.FullPrice
+                                </s>
+                            </h2>
+                        }
+                        else
+                        {
+                            <h2 class="text-white">
+                                @Model.FullPrice
+                            </h2>
+                        }
+                        <h4 class="text-white">
+                            @ViewBag.DiscountPrice
+                        </h4>
+                    </div>
+                }
             </div>
         </div>
         <div class="row w-100">
@@ -195,9 +216,32 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 <small>
                                     Начальная цена от
                                 </small></p>
-                            <h3 class="text-white text-decoration-underline" style="font-size: 36px;">
-                                @cars.FullPrice &#8381
-                            </h3>
+                            @{
+                                ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
+                                if(ViewBag.DiscountPrice == 0)
+                                {
+                                    ViewBag.DiscountPrice = null;
+                                }
+                                <div class="product-price">
+                                    @if(ViewBag.DiscountPrice != null)
+                                    {
+                                        <h3 class="text-white">
+                                            <s class="text-white">
+                                                @Model.FullPrice
+                                            </s>
+                                        </h3>
+                                    }
+                                    else
+                                    {
+                                        <h2 class="text-white">
+                                            @Model.FullPrice
+                                        </h2>
+                                    }
+                                    <h4 class="text-white">
+                                        @ViewBag.DiscountPrice
+                                    </h4>
+                                </div>
+                        }
                         </div>
                         <div class="col-9 justify-content-center">
                             <img src="~/CarImages/@cars.Car.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
@@ -250,7 +294,32 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                             <a class="imageLink" asp-action="DetailsCarView" asp-route-id="@cars.ID" asp-controller="Car">+</a>
                                         </h1>
                                     </button>
-                                <h5 style="color: white;">@cars.Car.CarPrice &#8381</h5>
+                                    @{
+                                            ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
+                                            if(ViewBag.DiscountPrice == 0)
+                                            {
+                                                ViewBag.DiscountPrice = null;
+                                            }
+                                            <div class="product-price">
+                                                @if(ViewBag.DiscountPrice != null)
+                                                {
+                                                    <h5 class="text-white">
+                                                        <s class="text-white">
+                                                            @Model.FullPrice
+                                                        </s>
+                                                    </h5>
+                                                }
+                                                else
+                                                {
+                                                    <h2 class="text-white">
+                                                        @Model.FullPrice
+                                                    </h2>
+                                                }
+                                                <h5 class="text-white">
+                                                    @ViewBag.DiscountPrice
+                                                </h5>
+                                            </div>
+                                     }
                             </div>
                         </div>
                     </div>

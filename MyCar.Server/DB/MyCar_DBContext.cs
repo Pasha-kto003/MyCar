@@ -22,6 +22,7 @@ namespace MyCar.Server.DB
         public virtual DbSet<CarPhoto> CarPhotos { get; set; } = null!;
         public virtual DbSet<Characteristic> Characteristics { get; set; } = null!;
         public virtual DbSet<CharacteristicCar> CharacteristicCars { get; set; } = null!;
+        public virtual DbSet<Discount> Discounts { get; set; } = null!;
         public virtual DbSet<Equipment> Equipment { get; set; } = null!;
         public virtual DbSet<MarkCar> MarkCars { get; set; } = null!;
         public virtual DbSet<Model> Models { get; set; } = null!;
@@ -39,7 +40,7 @@ namespace MyCar.Server.DB
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-2KIP198\\SQLEXPRESS;Initial Catalog=MyCar_DB;Trusted_Connection=True; User=dbo");
             }
         }
 
@@ -139,6 +140,26 @@ namespace MyCar.Server.DB
                     .HasForeignKey(d => d.CharacteristicId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CharacteristicCar_Characteristic");
+            });
+
+            modelBuilder.Entity<Discount>(entity =>
+            {
+                entity.ToTable("Discount");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.DiscountValue).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.SaleCar)
+                    .WithMany(p => p.Discounts)
+                    .HasForeignKey(d => d.SaleCarId)
+                    .HasConstraintName("FK_Discount_SaleCar");
             });
 
             modelBuilder.Entity<Equipment>(entity =>

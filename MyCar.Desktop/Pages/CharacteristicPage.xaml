@@ -262,6 +262,67 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Скидки" FontSize="15"/>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="1"
+                  FontSize="{StaticResource FontSizeLarge}"
+                  SelectedItem="{Binding SelectedDiscount}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Discounts}"
+            >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Значение в %"
+                                    Binding="{Binding DiscountValue}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Значение в рублях"
+                                    Binding="{Binding Price}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Дата начала скидки"
+                                    Binding="{Binding StartDate}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Дата конца скидки"
+                                    Binding="{Binding EndDate}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Авто"
+                                    Binding="{Binding SaleCar.Car.CarName}"
+                                    Width="*"
+                                    />
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Редактировать" Command="{Binding EditDiscount}"/>
+                                <MenuItem Header="Удалить" Command="{Binding DeleteDiscount}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+
+                    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
+                        Command="{Binding AddDiscount}"  ToolTip="Добавить">
+                                <Button.Content>
+                                    <Image Source="/Images/add.png" />
+                                </Button.Content>
+                            </Button>
+
+                        </StackPanel>
+                        <Grid/>
+                    </Grid>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

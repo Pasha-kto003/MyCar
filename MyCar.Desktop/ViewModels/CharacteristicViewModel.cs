@@ -115,6 +115,26 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand DeletePhotoCar { get; set; }
         #endregion
 
+        #region DiscountProperties
+        public List<DiscountApi> Discounts { get; set; } = new List<DiscountApi>();
+        private DiscountApi selectedDiscount { get; set; }
+        public DiscountApi SelectedDiscount
+        {
+            get => selectedDiscount;
+            set
+            {
+                selectedDiscount = value;
+                SignalChanged();
+            }
+        }
+
+        private List<DiscountApi> FullDiscounts;
+
+        public CustomCommand AddDiscount { get; set; }
+        public CustomCommand EditDiscount { get; set; }
+        public CustomCommand DeleteDiscount { get; set; }
+        #endregion
+
         public CustomCommand AddType { get; set; }
         public CustomCommand EditType { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
@@ -135,6 +155,8 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetUnit).Wait();
 
             Task.Run(GetPhotoCar).Wait();
+
+            Task.Run(GetDiscount).Wait();
 
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Характеристика" });
@@ -172,6 +194,25 @@ namespace MyCar.Desktop.ViewModels
                 addUnit.ShowDialog();
                 Task.Run(GetUnit).Wait();
                 Task.Run(GetCharacteristic).Wait();
+            });
+
+            AddDiscount = new CustomCommand(() =>
+            {
+                AddDiscountWindow addDiscount = new AddDiscountWindow();
+                addDiscount.ShowDialog();
+                Task.Run(GetDiscount).Wait();
+            });
+
+            EditDiscount = new CustomCommand(() =>
+            {
+                if(SelectedDiscount == null || SelectedDiscount.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана скидка" });
+                    return;
+                }
+                AddDiscountWindow addDiscount = new AddDiscountWindow(SelectedDiscount);
+                addDiscount.ShowDialog();
+                Task.Run(GetDiscount).Wait();
             });
 
             EditUnit = new CustomCommand(() =>
@@ -303,6 +344,15 @@ namespace MyCar.Desktop.ViewModels
             else
                 searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, search, "Characteristic", SelectedUnitFilter.UnitName);
             UpdateList();
+        }
+        #endregion
+
+        #region GetDiscount
+        private async Task GetDiscount()
+        {
+            Discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
+            FullDiscounts = Discounts;
+            SignalChanged(nameof(Discounts));
         }
         #endregion
 

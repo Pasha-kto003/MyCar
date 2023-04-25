@@ -5,6 +5,15 @@ namespace MyCar.Server.DataModels
 {
     public static class ModelData 
     {
+        public static DiscountApi GetDiscount(Discount discount, MyCar_DBContext dbContext)
+        {
+            var result = (DiscountApi)discount;
+            var saleCar = dbContext.SaleCars.FirstOrDefault(s=> s.Id == discount.SaleCarId);
+            var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
+            result.SaleCar = (SaleCarApi)saleCar;
+            result.SaleCar.Car = GetCar(car, dbContext);
+            return result;
+        }
         public static CarApi GetCar(Car car, MyCar_DBContext dbContext)
         {
             var result = (CarApi)car;
@@ -43,6 +52,19 @@ namespace MyCar.Server.DataModels
             result.CarPhotos = carPhotos;
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;
+            //var discount = dbContext.Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.Id);
+            //if(result.FullPrice != null)
+            //{
+            //    result.DiscountPercent = discount.DiscountValue;
+            //    if (result.DiscountPercent > 0 && result.DiscountPrice == 0)
+            //    {
+            //        result.DiscountPrice = result.FullPrice / discount.DiscountValue * 100;
+            //    }
+            //    if (result.DiscountPercent == 0 && discount.Price != 0)
+            //    {
+            //        result.DiscountPrice = result.FullPrice - discount.Price;
+            //    }
+            //}    
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
             foreach (var item in dbContext.Warehouses.Where(s=>s.SaleCarId== saleCar.Id))
             {

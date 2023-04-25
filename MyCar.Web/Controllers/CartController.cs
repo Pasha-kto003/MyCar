@@ -83,7 +83,7 @@ namespace MyCar.Web.Controllers
             if (ord == null || ord.Status.StatusName == "Завершен")
             {
                 var car = Cars.FirstOrDefault(s => s.ID == id);
-                WareHouseApi wareHouse = new WareHouseApi { ID = Warehouses.Count() + 1, CountChange = -1, SaleCar = car, SaleCarId = car.ID, Price = car.FullPrice, Discount = DiscountCounter.GetDiscount(car)};
+                WareHouseApi wareHouse = new WareHouseApi { ID = Warehouses.Count() + 1, CountChange = -1, SaleCar = car, SaleCarId = car.ID, Price = DiscountCounter.GetDiscount(car), Discount = DiscountCounter.GetDiscountPrice(car)};
 
                 OrderApi order = new OrderApi();
                 order.WareHouses = new List<WareHouseApi>();
@@ -113,8 +113,8 @@ namespace MyCar.Web.Controllers
                     SaleCar = car,
                     SaleCarId = car.ID,
                     CountChange = -1,
-                    Discount = DiscountCounter.GetDiscount(car),
-                    Price = car.FullPrice,
+                    Discount = DiscountCounter.GetDiscountPrice(car),
+                    Price = DiscountCounter.GetDiscount(car),
                     OrderId = order.ID,
                 };
                 if (wareHouse.SaleCar.Car.CarMark.Contains("Toyota") || wareHouse.SaleCar.Car.CarMark.Contains("Lexus"))

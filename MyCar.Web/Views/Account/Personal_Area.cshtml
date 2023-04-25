@@ -1,3 +1,5 @@
+@using ModelsApi
+@using MyCar.Web.Core
 @model ModelsApi.UserApi
 @{
     ViewBag.Title = "О пользователе";
@@ -7,27 +9,14 @@
     <div class="main-body">
 
         <div class="row gutters-sm mt-3">
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-column align-items-center text-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-person-circle rounded-circle" viewBox="0 0 16 16">
-                              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                            </svg>
-                            <div class="mt-3">
-                                <h4>@Model.UserName</h4>
-                                <p class="text-secondary mb-1">@Model.UserType.TypeName</p>
-                                @*<p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>*@
-                                @*<button class="btn btn-primary">Follow</button>
-                                <button class="btn btn-outline-primary">Message</button>*@
-                            </div>
-                        </div>
+            <div class="tabs" style="min-height: 588.594px;">
+                <div class="tab">
+                    <div class="tab-toggle active">
+                        <span class="tab-name" style="margin-left: 10%;">Данные пользователя</span>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-8">
-                <div class="card mb-3">
+                <div class="Tabscontent active">
+                    <div class="card mb-3">
                     <form asp-action="EditUserView" method="post">
                         <div class="card-body">
                             <div class="row">
@@ -93,7 +82,79 @@
                         </div>
                     </form>
                 </div>
-            </div>
+                </div>
+                <div class="tab">
+                    <div class="tab-toggle">
+                        <span class="tab-name" style="margin-left: 10%;">История покупок</span>
+                    </div>
+                </div>
+                <div class="Tabscontent">
+                    <div class="card mb-3">
+                        <form method="post">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Активные заказы сейчас:</h6>
+                                    </div>
+                                    @{
+                                        var orders = await Api.GetListAsync<List<OrderApi>>("Order");
+                                        var order = orders.LastOrDefault(s => s.UserId == @Model.ID && s.Status.StatusName == "Новый");
+                                        if(order != null)
+                                        {
+                                            <div class="col-sm-9 text-secondary">
+                                                @order.ID
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-9 text-danger">
+                                                Отсутствуют
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Общее кол-во покупок на сайте</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @orders.Count
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Сумма заказов</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @{
+                                            var ords = await Api.GetListAsync<List<OrderApi>>("Order");
+                                            var userords = ords.Where(s => s.UserId == @Model.ID).ToList();
+                                            decimal? suma = 0;
+                                            foreach(var ord in userords)
+                                            {
+                                                suma = ord.WareHouses.Sum(s => s.SaleCar.FullPrice);
+                                            }
+                                            if(suma != 0)
+                                            {
+                                                <div class="col-sm-9 text-secondary">
+                                                    @suma.Value
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-sm-9 text-danger">
+                                                    Отсутствуют
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
         </div>
 
     </div>

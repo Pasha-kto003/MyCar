@@ -95,6 +95,46 @@ namespace MyCar.Desktop.ViewModels
         public UnitApi SelectedUnit { get; set;  }
         #endregion
 
+        #region PhotoProperties
+        public List<CarPhotoApi> CarPhotos { get; set; } = new List<CarPhotoApi>();
+        private CarPhotoApi selectedPhotoCar { get; set; }
+        public CarPhotoApi SelectedPhotoCar
+        {
+            get => selectedPhotoCar;
+            set
+            {
+                selectedPhotoCar = value;
+                SignalChanged();
+            }
+        }
+
+        private List<CarPhotoApi> FullPhotoCars { get; set; }
+
+        public CustomCommand AddPhotoCar { get; set; }
+        public CustomCommand EditPhotoCar { get; set; }
+        public CustomCommand DeletePhotoCar { get; set; }
+        #endregion
+
+        #region DiscountProperties
+        public List<DiscountApi> Discounts { get; set; } = new List<DiscountApi>();
+        private DiscountApi selectedDiscount { get; set; }
+        public DiscountApi SelectedDiscount
+        {
+            get => selectedDiscount;
+            set
+            {
+                selectedDiscount = value;
+                SignalChanged();
+            }
+        }
+
+        private List<DiscountApi> FullDiscounts;
+
+        public CustomCommand AddDiscount { get; set; }
+        public CustomCommand EditDiscount { get; set; }
+        public CustomCommand DeleteDiscount { get; set; }
+        #endregion
+
         public CustomCommand AddType { get; set; }
         public CustomCommand EditType { get; set; }
         public CustomCommand AddCharacteristic { get; set; }
@@ -116,6 +156,8 @@ namespace MyCar.Desktop.ViewModels
             
             UnitFilter.Add(new UnitApi { UnitName = "Все" });
             SelectedUnitFilter = UnitFilter.Last();
+
+            Task.Run(GetDiscount).Wait();
 
             SearchType = new List<string>();
             SearchType.AddRange(new string[] { "Характеристика" });
@@ -150,6 +192,25 @@ namespace MyCar.Desktop.ViewModels
                 addUnit.ShowDialog();
                 Task.Run(GetUnit).Wait();
                 Task.Run(GetCharacteristic).Wait();
+            });
+
+            AddDiscount = new CustomCommand(() =>
+            {
+                AddDiscountWindow addDiscount = new AddDiscountWindow();
+                addDiscount.ShowDialog();
+                Task.Run(GetDiscount).Wait();
+            });
+
+            EditDiscount = new CustomCommand(() =>
+            {
+                if(SelectedDiscount == null || SelectedDiscount.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана скидка" });
+                    return;
+                }
+                AddDiscountWindow addDiscount = new AddDiscountWindow(SelectedDiscount);
+                addDiscount.ShowDialog();
+                Task.Run(GetDiscount).Wait();
             });
 
             EditUnit = new CustomCommand(() =>
@@ -233,7 +294,30 @@ namespace MyCar.Desktop.ViewModels
             UpdateList();
         }
         #endregion
+        #region GetDiscount
+        private async Task GetDiscount()
+        {
+            Discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
+            FullDiscounts = Discounts;
+            SignalChanged(nameof(Discounts));
+        }
+        #endregion
 
+        #region PhotoCars
+        private async Task GetPhotoCar()
+        {
+            CarPhotos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+            FullPhotoCars = CarPhotos;
+            SignalChanged(nameof(CarPhotos));
+        }
+
+        private async Task DeletePhoto(CarPhotoApi carPhoto)
+        {
+            var photo = await Api.DeleteAsync<CarPhotoApi>(carPhoto, "CarPhoto");
+        }
+
+        #endregion
+        
         #region Equipment
         private async Task GetEquipment()
         {

@@ -21,12 +21,15 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="200"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Content="Цвет для остатков на складе" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" 
                    VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <ListBox ItemsSource="{Binding ColorValues}" Margin="10" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectedItem="{Binding SelectedColorValue}">
+            <Label Content="(В процентном соотношении остатков к к минимальному кол-ву)" FontFamily="{StaticResource CenturyGothicBold}" FontSize="12" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Margin="0 -15 0 -15"/>
+            <ListBox ItemsSource="{Binding ColorValues}" Margin="10" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" SelectedItem="{Binding SelectedColorValue}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -86,7 +89,7 @@
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
-            <Button Grid.Row="2" Content="Добавить" Style="{StaticResource RegularButton}"
+            <Button Grid.Row="3" Content="Добавить" Style="{StaticResource RegularButton}"
                     Width="120" Padding="0 0 " Height="30" Command="{Binding AddColorValue}" Margin="0"/>
         </Grid>
 

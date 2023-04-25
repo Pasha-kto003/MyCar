@@ -48,7 +48,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="150"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="75"/>
@@ -85,20 +85,36 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="20"/>
+                                    <RowDefinition Height="20"/>
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Text="{Binding FullPrice, StringFormat={}{0:N2} ₽}" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Right"/>
                                 <TextBlock Text="{Binding Count, StringFormat= Кол-во {0} шт.}" FontSize="18" HorizontalAlignment="Right" Grid.Row="1" />
+                                <TextBlock Text="{Binding MinCount, StringFormat= Мин. кол-во {0} шт.}" FontSize="18" HorizontalAlignment="Right" Grid.Row="2" />
                             </Grid>
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="{Binding Count, Converter={core:CountToColorConverter}}" />
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <MultiBinding Converter="{core:MultiCountToColorConverter}" Mode="TwoWay">
+                                                <Binding Path="Count" />
+                                                <Binding Path="MinCount" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>  
                                 </Style>
                             </Grid.Style>
                         </Grid>
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="Background" Value="{Binding Count, Converter={core:CountToColorConverter}}" />
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{core:MultiCountToColorConverter}" Mode="TwoWay">
+                                            <Binding Path="Count" />
+                                            <Binding Path="MinCount" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
                         </Border.Style>
                     </Border>

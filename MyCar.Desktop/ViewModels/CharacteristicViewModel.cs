@@ -14,7 +14,7 @@ namespace MyCar.Desktop.ViewModels
     public class CharacteristicViewModel : BaseViewModel
     {
         #region CharacteristicProperties
-        public List<UnitApi> UnitFilter { get; set; }
+        public List<UnitApi> UnitFilter { get; set; } = new List<UnitApi>();
 
         private UnitApi selectedUnitFilter;
         public UnitApi SelectedUnitFilter
@@ -153,8 +153,9 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetBodyTypes).Wait();
 
             Task.Run(GetUnit).Wait();
-
-            Task.Run(GetPhotoCar).Wait();
+            
+            UnitFilter.Add(new UnitApi { UnitName = "Все" });
+            SelectedUnitFilter = UnitFilter.Last();
 
             Task.Run(GetDiscount).Wait();
 
@@ -165,9 +166,6 @@ namespace MyCar.Desktop.ViewModels
             SearchTypeEquipment = new List<string>();
             SearchTypeEquipment.AddRange(new string[] { "Комплектация" });
             SelectedSearchTypeEquipment = SearchTypeEquipment.First();
-
-            UnitFilter.Add(new UnitApi { UnitName = "Все" });
-            SelectedUnitFilter = UnitFilter.Last();
 
             AddCharacteristic = new CustomCommand(() =>
             {
@@ -224,8 +222,8 @@ namespace MyCar.Desktop.ViewModels
                 }
                 AddUnitWindow addUnit = new AddUnitWindow(SelectedUnit);
                 addUnit.ShowDialog();
-                Task.Run(GetCharacteristic).Wait();
                 Task.Run(GetUnit).Wait();
+                Task.Run(GetCharacteristic).Wait();
             });
 
             AddEquipment = new CustomCommand(() =>
@@ -268,68 +266,16 @@ namespace MyCar.Desktop.ViewModels
                     Task.Run(GetBodyTypes).Wait();
                 }
             });
-
-            AddPhotoCar = new CustomCommand(() =>
-            {
-                AddPhotoCarWindow addPhotoCar = new AddPhotoCarWindow();
-                addPhotoCar.ShowDialog();
-                Task.Run(GetPhotoCar);
-            });
-
-            EditPhotoCar = new CustomCommand(() =>
-            {
-                if(SelectedPhotoCar == null || SelectedPhotoCar.ID == 0)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
-                    return;
-                }
-                else
-                {
-                    AddPhotoCarWindow addPhotoCar = new AddPhotoCarWindow(SelectedPhotoCar);
-                    addPhotoCar.ShowDialog();
-                    Task.Run(GetPhotoCar);
-                }
-            });
-
-            DeletePhotoCar = new CustomCommand(async () =>
-            {
-                if(SelectedPhotoCar == null || SelectedPhotoCar.ID == 0)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано изображение!" });
-                    return;
-                }
-                else if(SelectedPhotoCar.SaleCarId != 0 || SelectedPhotoCar.SaleCarId != null)
-                {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Данное изображение используется для авто, его нельзя удалить!" });
-                    return;
-                }
-                else
-                {
-                    MessageBoxDialogViewModel result = new MessageBoxDialogViewModel
-                    { Title = "Подтверждение", Message = $"Данное изображение будет удалено" };
-                    UIManager.ShowMessageYesNo(result);
-                    if (!result.Result)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        await DeletePhoto(SelectedPhotoCar);
-                        await GetPhotoCar();
-                        UIManager.ShowMessage(new MessageBoxDialogViewModel { Message = $"Изображение: {SelectedPhotoCar.PhotoName} удалено" });
-                        return;
-                    }
-                }
-            });
         }
 
         #region Characteristic
         private async Task GetCharacteristic()
         {
-            Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
             UnitFilter = await Api.GetListAsync<List<UnitApi>>("Unit");
-            FullTypes = Characteristics;
-            SignalChanged(nameof(Characteristics));
+            UnitFilter.Add(new UnitApi { UnitName = "Все" });
+            selectedUnitFilter = UnitFilter.Last();
+            Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
+            FullTypes = Characteristics;       
         }
         private void UpdateList()
         {
@@ -339,6 +285,8 @@ namespace MyCar.Desktop.ViewModels
         private async Task Search()
         {
             var search = SearchText.ToLower();
+            if (SelectedUnitFilter == null)
+                SelectedUnitFilter = UnitFilter.Last();
             if (search == "")
                 searchResult = await Api.SearchFilterAsync<List<CharacteristicApi>>(SelectedSearchType, "$", "Characteristic", SelectedUnitFilter.UnitName);
             else
@@ -346,7 +294,6 @@ namespace MyCar.Desktop.ViewModels
             UpdateList();
         }
         #endregion
-
         #region GetDiscount
         private async Task GetDiscount()
         {
@@ -370,7 +317,7 @@ namespace MyCar.Desktop.ViewModels
         }
 
         #endregion
-
+        
         #region Equipment
         private async Task GetEquipment()
         {

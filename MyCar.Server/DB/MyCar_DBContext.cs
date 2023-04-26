@@ -22,6 +22,7 @@ namespace MyCar.Server.DB
         public virtual DbSet<CarPhoto> CarPhotos { get; set; } = null!;
         public virtual DbSet<Characteristic> Characteristics { get; set; } = null!;
         public virtual DbSet<CharacteristicCar> CharacteristicCars { get; set; } = null!;
+        public virtual DbSet<CountChangeHistory> CountChangeHistories { get; set; } = null!;
         public virtual DbSet<Discount> Discounts { get; set; } = null!;
         public virtual DbSet<Equipment> Equipment { get; set; } = null!;
         public virtual DbSet<MarkCar> MarkCars { get; set; } = null!;
@@ -140,6 +141,23 @@ namespace MyCar.Server.DB
                     .HasForeignKey(d => d.CharacteristicId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CharacteristicCar_Characteristic");
+            });
+
+            modelBuilder.Entity<CountChangeHistory>(entity =>
+            {
+                entity.ToTable("CountChangeHistory");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.HasOne(d => d.WarehouseIn)
+                    .WithMany(p => p.CountChangeHistoryWarehouseIns)
+                    .HasForeignKey(d => d.WarehouseInId)
+                    .HasConstraintName("FK_CountChangeHistory_Warehouse1");
+
+                entity.HasOne(d => d.WarehouseOut)
+                    .WithMany(p => p.CountChangeHistoryWarehouseOuts)
+                    .HasForeignKey(d => d.WarehouseOutId)
+                    .HasConstraintName("FK_CountChangeHistory_Warehouse");
             });
 
             modelBuilder.Entity<Discount>(entity =>

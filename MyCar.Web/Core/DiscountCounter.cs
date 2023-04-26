@@ -47,6 +47,10 @@ namespace MyCar.Web.Core
                     {
                         finalPrice = saleCar.FullPrice * discount.DiscountValue / 100;
                     }
+                    if (discount.DiscountValue < 0 && discount.Price > 0)
+                    {
+                        finalPrice = discount.Price;
+                    }
                 }
                 return finalPrice;
             }

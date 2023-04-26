@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Сумма заказов</h6>
+                                        <h6 class="mb-0">Сумма ваших заказов</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         @{
@@ -133,12 +133,13 @@
                                             decimal? suma = 0;
                                             foreach(var ord in userords)
                                             {
-                                                suma = ord.WareHouses.Sum(s => s.SaleCar.FullPrice);
+                                                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
                                             }
+                                            suma = userords.Sum(s => s.SumOrder);
                                             if(suma != 0)
                                             {
                                                 <div class="col-sm-9 text-secondary">
-                                                    @suma.Value
+                                                    @suma.Value &#8381
                                                 </div>
                                             }
                                             else

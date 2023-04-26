@@ -87,6 +87,7 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand CarSalesPageCommand { get; set; }
         public CustomCommand OrdersPageCommand { get; set; }
         public CustomCommand AddOrderPageCommand { get; set; }
+        public CustomCommand CountPageCommand { get; set; }
         public CustomCommand SettingsPageCommand { get; set; }
         public MainViewModel(Window window)
         {

@@ -112,6 +112,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                         item.CountChange *= -1;
                     }
                 }
+
                 OrderApi order = new OrderApi();
                 order.DateOfOrder = OrderDate;
                 order.UserId = SelectedUser.ID;
@@ -190,6 +191,17 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             var order = await Api.PostAsync<OrderApi>(orderApi, "Order");
             ClearPage(order);
         }
+
+        private async Task CreateCountChange(CountChangeHistoryApi countChange)
+        {
+            var count = await Api.PostAsync<CountChangeHistoryApi>(countChange, "CountChangeHistory");
+        }
+
+        private async Task EditCountChange(CountChangeHistoryApi countChange)
+        {
+            var count = await Api.PutAsync<CountChangeHistoryApi>(countChange, "CountChangeHistory");
+        }
+
         private async Task GetList()
         {
             var sales = await Api.GetListAsync<List<SaleCarApi>>("CarSales");

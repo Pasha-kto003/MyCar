@@ -94,6 +94,11 @@ namespace MyCar.Web.Controllers
             return View("LexusGXView");
         }
 
+        public async Task<IActionResult> ToyotaCamryView()
+        {
+            return View("ToyotaCamryView");
+        }
+
         public async Task<IActionResult> LexusRCFView()
         {
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");

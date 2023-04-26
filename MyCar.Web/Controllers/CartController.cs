@@ -60,6 +60,10 @@ namespace MyCar.Web.Controllers
         {
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             var order = Orders.Where(s => s.User.UserName == name).ToList();
+            foreach (var ord in order)
+            {
+                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
+            }
             return order;
         }
 
@@ -83,7 +87,7 @@ namespace MyCar.Web.Controllers
             if (ord == null || ord.Status.StatusName == "Завершен")
             {
                 var car = Cars.FirstOrDefault(s => s.ID == id);
-                WareHouseApi wareHouse = new WareHouseApi { ID = Warehouses.Count() + 1, CountChange = -1, SaleCar = car, SaleCarId = car.ID, Price = DiscountCounter.GetDiscount(car), Discount = DiscountCounter.GetDiscountPrice(car)};
+                WareHouseApi wareHouse = new WareHouseApi { ID = Warehouses.Count() + 1, CountChange = 1, SaleCar = car, SaleCarId = car.ID, Price = DiscountCounter.GetDiscount(car), Discount = DiscountCounter.GetDiscountPrice(car)};
 
                 OrderApi order = new OrderApi();
                 order.WareHouses = new List<WareHouseApi>();
@@ -112,7 +116,7 @@ namespace MyCar.Web.Controllers
                     ID = Warehouses.Count() + 1,
                     SaleCar = car,
                     SaleCarId = car.ID,
-                    CountChange = -1,
+                    CountChange = 1,
                     Discount = DiscountCounter.GetDiscountPrice(car),
                     Price = DiscountCounter.GetDiscount(car),
                     OrderId = order.ID,

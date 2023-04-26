@@ -82,6 +82,16 @@ namespace MyCar.Server.DataModels
             return result;
         }
 
+        public static CountChangeHistoryApi GetCount(CountChangeHistory countChange, MyCar_DBContext dbContext)
+        {
+            var result = (CountChangeHistoryApi)countChange;
+            var warehouseIn = dbContext.Warehouses.FirstOrDefault(s=> s.Id == countChange.WarehouseInId);
+            var warehouseOut = dbContext.Warehouses.FirstOrDefault(s=> s.Id == countChange.WarehouseOutId);
+            result.WarehouseIn = WarehouseGet(warehouseIn, dbContext);
+            result.WarehouseOut = WarehouseGet(warehouseOut, dbContext);
+            return result;
+        }
+
         public static OrderApi OrderGet(Order orderIn, MyCar_DBContext dbContext)
         {
             var result = (OrderApi)orderIn;

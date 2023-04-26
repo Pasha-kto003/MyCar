@@ -234,6 +234,7 @@
                             </StackPanel>
                         </RadioButton.Content>
                     </RadioButton>
+
                     <RadioButton  Height="60" DockPanel.Dock="Top"
                              FontSize="20" Foreground="{StaticResource DarkGrayBrush}"
                              Style="{StaticResource MenuButtonTheme}"
@@ -243,6 +244,18 @@
                                 <Image Source="/Images/user_folder_64px.png" Margin="20 0 0 0"/>
                                 <TextBlock Text="Пользователи"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" FontSize="{StaticResource FontSizeXLarge}"/>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding DashboardPageCommand}">
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/combo_chart_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Статистика"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" />
                             </StackPanel>
                         </RadioButton.Content>
                     </RadioButton>

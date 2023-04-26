@@ -63,7 +63,10 @@
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <DataGrid 
+                    <Border BorderThickness="3" BorderBrush="{DynamicResource DataGridChildFioletBrush}">
+                        <DataGrid 
+                            ColumnHeaderStyle="{StaticResource DataGridColumnHeaderChild}"
+                            Style="{StaticResource DataGridChild}"
                             BorderThickness="0"
                             IsReadOnly="True"
                             AutoGenerateColumns="False"
@@ -89,6 +92,7 @@
                                     />
                         </DataGrid.Columns>
                     </DataGrid>
+                    </Border>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
             <DataGrid.ContextMenu>

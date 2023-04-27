@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop"
         mc:Ignorable="d"
-       Title="MyCar" Height="720" Width="1280" 
+       Title="MyCar" Height="740" Width="1280" 
         WindowStartupLocation="CenterScreen" WindowStyle="None"
         AllowsTransparency="True" 
         MinHeight="{Binding WindowMinimumHeight}" MinWidth="{Binding WindowMinimumWidth}">

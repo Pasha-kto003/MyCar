@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyCar.Desktop.Pages"
+      xmlns:core="clr-namespace:MyCar.Desktop.Core"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OrderPage">
@@ -61,6 +62,35 @@
                                     Width="*"
                                     />
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="WhiteSmoke"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status.StatusName}" Value="Завершен">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <Binding Path="Status.StatusName" Converter="{core:StatusToColorConverter}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status.StatusName}" Value="Новый">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <Binding Path="Status.StatusName" Converter="{core:StatusToColorConverter}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status.StatusName}" Value="Отменен">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <Binding Path="Status.StatusName" Converter="{core:StatusToColorConverter}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Border BorderThickness="3" BorderBrush="{DynamicResource DataGridChildFioletBrush}">

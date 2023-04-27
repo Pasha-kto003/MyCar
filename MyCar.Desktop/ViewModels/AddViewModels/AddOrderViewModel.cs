@@ -86,7 +86,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (!IsValidate()) 
                     return;
                 WareHouseApi wareHouse = new WareHouseApi { SaleCar = SelectedSaleCar, SaleCarId = SelectedSaleCar.ID, CountChange = 0};
-                AddOrderInWindow addOrderIn = new AddOrderInWindow(wareHouse, SelectedActionType);
+                AddOrderActionWindow addOrderIn = new AddOrderActionWindow(wareHouse, SelectedActionType);
                 addOrderIn.ShowDialog();
                 if (wareHouse.CountChange != 0)
                     Warehouses.Add(wareHouse);

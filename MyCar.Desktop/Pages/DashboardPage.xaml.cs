@@ -1,5 +1,4 @@
-﻿using ModelsApi;
-using MyCar.Desktop.ViewModels.AddViewModels;
+﻿using MyCar.Desktop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +11,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyCar.Desktop.Windows.OrderActions
+namespace MyCar.Desktop.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для AddOrderActionWindow.xaml
+    /// Логика взаимодействия для DashboardPage.xaml
     /// </summary>
-    public partial class AddOrderActionWindow : Window
+    public partial class DashboardPage : Page
     {
-        public AddOrderActionWindow(WareHouseApi wareHouse,ActionTypeApi actionType)
+        public DashboardPage()
         {
             InitializeComponent();
-            DataContext = new AddOrderActionViewModel(wareHouse, actionType);
+            DataContext = new DashboardViewModel();
         }
     }
 }

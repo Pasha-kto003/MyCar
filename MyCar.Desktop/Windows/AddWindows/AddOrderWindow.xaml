@@ -42,7 +42,7 @@
                     <DatePicker DataContext="{Binding AddOrderVM}" Width="200" HorizontalAlignment="Right" FontSize="16" 
                                 IsTodayHighlighted="False" CalendarStyle="{DynamicResource DatepickerCalendarStyle}" 
                                 Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Grid.Column="1"
-                                SelectedDate="{Binding DateOfOrder, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                SelectedDate="{Binding DateOfOrder, StringFormat='{}{0:dd.MM.yyyy}'}" IsEnabled="False"/>
                 </Grid>
                 <Grid  Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -52,14 +52,14 @@
 
                     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
                         <Label Content="Операция:" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="ActionTypeName" 
+                        <ComboBox IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="ActionTypeName" 
                           SelectedItem="{Binding SelectedActionType}" ItemsSource="{Binding ActionTypes}" Width="200" Height="30" 
                           FontSize="16" HorizontalAlignment="Right" Margin="5 0 0 0" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right">
                         <Label Content="Статус:" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="StatusName" 
+                        <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="StatusName" IsEnabled="{Binding IsStatusEnable}"
                           SelectedItem="{Binding SelectedStatus}" ItemsSource="{Binding Statuses}" Width="200" Height="30" 
                           FontSize="16" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -114,7 +114,7 @@
               
                 <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Content="Заказчик:" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                    <ComboBox Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="UserName" 
+                    <ComboBox IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="UserName" 
                           SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding Users}" Width="200" Height="30" 
                           FontSize="16" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
                 </StackPanel>

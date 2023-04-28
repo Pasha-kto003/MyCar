@@ -18,6 +18,7 @@ namespace MyCar.Web.Controllers
         private readonly ILogger<HomeController> _logger;
 
         public List<SaleCarApi> Cars { get; set; }
+        public List<SaleCarApi> FullCars { get; set; }
         public List<MarkCarApi> Marks { get; set; }
 
         public HomeController(ILogger<HomeController> logger)
@@ -130,7 +131,7 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             foreach(var car in cars)
             {
-                GetDiscount(car);
+                DiscountCounter.GetDiscount(car);
             }
             return View("CarView", cars);
         }
@@ -146,7 +147,22 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            cars = cars.Where(s => s.Car.CarName.ToLower().Contains(SearchString)).ToList();
+            FullCars = cars.Where(s=> s.FullName.ToString().ToLower().Contains(SearchString)).ToList();
+            return View("CarView", FullCars);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchLexus()
+        {
+            var models = await Api.GetListAsync<List<ModelApi>>("Model");
+            var text = "RC F";
+            var type = "Модель";
+            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            string filter = "Все";
+            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
+            var markCars = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.MarkCars = markCars;
             return View("CarView", cars);
         }
 
@@ -165,44 +181,6 @@ namespace MyCar.Web.Controllers
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return Marks;
-        }
-
-        private void GetDiscount(SaleCarApi saleCars)
-        {
-            var date = DateTime.Now;
-            if(saleCars != null)
-            {
-                if(date.DayOfWeek == DayOfWeek.Monday)
-                {
-                    //ViewBag.DiscountPrice = 
-                    if (saleCars.Car.CarMark.Contains("Toyota") || saleCars.Car.CarMark.Contains("Lexus") || saleCars.Car.CarMark.Contains("Honda"))
-                    {
-                        ViewBag.DiscountPrice = saleCars.FullPrice * 10 / 100;
-                    }
-                    else
-                    {
-                        ViewBag.DiscountPrice = "";
-                    }
-                }
-                else if(date.DayOfWeek == DayOfWeek.Tuesday || date.DayOfWeek == DayOfWeek.Friday)
-                {
-                    if (saleCars.Car.CarMark.Contains("Porsche") || saleCars.Car.CarMark.Contains("Audi") || saleCars.Car.CarMark.Contains("Honda"))
-                    {
-                        var diff = saleCars.FullPrice * 10 / 100;
-                        ViewBag.DiscountPrice = saleCars.FullPrice - diff;
-                    }
-                    else
-                    {
-                        ViewBag.DiscountPrice = "";
-                    }
-                }
-                else
-                {
-                    ViewBag.DiscountPrice = "";
-                }
-
-            }
-            
         }
     }
 }

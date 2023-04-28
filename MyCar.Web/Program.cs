@@ -63,6 +63,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "car",
-    pattern: "{controller=Car}/{action=DetailsCarView}/{CarName?}");
+    pattern: "{controller=Car}/{action=DetailsCarView}/{id?}");
+
 
 app.Run();

@@ -205,7 +205,9 @@ namespace MyCar.Web.Controllers
             order.Status = status;
             order.StatusId = status.ID;
             await EditOrder(order);
-            return View("DetailsCart", order);
+            EmailSender emailSender = new EmailSender();
+            emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
+            return View("DetailsCart", order);  
         }
 
         public async Task CreateOrder(OrderApi orderApi)

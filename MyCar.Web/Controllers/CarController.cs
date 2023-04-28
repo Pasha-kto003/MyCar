@@ -27,7 +27,7 @@ namespace MyCar.Web.Controllers
         }
 
         // GET: CarController/Details/5
-        [Route("/Car/DetailsCarView/CarName/{CarName?}")]
+        [Route("/Car/DetailsCarView/id/{id?}")]
         [Breadcrumb("DetailsCarView", FromController = typeof(HomeController), FromAction = "CarView")]
         public async Task<IActionResult> DetailsCarView(int id)
         {
@@ -61,20 +61,7 @@ namespace MyCar.Web.Controllers
             return View("DetailsCarView", car);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> SearchLexus()
-        {
-            var models = await Api.GetListAsync<List<ModelApi>>("Model");
-            var text = "RC F";
-            var type = "Модель";
-            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
-            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            string filter = "Все";
-            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
-            var markCars = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-            ViewBag.MarkCars = markCars;
-            return View("CarView", cars);
-        }
+        
 
         [HttpGet]
         public IActionResult CartView()

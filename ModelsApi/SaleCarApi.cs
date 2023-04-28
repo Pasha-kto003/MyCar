@@ -19,8 +19,17 @@ namespace ModelsApi
         public string? ColorCarForXaml { get => "#" + ColorCar; }
         public decimal? FullPrice { get => EquipmentPrice + Car.CarPrice; }
         //public string? MainPhotoCar { get => CarPhotos.FirstOrDefault(s=>s.); set; }
+
+        /// <summary>
+        /// Свойство для сайта 
+        /// </summary>
+        public string? FullName
+        {
+            get => Car.CarName;
+        }
         public string? MainPhotoCar { get; set; }
         public EquipmentApi Equipment { get; set; }
         public List<CarPhotoApi> CarPhotos { get; set; }
+        
     }
 }

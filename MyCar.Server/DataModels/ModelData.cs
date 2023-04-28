@@ -51,21 +51,9 @@ namespace MyCar.Server.DataModels
             var carPhotos = dbContext.CarPhotos.Where(s => s.SaleCarId == saleCar.Id).Select(t => (CarPhotoApi)t).ToList();
             result.CarPhotos = carPhotos;
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
-            result.Equipment = (EquipmentApi)equipment;
-            //var discount = dbContext.Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.Id);
-            //if(result.FullPrice != null)
-            //{
-            //    result.DiscountPercent = discount.DiscountValue;
-            //    if (result.DiscountPercent > 0 && result.DiscountPrice == 0)
-            //    {
-            //        result.DiscountPrice = result.FullPrice / discount.DiscountValue * 100;
-            //    }
-            //    if (result.DiscountPercent == 0 && discount.Price != 0)
-            //    {
-            //        result.DiscountPrice = result.FullPrice - discount.Price;
-            //    }
-            //}    
+            result.Equipment = (EquipmentApi)equipment;  
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
+            
             foreach (var item in dbContext.Warehouses.Where(s=>s.SaleCarId== saleCar.Id))
             {
                 result.Count += item.CountChange;

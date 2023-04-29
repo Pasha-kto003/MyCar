@@ -172,16 +172,15 @@ namespace MyCar.Web.Controllers
                     Price = price
                 };
                 List<WareHouseApi> ThisWareHouseIns = WareHouseIns.Where(
-                       s => s.SaleCarId == warehouse.SaleCar.ID &&
-                       s.CountRemains > 0).ToList();
+                       s => s.SaleCarId == warehouse.SaleCar.ID).ToList();
                 var ch = ThisWareHouseIns.SelectMany(s => s.CountChangeHistories).ToList();
-                //ch.Add(new CountChangeHistoryApi
-                //{
-                //    Count = 1,
-                //    WarehouseOut = ThisWareHouseIns.LastOrDefault(s => s.SaleCarId == warehouse.SaleCarId),
-                //    WarehouseOutId = ThisWareHouseIns.LastOrDefault(s => s.SaleCarId == warehouse.SaleCarId).ID
-                    
-                //});
+                ch.Add(new CountChangeHistoryApi
+                {
+                    Count = 1,
+                    WarehouseOut = ThisWareHouseIns.LastOrDefault(s => s.SaleCarId == warehouse.SaleCarId),
+                    WarehouseOutId = ThisWareHouseIns.LastOrDefault(s => s.SaleCarId == warehouse.SaleCarId).ID
+
+                });
                 // Получаем текущий список из Session
                 string json = HttpContext.Session.GetString("OrderItem");
                 if (json != null)

@@ -64,6 +64,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public List<UserApi> Users { get; set; }
         public List<StatusApi> Statuses { get; set; }
 
+        public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
+
         public CustomCommand ConfirmOrder { get; set; }
         public CustomCommand DeleteWarehouse { get; set; }
         public CustomCommand AddSaleCar { get; set; }
@@ -83,19 +85,19 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             AddSaleCar = new CustomCommand(() =>
             {
-                if (!IsValidate()) 
+                if (!IsValidate())
                     return;
-                WareHouseApi wareHouse = new WareHouseApi { SaleCar = SelectedSaleCar, SaleCarId = SelectedSaleCar.ID, CountChange = 0};
-                AddOrderInWindow addOrderIn = new AddOrderInWindow(wareHouse, SelectedActionType);
+                WareHouseApi wareHouse = new WareHouseApi { SaleCar = SelectedSaleCar, SaleCarId = SelectedSaleCar.ID, CountChange = 0 };
+                AddOrderInWindow addOrderIn = new AddOrderInWindow(wareHouse, SelectedActionType, CountChangeHistories);//передаем истории в окно добавления
                 addOrderIn.ShowDialog();
                 if (wareHouse.CountChange != 0)
                     Warehouses.Add(wareHouse);
                 Update();
             });
 
-            ConfirmOrder = new CustomCommand(async() =>
+            ConfirmOrder = new CustomCommand(async () =>
             {
-                if(SelectedActionType == null || SelectedUser == null)
+                if (SelectedActionType == null || SelectedUser == null)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Заполнены не все данные!" });
                     return;
@@ -110,6 +112,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     foreach (var item in Warehouses)
                     {
                         item.CountChange *= -1;
+                        //назначаем истории связанные с выбранным WH
+                        item.CountChangeHistories = CountChangeHistories.Where(s => s.WarehouseIn.SaleCarId == item.SaleCarId).ToList();
                     }
                 }
 
@@ -122,12 +126,16 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 order.Status = Statuses.FirstOrDefault(s => s.StatusName == "Новый");
                 order.StatusId = Statuses.FirstOrDefault(s => s.StatusName == "Новый").ID;
                 order.WareHouses = Warehouses.ToList();
+                order.SumOrder = order.WareHouses.Sum(s => s.Price);
                 await CreateOrder(order);
             });
 
             DeleteWarehouse = new CustomCommand(() =>
             {
                 if (SelectedWarehouse == null) return;
+                //убераем истории связанные с выбранным WH
+                if (SelectedActionType.ActionTypeName != "Поступление")
+                    CountChangeHistories.RemoveAll(s => s.WarehouseIn.SaleCarId == SelectedWarehouse.SaleCarId);
                 Warehouses.Remove(SelectedWarehouse);
                 Update();
             });
@@ -139,6 +147,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 UIManager.ShowMessage(new MessageBoxDialogViewModel { Message = "Заказ оформлен" });
             Task.Run(GetList).Wait();
             Warehouses.Clear();
+            CountChangeHistories.Clear();
+            OrderDate = DateTime.Now;
             Update();
         }
 

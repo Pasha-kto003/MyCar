@@ -13,7 +13,6 @@ namespace MyCar.Web.Core
             {
                 Task.Run(GetList).Wait();
                 var discount = Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.ID);
-                var date = DateTime.Now;
                 if (discount != null)
                 {
                     if(date < discount.StartDate || date > discount.EndDate)

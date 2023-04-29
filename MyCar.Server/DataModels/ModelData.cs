@@ -1,4 +1,4 @@
-using ModelsApi;
+﻿using ModelsApi;
 using MyCar.Server.DB;
 
 namespace MyCar.Server.DataModels
@@ -53,10 +53,13 @@ namespace MyCar.Server.DataModels
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;  
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
-            
-            foreach (var item in dbContext.Warehouses.Where(s=>s.SaleCarId== saleCar.Id))
+
+            var wareHouses = new List<Warehouse>(dbContext.Warehouses.Where(s => s.SaleCarId == saleCar.Id));
+            foreach (var ware in wareHouses)
             {
-                result.Count += item.CountChange;
+                if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(s => s.Id == ware.OrderId).StatusId).StatusName == "Отменен")
+                    continue;
+                result.Count += ware.CountChange;
             }
             result.Car = GetCar(car, dbContext);
             return result;
@@ -65,6 +68,29 @@ namespace MyCar.Server.DataModels
         public static WareHouseApi WarehouseGet(Warehouse wareHouse, MyCar_DBContext dbContext)
         {
             var result = (WareHouseApi)wareHouse;
+
+            var order = (OrderApi)dbContext.Orders.FirstOrDefault(a => a.Warehouses.Any(s => s.OrderId == a.Id));
+            order.ActionType = (ActionTypeApi)dbContext.ActionTypes.First(s => s.Id == order.ActionTypeId);
+            order.Status = (StatusApi)dbContext.Statuses.First(s => s.Id == order.StatusId);
+
+            if (order.ActionType.ActionTypeName == "Поступление")
+            {
+                result.CountRemains = (int)result.CountChange; 
+
+                List<CountChangeHistory> thisCountChangeHistories =
+                    new List<CountChangeHistory>(dbContext.CountChangeHistories.Where(s => s.WarehouseInId == result.ID).ToList()); 
+
+                if (thisCountChangeHistories.Count != 0) 
+                {
+                    foreach (CountChangeHistory countChangeHis in thisCountChangeHistories)
+                    {
+                        if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(o => o.Id == dbContext.Warehouses.First(w => w.Id == countChangeHis.WarehouseOutId).OrderId).StatusId).StatusName == "Отменен")
+                            continue;
+                        result.CountRemains -= (int)countChangeHis.Count;
+                    }
+                }
+            }
+
             var sale = dbContext.SaleCars.FirstOrDefault(s => s.Id == result.SaleCarId);
             result.SaleCar = SaleGet(sale, dbContext);
             return result;

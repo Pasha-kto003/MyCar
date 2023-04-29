@@ -1,6 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,11 +13,22 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class EditOrderViewModel : BaseViewModel
     {
+        public bool IsStatusEnable { get; set; } = true;
         public UserApi SelectedUser { get; set; }
         public ActionTypeApi SelectedActionType { get; set; }
-        public StatusApi SelectedStatus { get; set; } 
-        public ObservableCollection<WareHouseApi> ThisWarehouses { get; set; } = new ObservableCollection<WareHouseApi>();  
+
+        private StatusApi selectedStatus;
+        public StatusApi SelectedStatus
+        {
+            get => selectedStatus;
+            set
+            {
+                selectedStatus = value;
+            }
+        }
+        public ObservableCollection<WareHouseApi> ThisWarehouses { get; set; } = new ObservableCollection<WareHouseApi>();
         public List<WareHouseApi> Warehouses { get; set; }
+        public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
         public List<StatusApi> Statuses { get; set; }
         public List<UserApi> Users { get; set; }
         public List<ActionTypeApi> ActionTypes { get; set; }
@@ -45,16 +57,28 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     UserId = order.UserId,
                 };
                 GetInfo();
+                if (SelectedStatus.StatusName == "Отменен")
+                    IsStatusEnable = false;
             }
 
-            Save = new CustomCommand(async() =>
+            Save = new CustomCommand(async () =>
             {
-                AddOrderVM.StatusId = SelectedStatus.ID; 
+                AddOrderVM.StatusId = SelectedStatus.ID;
                 AddOrderVM.Status = SelectedStatus;
                 AddOrderVM.UserId = SelectedUser.ID;
                 AddOrderVM.User = SelectedUser;
                 AddOrderVM.ActionTypeId = SelectedActionType.ID;
                 AddOrderVM.ActionType = SelectedActionType;
+
+                if (AddOrderVM.Status.StatusName == "Отменен" && AddOrderVM.ActionType.ActionTypeName == "Поступление")
+                {
+                    if (CountChangeHistories.Any(c => ThisWarehouses.Any(s => s.ID == c.WarehouseInId)))
+                    {
+
+                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Нельзя отменить заказ который участвовал в других заказах!" });
+                        return;
+                    }
+                }
 
                 AddOrderVM.WareHouses = ThisWarehouses.ToList();
 
@@ -87,6 +111,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             ActionTypes = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
             Users = await Api.GetListAsync<List<UserApi>>("User");
+            CountChangeHistories = await Api.GetListAsync<List<CountChangeHistoryApi>>("CountChangeHistory");
         }
         public async Task CreateOrder(OrderApi orderApi)
         {

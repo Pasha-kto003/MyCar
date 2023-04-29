@@ -21,10 +21,10 @@ namespace MyCar.Desktop.Windows.OrderActions
     /// </summary>
     public partial class AddOrderInWindow : Window
     {
-        public AddOrderInWindow(WareHouseApi wareHouse,ActionTypeApi actionType)
+        public AddOrderInWindow(WareHouseApi wareHouse, ActionTypeApi actionType, List<CountChangeHistoryApi> countChangeHistoryApis)
         {
             InitializeComponent();
-            DataContext = new AddOrderActionViewModel(wareHouse, actionType);
+            DataContext = new AddOrderActionViewModel(wareHouse, actionType, countChangeHistoryApis);
         }
     }
 }

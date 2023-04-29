@@ -84,15 +84,39 @@ namespace MyCar.Server.Controllers
             var order = (Order)newOrder;
             await dbContext.Orders.AddAsync(order);
             await dbContext.SaveChangesAsync();
-            await dbContext.Warehouses.AddRangeAsync(newOrder.WareHouses.Select(s => new Warehouse
+            var warehouses = newOrder.WareHouses.Select(s => new Warehouse
             {
                 OrderId = order.Id,
                 SaleCarId = s.SaleCarId,
                 CountChange = s.CountChange,
                 Discount = s.Discount,
                 Price = s.Price
-            }));
+            });
+            await dbContext.Warehouses.AddRangeAsync(warehouses);
             await dbContext.SaveChangesAsync();
+
+            if (newOrder.ActionType.ActionTypeName != "Поступление")
+            {
+                List<CountChangeHistory> countChangeHistories = new List<CountChangeHistory>();
+                foreach (var wh in dbContext.Orders.First(s => s.Id == order.Id).Warehouses)
+                {
+                    WareHouseApi OldWare = newOrder.WareHouses.First(s => s.SaleCarId == wh.SaleCarId);
+                    foreach (var cch in OldWare.CountChangeHistories)
+                    {
+                        CountChangeHistory countChangeHis = new CountChangeHistory
+                        {
+                            Count = cch.Count,
+                            WarehouseInId = cch.WarehouseInId,
+                            WarehouseOutId = wh.Id,
+                        };
+                        countChangeHistories.Add(countChangeHis);
+                    }
+                }
+                await dbContext.CountChangeHistories.AddRangeAsync(countChangeHistories);
+                await dbContext.SaveChangesAsync();
+            }
+
+
             return Ok(order.Id);
         }
 

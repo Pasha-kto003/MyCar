@@ -8,6 +8,7 @@ using System.Data;
 using System.Net;
 using System.Web;
 using Microsoft.AspNetCore.Http.Extensions;
+using MyCar.Server.DB;
 
 namespace MyCar.Web.Controllers
 {
@@ -167,14 +168,11 @@ namespace MyCar.Web.Controllers
 
         public async Task<IActionResult> DeleteCar(int id)
         {
-            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
-            var deleteCar = Warehouses.FirstOrDefault(s => s.ID == id);
-            var order = Orders.FirstOrDefault(s => s.ID == deleteCar.OrderId);
-            order.WareHouses.Remove(deleteCar);
-            await DeleteCar(deleteCar);
-            return View("DetailsCart", order);
+            
+
+            List<WareHouseApi> orderItems = new List<WareHouseApi>();
+            
+            return View("DetailsCart", orderItems);
         }
 
         public async Task<IActionResult> DetailsOrder(int id)
@@ -197,7 +195,7 @@ namespace MyCar.Web.Controllers
         {
             await GetOrders();
             var user = Users.FirstOrDefault(s=> s.UserName == User.Identity.Name);
-            var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
+            //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
             var actionType = Types.FirstOrDefault(s => s.ID == 3);
             var status = Statuses.FirstOrDefault(s => s.ID == 2);
             //List<WareHouseApi> orderItems = new List<WareHouseApi>();
@@ -206,13 +204,19 @@ namespace MyCar.Web.Controllers
             //{
             //    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(answer);
             //}
+            List<WareHouseApi> orderItems = new List<WareHouseApi>();
+            // Получаем текущий список из Session
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+
             OrderApi order = new OrderApi
             {
                 UserId = user.ID,
                 DateOfOrder = DateTime.Now,
                 ActionTypeId = 3,
                 StatusId = 2,
-                WareHouses = warehouses,
+                WareHouses = orderItems,
                 ActionType = actionType,
                 Status = status,
                 User = user
@@ -220,7 +224,7 @@ namespace MyCar.Web.Controllers
             await CreateOrder(order);
 
 
-            return View("DetailsCart", warehouses);
+            return View("DetailsCart", orderItems);
         }
 
         public async Task CreateOrder(OrderApi orderApi)

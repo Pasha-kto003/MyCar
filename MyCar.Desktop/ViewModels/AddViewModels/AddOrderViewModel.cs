@@ -85,7 +85,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             AddSaleCar = new CustomCommand(() =>
             {
-                if (!IsValidate()) 
+                if (!IsValidate())
                     return;
                 WareHouseApi wareHouse = new WareHouseApi { SaleCar = SelectedSaleCar, SaleCarId = SelectedSaleCar.ID, CountChange = 0};
                 AddOrderActionWindow addOrderIn = new AddOrderActionWindow(wareHouse, SelectedActionType, CountChangeHistories);//передаем истории в окно добавления
@@ -95,9 +95,9 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 Update();
             });
 
-            ConfirmOrder = new CustomCommand(async() =>
+            ConfirmOrder = new CustomCommand(async () =>
             {
-                if(SelectedActionType == null || SelectedUser == null)
+                if (SelectedActionType == null || SelectedUser == null)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Заполнены не все данные!" });
                     return;
@@ -126,6 +126,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 order.Status = Statuses.FirstOrDefault(s => s.StatusName == "Новый");
                 order.StatusId = Statuses.FirstOrDefault(s => s.StatusName == "Новый").ID;
                 order.WareHouses = Warehouses.ToList();
+                order.SumOrder = order.WareHouses.Sum(s => s.Price);
                 await CreateOrder(order);
             });
 

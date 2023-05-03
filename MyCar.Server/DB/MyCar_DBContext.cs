@@ -285,6 +285,8 @@ namespace MyCar.Server.DB
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Description).HasColumnType("text");
+
                 entity.Property(e => e.EquipmentPrice).HasColumnType("money");
 
                 entity.HasOne(d => d.Car)

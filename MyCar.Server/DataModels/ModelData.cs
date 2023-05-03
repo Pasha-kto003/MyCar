@@ -1,4 +1,4 @@
-using ModelsApi;
+п»їusing ModelsApi;
 using MyCar.Server.DB;
 
 namespace MyCar.Server.DataModels
@@ -51,26 +51,13 @@ namespace MyCar.Server.DataModels
             var carPhotos = dbContext.CarPhotos.Where(s => s.SaleCarId == saleCar.Id).Select(t => (CarPhotoApi)t).ToList();
             result.CarPhotos = carPhotos;
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
-            result.Equipment = (EquipmentApi)equipment;
-            //var discount = dbContext.Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.Id);
-            //if(result.FullPrice != null)
-            //{
-            //    result.DiscountPercent = discount.DiscountValue;
-            //    if (result.DiscountPercent > 0 && result.DiscountPrice == 0)
-            //    {
-            //        result.DiscountPrice = result.FullPrice / discount.DiscountValue * 100;
-            //    }
-            //    if (result.DiscountPercent == 0 && discount.Price != 0)
-            //    {
-            //        result.DiscountPrice = result.FullPrice - discount.Price;
-            //    }
-            //}    
+            result.Equipment = (EquipmentApi)equipment;  
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
             var wareHouses = new List<Warehouse>(dbContext.Warehouses.Where(s => s.SaleCarId == saleCar.Id));
             foreach (var ware in wareHouses)
             {
-                //Проверека на то что заказ из которого берем количество не отменен
-                if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(s => s.Id == ware.OrderId).StatusId).StatusName == "Отменен")
+                //РџСЂРѕРІРµСЂРµРєР° РЅР° С‚Рѕ С‡С‚Рѕ Р·Р°РєР°Р· РёР· РєРѕС‚РѕСЂРѕРіРѕ Р±РµСЂРµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРµ РѕС‚РјРµРЅРµРЅ
+                if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(s => s.Id == ware.OrderId).StatusId).StatusName == "РћС‚РјРµРЅРµРЅ")
                     continue;
                 result.Count += ware.CountChange;
             }
@@ -86,20 +73,20 @@ namespace MyCar.Server.DataModels
             order.ActionType = (ActionTypeApi)dbContext.ActionTypes.First(s => s.Id == order.ActionTypeId);
             order.Status = (StatusApi)dbContext.Statuses.First(s => s.Id == order.StatusId);
 
-            //если заказ на поступление, считаем сколько авто осталось в каждом WH
-            if (order.ActionType.ActionTypeName == "Поступление")
+            //РµСЃР»Рё Р·Р°РєР°Р· РЅР° РїРѕСЃС‚СѓРїР»РµРЅРёРµ, СЃС‡РёС‚Р°РµРј СЃРєРѕР»СЊРєРѕ Р°РІС‚Рѕ РѕСЃС‚Р°Р»РѕСЃСЊ РІ РєР°Р¶РґРѕРј WH
+            if (order.ActionType.ActionTypeName == "РџРѕСЃС‚СѓРїР»РµРЅРёРµ")
             {
-                result.CountRemains = (int)result.CountChange; //сначала назначаем сколько изначально пришло в поставке
+                result.CountRemains = (int)result.CountChange; //СЃРЅР°С‡Р°Р»Р° РЅР°Р·РЅР°С‡Р°РµРј СЃРєРѕР»СЊРєРѕ РёР·РЅР°С‡Р°Р»СЊРЅРѕ РїСЂРёС€Р»Рѕ РІ РїРѕСЃС‚Р°РІРєРµ
 
                 List <CountChangeHistory> thisCountChangeHistories = 
-                    new List<CountChangeHistory>(dbContext.CountChangeHistories.Where(s => s.WarehouseInId == result.ID).ToList()); //затем находим изменения связанные с нашей поставкой
+                    new List<CountChangeHistory>(dbContext.CountChangeHistories.Where(s => s.WarehouseInId == result.ID).ToList()); //Р·Р°С‚РµРј РЅР°С…РѕРґРёРј РёР·РјРµРЅРµРЅРёСЏ СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РЅР°С€РµР№ РїРѕСЃС‚Р°РІРєРѕР№
                
-                if (thisCountChangeHistories.Count != 0) //если они есть, вычитаем из изначального количества которое было в поставке, значение которое было продано из этой поставки
+                if (thisCountChangeHistories.Count != 0) //РµСЃР»Рё РѕРЅРё РµСЃС‚СЊ, РІС‹С‡РёС‚Р°РµРј РёР· РёР·РЅР°С‡Р°Р»СЊРЅРѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° РєРѕС‚РѕСЂРѕРµ Р±С‹Р»Рѕ РІ РїРѕСЃС‚Р°РІРєРµ, Р·РЅР°С‡РµРЅРёРµ РєРѕС‚РѕСЂРѕРµ Р±С‹Р»Рѕ РїСЂРѕРґР°РЅРѕ РёР· СЌС‚РѕР№ РїРѕСЃС‚Р°РІРєРё
                 {
                     foreach (CountChangeHistory countChangeHis in thisCountChangeHistories)
                     {
-                        //снизу также длинная проверка на то что заказ на продажу который связан с нашей поставкой не отменен
-                        if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(o => o.Id == dbContext.Warehouses.First(w => w.Id == countChangeHis.WarehouseOutId).OrderId).StatusId).StatusName == "Отменен")
+                        //СЃРЅРёР·Сѓ С‚Р°РєР¶Рµ РґР»РёРЅРЅР°СЏ РїСЂРѕРІРµСЂРєР° РЅР° С‚Рѕ С‡С‚Рѕ Р·Р°РєР°Р· РЅР° РїСЂРѕРґР°Р¶Сѓ РєРѕС‚РѕСЂС‹Р№ СЃРІСЏР·Р°РЅ СЃ РЅР°С€РµР№ РїРѕСЃС‚Р°РІРєРѕР№ РЅРµ РѕС‚РјРµРЅРµРЅ
+                        if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(o => o.Id == dbContext.Warehouses.First(w => w.Id == countChangeHis.WarehouseOutId).OrderId).StatusId).StatusName == "РћС‚РјРµРЅРµРЅ")
                             continue;
                         result.CountRemains -= (int)countChangeHis.Count;
                     }

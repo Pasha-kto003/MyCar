@@ -294,6 +294,15 @@ function myFunction() {
     }
 }
 
+function myFunctionRegister() {
+    var x = document.getElementById("myInputRegister");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+
 function myClickFunction() {
     var x = document.getElementById("myDIV");
     var y = document.getElementById("myDIV1");

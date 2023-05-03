@@ -150,38 +150,35 @@ namespace MyCar.Web.Controllers
                 price = car.FullPrice;
             }
             var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-            var order = Orders.LastOrDefault(s => s.Status.StatusName == "Завершен" && s.UserId == user.ID);
             //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
             List<OrderApi> thisOrders = Orders.OrderBy(s => s.DateOfOrder).ToList();
             List<WareHouseApi> WareHouseIns = thisOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(w => w.WareHouses).ToList();
-            if (order != null)
+
+            WareHouseApi warehouse = new WareHouseApi
             {
-                WareHouseApi warehouse = new WareHouseApi
-                {
-                    SaleCarId = id,
-                    CountChange = 1,
-                    Discount = 0,
-                    SaleCar = car,
-                    Price = price
-                };
-                // Получаем текущий список из Session
-                string json = HttpContext.Session.GetString("OrderItem");
-                if (json != null)
-                    orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+                SaleCarId = id,
+                CountChange = 1,
+                Discount = 0,
+                SaleCar = car,
+                Price = price
+            };
+            // Получаем текущий список из Session
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
 
-                // Добавляем новый объект в список
-                orderItemsOld.Add(warehouse);
+            // Добавляем новый объект в список
+            orderItemsOld.Add(warehouse);
 
-                // Сохраняем список обратно в Session
-                string json1 = JsonConvert.SerializeObject(orderItemsOld);
-                var des = JsonConvert.DeserializeObject(json1);
-                HttpContext.Session.SetString("OrderItem", json1);
+            // Сохраняем список обратно в Session
+            string json1 = JsonConvert.SerializeObject(orderItemsOld);
+            var des = JsonConvert.DeserializeObject(json1);
+            HttpContext.Session.SetString("OrderItem", json1);
 
-                // Получаем текущий список из Session
-                string json2 = HttpContext.Session.GetString("OrderItem");
-                if (json2 != null)
-                    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
-            }
+            // Получаем текущий список из Session
+            string json2 = HttpContext.Session.GetString("OrderItem");
+            if (json2 != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
             return View("DetailsCart", orderItems);
         }
 
@@ -189,7 +186,6 @@ namespace MyCar.Web.Controllers
         {
             await GetOrders();
             var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-            var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
             var actionType = Types.FirstOrDefault(s => s.ActionTypeName == "Продажа");
             var status = Statuses.FirstOrDefault(s => s.StatusName == "Завершен");
             List<WareHouseApi> orderItems = new List<WareHouseApi>();
@@ -212,6 +208,9 @@ namespace MyCar.Web.Controllers
                 User = user
             };
             await CreateOrder(order);
+            orderItems.Clear();
+            string json1 = JsonConvert.SerializeObject(orderItems);
+            HttpContext.Session.SetString("OrderItem", json1);
             EmailSender emailSender = new EmailSender();
             emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
             return View("SuccsessOrder");

@@ -21,6 +21,12 @@ namespace MyCar.Web.Controllers
         public List<SaleCarApi> FullCars { get; set; }
         public List<MarkCarApi> Marks { get; set; }
 
+        public List<ActionTypeApi> Types { get; set; }
+        public List<StatusApi> Statuses { get; set; }
+        public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
+        public List<OrderApi> Orders = new List<OrderApi>();
+        public List<UserApi> Users { get; set; } = new List<UserApi>();
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -38,14 +44,20 @@ namespace MyCar.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DetailsCar(string CarName)
+        public async Task<IActionResult> DetailsCar(int id)
         {
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            var car = cars.FirstOrDefault(s=> s.Car.CarName == CarName);
+            var car = cars.FirstOrDefault(s => s.ID == id);
             var marks = new List<MarkCarApi>();
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            if (id == 0)
+            {
+                ViewBag.Marks = marks;
+                return View("Index", cars);
+            }
             ViewBag.Marks = marks;
-            ViewBag.CarName = car.Car.CarName;
+            ViewBag.ID = car.ID;
+            ViewBag.CarName = car.FullName;
             ViewBag.FullPrice = car.FullPrice;
             ViewBag.PhotoCar = car.Car.PhotoCar;
             return View("Index", cars);
@@ -65,6 +77,31 @@ namespace MyCar.Web.Controllers
             var users = new List<UserApi>();
             users = await Api.GetListAsync<List<UserApi>>("User");
             return View("UserView", users);
+        }
+
+        public async Task<IActionResult> DashBoardView()
+        {
+            await GetOrders();
+            var price = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Sum(s => s.Price);
+            var ware = Orders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(s => s.WareHouses).Sum(s=> s.Price);
+            ViewBag.SalePrice = price;
+            ViewBag.WareHousePrice = ware;
+            var saleCount = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Count();
+            ViewBag.SaleCount = saleCount;
+            var wareCount = Orders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(s => s.WareHouses).Count();
+            ViewBag.WareHouseCount = wareCount;
+            ViewBag.SaleCarCount = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Count();
+            //ViewBag.DoughnutChartData = Orders
+            //    .Where(s => s.ActionType.ActionTypeName == "Продажа")
+            //    .GroupBy(i=> i.ActionTypeId)
+            //    .Select(k => new
+            //    {
+            //        categoryTitleWithIcon = k.First().ActionType.ActionTypeName,
+            //        amount = k.Sum(j=> j.WareHouses.Sum(s=> s.SaleCar.FullPrice)),
+            //        formattedAmount = k.Sum(j=> j.WareHouses.Sum(s => s.SaleCar.FullPrice)).Value.ToString("C0"),
+            //    }).ToList();
+
+            return View("DashBoardView");
         }
 
         [Breadcrumb(FromAction = "Index", Title = "CarView")]
@@ -181,6 +218,15 @@ namespace MyCar.Web.Controllers
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return Marks;
+        }
+        public async Task GetOrders()
+        {
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            Types = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
         }
     }
 }

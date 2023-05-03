@@ -1,0 +1,91 @@
+﻿@{
+}
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="d-flex  widget summary income">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <i style="color:white;" class="fa-solid fa-2xl text-success">&#8381</i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead text-white">Сумма продаж</span>
+                <h1 class="display-6 fw-bold text-white">@ViewBag.SalePrice &#8381</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="d-flex  widget summary expense">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <i style="color:white;" class="fa-solid fa-2xl text-success">&#8381</i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead text-white">Сумма поступлений</span>
+                <h1 class="display-6 fw-bold text-white">@ViewBag.WareHousePrice</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="d-flex  widget summary balance">
+            <div class="d-flex flex-column justify-content-center p-5">
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead text-white">Количество продаж</span>
+                <h1 class="display-6 fw-bold text-white">@ViewBag.SaleCount</h1>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-6">
+        <div class="d-flex  widget summary balance">
+            <div class="d-flex flex-column justify-content-center p-5">
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead text-white">Количество поступлений</span>
+                <h1 class="display-6 fw-bold text-white">@ViewBag.WareHouseCount</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="d-flex  widget summary balance">
+            <div class="d-flex flex-column justify-content-center p-5">
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead text-white">Машин продано</span>
+                <h1 class="display-6 fw-bold text-white">@ViewBag.SaleCarCount</h1>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-6">
+        <div class="d-flex  widget summary balance">
+            <div class="d-flex flex-column justify-content-center p-5">
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead text-white">Машин поступило</span>
+                <h1 class="display-6 fw-bold text-white">@ViewBag.CarCount</h1>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Sales</h5>
+            </div>
+            <ejs-accumulationchart background="#1a222b" id="doughnutchart">
+                <e-accumulation-series-collection>
+                    <e-accumulation-series dataSource="@ViewBag.DoughnutChartData" xName="categoryTitleWithIcon" yName="amount" 
+                    innerRadius="60">
+                        <e-accumulationseries-datalabel name="formattedAmount" visible></e-accumulationseries-datalabel>
+                    </e-accumulation-series>
+                </e-accumulation-series-collection>
+            </ejs-accumulationchart>
+        </div>
+    </div>
+    <div class="col-md-8">
+
+    </div>
+</div>*@

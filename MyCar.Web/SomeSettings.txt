@@ -830,3 +830,17 @@ EmailSender emailSender = new EmailSender();
                     </div>
                 }
             </div>
+
+//[HttpGet]
+//public async Task<IActionResult> DetailsCar(string CarName)
+//{
+//    var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+//    var car = cars.FirstOrDefault(s=> s.Car.CarName == CarName);
+//    var marks = new List<MarkCarApi>();
+//    marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+//    ViewBag.Marks = marks;
+//    ViewBag.CarName = car.Car.CarName;
+//    ViewBag.FullPrice = car.FullPrice;
+//    ViewBag.PhotoCar = car.Car.PhotoCar;
+//    return View("Index", cars);
+//}

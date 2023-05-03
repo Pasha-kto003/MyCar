@@ -267,7 +267,7 @@
                                             <div class="m-3 d-flex justify-content-center">
                                                 <div class="text-center">
                                                     <div class="mark-Photo scalePh">
-                                                        <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                                        <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
                                                     </div>
                                                     <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                                         <div class="text-white">@car.Car.Model.ModelName</div>
@@ -343,7 +343,7 @@
                 <small class="text-white">Начальная цена от</small>
                 <h3 class="text-white">@ViewBag.FullPrice &#8381</h3>
                 <div class="glass-btn glass-btn-red">
-                    <a asp-action="DetailsCar" asp-controller="Car" asp-route-CarName="@ViewBag.CarName">
+                    <a asp-action="DetailsCar" asp-controller="Car" asp-route-id="@ViewBag.ID">
                         Купить
                     </a>
                 </div>

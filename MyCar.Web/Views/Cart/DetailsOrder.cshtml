@@ -9,7 +9,7 @@
     </div>
 
     <div class="px-4 my-5 text-center">      
-            <div class="row p-3" style="background-color: #171717">
+            <div class="row p-3 border-bottom" style="background-color: #171717">
                 <div class="col-4">
                     <h2 class="fw-bold" style="color: white;">Заказ номер №@Model.ID</h2>
                 </div>
@@ -38,10 +38,10 @@
 
         @foreach(var car in @Model.WareHouses)
         {
-            <div class="row flex-lg-row align-items-center  py-5 bg-white border-bottom">
+            <div class="row flex-lg-row align-items-center  py-5 border-bottom" style="background-color: #171717;">
                 <div class="col-10 col-sm-8 col-lg-6">
                     <div class="product-Photo">
-                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar" /></a>
+                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar" /></a>
                     </div>
                 </div>
 
@@ -50,25 +50,25 @@
                     
                         <div class="col p-5">
                             <div class="row border-bottom">
-                                <h2>Марка:</h2>
+                                <h2 style="color: white;">Марка:</h2>
                             </div>
                             <div class="row border-bottom">
-                                <h2>Наименование:</h2>
+                                <h2 style="color: white;">Наименование:</h2>
                             </div>
                             <div class="row border-bottom">
-                                <h2>Стоимость:</h2>
+                                <h2 style="color: white;">Стоимость:</h2>
                             </div>
                         </div>
 
                         <div class="col p-5">
                             <div class="row border-bottom">
-                                <h2>Example</h2>
+                                <h2 style="color: white;">Example</h2>
                             </div>
                             <div class="row border-bottom">
-                                <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><h3 class="product-title">@car.SaleCar.Car.CarName</h3></a>
+                                <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><h3 style="color: white;" class="product-title">@car.SaleCar.Car.CarName</h3></a>
                             </div>
                             <div class="row border-bottom">
-                                <h2>@car.SaleCar.FullPrice</h2>
+                                <h2 style="color: white;">@car.SaleCar.FullPrice</h2>
                             </div>
                         </div>
 

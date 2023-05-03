@@ -17,6 +17,5 @@ namespace ModelsApi
 
         public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
         public SaleCarApi SaleCar { get; set; }
-        public List<CountChangeHistoryApi> CountChangeHistories { get; set; }
     }
 }

@@ -118,13 +118,14 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     ThisWareHouseIns.ToArray();
 
                     //запоминаем количество которое надо забрать (countRemains - количество которое нам нужно)
-                    int? countRemains = Count;
+                    int countRemains = Count;
 
                     //заходим в цикл (пока не возьмем количество которое нам нужно)
                     for (int i = 0; countRemains > 0; i++)
                     {
+
                         //запоминаем количество до вычитания
-                        int? countRemainsBefore = countRemains;
+                        int countRemainsBefore = countRemains;
 
                         //вычитаем из того сколько нам надо значение остатка первой поставки
                         countRemains -= ThisWareHouseIns[i].CountRemains;

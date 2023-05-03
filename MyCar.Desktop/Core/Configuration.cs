@@ -30,7 +30,13 @@ namespace MyCar.Desktop.Core
             try
             {
                 var json = File.ReadAllText(path);
-                config = (Config)JsonSerializer.Deserialize(json, typeof(Config))!; 
+                config = (Config)JsonSerializer.Deserialize(json, typeof(Config))!;
+                if (config.OrderColors == null || config.OrderColors.Count == 0)
+                    config.OrderColors = new List<OrderColor>() {
+                        new OrderColor{ Status = "Новый", Color = "#00FFFFFF" },
+                        new OrderColor{ Status = "Завершен", Color = "#00FFFFFF" },
+                        new OrderColor{ Status = "Отменен", Color = "#00FFFFFF" },
+                    };
                 return config;
             }
             catch (Exception e)
@@ -88,6 +94,13 @@ namespace MyCar.Desktop.Core
     public class Config
     {
         public List<ColorValue> ColorValues { get; set; } = new List<ColorValue>();
+
+        public List<OrderColor> OrderColors { get; set; } = new List<OrderColor>()
+        {
+            new OrderColor{ Status = "Новый", Color = "#00FFFFFF" },
+            new OrderColor{ Status = "Завершен", Color = "#00FFFFFF" },
+            new OrderColor{ Status = "Отменен", Color = "#00FFFFFF" },
+        };
     }
     public class ColorValue
     {
@@ -95,4 +108,10 @@ namespace MyCar.Desktop.Core
         public int DownValue { get; set; }
         public int UpValue { get; set; }
     }
+    public class OrderColor
+    {
+       public string Color { get; set; }
+       public string Status { get; set; }
+    }
+
 }

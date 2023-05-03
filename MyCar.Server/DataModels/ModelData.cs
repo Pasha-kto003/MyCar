@@ -53,10 +53,10 @@ namespace MyCar.Server.DataModels
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);
             result.Equipment = (EquipmentApi)equipment;  
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
-
             var wareHouses = new List<Warehouse>(dbContext.Warehouses.Where(s => s.SaleCarId == saleCar.Id));
             foreach (var ware in wareHouses)
             {
+                //Проверека на то что заказ из которого берем количество не отменен
                 if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(s => s.Id == ware.OrderId).StatusId).StatusName == "Отменен")
                     continue;
                 result.Count += ware.CountChange;
@@ -69,28 +69,29 @@ namespace MyCar.Server.DataModels
         {
             var result = (WareHouseApi)wareHouse;
 
-            var order = (OrderApi)dbContext.Orders.FirstOrDefault(a => a.Warehouses.Any(s => s.OrderId == a.Id));
+            var order = (OrderApi)dbContext.Orders.FirstOrDefault(a => a.Warehouses.Any(s=>s.OrderId == a.Id));
             order.ActionType = (ActionTypeApi)dbContext.ActionTypes.First(s => s.Id == order.ActionTypeId);
             order.Status = (StatusApi)dbContext.Statuses.First(s => s.Id == order.StatusId);
 
+            //если заказ на поступление, считаем сколько авто осталось в каждом WH
             if (order.ActionType.ActionTypeName == "Поступление")
             {
-                result.CountRemains = (int)result.CountChange; 
+                result.CountRemains = (int)result.CountChange; //сначала назначаем сколько изначально пришло в поставке
 
-                List<CountChangeHistory> thisCountChangeHistories =
-                    new List<CountChangeHistory>(dbContext.CountChangeHistories.Where(s => s.WarehouseInId == result.ID).ToList()); 
-
-                if (thisCountChangeHistories.Count != 0) 
+                List <CountChangeHistory> thisCountChangeHistories = 
+                    new List<CountChangeHistory>(dbContext.CountChangeHistories.Where(s => s.WarehouseInId == result.ID).ToList()); //затем находим изменения связанные с нашей поставкой
+               
+                if (thisCountChangeHistories.Count != 0) //если они есть, вычитаем из изначального количества которое было в поставке, значение которое было продано из этой поставки
                 {
                     foreach (CountChangeHistory countChangeHis in thisCountChangeHistories)
                     {
+                        //снизу также длинная проверка на то что заказ на продажу который связан с нашей поставкой не отменен
                         if (dbContext.Statuses.First(s => s.Id == dbContext.Orders.First(o => o.Id == dbContext.Warehouses.First(w => w.Id == countChangeHis.WarehouseOutId).OrderId).StatusId).StatusName == "Отменен")
                             continue;
                         result.CountRemains -= (int)countChangeHis.Count;
                     }
                 }
             }
-
             var sale = dbContext.SaleCars.FirstOrDefault(s => s.Id == result.SaleCarId);
             result.SaleCar = SaleGet(sale, dbContext);
             return result;

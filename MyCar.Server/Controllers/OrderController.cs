@@ -97,8 +97,9 @@ namespace MyCar.Server.Controllers
 
             if (newOrder.ActionType.ActionTypeName != "Поступление")
             {
+
                 List<CountChangeHistory> countChangeHistories = new List<CountChangeHistory>();
-                foreach (var wh in dbContext.Orders.First(s => s.Id == order.Id).Warehouses)
+                foreach (var wh in dbContext.Orders.First(s=>s.Id == order.Id).Warehouses)
                 {
                     WareHouseApi OldWare = newOrder.WareHouses.First(s => s.SaleCarId == wh.SaleCarId);
                     foreach (var cch in OldWare.CountChangeHistories)
@@ -112,10 +113,10 @@ namespace MyCar.Server.Controllers
                         countChangeHistories.Add(countChangeHis);
                     }
                 }
+
                 await dbContext.CountChangeHistories.AddRangeAsync(countChangeHistories);
                 await dbContext.SaveChangesAsync();
             }
-
 
             return Ok(order.Id);
         }
@@ -125,26 +126,30 @@ namespace MyCar.Server.Controllers
         public async Task<ActionResult<OrderApi>> Put(int id, [FromBody] OrderApi editOrder)
         {
             var order = (Order)editOrder;
-            var cross = dbContext.Warehouses.FirstOrDefault(s=> s.OrderId == id);
+            //var cross = dbContext.Warehouses.FirstOrDefault(s=> s.OrderId == id);
             var oldOrder = await dbContext.Orders.FindAsync(id);
             if(oldOrder == null)
             {
                 return NotFound();
             }
             dbContext.Entry(oldOrder).CurrentValues.SetValues(order);
-            var warehouseRemove = dbContext.Warehouses.Where(s => s.OrderId == id).ToList();
-            dbContext.Warehouses.RemoveRange(warehouseRemove);
-
-            var crosses = editOrder.WareHouses.Select(s => (Warehouse)s);
-            await dbContext.Warehouses.AddRangeAsync(crosses.Select(s => new Warehouse
-            {
-                OrderId = order.Id,
-                SaleCarId = s.SaleCarId,
-                CountChange = s.CountChange,
-                Discount = s.Discount,
-                Price = s.Price
-            }));
             await dbContext.SaveChangesAsync();
+
+            //По логике код снизу не нужен, так как состав заказа изменять нельзя (только отменить и создать новый)(если все же, код ниже где то используется, то он не работает)
+
+            //var warehouseRemove = dbContext.Warehouses.Where(s => s.OrderId == id).ToList();
+            //dbContext.Warehouses.RemoveRange(warehouseRemove);
+
+            //var crosses = editOrder.WareHouses.Select(s => (Warehouse)s);
+            //await dbContext.Warehouses.AddRangeAsync(crosses.Select(s => new Warehouse
+            //{
+            //    OrderId = order.Id,
+            //    SaleCarId = s.SaleCarId,
+            //    CountChange = s.CountChange,
+            //    Discount = s.Discount,
+            //    Price = s.Price
+            //}));
+            //await dbContext.SaveChangesAsync();
             return Ok();
         }
     }

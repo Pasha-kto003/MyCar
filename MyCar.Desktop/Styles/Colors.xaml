@@ -30,5 +30,14 @@
 
     <Color x:Key="DarkPastelRed">#873A46</Color>
     <SolidColorBrush x:Key="DarkPastelRedBrush" Color="{StaticResource DarkPastelRed}" />
+    
+    <Color x:Key="DataGridChildBlue">#46fff0</Color>
+    <SolidColorBrush x:Key="DataGridChildBlueBrush" Color="{StaticResource DataGridChildBlue}" />
+
+    <Color x:Key="DarkDataGridChildBlue">#00ddcb</Color>
+    <SolidColorBrush x:Key="DarkDataGridChildBlueBrush" Color="{StaticResource DarkDataGridChildBlue}" />
+
+    <Color x:Key="DataGridChildFiolet">#9346ff</Color>
+    <SolidColorBrush x:Key="DataGridChildFioletBrush" Color="{StaticResource DataGridChildFiolet}" />
 
 </ResourceDictionary>

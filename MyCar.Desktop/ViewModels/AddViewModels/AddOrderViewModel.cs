@@ -87,8 +87,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 if (!IsValidate())
                     return;
-                WareHouseApi wareHouse = new WareHouseApi { SaleCar = SelectedSaleCar, SaleCarId = SelectedSaleCar.ID, CountChange = 0 };
-                AddOrderInWindow addOrderIn = new AddOrderInWindow(wareHouse, SelectedActionType, CountChangeHistories);//передаем истории в окно добавления
+                WareHouseApi wareHouse = new WareHouseApi { SaleCar = SelectedSaleCar, SaleCarId = SelectedSaleCar.ID, CountChange = 0};
+                AddOrderActionWindow addOrderIn = new AddOrderActionWindow(wareHouse, SelectedActionType, CountChangeHistories);//передаем истории в окно добавления
                 addOrderIn.ShowDialog();
                 if (wareHouse.CountChange != 0)
                     Warehouses.Add(wareHouse);
@@ -110,7 +110,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (SelectedActionType.ActionTypeName != "Поступление")
                 {
                     foreach (var item in Warehouses)
-                    {
+                    {  
                         item.CountChange *= -1;
                         //назначаем истории связанные с выбранным WH
                         item.CountChangeHistories = CountChangeHistories.Where(s => s.WarehouseIn.SaleCarId == item.SaleCarId).ToList();

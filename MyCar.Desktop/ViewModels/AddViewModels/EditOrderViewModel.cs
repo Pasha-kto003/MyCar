@@ -26,7 +26,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 selectedStatus = value;
             }
         }
-        public ObservableCollection<WareHouseApi> ThisWarehouses { get; set; } = new ObservableCollection<WareHouseApi>();
+        public ObservableCollection<WareHouseApi> ThisWarehouses { get; set; } = new ObservableCollection<WareHouseApi>();  
         public List<WareHouseApi> Warehouses { get; set; }
         public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
         public List<StatusApi> Statuses { get; set; }
@@ -63,22 +63,22 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             Save = new CustomCommand(async () =>
             {
-                AddOrderVM.StatusId = SelectedStatus.ID;
-                AddOrderVM.Status = SelectedStatus;
-                AddOrderVM.UserId = SelectedUser.ID;
-                AddOrderVM.User = SelectedUser;
-                AddOrderVM.ActionTypeId = SelectedActionType.ID;
-                AddOrderVM.ActionType = SelectedActionType;
+            AddOrderVM.StatusId = SelectedStatus.ID;
+            AddOrderVM.Status = SelectedStatus;
+            AddOrderVM.UserId = SelectedUser.ID;
+            AddOrderVM.User = SelectedUser;
+            AddOrderVM.ActionTypeId = SelectedActionType.ID;
+            AddOrderVM.ActionType = SelectedActionType;
 
-                if (AddOrderVM.Status.StatusName == "Отменен" && AddOrderVM.ActionType.ActionTypeName == "Поступление")
+            if (AddOrderVM.Status.StatusName == "Отменен" && AddOrderVM.ActionType.ActionTypeName == "Поступление")
+            {
+                if (CountChangeHistories.Any(c => ThisWarehouses.Any(s => s.ID == c.WarehouseInId)))
                 {
-                    if (CountChangeHistories.Any(c => ThisWarehouses.Any(s => s.ID == c.WarehouseInId)))
-                    {
 
                         UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Нельзя отменить заказ который участвовал в других заказах!" });
                         return;
-                    }
                 }
+            }
 
                 AddOrderVM.WareHouses = ThisWarehouses.ToList();
 

@@ -13,8 +13,9 @@ namespace ModelsApi
         public int? CountChange { get; set; }
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
-        public int? CountRemains { get; set; }
+        public int CountRemains { get; set; } = 0;
 
+        public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
         public SaleCarApi SaleCar { get; set; }
         public List<CountChangeHistoryApi> CountChangeHistories { get; set; }
     }

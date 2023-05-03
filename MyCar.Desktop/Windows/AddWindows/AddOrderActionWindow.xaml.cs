@@ -17,14 +17,14 @@ using System.Windows.Shapes;
 namespace MyCar.Desktop.Windows.OrderActions
 {
     /// <summary>
-    /// Логика взаимодействия для AddOrderInWindow.xaml
+    /// Логика взаимодействия для AddOrderActionWindow.xaml
     /// </summary>
-    public partial class AddOrderInWindow : Window
+    public partial class AddOrderActionWindow : Window
     {
-        public AddOrderInWindow(WareHouseApi wareHouse,ActionTypeApi actionType)
+        public AddOrderActionWindow(WareHouseApi wareHouse,ActionTypeApi actionType,List<CountChangeHistoryApi> countChangeHistoryApis)
         {
             InitializeComponent();
-            DataContext = new AddOrderActionViewModel(wareHouse, actionType);
+            DataContext = new AddOrderActionViewModel(wareHouse, actionType, countChangeHistoryApis);
         }
     }
 }

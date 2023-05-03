@@ -17,20 +17,20 @@ using System.Windows.Shapes;
 namespace MyCar.Desktop.Windows.AddWindows
 {
     /// <summary>
-    /// Логика взаимодействия для AddPhotoCarWindow.xaml
+    /// Логика взаимодействия для AddDiscountWindow.xaml
     /// </summary>
-    public partial class AddPhotoCarWindow : Window
+    public partial class AddDiscountWindow : Window
     {
-        public AddPhotoCarWindow()
+        public AddDiscountWindow()
         {
             InitializeComponent();
-            DataContext = new AddPhotoCarViewModel(null);
+            DataContext = new AddDiscountViewModel(null);
         }
 
-        public AddPhotoCarWindow(CarPhotoApi carPhoto)
+        public AddDiscountWindow(DiscountApi discount)
         {
             InitializeComponent();
-            DataContext = new AddPhotoCarViewModel(carPhoto);
+            DataContext = new AddDiscountViewModel(discount);
         }
     }
 }

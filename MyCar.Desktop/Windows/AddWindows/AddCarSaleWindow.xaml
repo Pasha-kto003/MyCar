@@ -23,10 +23,15 @@
                 <RowDefinition Height="210"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label FontWeight="Bold" Content="Артикул" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
-                <TextBox FontSize="16" DataContext="{Binding AddSaleVM}" Text="{Binding Articul}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Height="30"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 30 0">
+                    <Label FontWeight="Bold" Content="Артикул" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" FontSize="16" DataContext="{Binding AddSaleVM}" Text="{Binding Articul}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Height="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label FontWeight="Bold" Content="Мин. кол-во" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" FontSize="16" DataContext="{Binding AddSaleVM}" Text="{Binding MinCount}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Height="30"/>
+                </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="0 10 0 0">
                 <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>
@@ -54,7 +59,7 @@
             </StackPanel>
             <StackPanel Grid.Row="6" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label FontWeight="Bold" Content="Цена комплектации" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
-                <TextBox DataContext="{Binding AddSaleVM}" Text="{Binding EquipmentPrice, StringFormat={}{0:N2}}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="200" FontSize="16"/>
+                <TextBox Style="{StaticResource ModernTextBox}" DataContext="{Binding AddSaleVM}" Text="{Binding EquipmentPrice, StringFormat={}{0:N2}}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="200" FontSize="16"/>
             </StackPanel>
             <StackPanel Grid.Row="7" Margin="0 10 0 0">
                 <Rectangle HorizontalAlignment="Stretch"  Fill="Gray" Height="0.5" Width="370"/>

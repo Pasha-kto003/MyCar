@@ -5,6 +5,7 @@ using MyCar.Web.Core;
 using MyCar.Web.Models;
 using SmartBreadcrumbs.Attributes;
 using SmartBreadcrumbs.Nodes;
+using MyCar.Web.Core;
 
 namespace MyCar.Web.Controllers
 {
@@ -39,8 +40,40 @@ namespace MyCar.Web.Controllers
             ViewData["BreadcrumbNode"] = articlePage;
             ViewData["Title"] = $"CarName - {car.Car.CarName}";
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));
+            ViewBag.Cars = Cars.Where(s=> s.Car.ModelId == car.Car.ModelId);
+            ViewBag.DiscountPrice = DiscountCounter.GetDiscount(car);
             var carModel = new CarModel() { CarName = car.Car.CarName };
             return View(car);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DetailsCar(string CarName)
+        {
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            var car = cars.FirstOrDefault(s => s.Car.CarName == CarName);
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.Marks = marks;
+            ViewBag.CarName = car.Car.CarName;
+            ViewBag.FullPrice = car.FullPrice;
+            ViewBag.PhotoCar = car.Car.PhotoCar;
+            ViewBag.SaleCars = cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark));
+            return View("DetailsCarView", car);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchLexus()
+        {
+            var models = await Api.GetListAsync<List<ModelApi>>("Model");
+            var text = "RC F";
+            var type = "Модель";
+            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            string filter = "Все";
+            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
+            var markCars = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.MarkCars = markCars;
+            return View("CarView", cars);
         }
 
         [HttpGet]

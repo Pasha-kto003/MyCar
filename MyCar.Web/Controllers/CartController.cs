@@ -65,6 +65,10 @@ namespace MyCar.Web.Controllers
         {
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             var order = Orders.Where(s => s.User.UserName == name).ToList();
+            foreach (var ord in order)
+            {
+                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
+            }
             return order;
         }
 
@@ -157,7 +161,7 @@ namespace MyCar.Web.Controllers
             {
                 return View("Error");
             }
-            else if(order.WareHouses == null || order.WareHouses.Count == 0)
+            else if (order.WareHouses == null || order.WareHouses.Count == 0)
             {
                 DeleteOrder(order);
                 return View("Error");

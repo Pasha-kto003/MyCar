@@ -8,7 +8,7 @@
 }
 
 <div class="container-fluid">
-<div class="wow bounceInDown slider" id="slider" style="margin: 0px;"> 
+<div class="slider" id="slider" style="margin: 0px;"> 
     <div class="slider-content" id="slider-content">
         <div class="sl-img">
             <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg"/></div>
@@ -268,7 +268,7 @@
                                                 <div class="mark-Photo scalePh">
                                                     <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
                                                 </div>
-                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
+                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.ID">
                                                     <div class="text-white">@car.Car.Model.ModelName</div>
                                                 </a>
                                             </div>
@@ -366,7 +366,7 @@
                 <small class="text-white">Начальная цена от</small>
                 <h3 class="text-white">@ViewBag.FullPrice &#8381</h3>
                 <div class="glass-btn glass-btn-red">
-                    <a asp-action="ElectricCarView" asp-controller="Home">
+                    <a asp-action="DetailsCar" asp-controller="Car" asp-route-CarName="@ViewBag.CarName">
                         Купить
                     </a>
                 </div>
@@ -377,29 +377,15 @@
 
         </div>
     </section>
-    <section class="row row-cols-3 w-100 mt-5" style="height: 500px;">
-        <div class="col h-100">
-            <div class="wow slideInLeft" style="background-image: url('/image/lexus-homepage.jpg'); width:100%; height: 100%; background-position:center;">
-                <div class="text-wp">    
-                    <div class="text-bg">
-                        <div class="text-bg-2">
-                            <h1>Lexus GX Special Edition</h1>
-                            <a asp-action="LexusGXView" asp-controller="Home">
-                                Каталог
-                            </a>
-                        </div>
-                    </div>
-                </div>   
-            </div>
-        </div>
+    <section class="row row-cols-2 w-100 mt-5" style="height: 500px;">
         <div class="col h-100">
             <div class="wow bounceInUp" style="background-image: url('/image/Toyota-camry-exterieur_Medium-Landscape.jpg'); width:100%; height: 100%; background-position:center; object-fit: cover">
                 <div class="text-wp">    
                     <div class="text-bg">
                         <div class="text-bg-2">
                             <h1>New Toyota Camry</h1>
-                            <a asp-action="ToyotaView" asp-controller="Home">
-                                Каталог
+                            <a asp-action="ToyotaCamryView" asp-controller="Home">
+                                Посмотреть
                             </a>
                         </div>
                     </div>
@@ -413,7 +399,7 @@
                         <div class="text-bg-2">
                             <h1>Lexus RCF</h1>
                             <a asp-action="LexusRCFView" asp-controller="Home">
-                                Каталог
+                                Посмотреть
                             </a>
                         </div>
                     </div>
@@ -459,7 +445,7 @@
 </div>
 
 @*section*@
-@*<section class="h-auto w-100">
+<section class="h-auto w-100">
     <div class="tabs">
         <div class="tab">
             <div class="tab-toggle">
@@ -495,7 +481,7 @@
             <p style="color: white;" class="text-white">Описание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладкиОписание вкладки</p>
         </div>
     </div>
-</section>*@
+</section>
 
 
 @*section*@
@@ -571,11 +557,21 @@
 
 @if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
 {
-    <div class="callout bg-danger bg-gradient" data-bs-dismiss="alert" role="alert">
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">Window Role</div>
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
-            <p>You Sign In as Admin</p>
+            <p class="text-white">Вы вошли как администратор</p>
+        </div>
+    </div>
+}
+@if (User.IsInRole("Клиент") && TempData["AllertMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Window Role</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">Вы вошли как пользователь</p>
         </div>
     </div>
 }

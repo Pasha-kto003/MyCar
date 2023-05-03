@@ -1,12 +1,14 @@
 ﻿using MyCar.Desktop.Core.UI;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace MyCar.Desktop.Core
 {
@@ -17,7 +19,7 @@ namespace MyCar.Desktop.Core
             foreach (ColorValue colorValue in Configuration.GetConfiguration().ColorValues)
             {
                 if ((int)value >= colorValue.DownValue && (int)value <= colorValue.UpValue)
-                    return colorValue.Color;  
+                    return colorValue.Color;
             }
             return Color.Transparent;
         }

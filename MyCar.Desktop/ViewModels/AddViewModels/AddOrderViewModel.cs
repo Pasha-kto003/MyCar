@@ -64,6 +64,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public List<UserApi> Users { get; set; }
         public List<StatusApi> Statuses { get; set; }
 
+        public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
+
         public CustomCommand ConfirmOrder { get; set; }
         public CustomCommand DeleteWarehouse { get; set; }
         public CustomCommand AddSaleCar { get; set; }
@@ -86,7 +88,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (!IsValidate()) 
                     return;
                 WareHouseApi wareHouse = new WareHouseApi { SaleCar = SelectedSaleCar, SaleCarId = SelectedSaleCar.ID, CountChange = 0};
-                AddOrderInWindow addOrderIn = new AddOrderInWindow(wareHouse, SelectedActionType);
+                AddOrderActionWindow addOrderIn = new AddOrderActionWindow(wareHouse, SelectedActionType, CountChangeHistories);//передаем истории в окно добавления
                 addOrderIn.ShowDialog();
                 if (wareHouse.CountChange != 0)
                     Warehouses.Add(wareHouse);
@@ -108,10 +110,13 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (SelectedActionType.ActionTypeName != "Поступление")
                 {
                     foreach (var item in Warehouses)
-                    {
+                    {  
                         item.CountChange *= -1;
+                        //назначаем истории связанные с выбранным WH
+                        item.CountChangeHistories = CountChangeHistories.Where(s => s.WarehouseIn.SaleCarId == item.SaleCarId).ToList();
                     }
                 }
+
                 OrderApi order = new OrderApi();
                 order.DateOfOrder = OrderDate;
                 order.UserId = SelectedUser.ID;
@@ -127,6 +132,9 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             DeleteWarehouse = new CustomCommand(() =>
             {
                 if (SelectedWarehouse == null) return;
+                //убераем истории связанные с выбранным WH
+                if (SelectedActionType.ActionTypeName != "Поступление")
+                    CountChangeHistories.RemoveAll(s => s.WarehouseIn.SaleCarId == SelectedWarehouse.SaleCarId);
                 Warehouses.Remove(SelectedWarehouse);
                 Update();
             });
@@ -138,6 +146,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 UIManager.ShowMessage(new MessageBoxDialogViewModel { Message = "Заказ оформлен" });
             Task.Run(GetList).Wait();
             Warehouses.Clear();
+            CountChangeHistories.Clear();
+            OrderDate = DateTime.Now;
             Update();
         }
 
@@ -190,6 +200,17 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             var order = await Api.PostAsync<OrderApi>(orderApi, "Order");
             ClearPage(order);
         }
+
+        private async Task CreateCountChange(CountChangeHistoryApi countChange)
+        {
+            var count = await Api.PostAsync<CountChangeHistoryApi>(countChange, "CountChangeHistory");
+        }
+
+        private async Task EditCountChange(CountChangeHistoryApi countChange)
+        {
+            var count = await Api.PutAsync<CountChangeHistoryApi>(countChange, "CountChangeHistory");
+        }
+
         private async Task GetList()
         {
             var sales = await Api.GetListAsync<List<SaleCarApi>>("CarSales");

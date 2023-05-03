@@ -15,6 +15,8 @@ namespace MyCar.Desktop.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
+        public OrderColor SelectedOrderColor { get; set; }
+        public ObservableCollection<OrderColor> OrderColors { get; set; }
         public ColorValue SelectedColorValue { get; set; }
         public ObservableCollection<ColorValue> ColorValues { get; set; }
         public CustomCommand Exit { get; set; }
@@ -36,7 +38,7 @@ namespace MyCar.Desktop.ViewModels
             });
             SaveConfig = new CustomCommand(() =>
             {
-                Configuration.SetConfiguration(new Config { ColorValues = this.ColorValues.ToList() });
+                Configuration.SetConfiguration(new Config { ColorValues = this.ColorValues.ToList(), OrderColors = this.OrderColors.ToList() });
                 Update();
                 UIManager.ShowMessage(new MessageBoxDialogViewModel { Message = "Сохранено." });
             });
@@ -65,6 +67,15 @@ namespace MyCar.Desktop.ViewModels
                 ColorValues = new ObservableCollection<ColorValue>();
             else
              ColorValues = new ObservableCollection<ColorValue>(Configuration.GetConfiguration().ColorValues);
+
+            if (Configuration.GetConfiguration().OrderColors == null)
+                OrderColors = new ObservableCollection<OrderColor>() {
+                        new OrderColor{ Status = "Новый", Color = "#00FFFFFF" },
+                        new OrderColor{ Status = "Завершен", Color = "#00FFFFFF" },
+                        new OrderColor{ Status = "Отменен", Color = "#00FFFFFF" },
+                    };
+            else
+                OrderColors = new ObservableCollection<OrderColor>(Configuration.GetConfiguration().OrderColors);
         }
     }
 }

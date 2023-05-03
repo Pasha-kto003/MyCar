@@ -83,14 +83,6 @@ namespace MyCar.Web.Controllers
             return View("CarView", cars);
         }
 
-        //[Breadcrumb(FromAction = "Index", Title = "CarView")]
-        //public async Task<IActionResult> CarView()
-        //{
-        //    var cars = new List<SaleCarApi>();
-        //    cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-        //    return View("CarView", cars);
-        //}
-
         public async Task<IActionResult> ElectricCarView()
         {
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
@@ -102,26 +94,16 @@ namespace MyCar.Web.Controllers
             return View("LexusGXView");
         }
 
+        public async Task<IActionResult> ToyotaCamryView()
+        {
+            return View("ToyotaCamryView");
+        }
+
         public async Task<IActionResult> LexusRCFView()
         {
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             ViewBag.Cars = cars.Where(s=> s.Car.CarName.Contains("Lexus RCF"));
             return View("LexusRCFView");
-        }
-
-        public async Task<IActionResult> SearchLexus()
-        {
-            var models = await Api.GetListAsync<List<ModelApi>>("Model");
-            var text = "RC F";
-            var type = "Модель";
-            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
-            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            string filter = "Все";
-            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
-            List<MarkCarApi> markCars;
-            markCars = GetMark().Result;
-            ViewBag.MarkCars = markCars;
-            return View("CarView", cars);
         }
 
         [Breadcrumb("ViewData.Title")]
@@ -141,12 +123,15 @@ namespace MyCar.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> CarView()//int? pageNumber
         {
-
             List<SaleCarApi> cars;
             List<MarkCarApi> markCars;
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
+            foreach(var car in cars)
+            {
+                GetDiscount(car);
+            }
             return View("CarView", cars);
         }
 
@@ -180,6 +165,44 @@ namespace MyCar.Web.Controllers
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return Marks;
+        }
+
+        private void GetDiscount(SaleCarApi saleCars)
+        {
+            var date = DateTime.Now;
+            if(saleCars != null)
+            {
+                if(date.DayOfWeek == DayOfWeek.Monday)
+                {
+                    //ViewBag.DiscountPrice = 
+                    if (saleCars.Car.CarMark.Contains("Toyota") || saleCars.Car.CarMark.Contains("Lexus") || saleCars.Car.CarMark.Contains("Honda"))
+                    {
+                        ViewBag.DiscountPrice = saleCars.FullPrice * 10 / 100;
+                    }
+                    else
+                    {
+                        ViewBag.DiscountPrice = "";
+                    }
+                }
+                else if(date.DayOfWeek == DayOfWeek.Tuesday || date.DayOfWeek == DayOfWeek.Friday)
+                {
+                    if (saleCars.Car.CarMark.Contains("Porsche") || saleCars.Car.CarMark.Contains("Audi") || saleCars.Car.CarMark.Contains("Honda"))
+                    {
+                        var diff = saleCars.FullPrice * 10 / 100;
+                        ViewBag.DiscountPrice = saleCars.FullPrice - diff;
+                    }
+                    else
+                    {
+                        ViewBag.DiscountPrice = "";
+                    }
+                }
+                else
+                {
+                    ViewBag.DiscountPrice = "";
+                }
+
+            }
+            
         }
     }
 }

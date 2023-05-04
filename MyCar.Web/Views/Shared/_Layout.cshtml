@@ -8,45 +8,46 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyCar.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/animate.min.css" />
-    <link rel="stylesheet" href="~/css/Card.css" />
+    <link rel="stylesheet" href="~/css/Card.css"/>
+    <link rel="shortcut icon" type="image/svg" href="~/car_icon1.ico"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 </head>
 <body style="background-color: #171717; width:100%; box-sizing:border-box;">
-    <header class="p-3 text-white sticky-top" style="background-color: black; opacity:80%">
-        <div class="container w-100" style="box-sizing:border-box;">
+  <header class="p-3 text-white sticky-top" style="background-color: black; opacity:80%">
+     <div class="container w-100" style="box-sizing:border-box;">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <input type="checkbox" id="side-checkbox" />
-        <div class="side-panel" style="opacity:100%;">
-            <label class="side-button-2" for="side-checkbox">+</label>    
-            <div class="side-title">Меню:</div>
-            <h4>Никнейм: @User.Identity.Name</h4>
-            <a class="dropdown-item" style="color: white; font-size:16px;" asp-controller="Account" asp-action="Personal_Area" asp-route-data="@User.Identity.Name">Профиль</a>
-            <a class="dropdown-item" style="color: white; font-size:16px;" asp-controller="Cart" asp-route-data="@User.Identity.Name" asp-action="CartPage">Список ваших заказов</a>
-            <a class="dropdown-item" style="color: white; font-size:16px;" asp-controller="Cart" asp-route-Name="@User.Identity.Name" asp-action="DetailsCart">Корзина</a>
-            @if (User.Identity.IsAuthenticated)
-            {                               
-                <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход (@User.Identity.Name)</a>
-            }
-            else
-            {                               
-                <a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>                                
-            }
-        </div>
-            <div class="side-button-1-wr">
-                <label class="side-button-1" for="side-checkbox">
-                    <div class="side-b side-open">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                        </svg>
-                    </div>
-                    <div class="side-b side-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                        </svg>
-                    </div>
-                </label>    
+            <div class="side-panel" style="opacity:100%;">
+                <label class="side-button-2" for="side-checkbox">+</label>    
+                <div class="side-title">Меню:</div>
+                <h4>Никнейм: @User.Identity.Name</h4>
+                <a class="dropdown-item" style="color: white; font-size:16px;" asp-controller="Account" asp-action="Personal_Area" asp-route-data="@User.Identity.Name">Профиль</a>
+                <a class="dropdown-item" style="color: white; font-size:16px;" asp-controller="Cart" asp-route-data="@User.Identity.Name" asp-action="CartPage">Список ваших заказов</a>
+                <a class="dropdown-item" style="color: white; font-size:16px;" asp-controller="Cart" asp-route-Name="@User.Identity.Name" asp-action="DetailsCart">Корзина</a>
+                @if (User.Identity.IsAuthenticated)
+                {                               
+                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход (@User.Identity.Name)</a>
+                }
+                else
+                {                               
+                    <a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>                                
+                }
             </div>
+                <div class="side-button-1-wr">
+                    <label class="side-button-1" for="side-checkbox">
+                        <div class="side-b side-open">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                        </div>
+                        <div class="side-b side-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                        </div>
+                    </label>    
+                </div>
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           @if (User.Identity.IsAuthenticated)
           {

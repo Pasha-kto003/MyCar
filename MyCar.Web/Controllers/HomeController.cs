@@ -63,7 +63,7 @@ namespace MyCar.Web.Controllers
             return View("Index", cars);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "Marks")]
+        [Breadcrumb(FromAction = "Index", Title = "Марки авто")]
         public async Task<IActionResult> MarkView()
         {
             var marks = new List<MarkCarApi>();
@@ -71,7 +71,7 @@ namespace MyCar.Web.Controllers
             return View("MarkView", marks);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "Users")]
+        [Breadcrumb(FromAction = "Index", Title = "Пользователи ")]
         public async Task<IActionResult> UserView()
         {
             var users = new List<UserApi>();
@@ -104,7 +104,7 @@ namespace MyCar.Web.Controllers
             return View("DashBoardView");
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
         public async Task<IActionResult> GetAuto(int id)
         {
@@ -157,23 +157,25 @@ namespace MyCar.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
         public async Task<IActionResult> CarView()//int? pageNumber
         {
+            await GetWare();
             List<SaleCarApi> cars;
             List<MarkCarApi> markCars;
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
-            foreach(var car in cars)
-            {
-                DiscountCounter.GetDiscount(car);
-            }
-            return View("CarView", cars);
+            //foreach(var car in cars)
+            //{
+            //    DiscountCounter.GetDiscount(car);
+            //}
+            var fullCars = cars.DistinctBy(s => s.FullName);
+            return View("CarView", fullCars);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
         public async Task<IActionResult> SearchCar(string SearchString)
         {
@@ -218,6 +220,10 @@ namespace MyCar.Web.Controllers
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return Marks;
+        }
+        private async Task GetWare()
+        {
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
         }
         public async Task GetOrders()
         {

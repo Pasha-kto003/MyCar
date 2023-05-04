@@ -33,16 +33,16 @@ namespace MyCar.Web.Controllers
         {
             Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             var car = Cars.FirstOrDefault(s => s.ID == id);
-            var page = new MvcBreadcrumbNode("Index", "Home", "Home");
-            var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "CarView") { Parent = page };
-            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"DetailsCarView / {car.Car.CarName}") { Parent = articlesPage };
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
+            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"Выбранное авто / {car.Car.CarName}") { Parent = articlesPage };
             RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.Car.CarName}");
             ViewData["BreadcrumbNode"] = articlePage;
             ViewData["Title"] = $"CarName - {car.Car.CarName}";
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));
+            ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
             ViewBag.Cars = Cars.Where(s=> s.Car.ModelId == car.Car.ModelId);
             ViewBag.DiscountPrice = DiscountCounter.GetDiscount(car);
-            var carModel = new CarModel() { CarName = car.Car.CarName };
             return View(car);
         }
 

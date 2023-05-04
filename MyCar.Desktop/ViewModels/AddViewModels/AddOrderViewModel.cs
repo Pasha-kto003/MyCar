@@ -190,6 +190,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 IsActionTypeEnabled = false;
             else
                 IsActionTypeEnabled = true;
+            Total = 0;
             foreach (var item in Warehouses)
             {
                 Total += item.CountChange * (item.Price - item.Discount);

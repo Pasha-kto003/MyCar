@@ -136,6 +136,18 @@ namespace MyCar.Web.Controllers
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
 
             }
+            else if (model.UserName == "" || model.UserName == null)
+            {
+                ModelState.TryAddModelError("", "Не введен логин");
+            }
+            else if (model.Password == "" || model.Password == null)
+            {
+                ModelState.TryAddModelError("", "Не введен пароль");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
             return View(model);
         }
 

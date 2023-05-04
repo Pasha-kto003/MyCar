@@ -19,6 +19,7 @@ namespace MyCar.Server.DB
         public decimal? EquipmentPrice { get; set; }
         public string? ColorCar { get; set; }
         public int? MinCount { get; set; }
+        public string? Description { get; set; }
 
         public virtual Car? Car { get; set; }
         public virtual Equipment? Equipment { get; set; }

@@ -28,7 +28,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                        <input type="search" name="SearchString" class="form-control search-slt" placeholder="Поиск..">
+                                        <input type="text" name="SearchString" class="form-control search-slt" placeholder="Поиск..">
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
                                         <select class="form-control search-slt">
@@ -72,11 +72,6 @@
                 </div>
              </section>
              <section class="row form-check form-switch text-center" style="align-items: center; justify-content: center;">
-                @*<label style="margin-top:20px; margin-bottom:20px; color:white;">
-                    <input type="checkbox" style="width: 35px; height: 35px;" onclick="myClickFunction()" id="checboxLabel">
-                        Выести списком?
-                    </input>
-                </label>*@
                 <label class="checkbox-green">
 	                <input type="checkbox" onclick="myClickFunction()">
 	                <span class="checkbox-green-switch" style="width: 200px; font-size: 16px;" data-label-on="List" data-label-off="Card"></span>
@@ -199,7 +194,7 @@
                         </div>
                     </div>
                 }
-            </div>
+             </div>
             <div class="row" id="myDIV">
                 @foreach (var i in Model)
                 {
@@ -212,7 +207,7 @@
 
                             <div class="product-Details">
                                 <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@i.ID">
-                                    <h3 class="product-title text-white">@i.Car.CarName</h3>
+                                    <h3 class="product-title text-white">@i.FullName</h3>
                                 </a>
                                 @*<h2 class="product-title text-white">@i.CarName</h2>*@
 

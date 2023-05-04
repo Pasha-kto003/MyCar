@@ -708,3 +708,139 @@ namespace MyCar.Web.Controllers
         }
     }
 }
+
+EmailSender emailSender = new EmailSender();
+            emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
+
+            <div style="display: none; background-color: #171717;" id="myDIV1">
+                @foreach (var i in Model)
+                {
+                    <div class="card mb-3" style="max-width: 100%; background-color: #171717;">
+                        <div class="row g-0">
+                            <div class="col-md-2">
+                                <img src="~/CarImages/@i.Car.PhotoCar" width="200px" height="150px" class="img-fluid rounded-start">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-md-5">           
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="color: white; width: 60%">
+                                                        Характеристики двигателя
+                                                    </th>
+                                                    <th style="color: white; width: 40%">
+                                                        Ед. Измерения
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach(var characteristic in @i.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
+                                                s.Characteristic.CharacteristicName.Contains("Объем") || 
+                                                s.Characteristic.CharacteristicName.Contains("Вместительность топливного бака")))
+                                                {
+                                                    <tr>
+                                                        <td style="color: white; width: 60%">
+                                                            @characteristic.Characteristic.CharacteristicName:
+                                                        </td>
+                                                        <td style="color: white; width: 40%">
+                                                            @characteristic.CharacteristicValue
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="color: white; width: 60%">
+                                                        Скоростные характеристики
+                                                    </th>
+                                                    <th style="color: white; width: 40%">
+                                                        Ед. Измерения
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach(var characteristic in @i.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Макс. Скорость") ||
+                                                s.Characteristic.CharacteristicName.Contains("0-100")))
+                                                {
+                                                    <tr>
+                                                        <td style="color: white;">
+                                                            @characteristic.Characteristic.CharacteristicName:
+                                                        </td>
+                                                        <td style="color: white;">
+                                                            @characteristic.CharacteristicValue
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                  </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3"> 
+                                <div class="row align-items-center justify-content-center">
+                                    <div class="h-100 col-5 text-center" style="align-items: center;">
+                                        <img src="~/MarkImages/@i.Car.Model.MarkCar.MarkPhoto" width="75px" height="75px" class="img-fluid rounded-start" style="justify-content:center;">
+                                    </div>
+                                    <div class="col-5 text-center align-items-center justify-content-center">
+                                        <p class="text-white">Цена авто: </p>
+                                        @{
+                                            ViewBag.DiscountPrice = DiscountCounter.GetDiscount(i);
+                                            if(ViewBag.DiscountPrice == 0)
+                                            {
+                                                ViewBag.DiscountPrice = null;
+                                            }
+                                            <div class="product-price">
+                                                @if(ViewBag.DiscountPrice != null)
+                                                {
+                                                    <p class="text-white">
+                                                        <s class="text-white">
+                                                            @i.FullPrice
+                                                        </s>
+                                                    </p>
+
+                                                }
+                                                else
+                                                {
+                                                    <p class="text-white">
+                                                        @i.FullPrice
+                                                    </p>
+                                                }
+                                                <p class="text-white">
+                                                    @ViewBag.DiscountPrice
+                                                </p>
+                                            </div>
+                                         }
+                                        <button class="btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-left:4px; margin-right:8px; flex-direction: row-reverse;" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+//[HttpGet]
+//public async Task<IActionResult> DetailsCar(string CarName)
+//{
+//    var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+//    var car = cars.FirstOrDefault(s=> s.Car.CarName == CarName);
+//    var marks = new List<MarkCarApi>();
+//    marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+//    ViewBag.Marks = marks;
+//    ViewBag.CarName = car.Car.CarName;
+//    ViewBag.FullPrice = car.FullPrice;
+//    ViewBag.PhotoCar = car.Car.PhotoCar;
+//    return View("Index", cars);
+//}

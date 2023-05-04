@@ -3,26 +3,28 @@
     <div class="container text-center align-middle d-flex justify-content-center">
         <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" >
             <h2 style="color: white;">Вход на сайт</h2>
-            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div class="validation" asp-validation-summary="ModelOnly" style="color:red; font-size: 20px; justify-content:center; align-items:center;"></div>
             <div>
                 <div class="form-group" style="margin-top: 30px;">
-                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Email адрес" />
+                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Email адрес" style="width: 300px;"/>
                     <span asp-validation-for="UserName" />
                 </div>
-                <div class="form-group" style="margin-top: 50px;" >
-                    <input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" />
+                <div class="form-group" style="margin-top: 50px;">
+                    <input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" style="width: 300px;"/>
                     <span asp-validation-for="Password" />
                     <label style="margin-top:20px; margin-bottom:20px; color:white;">
                         <input type="checkbox" onclick="myFunction()" class="password-checkbox"/>
                             Показать пароль
                     </label>
                 </div>
-                <div class="form-group" style="margin-bottom:20px; width: 300px;">
+                <div class="form-group" style="margin-bottom:20px;">
                     <input class="atuin-btn" id="success" type="submit" role="button" title="Если вы зарегистрированы на этом сайте то просто зайдите под своим логином и паролем" value="Войти" data-toggle="tooltip" data-placement="right"/>  
                 </div>
-                <a asp-action="Register" class="atuin-btn" data-toggle="tooltip" data-placement="left" title="Для регистрации на нашем сайте нажмите эту кнопку" role="button" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Account">
-                    Регистрация
-                </a>
+                <div class="form-group" style="margin-bottom:20px;">
+                    <a asp-action="Register" class="atuin-btn" data-toggle="tooltip" data-placement="left" title="Для регистрации на нашем сайте нажмите эту кнопку" role="button" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Account">
+                        Регистрация
+                    </a>
+                </div>
             </div>
         </form>
     </div>

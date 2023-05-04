@@ -215,7 +215,7 @@
         <div class="card col-4" style="background-color: #171717;">
 
             <div class="PhotoScale">
-                <img src="/CarImages/PorscheTaycan.png" class="card-img-top">
+                <img src="~/CarImages/PorscheTaycan1.png" class="card-img-top">
             </div>
 
             <div class="card-body">
@@ -246,43 +246,20 @@
         </div>
     </div>
     <section class="row w-100 text-center justify-content-center align-items-center">
-        <h3>Explore your car</h3>
+        <h3 style="color: white;">Выберите свое авто</h3>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Car</button>
-                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Sedan</button>
-                <button class="nav-link" id="nav-view-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-view" aria-selected="true">Hybrid</button>
-                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">All-Electronic</button>
-                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Battery electric</button>
+                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Седаны</button>
+                <button class="nav-link" id="nav-view-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-view" aria-selected="true">Гибриды</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Электрокары</button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Электрокары на батареях</button>
             </div>
         </nav>
         <div class="tab-content text-center justify-content-center" id="nav-tabContent" style="background-color: #171717">
-                    <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" style="background-color: #171717">
-                        <div class="container mt-5" style="background-color: #171717">
-                            <div class="row w-100">
-                                @foreach(var car in Model.ToList())
-                                {
-                                    <div class="col">
-                                        <div class="m-3 d-flex justify-content-center">
-                                            <div class="text-center">
-                                                <div class="mark-Photo scalePh">
-                                                    <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
-                                                </div>
-                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.ID">
-                                                    <div class="text-white">@car.Car.Model.ModelName</div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        
-                        </div>
-                    </div>
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
                         <div class="container mt-5" style="background-color: #171717">
                             <div class="row w-100">
-                                @foreach(var car in models.ToList())
+                                @foreach(var car in models.ToList().OrderBy(s=> s.FullPrice).Take(10))
                                 {
                                     @if (car.Car.BodyType.TypeName.Contains("Седан"))
                                     {
@@ -290,9 +267,9 @@
                                             <div class="m-3 d-flex justify-content-center">
                                                 <div class="text-center">
                                                     <div class="mark-Photo scalePh">
-                                                        <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                                        <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
                                                     </div>
-                                                    <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
+                                                    <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                                         <div class="text-white">@car.Car.Model.ModelName</div>
                                                     </a>
                                                 </div>
@@ -308,18 +285,18 @@
                         
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab" style="background-color: #171717">
+                    <div class="tab-pane fade show" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab" style="background-color: #171717">
                         <div class="container mt-5" style="background-color: #171717">
                             <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")).ToList())
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")).ToList().OrderBy(s=> s.FullPrice).Take(10))
                                 {
                                     <div class="col">
                                         <div class="m-3 d-flex justify-content-center">
                                             <div class="text-center">
                                                 <div class="mark-Photo scalePh">
-                                                    <a asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                                    <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
                                                 </div>
-                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-CarName="@car.Car.CarName">
+                                                <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                                     <div class="text-white">@car.Car.Model.ModelName</div>
                                                 </a>
                                             </div>
@@ -333,7 +310,7 @@
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <div class="container-fluid mt-5" style="background-color: #171717">
                             <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")))
+                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")).OrderBy(s=> s.FullPrice).Take(10))
                                 {
                                     <div class="col-5">
                                         <div class="m-3 d-flex justify-content-center">
@@ -366,7 +343,7 @@
                 <small class="text-white">Начальная цена от</small>
                 <h3 class="text-white">@ViewBag.FullPrice &#8381</h3>
                 <div class="glass-btn glass-btn-red">
-                    <a asp-action="DetailsCar" asp-controller="Car" asp-route-CarName="@ViewBag.CarName">
+                    <a asp-action="DetailsCar" asp-controller="Car" asp-route-id="@ViewBag.ID">
                         Купить
                     </a>
                 </div>
@@ -379,7 +356,7 @@
     </section>
     <section class="row row-cols-2 w-100 mt-5" style="height: 500px;">
         <div class="col h-100">
-            <div class="wow bounceInUp" style="background-image: url('/image/Toyota-camry-exterieur_Medium-Landscape.jpg'); width:100%; height: 100%; background-position:center; object-fit: cover">
+            <div class="wow bounceInUp" style="background-image: url('/image/toyotacamryBg.jpg'); width:100%; height: 100%; background-position:center; object-fit: cover">
                 <div class="text-wp">    
                     <div class="text-bg">
                         <div class="text-bg-2">

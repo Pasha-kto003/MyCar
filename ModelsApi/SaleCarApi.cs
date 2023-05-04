@@ -17,10 +17,20 @@ namespace ModelsApi
         public int? MinCount { get; set; }
         public CarApi Car { get; set; }
         public string? ColorCarForXaml { get => "#" + ColorCar; }
+        public string? Description { get; set; }
         public decimal? FullPrice { get => EquipmentPrice + Car.CarPrice; }
         //public string? MainPhotoCar { get => CarPhotos.FirstOrDefault(s=>s.); set; }
+
+        /// <summary>
+        /// Свойство для сайта 
+        /// </summary>
+        public string? FullName
+        {
+            get => Car.CarName;
+        }
         public string? MainPhotoCar { get; set; }
         public EquipmentApi Equipment { get; set; }
         public List<CarPhotoApi> CarPhotos { get; set; }
+        
     }
 }

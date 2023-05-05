@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<ModelsApi.SaleCarApi>
+@using ModelsApi
 @using MyCar.Web.Core;
 @{
     ViewData["Title"] = "Catalog";
@@ -78,6 +79,9 @@
                 </label>
              </section>
              <div style="display: none; background-color: #171717;" id="myDIV1">
+                 @{
+                     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+                  }
                 @foreach (var i in Model)
                 {
                     <div class="card mb-3" style="max-width: 100%; background-color: #171717;">
@@ -85,7 +89,7 @@
                             <div class="col-md-2">
                                 <img src="~/CarImages/@i.Car.PhotoCar" width="200px" height="150px" class="img-fluid rounded-start">
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-6">
                                 <div class="card-body">
                                   <div class="row">
                                     <div class="col-md-5">           
@@ -149,40 +153,53 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-3"> 
+                            <div class="col-md-4">
                                 <div class="row align-items-center justify-content-center">
-                                    <div class="h-100 col-5 text-center" style="align-items: center;">
+                                    <div class="h-100 col-6 text-center" style="align-items: center;">
                                         <img src="~/MarkImages/@i.Car.Model.MarkCar.MarkPhoto" width="75px" height="75px" class="img-fluid rounded-start" style="justify-content:center;">
                                     </div>
-                                    <div class="col-5 text-center align-items-center justify-content-center">
+                                    <div class="col-6 text-center align-items-center justify-content-center">
                                         <p class="text-white">Цена авто: </p>
                                         @{
+                                            var ware = warehousesCard.Where(s => s.SaleCarId == i.ID).ToList().Sum(s=> s.CountChange);
                                             ViewBag.DiscountPrice = DiscountCounter.GetDiscount(i);
-                                            if(ViewBag.DiscountPrice == 0)
+                                            if(ware.Value <= 0)
                                             {
-                                                ViewBag.DiscountPrice = null;
+                                                <h4 class="text-white">
+                                                    Отсутствует в продаже
+                                                </h4>
+                                                <div class="product-price">
+                                                </div>
                                             }
-                                            <div class="product-price">
-                                                @if(ViewBag.DiscountPrice != null)
+                                            else
+                                            {
+                                                if(ViewBag.DiscountPrice == 0)
                                                 {
-                                                    <p class="text-white">
-                                                        <s class="text-white">
-                                                            @i.FullPrice
-                                                        </s>
-                                                    </p>
+                                                    ViewBag.DiscountPrice = null;
+                                                }
+                                                <div class="product-price">
+                                                    @if(ViewBag.DiscountPrice != null)
+                                                    {
+                                                        <h4 class="text-white">
+                                                            <s class="text-white">
+                                                                @i.FullPrice
+                                                            </s>
+                                                        </h4>
 
-                                                }
-                                                else
-                                                {
-                                                    <p class="text-white">
-                                                        @i.FullPrice
-                                                    </p>
-                                                }
-                                                <p class="text-white">
-                                                    @ViewBag.DiscountPrice
-                                                </p>
-                                            </div>
-                                         }
+                                                    }
+                                                    else
+                                                    {
+                                                        <h4 class="text-white">
+                                                            @i.FullPrice
+                                                        </h4>
+                                                    }
+                                                    <h4 class="text-white">
+                                                        @ViewBag.DiscountPrice
+                                                    </h4>
+                                                </div>
+                                            }
+                                        
+                                        }
                                         <button class="btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-left:4px; margin-right:8px; flex-direction: row-reverse;" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                                                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
@@ -196,6 +213,9 @@
                 }
              </div>
             <div class="row" id="myDIV">
+                @{
+                    var warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+                }
                 @foreach (var i in Model)
                 {
                     <div class="col-md-6 col-lg-4 col-xl-3">
@@ -213,31 +233,44 @@
 
                                 <div class="product-addons-Details d-flex justify-content-between">
                                     @{
+                                        var ware = warehouses.Where(s => s.SaleCarId == i.ID).ToList().Sum(s=> s.CountChange);
                                         ViewBag.DiscountPrice = DiscountCounter.GetDiscount(i);
-                                        if(ViewBag.DiscountPrice == 0)
+                                        if(ware.Value <= 0)
                                         {
-                                            ViewBag.DiscountPrice = null;
+                                            <h2 class="text-white">
+                                                Отсутствует в продаже
+                                            </h2>
+                                            <div class="product-price">
+                                            </div>
                                         }
-                                        <div class="product-price">
-                                            @if(ViewBag.DiscountPrice != null)
+                                        else
+                                        {
+                                            if(ViewBag.DiscountPrice == 0)
                                             {
-                                                <h2 class="text-white">
-                                                    <s class="text-white">
-                                                        @i.FullPrice
-                                                    </s>
-                                                </h2>
+                                                ViewBag.DiscountPrice = null;
+                                            }
+                                            <div class="product-price">
+                                                @if(ViewBag.DiscountPrice != null)
+                                                {
+                                                    <h2 class="text-white">
+                                                        <s class="text-white">
+                                                            @i.FullPrice
+                                                        </s>
+                                                    </h2>
 
-                                            }
-                                            else
-                                            {
-                                                <h2 class="text-white">
-                                                    @i.FullPrice
-                                                </h2>
-                                            }
-                                            <h4 class="text-white">
-                                                @ViewBag.DiscountPrice
-                                            </h4>
-                                        </div>
+                                                }
+                                                else
+                                                {
+                                                    <h2 class="text-white">
+                                                        @i.FullPrice
+                                                    </h2>
+                                                }
+                                                <h4 class="text-white">
+                                                    @ViewBag.DiscountPrice
+                                                </h4>
+                                            </div>
+                                        }
+                                        
                                      }
                                     
 
@@ -266,7 +299,6 @@
                         </div>
                     </div>
                 }
-
             </div>
 
         </div>

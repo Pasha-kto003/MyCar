@@ -5,6 +5,8 @@ namespace MyCar.Web.Core
     public static class DiscountCounter
     {
         public static List<DiscountApi> Discounts { get; set; }
+        public static List<WareHouseApi> WareHouses { get; set; }
+
         public static decimal? GetDiscount(SaleCarApi saleCar)
         {
             var date = DateTime.Now;
@@ -31,6 +33,24 @@ namespace MyCar.Web.Core
                 return finalPrice;
             }
             return finalPrice;
+        }
+
+        public static decimal? GetCount(SaleCarApi saleCar) //данный метод сильно замедляет сайт
+        {
+            decimal? finalCount = 0;
+            if (saleCar != null)
+            {
+                Task.Run(GetWare).Wait();
+                var ware = WareHouses.Where(s => s.SaleCarId == saleCar.ID);
+                //var date = DateTime.Now;
+                if (ware != null)
+                {
+                    finalCount = ware.Sum(s => s.CountChange);
+                }
+
+                return finalCount;
+            }
+            return finalCount;
         }
 
         public static decimal? GetDiscountPrice(SaleCarApi saleCar)
@@ -60,6 +80,12 @@ namespace MyCar.Web.Core
         public static async Task GetList()
         {
             Discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
+            
+        }
+
+        private static async Task GetWare()
+        {
+            WareHouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
         }
     } 
 }

@@ -153,11 +153,11 @@ namespace MyCar.Web.Controllers
             //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
             List<OrderApi> thisOrders = Orders.OrderBy(s => s.DateOfOrder).ToList();
             List<WareHouseApi> WareHouseIns = thisOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(w => w.WareHouses).ToList();
-
+            
             WareHouseApi warehouse = new WareHouseApi
             {
                 SaleCarId = id,
-                CountChange = 1,
+                CountChange = -1,
                 Discount = 0,
                 SaleCar = car,
                 Price = price
@@ -167,6 +167,11 @@ namespace MyCar.Web.Controllers
             if (json != null)
                 orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
 
+            //проверка на количество
+            if(IsCanAddInOrder(car) == false)
+            {
+                return View("CarView", Cars);
+            }
             // Добавляем новый объект в список
             orderItemsOld.Add(warehouse);
 
@@ -196,6 +201,8 @@ namespace MyCar.Web.Controllers
             if (json != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
 
+            OrderItemsFill(orderItems);
+
             OrderApi order = new OrderApi
             {
                 UserId = user.ID,
@@ -207,13 +214,90 @@ namespace MyCar.Web.Controllers
                 Status = status,
                 User = user
             };
+
             await CreateOrder(order);
             orderItems.Clear();
             string json1 = JsonConvert.SerializeObject(orderItems);
             HttpContext.Session.SetString("OrderItem", json1);
+
             EmailSender emailSender = new EmailSender();
             emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
             return View("SuccsessOrder");
+        }
+
+        private void OrderItemsFill(List<WareHouseApi> orderItems)
+        {
+            //выбираем не отмененные заказы
+            List<OrderApi> orders = Orders.Where(o => o.Status.StatusName != "Отменен").ToList();
+
+            //сортируем что бы сначала стояли старые заказы (по методу FIFO(первым пришел - первым ушел) https://ru.wikipedia.org/wiki/FIFO)
+            List<OrderApi> thisOrders = orders.OrderBy(s => s.DateOfOrder).ToList();
+
+            //выбираем все вейрхаусы в поставках
+            List<WareHouseApi> WareHouseIns = thisOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(w => w.WareHouses).ToList();
+
+            //Назначаем говно для каждого WH 
+            foreach (WareHouseApi item in orderItems)
+            {
+                List<CountChangeHistoryApi> countChangeHistories = new List<CountChangeHistoryApi>();
+
+                //выбираем нужные вейрхаусы которые еще не закончились
+                List<WareHouseApi> ThisWareHouseIns = WareHouseIns.Where(
+                   s => s.SaleCarId == item.SaleCar.ID &&
+                   s.CountRemains > 0).ToList();
+
+                //переводим в массив
+                ThisWareHouseIns.ToArray();
+
+                //запоминаем количество которое надо забрать (countRemains - количество которое нам нужно)
+                int countRemains = (int)item.CountChange;
+
+                //заходим в цикл (пока не возьмем количество которое нам нужно)
+                for (int i = 0; countRemains > 0; i++)
+                {
+                    //запоминаем количество до вычитания
+                    int countRemainsBefore = countRemains;
+
+                    //вычитаем из того сколько нам надо значение остатка первой поставки
+                    countRemains -= ThisWareHouseIns[i].CountRemains;
+
+                    //проверяем если количества в поставке хватило
+                    if (countRemains <= 0)
+                    {
+                        //если хватило записываем countRemainsBefore (сколько надо было)
+                        countChangeHistories.Add(new CountChangeHistoryApi { Count = countRemainsBefore, WarehouseInId = ThisWareHouseIns[i].ID, WarehouseIn = ThisWareHouseIns[i] });
+                    }
+                    else
+                    {
+                        //если нет то ThisWareHouseIns[i].CountRemains (сколько было в поставке)
+                        countChangeHistories.Add(new CountChangeHistoryApi { Count = ThisWareHouseIns[i].CountRemains, WarehouseInId = ThisWareHouseIns[i].ID, WarehouseIn = ThisWareHouseIns[i] });
+                    }
+                    //повторяем
+                }
+                item.CountChange *= -1;
+                item.CountChangeHistories = countChangeHistories;
+            }
+        }
+
+        /// <summary>
+        /// Проверка на добавление в заказ авто
+        /// </summary>
+        private bool IsCanAddInOrder(SaleCarApi saleCar)
+        {
+            bool isAdd = false;
+            if (saleCar != null)
+            {
+                List<WareHouseApi> ThisWareHouseIns = Warehouses.Where(s => s.SaleCarId == saleCar.ID).ToList();
+                if (ThisWareHouseIns.Sum(s=> s.CountChange) > 1)
+                {
+                    return isAdd = true;
+                }
+                else
+                {
+                    return isAdd = false;
+                }
+            }
+            return isAdd;
         }
 
         public async Task CreateOrder(OrderApi orderApi)

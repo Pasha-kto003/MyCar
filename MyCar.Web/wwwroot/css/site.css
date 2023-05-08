@@ -2323,4 +2323,148 @@ margin: 20px 0 0;
     padding: 5px;
 }
 
+.gradient text {
+    font-family: Tahoma, sans-serif;
+    font-weight: bold;
+    text-anchor: middle;
+    background: #FF0000;
+    background: linear-gradient(to right, #FF0000 0%, #FFFF00 25%, #05C1FF 50%, #FFFF00 75%, #FF0000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sign-wrap-4 {
+    background-color: transparent;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+    .sign-wrap-4 .sign_word {
+        font-size: 40px;
+        font-weight: bold;
+        line-height: 50px;
+        color: #171717;
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #BFE2FF, 0 0 0.5em #BFE2FF, 0 0 0.1em #BFE2FF;
+    }
+
+        .sign-wrap-4 .sign_word span {
+            animation: neon-4 linear infinite 2s;
+        }
+
+@keyframes neon-4 {
+    78% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+
+    79% {
+        color: #ffffff;
+    }
+
+    80% {
+        text-shadow: none;
+    }
+
+    81% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+
+    82% {
+        color: #ffffff;
+        text-shadow: none;
+    }
+
+    83% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+
+    92% {
+        color: #ffffff;
+        text-shadow: none;
+    }
+
+    92.5% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+}
+
+.atuin-nav {
+    height: 80px;
+    top: 0;
+    left: 0;
+    background: #337AB7;
+    width: 100%;
+    font-family: Verdana, sans-serif;
+}
+
+.atuin-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+}
+
+.atuin-nav ul li {
+    margin: 0 10px;
+}
+
+.atuin-nav ul li a {
+    color: #BFE2FF;
+    display: inline-flex;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.atuin-nav ul li a:hover {
+    color: #FFF;
+}
+
+.atuin-nav ul li a.active {
+    border-bottom: 2px solid #FFF;
+    padding-bottom: 6px;
+    color: #FFF;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap');
+.learnMorebtn {
+    font-family: Roboto, sans-serif;
+    font-weight: 0;
+    font-size: 16px;
+    color: #000000;
+    background-color: #ffffff;
+    padding: 10px 30px;
+    border: solid #ffffff 2px;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 1px;
+    transition: 506ms;
+    transform: translateY(0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    text-transform: lowercase;
+}
+
+.learnMorebtn:hover {
+    transition: 506ms;
+    padding: 10px 30px;
+    transform: translateY(-0px);
+    background-color: #000000;
+    color: #ffffff;
+    border: solid 2px #ffffff;
+}
 

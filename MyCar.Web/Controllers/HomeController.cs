@@ -132,6 +132,11 @@ namespace MyCar.Web.Controllers
             return View("LexusGXView");
         }
 
+        public async Task<IActionResult> FutureCars()
+        {
+            return View("FutureCarView");
+        }
+
         public async Task<IActionResult> ToyotaCamryView()
         {
             return View("ToyotaCamryView");
@@ -186,7 +191,7 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            FullCars = cars.Where(s=> s.FullName.ToString().ToLower().Contains(SearchString)).ToList();
+            FullCars = cars.Where(s=> s.FullName.Contains(SearchString.ToLower())).ToList();
             return View("CarView", FullCars);
         }
 

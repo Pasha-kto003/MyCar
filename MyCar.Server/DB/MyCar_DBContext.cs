@@ -170,8 +170,6 @@ namespace MyCar.Server.DB
 
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
-
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.SaleCar)

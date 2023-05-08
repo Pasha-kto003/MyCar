@@ -83,7 +83,7 @@
                             <StackPanel Orientation="Vertical">
                                 <Label Content="{Binding AverageCheckNow}" FontSize="16" Height="31" FontFamily="Century Gothic" ContentStringFormat='{}{0:0.####}'/>
                                 <Label Content="{Binding AverageCheckCompare}" FontSize="16" Height="31" FontFamily="Century Gothic" ContentStringFormat='{}{0:0.####}'/>
-                                <Label Content="{Binding AverageCheckDifference}" Foreground="{Binding ProfitColor}" FontSize="16" Height="31" FontFamily="Century Gothic"/>
+                                <Label Content="{Binding AverageCheckDifference}" Foreground="{Binding AverageCheckColor}" FontSize="16" Height="31" FontFamily="Century Gothic"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -109,63 +109,33 @@
                             <StackPanel Orientation="Vertical">
                                 <Label Content="{Binding OrdersCountNow}" FontSize="16" Height="31" FontFamily="Century Gothic" ContentStringFormat='{}{0:0.####}'/>
                                 <Label Content="{Binding OrdersCountCompare}" FontSize="16" Height="31" FontFamily="Century Gothic" ContentStringFormat='{}{0:0.####}'/>
-                                <Label Content="{Binding OrdersCountDifference}" Foreground="{Binding ProfitColor}" FontSize="16" Height="31" FontFamily="Century Gothic"/>
+                                <Label Content="{Binding OrdersCountDifference}" Foreground="{Binding OrdersCountColor}" FontSize="16" Height="31" FontFamily="Century Gothic"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
                 </Border>
-                <!--<GroupBox Header="Прибыль:" Grid.Column="0" FontSize="18" Margin="5" Height="140" BorderThickness="2" Background="White" VerticalAlignment="Top">
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="Текущий период" FontSize="16"/>
-                        <Label Content="Период сравнения " FontSize="16"/>
-                        <Label Content="Разница" FontSize="16"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="{Binding ProfitNow}" FontSize="16" Height="31"/>
-                        <Label Content="{Binding ProfitCompare}" FontSize="16" Height="31"/>
-                        <Label Content="{Binding ProfitDifference}" Foreground="{Binding ProfitColor}" FontSize="16" Height="31"/>
-                    </StackPanel>
-                </StackPanel>
-
-            </GroupBox>-->
-                <!--<GroupBox Header="Средний чек:" Grid.Column="1" FontSize="18" Margin="5" Height="140" Background="White" VerticalAlignment="Top">
-                    <StackPanel Orientation="Horizontal" >
-                        <StackPanel Orientation="Vertical">
-                            <Label Content="Текущий период" FontSize="16"/>
-                            <Label Content="Период сравнения " FontSize="16"/>
-                            <Label Content="Разница" FontSize="16"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <Label Content="{Binding AverageCheckNow}" FontSize="16" Height="31"/>
-                            <Label Content="{Binding AverageCheckCompare}" FontSize="16" Height="31"/>
-                            <Label Content="{Binding AverageCheckDifference}" FontSize="16" Foreground="{Binding AverageCheckColor}" Height="31"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                </GroupBox>
-                <GroupBox Header="Кол-во продаж:" Grid.Column="2" FontSize="18" Margin="5" Height="140" Background="White" VerticalAlignment="Top">
-                    <StackPanel Orientation="Horizontal" >
-                        <StackPanel Orientation="Vertical">
-                            <Label Content="Текущий период" FontSize="16"/>
-                            <Label Content="Период сравнения " FontSize="16"/>
-                            <Label Content="Разница" FontSize="16"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <Label Content="{Binding OrdersCountNow}" FontSize="16" Height="31"/>
-                            <Label Content="{Binding OrdersCountCompare}" FontSize="16" Height="31"/>
-                            <Label Content="{Binding OrdersCountDifference}" FontSize="16" Foreground="{Binding OrdersCountColor}" Height="31"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                </GroupBox>-->
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition  Width="5*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-               
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Топ 5 самых продаваемых авто:" FontSize="16" Height="31" FontFamily="Century Gothic" Grid.Row="0"/>
+                    <lvc:CartesianChart Series="{Binding CartesianSeries}" FontSize="18" LegendPosition="Bottom" Height="Auto" XAxes="{Binding XAxes}" Grid.Row="1"></lvc:CartesianChart>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Количество заказов:" FontSize="16" Height="31" FontFamily="Century Gothic" Grid.Row="0"/>
+                    <lvc:PieChart Series="{Binding PieSeries}" FontSize="18" LegendPosition="Bottom" Foreground="Black" Height="Auto" Grid.Row="1"/>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

@@ -104,9 +104,8 @@ namespace MyCar.Desktop.ViewModels
         public int OrdersCountNow { get; set; }
         public int OrdersCountCompare { get; set; }
 
-        List<StatusApi> Statuses = new List<StatusApi>();
+        List<CarApi> Cars = new List<CarApi>();
         List<OrderApi> Orders = new List<OrderApi>();
-        List<ActionTypeApi> ActionTypes = new List<ActionTypeApi>();
         List<WareHouseApi> Warehouses = new List<WareHouseApi>();
         List<CountChangeHistoryApi> CountChangeHistories= new List<CountChangeHistoryApi>();
 
@@ -117,8 +116,7 @@ namespace MyCar.Desktop.ViewModels
 
         private async Task GetList()
         {
-            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
-            ActionTypes = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
+            Cars = await Api.GetListAsync<List<CarApi>>("Car");
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             Warehouses = Orders.Where(s => s.Status.StatusName != "Отменен").SelectMany(w => w.WareHouses).ToList();
             CountChangeHistories = await Api.GetListAsync<List<CountChangeHistoryApi>>("CountChangeHistory");
@@ -222,6 +220,8 @@ namespace MyCar.Desktop.ViewModels
                 AverageCheckColor = "#000000";
             }
 
+            GeneratePieChart();
+            GenerateCartesianChart();
         }
 
         private decimal ProfitCalc(List<OrderApi> orderlList)
@@ -239,6 +239,68 @@ namespace MyCar.Desktop.ViewModels
             }
             return profit;
         }
+        private void GeneratePieChart()
+        {
+            var ValidOrders = Orders.Where(s => s.Status.StatusName != "Отменен" && s.DateOfOrder?.Year == DateNow.Year && s.DateOfOrder?.Month == DateNow.Month);
+            //var data = new double[] { ValidOrders.Where(s => s.ActionType.ActionTypeName == "Продажа").Count(), ValidOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").Count(), ValidOrders.Where(s => s.ActionType.ActionTypeName == "Списание").Count() };
 
+            PieSeries = new ISeries[]
+            {
+                new PieSeries<double> { Values = new double[] { ValidOrders.Where(s=>s.ActionType.ActionTypeName == "Продажа").Count() },
+                    Name = "Продажа", DataLabelsPaint=new SolidColorPaint(SKColors.Black), DataLabelsFormatter = p=> $"{p.StackedValue.Share:P2}", Fill = new SolidColorPaint(new SKColor(244,67,54)),},
+
+                new PieSeries<double> { Values = new double[] { ValidOrders.Where(s=>s.ActionType.ActionTypeName == "Поступление").Count() },
+                    Name = "Поступление", DataLabelsPaint=new SolidColorPaint(SKColors.Black), DataLabelsFormatter = p=> $"{p.StackedValue.Share:P2}", Fill = new SolidColorPaint(new SKColor(139,195,74)),},
+
+                new PieSeries<double> { Values = new double[] { ValidOrders.Where(s=>s.ActionType.ActionTypeName == "Списание").Count() },
+                    Name = "Списание",  DataLabelsPaint=new SolidColorPaint(SKColors.Black), DataLabelsFormatter = p=> $"{p.StackedValue.Share:P2}", Fill = new SolidColorPaint(new SKColor(33,150,243)),},
+            };
+        }
+
+        private void GenerateCartesianChart()
+        {
+            var ValidWarehouseOuts = Orders.Where(s => s.Status.StatusName != "Отменен" 
+            && s.ActionType.ActionTypeName == "Продажа"
+            && s.DateOfOrder?.Year == DateNow.Year 
+            && s.DateOfOrder?.Month == DateNow.Month).SelectMany(w=>w.WareHouses).ToList();
+
+
+            var groupedSales = ValidWarehouseOuts.GroupBy(sale => sale.SaleCar.CarId)
+                               .Select(group => new { CarId = group.Key, TotalQuantity = group.Sum(sale => sale.CountChange * -1) })
+                               .OrderByDescending(group => group.TotalQuantity)
+                               .Take(5);
+
+            List<double> Counts = new List<double>();
+            List<string> Labels = new List<string>();
+
+            foreach (var item in groupedSales)
+            {
+                Counts.Add((double)item.TotalQuantity);
+
+                Labels.Add(Cars.FirstOrDefault(s=>s.ID == item.CarId).CarName);
+            }
+
+            CartesianSeries = new ISeries[]
+            {
+                  new ColumnSeries<double>
+                  {
+                       Name = "Количество",
+                       Values = Counts.ToArray(),
+                       Fill = new SolidColorPaint(new SKColor(63,81,181))
+                  },
+            };
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Labels = Labels.ToArray(),
+                }
+            };
+        }
+
+        public Axis[] XAxes { get; set; }
+        public ISeries[] CartesianSeries { get; set; }
+
+        public IEnumerable<ISeries> PieSeries { get; set; }
     }
 }

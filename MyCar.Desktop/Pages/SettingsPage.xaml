@@ -81,11 +81,6 @@
                         <Setter Property="CornerRadius" Value="10"/>
                     </Style>
                 </ListBox.Resources>
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Удалить" Command="{Binding RemoveOrderColor}"/>
-                    </ContextMenu>
-                </ListBox.ContextMenu>
             </ListBox>
         </Grid>
         

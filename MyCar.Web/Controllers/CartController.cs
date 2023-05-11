@@ -138,7 +138,7 @@ namespace MyCar.Web.Controllers
             return View("DetailsOrder", order);
         }
 
-        public async Task<IActionResult> AddOrder(int id)
+        public async Task<IActionResult> AddOrder(int id, int? id2)
         {
             await GetOrders();
             List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
@@ -157,7 +157,7 @@ namespace MyCar.Web.Controllers
             WareHouseApi warehouse = new WareHouseApi
             {
                 SaleCarId = id,
-                CountChange = -1,
+                CountChange = id2,
                 Discount = 0,
                 SaleCar = car,
                 Price = price
@@ -168,10 +168,7 @@ namespace MyCar.Web.Controllers
                 orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
 
             //проверка на количество
-            if(IsCanAddInOrder(car) == false)
-            {
-                return View("CarView", Cars);
-            }
+            
             // Добавляем новый объект в список
             orderItemsOld.Add(warehouse);
 
@@ -184,6 +181,24 @@ namespace MyCar.Web.Controllers
             string json2 = HttpContext.Session.GetString("OrderItem");
             if (json2 != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
+            return View("DetailsCart", orderItems);
+        }
+
+        public async Task<IActionResult> UpdateCountCar(int id, int CountChange)
+        {
+            await GetOrders();
+            var orderItems = new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s=> s.ID == id);
+            car.CountChange = CountChange;
+            if (IsCanAddInOrder(car) == false)
+            {
+                ViewBag.ErrorMes = "Превышено кол-во транспортных средств";
+                return View("DetailsCarView", car.ID);
+            }
+            await AddOrder(car.ID, car.CountChange);
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
             return View("DetailsCart", orderItems);
         }
 
@@ -250,13 +265,13 @@ namespace MyCar.Web.Controllers
                 ThisWareHouseIns.ToArray();
 
                 //запоминаем количество которое надо забрать (countRemains - количество которое нам нужно)
-                int countRemains = (int)item.CountChange;
+                int? countRemains = (int?)item.CountChange;
 
                 //заходим в цикл (пока не возьмем количество которое нам нужно)
                 for (int i = 0; countRemains > 0; i++)
                 {
                     //запоминаем количество до вычитания
-                    int countRemainsBefore = countRemains;
+                    int? countRemainsBefore = countRemains;
 
                     //вычитаем из того сколько нам надо значение остатка первой поставки
                     countRemains -= ThisWareHouseIns[i].CountRemains;
@@ -288,7 +303,7 @@ namespace MyCar.Web.Controllers
             if (saleCar != null)
             {
                 List<WareHouseApi> ThisWareHouseIns = Warehouses.Where(s => s.SaleCarId == saleCar.ID).ToList();
-                if (ThisWareHouseIns.Sum(s=> s.CountChange) > 1)
+                if (ThisWareHouseIns.Sum(s=> s.CountChange) >= saleCar.CountChange)
                 {
                     return isAdd = true;
                 }

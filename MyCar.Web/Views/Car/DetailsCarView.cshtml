@@ -1,9 +1,10 @@
 ﻿@using ModelsApi
 @using MyCar.Web.Core
-
+@{
+}
 @model ModelsApi.SaleCarApi
 @{
-    ViewData["Title"] = "DetailsCarView";
+    ViewData["Title"] = $"Выбранное авто {Model.FullName}";
 }
     <div class="container-fluid mt-5"> 
         <div class="row w-100">
@@ -11,7 +12,6 @@
                 <h2 style="color: white;">
                     @Model.Car.CarName
                 </h2>
-                <h4 style="color: white;">Наша платформа шаблонов позволит максимально увеличить доступность вашего инвентаря в Интернете.</h4>
             </div>
             <div class="col-3">
                 @{
@@ -61,12 +61,57 @@
                 {
                     <div class="glass-btn glass-btn-gray">
                         <a href="#url">Отсутсвует</a>
-                    </div>
-                }
-                else
-                {
-                    <div class="glass-btn glass-btn-red">
-                        <a asp-action="AddOrder" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
+                </div>
+            }
+            else
+            {
+                <div class="glass-btn glass-btn-red">
+                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="stretched-link" style="color: black;">Приобрести</a>
+                </div>
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="max-width: 700px; width: 700px;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row row-cols-1 w-100">
+                                    <div class="col" style="text-align: center;">
+                                        Кол-во:
+                                    </div>
+                                </div>
+                                <div class="row row-cols-1 w-100">
+                                    <div class="col">
+                                        <form asp-action="UpdateCountCar" asp-route-id="@Model.ID" asp-controller="Cart" method="post">
+                                            <p class="text-danger">@ViewBag.ErrorMes</p>
+                                            <input type="number" min="0" step="1" onkeydown="return false" name="CountChange"/>
+                                            <div class="row-cols-2 w-100" style="display: flex;">
+                                                <div class="col-6">
+                                                    <div class="glass-btn glass-btn-red">
+                                                        <input readonly data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" value="Отмена" style="color: black;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="glass-btn glass-btn-red">
+                                                        <input readonly type="submit" class="stretched-link" value="Приобрести" style="color: black;">Приобрести>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                                @*<div class="modal-footer">
+                                    <div class="glass-btn glass-btn-red">
+                                        <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" style="color: black;">Отмена</a>
+                                    </div>
+                                    <div class="glass-btn glass-btn-green">
+                                        <a asp-action="UpdateCountCar" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
@@ -258,11 +303,11 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                         @Model.FullPrice
                                     </h2>
                                 }
-                                    <h4 class="text-white">
-                                        @ViewBag.DiscountPrice
-                                    </h4>
+                                <h4 class="text-white">
+                                    @ViewBag.DiscountPrice
+                                </h4>
                                 </div>
-                        }
+                            }
                         </div>
                         <div class="col-9 justify-content-center">
                             <img src="~/CarImages/@cars.Car.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>

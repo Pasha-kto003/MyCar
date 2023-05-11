@@ -3,7 +3,7 @@
 @model IEnumerable<ModelsApi.SaleCarApi>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Главная страница";
     var models = Model.Where(s=> s.Car.BodyType.TypeName.Contains("Седан"));
 }
 

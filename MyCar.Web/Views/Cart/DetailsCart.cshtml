@@ -1,5 +1,11 @@
-﻿@using MyCar.Web.Core
+﻿@using ModelsApi
+@using MyCar.Web.Core
+@using Newtonsoft.Json
 @model IEnumerable<ModelsApi.WareHouseApi>
+
+@{
+    List<WareHouseApi> orderItems = new List<WareHouseApi>();
+}
 
 <div class="container-fluid">
 
@@ -103,13 +109,13 @@
                                                 }
                                                 <h4 class="row text-white">&euro; @price</h4>
                                             </div>
-
+                                            <div class="col m-3 text-white">
+                                                @car.CountChange
+                                            </div>
                                             <div class="col m-3 d-flex justify-content-center align-items-center">
                                                 <button asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.ID" type="button" class="btn btn-danger">Убрать</button>
                                             </div>
-
                                         </div>
-
                                     </div>
                                     <hr style="color: white;"/>
                                 }
@@ -117,8 +123,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </section>
     </div>

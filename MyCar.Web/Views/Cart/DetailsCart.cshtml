@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-md-4 col-lg-6">
                         @{
-                            var sum = @Model.Sum(s => s.Price);
+                            var sum = @Model.Sum(s => s.Price * s.CountChange);
                          }
                         <h4 class="text-white">Сумма заказа: @sum</h4>
                     </div>

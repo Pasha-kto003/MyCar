@@ -12,7 +12,6 @@ namespace MyCar.Server.DB
                 StartDate = discount.StartDate,
                 EndDate = discount.EndDate,
                 DiscountValue = discount.DiscountValue,
-                Price = discount.Price,
                 SaleCarId = discount.SaleCarId
             };
         }
@@ -25,7 +24,6 @@ namespace MyCar.Server.DB
                 StartDate = discount.StartDate,
                 EndDate = discount.EndDate,
                 DiscountValue = discount.DiscountValue,
-                Price = discount.Price,
                 SaleCarId = discount.SaleCarId
             };
         }

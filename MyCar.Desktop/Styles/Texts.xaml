@@ -6,6 +6,31 @@
         <ResourceDictionary Source="Colors.xaml"/>
         <ResourceDictionary Source="Fonts.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="Border" x:Key="BorderCard">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(LinearGradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                 To="WhiteSmoke" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(LinearGradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                 To="{StaticResource LightValorantRed}" Duration="0:0:0.3"/>
+                            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(LinearGradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                 To="{StaticResource LightValorantRed}" Duration="0:0:0.3" BeginTime="0:0:0.3" FillBehavior="Stop"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     
     <SolidColorBrush x:Key="BrushStyle" Color="WhiteSmoke"/>
     

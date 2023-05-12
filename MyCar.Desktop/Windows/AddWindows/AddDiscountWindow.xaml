@@ -5,20 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows.AddWindows"
         mc:Ignorable="d"
-        Title="AddDiscountWindow" Height="500" Width="400">
+        Title="AddDiscountWindow" Height="400" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Grid Background="WhiteSmoke">
         <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="50"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition />
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical" Margin="5">
+                    <Label Content="Авто" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <ComboBox ItemsSource="{Binding DiscountCars}" SelectedItem="{Binding SelectedCar}" DisplayMemberPath="Car.CarName" Style="{StaticResource ComboBoxFlatStyle}" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical" Margin="5"> 
+                    <Label Content="Стоимость авто" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <Label  Content="{Binding SelectedCar.FullPrice, StringFormat={}{0:N2} ₽}"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                    <Label Content="Значение скидки" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBox VerticalContentAlignment="Center" Text="{Binding DiscountValue, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <Label Content="₽" Margin="0 0 0 5" HorizontalContentAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBox VerticalContentAlignment="Center" Text="{Binding PercentValue, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <Label Content="%" Margin="0 0 0 5" HorizontalContentAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <!--<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                     <Label Content="Значение скидки" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -28,8 +52,8 @@
                         <TextBox DataContext="{Binding AddDiscountVM}" Text="{Binding DiscountValue}" Margin="0 5 0 0" FontSize="16"/>
                         <Label Content="%" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
                     </Grid>
-                </StackPanel>
-                <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                </StackPanel>-->
+                <!--<StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                     <Label Content="Значение скидки" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -39,20 +63,22 @@
                         <TextBox DataContext="{Binding AddDiscountVM}" Text="{Binding Price}" Margin="0 5 0 0" FontSize="16"/>
                         <Label Content="Р." Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
                     </Grid>
+                </StackPanel>-->
+                <StackPanel Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
+                    <Label Content="Итоговая стоимость" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <Label Content="{Binding FinalPrice}" HorizontalAlignment="Center" VerticalAlignment="Center" ContentStringFormat='{}{0:0.###}' FontSize="16"/>
                 </StackPanel>
-                <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
+                <StackPanel Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
                     <Label Content="Дата начала скидки" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
-                    <DatePicker DataContext="{Binding AddDiscountVM}" SelectedDate="{Binding StartDate}"/>
+                    <DatePicker DataContext="{Binding AddDiscountVM}" SelectedDate="{Binding StartDate}" Width="150" IsTodayHighlighted="False"
+                                CalendarStyle="{DynamicResource DatepickerCalendarStyle}" FontSize="16"/>
                 </StackPanel>
-                <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
+                <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
                     <Label Content="Дата конца скидки" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
-                    <DatePicker DataContext="{Binding AddDiscountVM}" SelectedDate="{Binding EndDate}"/>
+                    <DatePicker DataContext="{Binding AddDiscountVM}" SelectedDate="{Binding EndDate}" Width="150" IsTodayHighlighted="False"
+                                CalendarStyle="{DynamicResource DatepickerCalendarStyle}" FontSize="16"/>
                 </StackPanel>
-                <StackPanel Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
-                    <Label Content="Авто" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
-                    <ComboBox ItemsSource="{Binding DiscountCars}" SelectedItem="{Binding SelectedCar}" DisplayMemberPath="Car.CarName" Style="{StaticResource ComboBoxFlatStyle}" FontSize="16"/>
-                </StackPanel>
-                <Grid Grid.Row="5">
+                <Grid Grid.Row="5" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>

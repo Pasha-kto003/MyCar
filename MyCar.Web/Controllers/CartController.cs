@@ -229,6 +229,12 @@ namespace MyCar.Web.Controllers
             }
             OrderItemsFill(orderItems);
 
+            //Проверка на количество
+            //Сделать метод который будет считать хватает ли количества на складе, если не хватает то убираем из orderItems и можно вывести сообщение что этого не хватает 
+            //
+
+            OrderItemsFill(orderItems);
+
             OrderApi order = new OrderApi
             {
                 UserId = user.ID,
@@ -242,6 +248,7 @@ namespace MyCar.Web.Controllers
             };
 
             await CreateOrder(order);
+
             orderItems.Clear();
             string json1 = JsonConvert.SerializeObject(orderItems);
             HttpContext.Session.SetString("OrderItem", json1);

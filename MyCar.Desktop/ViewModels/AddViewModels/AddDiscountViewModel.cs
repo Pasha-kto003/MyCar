@@ -12,6 +12,32 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddDiscountViewModel : BaseViewModel
     {
+        public decimal FinalPrice { get; set; }
+
+
+        private decimal discountValue;
+        public decimal DiscountValue
+        {
+            get => discountValue;
+            set
+            {
+                discountValue = value;
+                CalculatePercentValue();
+                SignalChanged(nameof(discountValue));
+            }
+        }
+
+        private decimal percentValue;
+        public decimal PercentValue
+        {
+            get => percentValue;
+            set
+            {
+                percentValue = value;
+                CalculateDiscountValue();
+                SignalChanged(nameof(percentValue));
+            }
+        }
         public CustomCommand SaveDiscount { get; set; }
         public CustomCommand Cancel { get; set; }
 
@@ -24,6 +50,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             set
             {
                 selectedCar = value;
+                CalculatePercentValue();
+                UpdateFullPrice();
                 SignalChanged(nameof(selectedCar));
             }
         }
@@ -48,7 +76,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     Price = discount.Price,
                     SaleCarId = discount.SaleCarId
                 };
-
+                DiscountValue = AddDiscountVM.Price ?? 0;
                 SelectedCar = DiscountCars.FirstOrDefault(s => s.ID == AddDiscountVM.SaleCarId);
             }
 
@@ -93,7 +121,21 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 UIManager.CloseWindow(this);
             });
         }
-
+        
+        private void CalculateDiscountValue()
+        {
+            DiscountValue = (PercentValue / 100) * (decimal)SelectedCar.FullPrice;
+            UpdateFullPrice();
+        }
+        private void CalculatePercentValue()
+        {
+            PercentValue = Math.Round((DiscountValue / (decimal)SelectedCar.FullPrice) * 100, 2);
+            UpdateFullPrice();
+        }
+        private void UpdateFullPrice()
+        {
+            FinalPrice = Math.Round((decimal)SelectedCar.FullPrice - DiscountValue, 2);
+        }
         public async Task AddDiscount(DiscountApi discount)
         {
             var discountApi = await Api.PostAsync<DiscountApi>(discount, "Discount");

@@ -14,11 +14,12 @@ namespace MyCar.Web.Controllers
 
         public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
 
+
+        public List<StatusApi> Statuses { get; set; } = new List<StatusApi>();
+
         public List<UserApi> Users { get; set; } = new List<UserApi>();
 
         public List<ActionTypeApi> Types { get; set; }
-
-        public List<StatusApi> Statuses { get; set; }
 
         public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
         // GET: CartController
@@ -167,6 +168,13 @@ namespace MyCar.Web.Controllers
             if (json != null)
                 orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
 
+            //проверка на схожие авто
+            var carSearch = orderItemsOld.FirstOrDefault(s => s.SaleCarId == id);
+            if(carSearch != null)
+            {
+                return View("DetailsCarView", car.ID);
+            }
+
             //проверка на количество
             
             // Добавляем новый объект в список
@@ -215,15 +223,18 @@ namespace MyCar.Web.Controllers
             string json = HttpContext.Session.GetString("OrderItem");
             if (json != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
-
+            foreach(var ware in orderItems)
+            {
+                ware.CountChange = ware.CountChange;
+            }
             OrderItemsFill(orderItems);
 
             OrderApi order = new OrderApi
             {
                 UserId = user.ID,
-                DateOfOrder = DateTime.Now,
-                ActionTypeId = 2,
-                StatusId = 2,
+                DateOfOrder = DateTime.Now, 
+                ActionTypeId = actionType.ID,
+                StatusId = status.ID,
                 WareHouses = orderItems,
                 ActionType = actionType,
                 Status = status,

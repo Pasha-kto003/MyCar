@@ -20,9 +20,9 @@
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                     if(ware.Value <= 0)
                     {
-                                    <h3 class="text-white text-center" style="text-align: center;">
-                                        Отсутствует в продаже
-                                    </h3>
+                        <h3 class="text-white text-center" style="text-align: center;">
+                            Отсутствует в продаже
+                        </h3>
                     }
                     else
                     {
@@ -30,25 +30,25 @@
                         {
                             ViewBag.DiscountPrice = null;
                         }
-                                    <div class="product-price">
-                                    @if(ViewBag.DiscountPrice != null)
+                        <div class="product-price">
+                        @if(ViewBag.DiscountPrice != null)
                         {
-                                        <h2 class="text-white" style="text-align: center;">
-                                            <s class="text-white">
-                                                @Model.FullPrice
-                                            </s>
-                                        </h2>
+                            <h2 class="text-white" style="text-align: center;">
+                                <s class="text-white">
+                                    @Model.FullPrice
+                                </s>
+                            </h2>
                         }
                         else
                         {
-                                        <h2 class="text-white" style="text-align: center;">
-                                            @Model.FullPrice
-                                        </h2>
+                            <h2 class="text-white" style="text-align: center;">
+                                @Model.FullPrice
+                            </h2>
                         }
-                                        <h4 class="text-white" style="text-align: center;">
-                                            @ViewBag.DiscountPrice
-                                        </h4>
-                                    </div>
+                            <h4 class="text-white" style="text-align: center;">
+                                @ViewBag.DiscountPrice
+                            </h4>
+                        </div>
                     }
                     
                 }
@@ -292,25 +292,25 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 {
                                     ViewBag.DiscountPrice = null;
                                 }
-                                            <div class="product-price">
-                                            @if(ViewBag.DiscountPrice != null)
+                                <div class="product-price">
+                                @if(ViewBag.DiscountPrice != null)
                                 {
-                                                <h3 class="text-white">
-                                                    <s class="text-white">
-                                                        @Model.FullPrice
-                                                    </s>
-                                                </h3>
+                                    <h3 class="text-white">
+                                        <s class="text-white">
+                                            @Model.FullPrice
+                                        </s>
+                                    </h3>
                                 }
                                 else
                                 {
-                                                <h2 class="text-white">
-                                                    @Model.FullPrice
-                                                </h2>
+                                    <h2 class="text-white">
+                                        @Model.FullPrice
+                                    </h2>
                                 }
-                                            <h4 class="text-white">
-                                                @ViewBag.DiscountPrice
-                                            </h4>
-                                            </div>
+                                <h4 class="text-white">
+                                    @ViewBag.DiscountPrice
+                                </h4>
+                                </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">
@@ -331,7 +331,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                         </div>
                         <div class="col-6 text-white">
                             <h3>ЛУЧШИЙ В КЛАССЕ V8</h3>
-                            <p style="font-size: 14px;">Мощный 472-сильный* 5,0-литровый двигатель — это не только единственный безнаддувный двигатель V8 в своем классе*, но и самый мощный двигатель Lexus V8 за всю историю. RC F издает хриплый, специально настроенный звук впуска и выхлопа, когда он кричит до впечатляющей красной черты в 7300 об/мин.</p>
+                            <p style="font-size: 14px;">@Model.Description</p>
                         </div>
                     </div>
                     <div class="row w-50">

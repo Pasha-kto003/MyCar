@@ -31,6 +31,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
         public List<StatusApi> Statuses { get; set; }
         public List<UserApi> Users { get; set; }
+        public List<OrderApi> Orders { get; set; }
         public List<ActionTypeApi> ActionTypes { get; set; }
         public OrderApi AddOrderVM { get; set; }
 
@@ -72,12 +73,16 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             if (AddOrderVM.Status.StatusName == "Отменен" && AddOrderVM.ActionType.ActionTypeName == "Поступление")
             {
-                if (CountChangeHistories.Any(c => ThisWarehouses.Any(s => s.ID == c.WarehouseInId)))
-                {
-
-                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Нельзя отменить заказ который участвовал в других заказах!" });
-                        return;
-                }
+                 foreach (var WH in ThisWarehouses)
+                 {
+                     var countChange = CountChangeHistories.FirstOrDefault(s => s.WarehouseInId == WH.ID);
+                        if (countChange == null)
+                            continue;
+                        if (Orders.First(s => s.WareHouses.Any(w => w.ID == countChange.WarehouseOutId)).Status.StatusName == "Отменен")
+                            continue;
+                       UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Нельзя отменить заказ который участвовал в других заказах!" });
+                       return;
+                 }
             }
 
                 AddOrderVM.WareHouses = ThisWarehouses.ToList();
@@ -107,7 +112,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         }
         private async Task GetList()
         {
-            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Warehouses = Orders.SelectMany(o => o.WareHouses).ToList();
             ActionTypes = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
             Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
             Users = await Api.GetListAsync<List<UserApi>>("User");

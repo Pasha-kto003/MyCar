@@ -14,11 +14,12 @@ namespace MyCar.Web.Controllers
 
         public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
 
+
+        public List<StatusApi> Statuses { get; set; } = new List<StatusApi>();
+
         public List<UserApi> Users { get; set; } = new List<UserApi>();
 
         public List<ActionTypeApi> Types { get; set; }
-
-        public List<StatusApi> Statuses { get; set; }
 
         public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
         // GET: CartController
@@ -138,7 +139,7 @@ namespace MyCar.Web.Controllers
             return View("DetailsOrder", order);
         }
 
-        public async Task<IActionResult> AddOrder(int id)
+        public async Task<IActionResult> AddOrder(int id, int? id2)
         {
             await GetOrders();
             List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
@@ -153,11 +154,11 @@ namespace MyCar.Web.Controllers
             //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
             List<OrderApi> thisOrders = Orders.OrderBy(s => s.DateOfOrder).ToList();
             List<WareHouseApi> WareHouseIns = thisOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(w => w.WareHouses).ToList();
-
+            
             WareHouseApi warehouse = new WareHouseApi
             {
                 SaleCarId = id,
-                CountChange = 1,
+                CountChange = id2,
                 Discount = 0,
                 SaleCar = car,
                 Price = price
@@ -167,6 +168,15 @@ namespace MyCar.Web.Controllers
             if (json != null)
                 orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
 
+            //проверка на схожие авто
+            var carSearch = orderItemsOld.FirstOrDefault(s => s.SaleCarId == id);
+            if(carSearch != null)
+            {
+                return View("DetailsCarView", car.ID);
+            }
+
+            //проверка на количество
+            
             // Добавляем новый объект в список
             orderItemsOld.Add(warehouse);
 
@@ -179,6 +189,24 @@ namespace MyCar.Web.Controllers
             string json2 = HttpContext.Session.GetString("OrderItem");
             if (json2 != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
+            return View("DetailsCart", orderItems);
+        }
+
+        public async Task<IActionResult> UpdateCountCar(int id, int CountChange)
+        {
+            await GetOrders();
+            var orderItems = new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s=> s.ID == id);
+            car.CountChange = CountChange;
+            if (IsCanAddInOrder(car) == false)
+            {
+                ViewBag.ErrorMes = "Превышено кол-во транспортных средств";
+                return View("DetailsCarView", car.ID);
+            }
+            await AddOrder(car.ID, car.CountChange);
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
             return View("DetailsCart", orderItems);
         }
 
@@ -195,6 +223,11 @@ namespace MyCar.Web.Controllers
             string json = HttpContext.Session.GetString("OrderItem");
             if (json != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            foreach(var ware in orderItems)
+            {
+                ware.CountChange = ware.CountChange;
+            }
+            OrderItemsFill(orderItems);
 
             //Проверка на количество
             //Сделать метод который будет считать хватает ли количества на складе, если не хватает то убираем из orderItems и можно вывести сообщение что этого не хватает 
@@ -205,9 +238,9 @@ namespace MyCar.Web.Controllers
             OrderApi order = new OrderApi
             {
                 UserId = user.ID,
-                DateOfOrder = DateTime.Now,
-                ActionTypeId = 2, //изменить такие штуки не на айди 
-                StatusId = 2,
+                DateOfOrder = DateTime.Now, 
+                ActionTypeId = actionType.ID,
+                StatusId = status.ID,
                 WareHouses = orderItems,
                 ActionType = actionType,
                 Status = status,
@@ -250,13 +283,13 @@ namespace MyCar.Web.Controllers
                 ThisWareHouseIns.ToArray();
 
                 //запоминаем количество которое надо забрать (countRemains - количество которое нам нужно)
-                int countRemains = (int)item.CountChange;
+                int? countRemains = (int?)item.CountChange;
 
                 //заходим в цикл (пока не возьмем количество которое нам нужно)
                 for (int i = 0; countRemains > 0; i++)
                 {
                     //запоминаем количество до вычитания
-                    int countRemainsBefore = countRemains;
+                    int? countRemainsBefore = countRemains;
 
                     //вычитаем из того сколько нам надо значение остатка первой поставки
                     countRemains -= ThisWareHouseIns[i].CountRemains;
@@ -279,7 +312,28 @@ namespace MyCar.Web.Controllers
             }
         }
 
-            public async Task CreateOrder(OrderApi orderApi)
+        /// <summary>
+        /// Проверка на добавление в заказ авто
+        /// </summary>
+        private bool IsCanAddInOrder(SaleCarApi saleCar)
+        {
+            bool isAdd = false;
+            if (saleCar != null)
+            {
+                List<WareHouseApi> ThisWareHouseIns = Warehouses.Where(s => s.SaleCarId == saleCar.ID).ToList();
+                if (ThisWareHouseIns.Sum(s=> s.CountChange) >= saleCar.CountChange)
+                {
+                    return isAdd = true;
+                }
+                else
+                {
+                    return isAdd = false;
+                }
+            }
+            return isAdd;
+        }
+
+        public async Task CreateOrder(OrderApi orderApi)
         {
             var order = await Api.PostAsync<OrderApi>(orderApi, "Order");
         }

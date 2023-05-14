@@ -22,12 +22,18 @@ namespace ModelsApi
         //public string? MainPhotoCar { get => CarPhotos.FirstOrDefault(s=>s.); set; }
 
         /// <summary>
-        /// Свойство для сайта 
+        /// Свойство для поиска на сайте 
         /// </summary>
         public string? FullName
         {
             get => Car.CarName;
         }
+
+        /// <summary>
+        /// Свойство для подсчета на сайте 
+        /// </summary>
+        public int? CountChange { get; set; } = 0;
+
         public string? MainPhotoCar { get; set; }
         public EquipmentApi Equipment { get; set; }
         public List<CarPhotoApi> CarPhotos { get; set; }

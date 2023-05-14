@@ -10,6 +10,9 @@ namespace MyCar.Desktop.Core
     public static class DiscountCounter
     {
         public static List<DiscountApi> Discounts { get; set; }
+        /// <summary>
+        /// Рассчет цены машины после скидки
+        /// </summary>
         public static decimal? GetDiscount(SaleCarApi saleCar)
         {
             var date = DateTime.Now;
@@ -18,16 +21,18 @@ namespace MyCar.Desktop.Core
             {
                 Task.Run(GetList).Wait();
                 var discount = Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.ID);
+                //var date = DateTime.Now;
                 if (discount != null)
                 {
-                    if (discount.DiscountValue > 0 && discount.Price == 0)
-                    {
-                        var diff = saleCar.FullPrice * discount.DiscountValue / 100;
-                        finalPrice = saleCar.FullPrice - diff;
-                    }
-                    if (discount.DiscountValue < 0 && discount.Price > 0)
+                    if (date < discount.StartDate || date > discount.EndDate)
+                        return finalPrice = 0;
+                    if (discount.Price > 0)
                     {
                         finalPrice = saleCar.FullPrice - discount.Price;
+                    }
+                    if (discount.Price < 0)
+                    {
+                        finalPrice = saleCar.FullPrice;
                     }
                 }
                 return finalPrice;
@@ -35,28 +40,31 @@ namespace MyCar.Desktop.Core
             return finalPrice;
         }
 
-        public static decimal? GetDiscountPrice(SaleCarApi saleCar)
+        /// <summary>
+        /// Метод для получения процента скидки
+        /// </summary>
+        public static decimal? GetPercent(SaleCarApi saleCar)
         {
-            var date = DateTime.Now;
-            decimal? finalPrice = 0;
+            decimal? discountPercent = 0;
             if (saleCar != null)
             {
                 Task.Run(GetList).Wait();
                 var discount = Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.ID);
+                //var date = DateTime.Now;
                 if (discount != null)
                 {
-                    if (discount.DiscountValue > 0 && discount.Price == 0)
+                    if (discount.Price > 0)
                     {
-                        finalPrice = saleCar.FullPrice * discount.DiscountValue / 100;
+                        discountPercent = saleCar.FullPrice * 100 / discount.Price;
                     }
-                    if (discount.DiscountValue < 0 && discount.Price > 0)
+                    else
                     {
-                        finalPrice = discount.Price;
+                        discountPercent = 0;
                     }
                 }
-                return finalPrice;
+                return discountPercent;
             }
-            return finalPrice;
+            return discountPercent;
         }
 
         public static async Task GetList()

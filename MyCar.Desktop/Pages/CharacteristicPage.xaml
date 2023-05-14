@@ -234,24 +234,24 @@
                   ItemsSource="{Binding Discounts}"
             >
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="Авто"
+                                    Binding="{Binding SaleCar.Car.CarName}"
+                                    Width="*"
+                                    />
                             <DataGridTextColumn Header="Значение в %"
-                                    Binding="{Binding DiscountValue}"
+                                    Binding="{Binding PercentValue}"
                                     Width="*"
                                     />
                             <DataGridTextColumn Header="Значение в рублях"
-                                    Binding="{Binding Price}"
+                                    Binding="{Binding DiscountValue}"
                                     Width="*"
                                     />
-                            <DataGridTextColumn Header="Дата начала скидки"
-                                    Binding="{Binding StartDate}"
+                            <DataGridTextColumn Header="Начало скидки"
+                                    Binding="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}"
                                     Width="*"
                                     />
-                            <DataGridTextColumn Header="Дата конца скидки"
-                                    Binding="{Binding EndDate}"
-                                    Width="*"
-                                    />
-                            <DataGridTextColumn Header="Авто"
-                                    Binding="{Binding SaleCar.Car.CarName}"
+                            <DataGridTextColumn Header="Конец скидки"
+                                    Binding="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"
                                     Width="*"
                                     />
                         </DataGrid.Columns>

@@ -63,7 +63,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             Task.Run(GetCars).Wait();
             if (discount == null)
             {
-                AddDiscountVM = new DiscountApi { DiscountValue = 0, StartDate = DateTime.Now, EndDate = DateTime.Now, Price = 0 };
+                AddDiscountVM = new DiscountApi { DiscountValue = 0, StartDate = DateTime.Now, EndDate = DateTime.Now, };
             }
             else
             {
@@ -73,19 +73,19 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     DiscountValue = discount.DiscountValue,
                     EndDate = discount.EndDate,
                     StartDate = discount.StartDate,
-                    Price = discount.Price,
                     SaleCarId = discount.SaleCarId
                 };
-                DiscountValue = AddDiscountVM.Price ?? 0;
                 SelectedCar = DiscountCars.FirstOrDefault(s => s.ID == AddDiscountVM.SaleCarId);
+                DiscountValue = AddDiscountVM.DiscountValue ?? 0;
             }
 
             SaveDiscount = new CustomCommand(async () =>
             {
                 AddDiscountVM.SaleCarId = SelectedCar.ID;
                 AddDiscountVM.SaleCar = SelectedCar;
+                AddDiscountVM.DiscountValue = DiscountValue;
 
-                if(AddDiscountVM.DiscountValue == 0 || AddDiscountVM.DiscountValue == null)
+                if (AddDiscountVM.DiscountValue == 0 || AddDiscountVM.DiscountValue == null)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не введено значение скидки" });
                     return;
@@ -105,6 +105,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрано авто" });
                     return;
                 }
+
                 if (AddDiscountVM.ID == 0)
                 {
                     await AddDiscount(AddDiscountVM);
@@ -129,7 +130,10 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         }
         private void CalculatePercentValue()
         {
-            PercentValue = Math.Round((DiscountValue / (decimal)SelectedCar.FullPrice) * 100, 2);
+            if (SelectedCar.FullPrice != 0)
+                PercentValue = Math.Round((DiscountValue / (decimal)SelectedCar.FullPrice) * 100, 2);
+            else
+                PercentValue = 0;
             UpdateFullPrice();
         }
         private void UpdateFullPrice()

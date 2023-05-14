@@ -12,6 +12,10 @@ namespace MyCar.Server.DataModels
             var car = dbContext.Cars.FirstOrDefault(s => s.Id == saleCar.CarId);
             result.SaleCar = (SaleCarApi)saleCar;
             result.SaleCar.Car = GetCar(car, dbContext);
+            if (result.SaleCar.FullPrice != 0)
+                result.PercentValue = Math.Round((decimal)(result.DiscountValue / result.SaleCar.FullPrice) * 100, 2);
+            else 
+                result.PercentValue = 0;
             return result;
         }
         public static CarApi GetCar(Car car, MyCar_DBContext dbContext)

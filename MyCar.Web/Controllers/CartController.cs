@@ -227,11 +227,9 @@ namespace MyCar.Web.Controllers
             {
                 ware.CountChange = ware.CountChange;
             }
-            OrderItemsFill(orderItems);
+            //OrderItemsFill(orderItems);
 
-            //Проверка на количество
-            //Сделать метод который будет считать хватает ли количества на складе, если не хватает то убираем из orderItems и можно вывести сообщение что этого не хватает 
-            //
+            CountCheck(orderItems);
 
             OrderItemsFill(orderItems);
 
@@ -257,7 +255,17 @@ namespace MyCar.Web.Controllers
             emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
             return View("SuccsessOrder");
         }
-
+        private void CountCheck(List<WareHouseApi> wareHouses)
+        {
+            foreach (var ware in wareHouses)
+            {
+                if (ware.CountChange > ware.SaleCar.Count)
+                {
+                    wareHouses.Remove(ware);
+                    //чето делаем
+                }
+            }
+        }
         private void OrderItemsFill(List<WareHouseApi> orderItems)
         {
             //выбираем не отмененные заказы

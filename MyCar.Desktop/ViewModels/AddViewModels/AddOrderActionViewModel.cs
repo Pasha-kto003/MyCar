@@ -81,7 +81,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 DiscountVisibility = Visibility.Visible;
                 Price = wareHouse.SaleCar.FullPrice;
-                var dis = Discounts.FirstOrDefault(d => d.SaleCarId == wareHouse.SaleCarId && d.StartDate >= DateTime.Now && d.EndDate <= DateTime.Now).DiscountValue;
+                var dis = Discounts.FirstOrDefault(d => d.SaleCarId == wareHouse.SaleCarId && d.StartDate <= DateTime.Now && d.EndDate >= DateTime.Now)?.DiscountValue;
                 Discount = dis ?? 0;
             }
             if (actionType.ActionTypeName == "Поступление")

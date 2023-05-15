@@ -147,14 +147,6 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Margin="5 0 0 0" Style="{StaticResource AddImageButton}"
-                        Command="{Binding AddOrder}">
-                    <Button.Content>
-                        <Image Source="/Images/add.png"/>
-                    </Button.Content>
-                </Button>
-            </StackPanel>
         </Grid>
     </Grid>
 </Page>

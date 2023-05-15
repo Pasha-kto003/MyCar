@@ -20,11 +20,11 @@ namespace MyCar.Web.Core
                 {
                     if(date < discount.StartDate || date > discount.EndDate)
                       return finalPrice = 0;
-                    if(discount.Price > 0)
+                    if(discount.DiscountValue > 0)
                     {
-                        finalPrice = saleCar.FullPrice - discount.Price;
+                        finalPrice = saleCar.FullPrice - discount.DiscountValue;
                     }
-                    if(discount.Price < 0)
+                    if(discount.DiscountValue < 0)
                     {
                         finalPrice = saleCar.FullPrice;
                     }
@@ -47,9 +47,9 @@ namespace MyCar.Web.Core
                 //var date = DateTime.Now;
                 if (discount != null)
                 {
-                    if (discount.Price > 0)
+                    if (discount.DiscountValue > 0)
                     {
-                        discountPercent = saleCar.FullPrice * 100 / discount.Price;
+                        discountPercent = saleCar.FullPrice * 100 / discount.DiscountValue;
                     }
                     else
                     {
@@ -89,13 +89,13 @@ namespace MyCar.Web.Core
                 var discount = Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.ID);
                 if (discount != null)
                 {
-                    if (discount.DiscountValue > 0 && discount.Price == 0)
+                    if (discount.DiscountValue > 0 && discount.DiscountValue == 0)
                     {
                         finalPrice = saleCar.FullPrice * discount.DiscountValue / 100;
                     }
-                    if (discount.DiscountValue < 0 && discount.Price > 0)
+                    if (discount.DiscountValue < 0 && discount.DiscountValue > 0)
                     {
-                        finalPrice = discount.Price;
+                        finalPrice = discount.DiscountValue;
                     }
                 }
                 return finalPrice;

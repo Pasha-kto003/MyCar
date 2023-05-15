@@ -234,27 +234,39 @@
                   ItemsSource="{Binding Discounts}"
             >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Значение в %"
-                                    Binding="{Binding DiscountValue}"
-                                    Width="*"
-                                    />
-                            <DataGridTextColumn Header="Значение в рублях"
-                                    Binding="{Binding Price}"
-                                    Width="*"
-                                    />
-                            <DataGridTextColumn Header="Дата начала скидки"
-                                    Binding="{Binding StartDate}"
-                                    Width="*"
-                                    />
-                            <DataGridTextColumn Header="Дата конца скидки"
-                                    Binding="{Binding EndDate}"
-                                    Width="*"
-                                    />
                             <DataGridTextColumn Header="Авто"
                                     Binding="{Binding SaleCar.Car.CarName}"
                                     Width="*"
                                     />
+                            <DataGridTextColumn Header="Значение в %"
+                                    Binding="{Binding PercentValue}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Значение в рублях"
+                                    Binding="{Binding DiscountValue}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Начало скидки"
+                                    Binding="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Конец скидки"
+                                    Binding="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                    Width="*"
+                                    />
                         </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{core:MultiDiscountDateToColorConverter}" Mode="TwoWay">
+                                            <Binding Path="StartDate" />
+                                            <Binding Path="EndDate" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowStyle>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Редактировать" Command="{Binding EditDiscount}"/>

@@ -26,11 +26,11 @@ namespace MyCar.Desktop.Core
                 {
                     if (date < discount.StartDate || date > discount.EndDate)
                         return finalPrice = 0;
-                    if (discount.Price > 0)
+                    if (discount.DiscountValue > 0)
                     {
-                        finalPrice = saleCar.FullPrice - discount.Price;
+                        finalPrice = saleCar.FullPrice - discount.DiscountValue;
                     }
-                    if (discount.Price < 0)
+                    if (discount.DiscountValue < 0)
                     {
                         finalPrice = saleCar.FullPrice;
                     }
@@ -53,9 +53,9 @@ namespace MyCar.Desktop.Core
                 //var date = DateTime.Now;
                 if (discount != null)
                 {
-                    if (discount.Price > 0)
+                    if (discount.DiscountValue > 0)
                     {
-                        discountPercent = saleCar.FullPrice * 100 / discount.Price;
+                        discountPercent = saleCar.FullPrice * 100 / discount.DiscountValue;
                     }
                     else
                     {

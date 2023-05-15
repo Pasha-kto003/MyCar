@@ -1927,7 +1927,7 @@ ul.list6b {
 
     .tabs .tab .tab-toggle {
         display: flex;
-        border: 2px solid #D2042D;
+        border: 2px solid #ff4655;
         padding: 4px 40px 4px 0;
         border-radius: 16px;
         margin-bottom: 8px;
@@ -1955,7 +1955,7 @@ ul.list6b {
         font-weight: bold;
         border-radius: 50%;
         background: #171717;
-        border: 3px solid #D2042D;
+        border: 3px solid #ff4655;
         width: 34px;
         height: 34px;
         display: flex;
@@ -2468,3 +2468,10 @@ margin: 20px 0 0;
     border: solid 2px #ffffff;
 }
 
+a {
+    color: #ff4655;
+}
+
+.nav-link {
+    color: #ff4655;
+}

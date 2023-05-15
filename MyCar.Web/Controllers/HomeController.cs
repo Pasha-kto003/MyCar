@@ -178,13 +178,13 @@ namespace MyCar.Web.Controllers
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
-            var fullCars = cars.DistinctBy(s => s.FullName).Reverse();
+            var fullCars = cars.DistinctBy(s => s.FullName);
             return View("CarView", fullCars);
         }
 
         [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
-        public async Task<IActionResult> SearchCar(string SearchString, string FilterString)
+        public async Task<IActionResult> SearchCar(string SearchString, string FilterString, string SortString)
         {
             List<SaleCarApi> cars;
             List<MarkCarApi> markCars;
@@ -193,7 +193,25 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            FullCars = await Api.SearchFilterAsync<List<SaleCarApi>>(FilterString, SearchString, "CarSales", filter);
+            if (SortString == "По умолчанию")
+            {
+                FullCars = cars;
+            }
+            else if (SortString == "По возрастанию")
+            {
+                cars.Sort((x, y) => x.FullPrice.Value.CompareTo(y.FullPrice));
+                FullCars = cars;
+            }
+            else if (SortString == "По убыванию")
+            {
+                cars.Sort((x, y) => y.FullPrice.Value.CompareTo(x.FullPrice));
+                FullCars = cars;
+            }
+            if(SearchString != null || FilterString != "Тип поиска" || filter != "Все")
+            {
+                FullCars = await Api.SearchFilterAsync<List<SaleCarApi>>(FilterString, SearchString, "CarSales", filter);
+                //FullCars = cars.Where(s => s.FullName == SearchString).ToList();
+            }
             return View("CarView", FullCars);
         }
 

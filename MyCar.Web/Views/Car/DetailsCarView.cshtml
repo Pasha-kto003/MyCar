@@ -370,25 +370,25 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 {
                                     ViewBag.DiscountPrice = null;
                                 }
-                                            <div class="product-price">
-                                            @if(ViewBag.DiscountPrice != null)
+                                <div class="product-price">
+                                @if(ViewBag.DiscountPrice != null)
                                 {
-                                                <h5 class="text-white">
-                                                    <s class="text-white">
-                                                        @cars.FullPrice
-                                                    </s>
-                                                </h5>
+                                    <h5 class="text-white">
+                                        <s class="text-white">
+                                            @cars.FullPrice
+                                        </s>
+                                    </h5>
                                 }
                                 else
                                 {
-                                                <h2 class="text-white">
-                                                    @cars.FullPrice
-                                                </h2>
+                                    <h2 class="text-white">
+                                        @cars.FullPrice
+                                    </h2>
                                 }
-                                                <h5 class="text-white">
-                                                    @ViewBag.DiscountPrice
-                                                </h5>
-                                            </div>
+                                <h5 class="text-white">
+                                    @ViewBag.DiscountPrice
+                                </h5>
+                                </div>
                             }
                         </div>
                     </div>

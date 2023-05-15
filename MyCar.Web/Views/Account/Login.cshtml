@@ -25,7 +25,66 @@
                         Регистрация
                     </a>
                 </div>
+                <div class="form-group" style="margin-bottom:20px;">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Launch demo modal
+                    </button>
+
+                </div>
             </div>
         </form>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog" style="max-width: 700px; width: 700px; background-color: #171717;">
+    <div class="modal-content" style="background-color: #171717;">
+        <div class="modal-header">
+            <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row row-cols-1 w-100">
+                <div class="col text-white" style="text-align: center;">
+                    Кол-во:
+                </div>
+            </div>
+            <div class="row row-cols-1 w-100">
+                <div class="col">
+                    <form asp-action="UpdateCountCar" asp-controller="Cart" method="post">
+                        <div class="row-cols-2" style="display: flex; justify-content:center; align-items:center;">
+                            <div class="col" style="display: flex; justify-content:center; align-items:center;">
+                                <input type="number" min="0" step="1" onkeydown="return false" name="CountChange" style="justify-content:center; width: 100%;"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row-cols-2 w-100" style="display: flex;">
+                            <div class="col-6">
+                                <div class="glass-btn glass-btn-red">
+                                    <a class="stretched-link">
+                                        <input readonly data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" value="Отмена" style="color: black; text-align:center;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="glass-btn glass-btn-red">
+                                    <a class="stretched-link">
+                                        <input readonly type="submit" class="stretched-link" value="Приобрести" style="color: black; text-align:center;">
+                                    </a>   
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+            @*<div class="modal-footer">
+                <div class="glass-btn glass-btn-red">
+                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" style="color: black;">Отмена</a>
+                </div>
+                <div class="glass-btn glass-btn-green">
+                    <a asp-action="UpdateCountCar" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
+                </div>
+            </div>*@
+        </div>
     </div>
 </div>

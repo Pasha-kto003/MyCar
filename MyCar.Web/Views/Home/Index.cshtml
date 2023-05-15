@@ -522,3 +522,37 @@ else
 {
     <div></div>
 }
+
+@if (TempData["AllertMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">@User.Identity.Name</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">Ваш заказ завершен!</p>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        function openSuccessModal(strMessage){
+            var myDiv = document.getElementById("MyModalSuccessAlertBody");
+            myDiv.innerHTML = strMessage;
+            $('#myModalSuccess').modal('show');
+        }
+
+        $(document).ready(function() {
+            var msg = "@TempData["SuccessMessage"]";
+            if (msg)
+                openSuccessModal(msg);
+        })
+
+                window.setTimeout(function () {
+    $(".callout").fadeTo(500, 0).slideUp(500, function () {
+        $(this).remove();
+    });
+}, 4000);
+
+    </script>
+}

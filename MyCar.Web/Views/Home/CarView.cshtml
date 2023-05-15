@@ -5,6 +5,9 @@
     ViewData["Title"] = "Каталог";
 }
 
+@{
+    var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+}
 
 <div class="row align-items-center justify-content-center">
     <div class="row w-100" style="background-image: url('/image/bg_13.jpg'); height: 184px; justify-content: center; align-items: center; text-align:center;">
@@ -37,11 +40,18 @@
                                             <option value="Авто">Авто</option>
                                         </select>*@
                                         <select name="FilterString" class="form-control search-slt">
-                                            <option hidden>Фильтрация</option>
+                                            <option hidden>Тип поиска</option>
                                             <option value="Цена авто">Цена авто</option>
                                             <option value="Авто">Авто</option>
                                         </select>
-
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <select name="SortString" class="form-control search-slt">
+                                            <option hidden>Тип сортировки</option>
+                                            <option value="По умолчанию">По умолчанию</option>
+                                            <option value="По возрастанию">По возрастанию</option>
+                                            <option value="По убыванию">По убыванию</option>
+                                        </select>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
                                         <button type="submit" class="btn btn-dark wrn-btn">Искать</button>
@@ -76,9 +86,6 @@
                 </label>
              </section>
              <div style="display: none; background-color: #171717;" id="myDIV1">
-                 @{
-                     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
-                  }
                 @foreach (var i in Model)
                 {
                     <div class="card mb-3" style="max-width: 100%; background-color: #171717;">
@@ -210,9 +217,6 @@
                 }
              </div>
             <div class="row" id="myDIV">
-                @{
-                    var warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
-                }
                 @foreach (var i in Model)
                 {
                     <div class="col-md-6 col-lg-4 col-xl-3">
@@ -230,7 +234,7 @@
 
                                 <div class="product-addons-Details d-flex justify-content-between">
                                     @{
-                                        var ware = warehouses.Where(s => s.SaleCarId == i.ID).ToList().Sum(s=> s.CountChange);
+                                        var ware = warehousesCard.Where(s => s.SaleCarId == i.ID).ToList().Sum(s=> s.CountChange);
                                         ViewBag.DiscountPrice = DiscountCounter.GetDiscount(i);
                                         if(ware.Value <= 0)
                                         {
@@ -302,3 +306,20 @@
     </section>
 
 </div>
+
+@*@section Scripts{
+    <script type="text/javascript">
+        function openSuccessModal(strMessage){
+            var myDiv = document.getElementById("MyModalSuccessAlertBody");
+            myDiv.innerHTML = strMessage;
+            $('#myModalSuccess').modal('show');
+        }
+
+        $(document).ready(function() {
+            var msg = "@TempData["SuccessMessage"]";
+            if (msg)
+                openSuccessModal(msg);
+
+        })
+    </script>
+}*@

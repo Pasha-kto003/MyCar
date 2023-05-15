@@ -253,7 +253,11 @@ namespace MyCar.Web.Controllers
 
             EmailSender emailSender = new EmailSender();
             emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
-            return View("SuccsessOrder");
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.Marks = marks;
+            TempData["AllertMessage"] = $"Ваш заказ завершен";
+            return View("~/Views/Home/Index.cshtml", Cars);
         }
         private void CountCheck(List<WareHouseApi> wareHouses)
         {

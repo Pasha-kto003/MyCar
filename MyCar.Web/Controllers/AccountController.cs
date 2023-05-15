@@ -113,6 +113,11 @@ namespace MyCar.Web.Controllers
             var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
 
+        public async Task<IActionResult> EditForgotUser(string UserName)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
@@ -155,12 +160,17 @@ namespace MyCar.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
         {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
             EmailIsValid(model.Email);
             if (EmailIsValid(model.Email) == false)
             {
                 ModelState.AddModelError("", "Данные почты введены неккоректно");
             }
-
+            var user = Users.FirstOrDefault(s=> s.UserName == model.UserName || s.Email == model.Email);
+            if (user != null)
+            {
+                ModelState.AddModelError("", $"Пользователь с именем {model.UserName} уже существует");
+            }
             await CreateUser(model);
             if (UserId != -1)
             {

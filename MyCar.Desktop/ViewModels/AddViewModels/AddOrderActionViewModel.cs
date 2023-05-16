@@ -81,7 +81,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             {
                 DiscountVisibility = Visibility.Visible;
                 Price = wareHouse.SaleCar.FullPrice;
-                var dis = Discounts.FirstOrDefault(d => d.SaleCarId == wareHouse.SaleCarId && d.StartDate >= DateTime.Now && d.EndDate <= DateTime.Now)?.Price;
+                var dis = Discounts.FirstOrDefault(d => d.SaleCarId == wareHouse.SaleCarId && d.StartDate <= DateTime.Now && d.EndDate >= DateTime.Now)?.DiscountValue;
                 Discount = dis ?? 0;
             }
             if (actionType.ActionTypeName == "Поступление")
@@ -89,7 +89,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 List<WareHouseApi> thisWareIns = Orders.OrderByDescending(s=>s.DateOfOrder).Where(o => o.Status.StatusName != "Отменен" && o.ActionType.ActionTypeName == "Поступление")
                     .SelectMany(w => w.WareHouses)
                     .Where(s=>s.SaleCarId == wareHouse.SaleCarId).ToList();
-                LastPriceInfo = $"Последняя цена поступления: {thisWareIns.First().Price} ";
+                if (thisWareIns.Count == 0)
+                    LastPriceInfo = $"Последняя цена поступления: (Нет данных) ";
+                else
+                    LastPriceInfo = $"Последняя цена поступления: {thisWareIns.First().Price} ";
+
 
             }
             if (actionType.ActionTypeName == "Списание")

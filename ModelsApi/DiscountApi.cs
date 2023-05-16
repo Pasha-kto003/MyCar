@@ -9,10 +9,9 @@ namespace ModelsApi
     public class DiscountApi : ApiBaseType
     {
         public decimal? DiscountValue { get; set; }
-        public decimal? Price { get; set; }
+        public decimal PercentValue { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public decimal PercentValue { get; set; }
         public int? SaleCarId { get; set; }
 
         public SaleCarApi? SaleCar { get; set; }

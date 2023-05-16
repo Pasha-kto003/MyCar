@@ -42,6 +42,11 @@ namespace MyCar.Web.Controllers
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));
             ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
             ViewBag.Cars = Cars.Where(s=> s.Car.ModelId == car.Car.ModelId);
+            //foreach(SaleCarApi carStyle in ViewBag.Cars)
+            //{
+            //    ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(carStyle);
+            //    ViewBag.FullPrice = carStyle.FullPrice;
+            //}
             ViewBag.DiscountPrice = DiscountCounter.GetDiscount(car);
             return View(car);
         }

@@ -1,10 +1,21 @@
 ﻿@using ModelsApi
 @using MyCar.Web.Core
+@using System.Text.Json
 @{
 }
 @model ModelsApi.SaleCarApi
 @{
     ViewData["Title"] = $"Выбранное авто {Model.FullName}";
+    var carsStyles = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+    var styles = carsStyles.Where(s => s.FullName == @Model.FullName).ToList();
+    SaleCarApi ChangeColor(int id)
+    {
+        if(id != null || id != 0)
+        {
+            return styles.FirstOrDefault(s=> s.ID == id);
+        }
+        return styles.FirstOrDefault(s=> s.ID == id);
+    }
 }
     <div class="container-fluid mt-5"> 
         <div class="row w-100">
@@ -264,12 +275,29 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 </div>
             </div>
         </div>
+    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5">
+        <h3 class="text-white text-center">
+            Доступные цвета для @Model.FullName
+        </h3>
+    </div>
+    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5">
+        @{
+            var colors = await Api.GetListAsync<List<Color>>("Color");
+        }
+        @foreach(var colorCar in styles)
+        {
+            colorCar.HexColor = colors.FirstOrDefault(s=> s.Name == colorCar.ColorCar).HexCode;
+            <a action="@ChangeColor(colorCar.ID)" class="square m-2" style="background-color: @colorCar.HexColor">
+
+            </a>
+        }
+    </div>
     <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
         <h1>Комплектации @Model.Car.CarName</h1>
     </div>
     <div class="row w-100">
         <div class="tabs">
-            @foreach(var cars in ViewBag.Cars)
+            @foreach(var cars in styles)
             {
                 <div class="tab">
                     <div class="tab-toggle">
@@ -287,51 +315,64 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                     Начальная цена от
                                 </small></p>
                             @{
-                                ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
-                                if(ViewBag.DiscountPrice == 0)
+                                ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
+                                if(ViewBag.DiscountCarStylePrice == 0)
                                 {
-                                    ViewBag.DiscountPrice = null;
+                                    ViewBag.DiscountCarStylePrice = null;
                                 }
-                                <div class="product-price">
-                                @if(ViewBag.DiscountPrice != null)
+                                        <div class="product-price">
+                                        @if(ViewBag.DiscountCarStylePrice != null)
                                 {
-                                    <h3 class="text-white">
-                                        <s class="text-white">
-                                            @Model.FullPrice
-                                        </s>
-                                    </h3>
+                                            <h3 class="text-white">
+                                                <s class="text-white">
+                                                    @cars.FullPrice
+                                                </s>
+                                            </h3>
                                 }
                                 else
                                 {
-                                    <h2 class="text-white">
-                                        @Model.FullPrice
-                                    </h2>
+                                            <h2 class="text-white">
+                                                @cars.FullPrice
+                                            </h2>
                                 }
-                                <h4 class="text-white">
-                                    @ViewBag.DiscountPrice
-                                </h4>
-                                </div>
+                                        <h4 class="text-white">
+                                            @ViewBag.DiscountCarStylePrice
+                                        </h4>
+                                        </div>
                             }
                         </div>
+                        @{
+                            var photos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+                            var carPhotos = photos.Where(s => s.SaleCarId == @cars.ID).ToList();
+                            var photo = carPhotos?.FirstOrDefault(s => s.IsMainPhoto == 1);
+
+                        }
                         <div class="col-9 justify-content-center">
-                            <img src="~/CarImages/@cars.Car.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            @if(photo != null)
+                            {
+                                <img src="~/CarImages/@photo.PhotoName" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            }
+                            else
+                            {
+                                <img src="~/CarImages/@cars.Car.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            }
                         </div>
                     </div>
                     <div class="row w-100">
                         <div class="col-6">
                             <h4 class="text-white" style="font-size: 16px;">Ключевые характеристики</h4>
                             @{
-                                var count = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров"));
-                                var racing = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("0-100"));
-                                var power = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Мощность"));
-                                var v3 = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Объем"));
+                                var count = cars.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров"));
+                                var racing = cars.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("0-100"));
+                                var power = cars?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Мощность"));
+                                var v3 = cars?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Объем"));
                             }
                             <p class="text-white" style="font-size: 11px;">@v3?.CharacteristicValue-ЛИТРОВЫЙ ДВИГАТЕЛЬ V-@count?.CharacteristicValue МОЩНОСТЬЮ @power?.CharacteristicValue Л.С.</p>
                             <p class="text-white" style="font-size: 11px;">РАЗГОН ДО 100 км/ч ЗА @racing?.CharacteristicValue СЕКУНДЫ</p>
                         </div>
                         <div class="col-6 text-white">
                             <h3>ЛУЧШИЙ В КЛАССЕ V8</h3>
-                            <p style="font-size: 14px;">@Model.Description</p>
+                            <p style="font-size: 14px;">@cars.Description</p>
                         </div>
                     </div>
                     <div class="row w-50">
@@ -385,9 +426,9 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                         @cars.FullPrice
                                     </h2>
                                 }
-                                <h5 class="text-white">
-                                    @ViewBag.DiscountPrice
-                                </h5>
+                                    <h5 class="text-white">
+                                        @ViewBag.DiscountPrice
+                                    </h5>
                                 </div>
                             }
                         </div>
@@ -396,3 +437,22 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
             }
         </div>
     </div>
+@if (TempData["OrderCountErrorMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Ошибка!!!</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">Превышено максмиальное кол-во покупок данного авто</p>
+        </div>
+    </div>
+}
+
+@*@functions
+{
+    public void ChangeColorCar(int id)
+    {
+        var carsStyles = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+        var styles = carsStyles.Where(s => s.FullName == @Model.FullName).ToList();
+    }
+}*@

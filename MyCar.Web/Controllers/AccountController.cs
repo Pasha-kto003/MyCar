@@ -113,8 +113,22 @@ namespace MyCar.Web.Controllers
             var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
 
-        public async Task<IActionResult> EditForgotUser(string UserName)
+        public async Task<IActionResult> EditForgotUser()
         {
+            RegisterModel registerModel = new RegisterModel();
+            return View("EditPasswordView", registerModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPassword(RegisterModel registerModel)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var user = Users.LastOrDefault(s => s.UserName == registerModel.UserName);
+            HashCheck.CreatePasswordHash(registerModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.SaltHash = passwordSalt;
+
+            await ChangeUser(user);
             return RedirectToAction("Index", "Home");
         }
 
@@ -226,7 +240,10 @@ namespace MyCar.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
-
+        private async Task ChangeUser(UserApi userApi)
+        {
+            var user = await Api.PutAsync<UserApi>(userApi, "User");
+        }
 
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> Personal_Area(string name)

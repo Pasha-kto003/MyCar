@@ -2467,7 +2467,11 @@ margin: 20px 0 0;
     color: #ffffff;
     border: solid 2px #ffffff;
 }
-
+.square {
+    height: 50px;
+    width: 50px;
+    background-color: #555;
+}
 a {
     color: #ff4655;
 }

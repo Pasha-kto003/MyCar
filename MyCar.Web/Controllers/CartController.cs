@@ -200,7 +200,7 @@ namespace MyCar.Web.Controllers
             car.CountChange = CountChange;
             if (IsCanAddInOrder(car) == false)
             {
-                ViewBag.ErrorMes = "Превышено кол-во транспортных средств";
+                TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
                 return View("DetailsCarView", car.ID);
             }
             await AddOrder(car.ID, car.CountChange);
@@ -258,7 +258,7 @@ namespace MyCar.Web.Controllers
             var marks = new List<MarkCarApi>();
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             ViewBag.Marks = marks;
-            TempData["AllertMessage"] = $"Ваш заказ завершен";
+            TempData["OrderFineMessage"] = $"Ваш заказ завершен";
             return View("~/Views/Home/Index.cshtml", Cars);
         }
 

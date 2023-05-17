@@ -7,15 +7,21 @@
 @{
     ViewData["Title"] = $"Выбранное авто {Model.FullName}";
     var carsStyles = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-    var styles = carsStyles.Where(s => s.FullName == @Model.FullName).ToList();
-    SaleCarApi ChangeColor(int id)
-    {
-        if(id != null || id != 0)
-        {
-            return styles.FirstOrDefault(s=> s.ID == id);
-        }
-        return styles.FirstOrDefault(s=> s.ID == id);
-    }
+
+    //другие комплектации авто
+    var styles = carsStyles.Where(s => s.CarId == @Model.CarId).ToList();
+    //другие цвета авто
+    var carColors = carsStyles.Where(s=> s.EquipmentId == @Model.EquipmentId && s.FullName == @Model.FullName);
+    var colors = await Api.GetListAsync<List<Color>>("Color");
+    var photos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+    //SaleCarApi ChangeColor(int id)
+    //{
+    //    if(id != null || id != 0)
+    //    {
+    //        return styles.FirstOrDefault(s=> s.ID == id);
+    //    }
+    //    return styles.FirstOrDefault(s=> s.ID == id);
+    //}
 }
     <div class="container-fluid mt-5"> 
         <div class="row w-100">
@@ -31,9 +37,9 @@
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                     if(ware.Value <= 0)
                     {
-                        <h3 class="text-white text-center" style="text-align: center;">
-                            Отсутствует в продаже
-                        </h3>
+                                <h3 class="text-white text-center" style="text-align: center;">
+                                    Отсутствует в продаже
+                                </h3>
                     }
                     else
                     {
@@ -41,25 +47,25 @@
                         {
                             ViewBag.DiscountPrice = null;
                         }
-                        <div class="product-price">
-                        @if(ViewBag.DiscountPrice != null)
+                            <div class="product-price">
+                            @if(ViewBag.DiscountPrice != null)
                         {
-                            <h2 class="text-white" style="text-align: center;">
-                                <s class="text-white">
-                                    @Model.FullPrice
-                                </s>
-                            </h2>
+                                <h2 class="text-white" style="text-align: center;">
+                                    <s class="text-white">
+                                        @Model.FullPrice
+                                    </s>
+                                </h2>
                         }
                         else
                         {
-                            <h2 class="text-white" style="text-align: center;">
-                                @Model.FullPrice
-                            </h2>
+                                <h2 class="text-white" style="text-align: center;">
+                                    @Model.FullPrice
+                                </h2>
                         }
-                            <h4 class="text-white" style="text-align: center;">
-                                @ViewBag.DiscountPrice
-                            </h4>
-                        </div>
+                                <h4 class="text-white" style="text-align: center;">
+                                    @ViewBag.DiscountPrice
+                                </h4>
+                            </div>
                     }
                     
                 }
@@ -254,6 +260,28 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 <div class="table-responsive align-items-center justify-content-center">
                     <table class="table">
                         <tbody>
+                                <tr>
+                                    <td class="m-lg-5" style="color: white;">
+                                        <b>
+                                            Цвет авто:
+                                        </b>
+                                    </td>
+                                    <td class="m-lg-5">
+                                        @{
+                                            var col = colors.FirstOrDefault(s=> s.Name == @Model.ColorCar).HexCode;
+                                        }
+                                        <div class="square m-2" style="background-color: @col">
+
+                                        </div>
+                                    </td>
+                                    <td class="m-lg-5" style="color: white;">
+                                        @Model.ColorCar
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <tbody>
                             @foreach(var characteristic in @Model.Car.CharacteristicCars)
                             {
                                 <tr>
@@ -280,72 +308,82 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
             Доступные цвета для @Model.FullName
         </h3>
     </div>
-    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5">
-        @{
-            var colors = await Api.GetListAsync<List<Color>>("Color");
-        }
-        @foreach(var colorCar in styles)
-        {
-            colorCar.HexColor = colors.FirstOrDefault(s=> s.Name == colorCar.ColorCar).HexCode;
-            <a action="@ChangeColor(colorCar.ID)" class="square m-2" style="background-color: @colorCar.HexColor">
+    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-2">
 
-            </a>
-        }
+        <ul class="slides">
+            @foreach(var colorCar in carColors)
+            {
+                <input type="radio" name="radio-btn" id="img-@colorCar.ID" checked />
+                <li class="slide-container">
+		            <div class="slide">
+                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@colorCar.ID">
+                            <img src="~/CarImages/@colorCar.MainPhotoCar"/>
+                        </a>
+                    </div>
+                </li>
+            }
+            <li class="nav-dots mt-3" style="margin-top: 40px;">
+                @foreach(var colorCar in carColors)
+                {
+                    colorCar.HexColor = colors.FirstOrDefault(s=> s.Name == colorCar.ColorCar).HexCode;
+                    <label for="img-@colorCar.ID" style="background-color: @colorCar.HexColor" class="nav-dot" id="img-dot-1"></label>
+                }
+            </li>
+        </ul>
     </div>
     <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
         <h1>Комплектации @Model.Car.CarName</h1>
     </div>
     <div class="row w-100">
         <div class="tabs">
-            @foreach(var cars in styles)
+            @foreach(var cars in styles.Where(s=> s.EquipmentId != @Model.EquipmentId))
             {
                 <div class="tab">
                     <div class="tab-toggle">
-                        <span class="tab-name" style="margin-left: 10%;">@cars.Car.CarName</span>
+                        <span class="tab-name" style="margin-left: 10%;">@cars.FullName</span>
                     </div>
                 </div>
                 <div class="Tabscontent">
                     <div class="row w-100" style="background-image: url('/image/DesertViewBacground.jpg'); height: 320px; background-repeat: no-repeat;">
                         <div class="col-3 justify-content-center align-items-center mt-5">
                             <h3 class="text-white text-decoration-underline" style="font-size: 40px;">
-                                @cars.Car.CarName
+                                @cars.FullName
                             </h3>
                             <p class="text-white">
                                 <small>
                                     Начальная цена от
-                                </small></p>
+                                </small>
+                            </p>
                             @{
                                 ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
                                 if(ViewBag.DiscountCarStylePrice == 0)
                                 {
                                     ViewBag.DiscountCarStylePrice = null;
                                 }
-                                        <div class="product-price">
-                                        @if(ViewBag.DiscountCarStylePrice != null)
+                                <div class="product-price">
+                                @if(ViewBag.DiscountCarStylePrice != null)
                                 {
-                                            <h3 class="text-white">
-                                                <s class="text-white">
-                                                    @cars.FullPrice
-                                                </s>
-                                            </h3>
+                                    <h3 class="text-white">
+                                        <s class="text-white">
+                                            @cars.FullPrice
+                                        </s>
+                                    </h3>
                                 }
                                 else
                                 {
-                                            <h2 class="text-white">
-                                                @cars.FullPrice
-                                            </h2>
+                                    <h2 class="text-white">
+                                        @cars.FullPrice
+                                    </h2>
                                 }
-                                        <h4 class="text-white">
-                                            @ViewBag.DiscountCarStylePrice
-                                        </h4>
-                                        </div>
+                                    <h4 class="text-white">
+                                        @ViewBag.DiscountCarStylePrice
+                                    </h4>
+                                </div>
                             }
                         </div>
                         @{
-                            var photos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
                             var carPhotos = photos.Where(s => s.SaleCarId == @cars.ID).ToList();
                             var photo = carPhotos?.FirstOrDefault(s => s.IsMainPhoto == 1);
-
                         }
                         <div class="col-9 justify-content-center">
                             @if(photo != null)
@@ -378,7 +416,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                     <div class="row w-50">
                         <div class="col-5">
                             <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
-                                <a asp-action="SearchLexus" asp-controller="Home" class="stretched-link" style="color: black;">Искать в каталоге</a>
+                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@cars.ID" class="stretched-link" style="color: black;">Искать в каталоге</a>
                             </div>
                         </div>
                     </div>

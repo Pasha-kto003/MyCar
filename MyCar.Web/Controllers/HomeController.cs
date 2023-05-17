@@ -178,7 +178,7 @@ namespace MyCar.Web.Controllers
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
-            var fullCars = cars.DistinctBy(s => s.FullName);
+            var fullCars = cars.DistinctBy(s => s.Car.CarName);
             return View("CarView", fullCars);
         }
 

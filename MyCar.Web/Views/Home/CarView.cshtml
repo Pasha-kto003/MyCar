@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="card-body">
-                                  <div class="row">
+                                    <div class="row">
                                     <div class="col-md-5">           
                                         <table class="table">
                                             <thead>
@@ -153,7 +153,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                  </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -228,7 +228,7 @@
 
                             <div class="product-Details">
                                 <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@i.ID">
-                                    <h3 class="product-title text-white">@i.FullName</h3>
+                                    <h3 class="product-title text-white">@i.Car.CarName</h3>
                                 </a>
                                 @*<h2 class="product-title text-white">@i.CarName</h2>*@
 

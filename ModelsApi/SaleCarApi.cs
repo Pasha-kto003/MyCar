@@ -27,7 +27,7 @@ namespace ModelsApi
         /// </summary>
         public string? FullName
         {
-            get => Car.CarName;
+            get => Car.CarName + " " + Equipment?.NameEquipment;
         }
 
         /// <summary>

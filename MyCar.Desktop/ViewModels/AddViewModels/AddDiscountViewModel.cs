@@ -2,6 +2,7 @@
 using MyCar.Desktop.Core;
 using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.ViewModels.Dialogs;
+using MyCar.Desktop.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 SignalChanged(nameof(selectedCar));
             }
         }
-
+       public CustomCommand ChooseCars { get; set; }
         public DiscountApi AddDiscountVM { get; set; }
 
         public AddDiscountViewModel(DiscountApi discount)
@@ -78,7 +79,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 SelectedCar = DiscountCars.FirstOrDefault(s => s.ID == AddDiscountVM.SaleCarId);
                 DiscountValue = AddDiscountVM.DiscountValue ?? 0;
             }
-
+            ChooseCars = new CustomCommand(() =>
+            {
+                ChooseSaleCarWindow chooseSaleCarWindow = new ChooseSaleCarWindow();
+                chooseSaleCarWindow.ShowDialog();
+            });
             SaveDiscount = new CustomCommand(async () =>
             {
                 AddDiscountVM.SaleCarId = SelectedCar.ID;

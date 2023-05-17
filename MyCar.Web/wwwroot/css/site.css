@@ -135,12 +135,12 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     font-family: 'Roboto', Òahoma, sans-serif;
-    background: #337AB7;
+    background: #ff4655;
     cursor: pointer;
-    border: 2px solid #BFE2FF;
+    border: 2px solid #ff4655b5;
     border-radius: 30px;
     outline: 1px solid;
-    outline-color: #337AB7;
+    outline-color: #ff4655;
     outline-offset: 0px;
     text-shadow: none;
     transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);

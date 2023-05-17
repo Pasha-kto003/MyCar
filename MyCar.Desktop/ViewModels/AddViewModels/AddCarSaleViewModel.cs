@@ -207,11 +207,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 return false;
             }
 
-            if (SaleCars.Exists(s =>s.CarId == SelectedCar.ID & s.EquipmentId == SelectedEquipment.ID))
-            {
-                UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Автомобиль с выбранной комплектацией уже существует!" });
-                return false;
-            }
+            //if (SaleCars.Exists(s =>s.CarId == SelectedCar.ID & s.EquipmentId == SelectedEquipment.ID))
+            //{
+            //    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Автомобиль с выбранной комплектацией уже существует!" });
+            //    return false;
+            //}
             return true;
         }
 

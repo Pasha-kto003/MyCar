@@ -7,7 +7,7 @@ namespace MyCar.Web.Core
     {
         public async Task SendEmailAsync(string userName, string email, string subject, string message)
         {
-            System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
+            MailMessage mail = new System.Net.Mail.MailMessage();
             mail.To.Add("lukovnikov.pasha@gmail.com");
             mail.From = new MailAddress("lukovnikov.pasha@gmail.com", "Email head", System.Text.Encoding.UTF8);
             mail.Subject = "This mail is send from asp.net application";

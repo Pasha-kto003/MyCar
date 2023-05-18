@@ -182,6 +182,7 @@ namespace MyCar.Web.Controllers
             return View("CarView", fullCars);
         }
 
+
         [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
         public async Task<IActionResult> SearchCar(string SearchString, string FilterString, string SortString)
@@ -211,6 +212,10 @@ namespace MyCar.Web.Controllers
             {
                 FullCars = await Api.SearchFilterAsync<List<SaleCarApi>>(FilterString, SearchString, "CarSales", filter);
                 //FullCars = cars.Where(s => s.FullName == SearchString).ToList();
+            }
+            if(FullCars == null || FullCars.Count == 0)
+            {
+                TempData["SearchCountErrorMessage!"] = "Искомое вами авто не найдено!";
             }
             return View("CarView", FullCars);
         }

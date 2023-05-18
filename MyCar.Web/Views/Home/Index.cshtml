@@ -510,7 +510,7 @@
         </div>
     </div>
 }
-@if (User.IsInRole("Клиент") && TempData["AllertMessage"] != null)
+@if (User.IsInRole("Клиент") && TempData["ClientMessage"] != null)
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">Привет, @User.Identity.Name</div>
@@ -536,7 +536,7 @@ else
     </div>
 }
 
-@section Scripts{
+@*@section Scripts{
     <script type="text/javascript">
         function openSuccessModal(strMessage){
             var myDiv = document.getElementById("MyModalSuccessAlertBody");
@@ -557,4 +557,4 @@ else
 }, 4000);
 
     </script>
-}
+}*@

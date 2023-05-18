@@ -123,14 +123,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-
                     <Grid VerticalAlignment="Stretch"
                               HorizontalAlignment="Stretch"
                               Background="{TemplateBinding Background}"
                               >
                         <Border BorderThickness="5 5 0 0" BorderBrush="{StaticResource DarkPastelRedBrush}"  Visibility="Hidden" Name="border"/>
                         <ContentPresenter/>
-
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
@@ -162,7 +160,35 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
+    
+    <Style TargetType="{x:Type Button}" x:Key="AddImageButtonPrint" >
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeXXLarge}" />
+        <Setter Property="FontFamily" Value="{StaticResource CenturyGothic}" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderBrush="Gray" BorderThickness="1" Background="{StaticResource ValorantRedBrush}">
+                        <Grid VerticalAlignment="Stretch"
+                              HorizontalAlignment="Stretch"
+                              Background="{TemplateBinding Background}"
+                              >
+                        <Border BorderThickness="5 5 0 0" BorderBrush="{StaticResource DarkPastelRedBrush}"  Visibility="Hidden" Name="border"/>
+                        <ContentPresenter/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkPastelRedBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 
     <Style TargetType="{x:Type Button}" x:Key="WindowControlButton" BasedOn="{StaticResource BaseStyle}">

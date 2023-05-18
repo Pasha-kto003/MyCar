@@ -103,7 +103,6 @@ namespace MyCar.Desktop.ViewModels
                 if (paginationPageIndex > 0)
                     paginationPageIndex--;
                 Pagination();
-
             });
 
             ForwardPage = new CustomCommand(() =>

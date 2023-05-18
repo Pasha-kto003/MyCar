@@ -117,6 +117,11 @@
                     <ComboBox IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" DisplayMemberPath="UserName" 
                           SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding Users}" Width="200" Height="30" 
                           FontSize="16" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
+                    <Button Margin="20 0 0 0" Command="{Binding PrintOrder}" Style="{StaticResource AddImageButtonPrint}" Width="30" Height="30">
+                        <Button.Content>
+                            <Image Source="/Images/print_64px.png" Width="25" Height="25"/>
+                        </Button.Content>
+                    </Button>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="3" VerticalAlignment="Bottom">

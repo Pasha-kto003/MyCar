@@ -28,6 +28,8 @@
     <None Remove="Images\import_64px.png" />
     <None Remove="Images\mark_64px.png" />
     <None Remove="Images\orders_64px.png" />
+    <None Remove="Images\print_64px.png" />
+    <None Remove="Images\report_file_64px.png" />
     <None Remove="Images\save_64px.png" />
     <None Remove="Images\save_96px.png" />
     <None Remove="Images\settings_64px.png" />
@@ -44,6 +46,7 @@
   <ItemGroup>
     <PackageReference Include="BetterFolderBrowser.Core" Version="1.0.0" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+    <PackageReference Include="FreeSpire.XLS" Version="12.7.0" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.701" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.0.3" />
   </ItemGroup>
@@ -74,6 +77,8 @@
     <Resource Include="Images\export_64px.png" />
     <Resource Include="Images\mark_64px.png" />
     <Resource Include="Images\orders_64px.png" />
+    <Resource Include="Images\print_64px.png" />
+    <Resource Include="Images\report_file_64px.png" />
     <Resource Include="Images\save_64px.png" />
     <Resource Include="Images\save_96px.png" />
     <Resource Include="Images\settings_64px.png" />

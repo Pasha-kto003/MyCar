@@ -48,6 +48,51 @@ namespace MyCar.Server.DataModels
                 context.SaveChanges();
             }
 
+            if (!context.Units.Any())
+            {
+                var units = new[]
+                {
+                    new Unit { UnitName = "Л.С." },
+                    new Unit { UnitName = "Л." },
+                    new Unit { UnitName = "Тонн" },
+                    new Unit { UnitName = "Метры" },
+                    new Unit { UnitName = "Сантиметры" },
+                    new Unit { UnitName = "Цвет" },
+                    new Unit { UnitName = "км/ч" },
+                    new Unit { UnitName = "Сек" },
+                    new Unit { UnitName = "Шт." },
+                    new Unit { UnitName = "М." },
+                    new Unit { UnitName = "кВт/ч" },
+                    new Unit { UnitName = "Нм" },
+                };
+
+                context.Units.AddRange(units);
+                context.SaveChanges();
+            }
+
+            if (!context.Characteristics.Any())
+            {
+                var characteristics = new[]
+                {
+                    new Characteristic { CharacteristicName = "Мощность", UnitId = context.Units.First(s=>s.UnitName == "Л.С.").Id },
+                    new Characteristic { CharacteristicName = "Объем", UnitId = context.Units.First(s=>s.UnitName == "Л.").Id },
+                    new Characteristic { CharacteristicName = "Вес", UnitId = context.Units.First(s=>s.UnitName == "Тонн").Id },
+                    new Characteristic { CharacteristicName = "Высота 2", UnitId = context.Units.First(s=>s.UnitName == "Метры").Id },
+                    new Characteristic { CharacteristicName = "Колесная база", UnitId = context.Units.First(s=>s.UnitName == "Сантиметры").Id },
+                    new Characteristic { CharacteristicName = "Цвет кузова", UnitId = context.Units.First(s=>s.UnitName == "Цвет").Id },
+                    new Characteristic { CharacteristicName = "Макс. Скорость", UnitId = context.Units.First(s=>s.UnitName == "км/ч").Id },
+                    new Characteristic { CharacteristicName = "0-100", UnitId = context.Units.First(s=>s.UnitName == "Сек").Id },
+                    new Characteristic { CharacteristicName = "Кол-во цилиндров", UnitId = context.Units.First(s=>s.UnitName == "Шт.").Id },
+                    new Characteristic { CharacteristicName = "Длина", UnitId = context.Units.First(s=>s.UnitName == "М.").Id },
+                    new Characteristic { CharacteristicName = "Вместимость топливного бака", UnitId = context.Units.First(s=>s.UnitName == "Л.").Id },
+                    new Characteristic { CharacteristicName = "Мощность электродвигателя", UnitId = context.Units.First(s=>s.UnitName == "кВт/ч").Id },
+                    new Characteristic { CharacteristicName = "Крутящий момент", UnitId = context.Units.First(s=>s.UnitName == "Нм").Id },
+                };
+
+                context.Characteristics.AddRange(characteristics);
+                context.SaveChanges();
+            }
+
             if (!context.Users.Any())
             {
                 User user = new User();

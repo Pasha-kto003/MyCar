@@ -100,7 +100,7 @@
                                                                             <form asp-action="UpdateCountWarehouse" asp-route-id="@car.SaleCarId" asp-controller="Cart" method="post">
                                                                                 <p class="text-danger">@ViewBag.ErrorMes</p>
                                                                                 <div class="row w-100 justify-content-center align-items-center">
-                                                                                    <input type="number" asp-for="CountChange" min="0" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
+                                                                                    <input type="number" asp-for="@car.SaleCar.CountChange" name="CountChange" min="0" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
                                                                                 </div>                                               
                                                                                 <div class="row-cols-2 w-100" style="display: flex;">
                                                                                     <div class="col-6">

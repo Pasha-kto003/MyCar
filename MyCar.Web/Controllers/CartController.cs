@@ -201,7 +201,8 @@ namespace MyCar.Web.Controllers
             if (IsCanAddInOrder(car) == false)
             {
                 TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
-                return View("DetailsCarView", car.ID);
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
             }
             await AddOrder(car.ID, car.CountChange);
             string json = HttpContext.Session.GetString("OrderItem");
@@ -224,9 +225,10 @@ namespace MyCar.Web.Controllers
             if (IsCanAddInOrder(car) == false)
             {
                 TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
-                return View("DetailsCarView", car.ID);
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
             }
-            await AddOrder(car.ID, car.CountChange);
+            await EditWareHouse(wh);
             
             return View("DetailsCart", orderItems);
         }

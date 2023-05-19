@@ -1,144 +1,84 @@
 ﻿@model ModelsApi.OrderApi
 
-<div class="container-fluid">
-    <div class="row w-100 text-center align-items-center" style="height: 100px;">
-        <div class="col-3">
-            <h2 style="color: white;">
-                Заказ номер №@Model.ID
-            </h2>
+<div class="row justify-content-center text-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="header mt-5">
+            <h1 class="text-white">Сведения о заказе</h1>
         </div>
-        <div class="col-3">
-            @if(@Model.Status.StatusName == "Завершен")
+    </div>
+</div>
+
+<div class="px-4 my-5 text-center">
+    <div class="row p-3 border-bottom" style="background-color: #171717">
+        <div class="col-4">
+            <h2 class="fw-bold" style="color: white;">Заказ номер №@Model.ID</h2>
+        </div>
+        <div class="col-4">
+            <h3 class="fw-bold" style="color: white;">Статус оплаты:</h3>
+            @if (@Model.Status.StatusName == "Завершен")
             {
-                <h2 class="text-success">
+                <h3 class="display-5 fw-bold text-success">
                     Заказ оплачен
-                </h2>
+                </h3>
             }
             else
             {
-                <h2 class="text-danger">
+                <h3 class="display-5 fw-bold text-danger">
                     Заказ не оплачен
-                </h2>
+                </h3>
             }
         </div>
-        <div class="col-3">
-            <h2 style="color: white;">
-                Сумма заказа: @Model.SumOrder
-            </h2>
-        </div>
-    </div>
-    <div class="row w-100">
-        @foreach(var car in @Model.WareHouses)
-        {
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="MySingle-product mt-3 mb-3">
-                    <div class="product-Photo">
-                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCarId"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar"/></a>
-                    </div>
-                    <div class="product-Details">
-                        <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCarId"><h3 class="product-title text-white">@car.SaleCar.Car.CarName</h3></a>
-
-                        <div class="product-addons-Details d-flex justify-content-between">
-
-                            <div class="product-price">
-                                <h2 class="text-white">@car.SaleCar.FullPrice</h2>
-                            </div>
-
-                            <div class="product-links">
-                                <a asp-action="AddOrder" asp-controller="Cart"><i class="fas fa-heart"></i></a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-
-
-    @*<div class="row justify-content-center text-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="header mt-5">
-                <h1 class="text-white">Сведения о заказе</h1>
-            </div>
+        <div class="col-4">
+            <h3 class="fw-bold" style="color: white;">Сумма заказа:</h3>
+            <h3 class="fw-bold" style="color: white;">@Model.SumOrder</h3>
         </div>
     </div>
 
-    <div class="px-4 my-5 text-center">
-            
-            <div class="row bg-white p-3">
-                <div class="col-4">
-                    <h2 class="fw-bold">Заказ номер №@Model.ID</h2>
-                </div>
-                <div class="col-4">
-                    <h3 class="fw-bold">Статус оплаты:</h3>
-                    @if (@Model.Status.StatusName == "Завершен")
-                    {
-                        <h3 class="display-5 fw-bold text-success">
-                            Заказ оплачен
-                        </h3>
-                    }
-                    else
-                    {
-                        <h3 class="display-5 fw-bold text-danger">
-                            Заказ не оплачен
-                        </h3>
-                    }
-                </div>
-                <div class="col-4">
-                    <h3 class="fw-bold">Сумма заказа:</h3>
-                    <h3 class="fw-bold">@Model.SumOrder</h3>
+
+
+    @foreach (var car in @Model.WareHouses)
+    {
+        <div class="row flex-lg-row align-items-center  py-5 border-bottom" style="background-color: #171717;">
+            <div class="col-10 col-sm-8 col-lg-6">
+                <div class="product-Photo">
+                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar" /></a>
                 </div>
             </div>
 
-            
+            <div class="col-lg-6">
+                <div class="row">
 
-        @foreach(var car in @Model.WareHouses)
-        {
-            <div class="row flex-lg-row align-items-center  py-5 bg-white border-bottom">
-                <div class="col-10 col-sm-8 col-lg-6">
-                    <div class="product-Photo">
-                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar" /></a>
+                    <div class="col p-5">
+                        <div class="row border-bottom">
+                            <h2 style="color: white;">Марка:</h2>
+                        </div>
+                        <div class="row border-bottom">
+                            <h2 style="color: white;">Наименование:</h2>
+                        </div>
+                        <div class="row border-bottom">
+                            <h2 style="color: white;">Стоимость:</h2>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-lg-6">
-                    <div class="row">
-                    
-                        <div class="col p-5">
-                            <div class="row border-bottom">
-                                <h2>Марка:</h2>
-                            </div>
-                            <div class="row border-bottom">
-                                <h2>Наименование:</h2>
-                            </div>
-                            <div class="row border-bottom">
-                                <h2>Стоимость:</h2>
-                            </div>
+                    <div class="col p-5">
+                        <div class="row border-bottom">
+                            <h2 style="color: white;">Example</h2>
                         </div>
-
-                        <div class="col p-5">
-                            <div class="row border-bottom">
-                                <h2>Example</h2>
-                            </div>
-                            <div class="row border-bottom">
-                                <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><h3 class="product-title">@car.SaleCar.Car.CarName</h3></a>
-                            </div>
-                            <div class="row border-bottom">
-                                <h2>@car.SaleCar.FullPrice</h2>
-                            </div>
+                        <div class="row border-bottom">
+                            <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><h3 style="color: white;" class="product-title">@car.SaleCar.Car.CarName</h3></a>
                         </div>
-
-                     </div>
+                        <div class="row border-bottom">
+                            <h2 style="color: white;">@car.SaleCar.FullPrice</h2>
+                        </div>
+                    </div>
 
                 </div>
 
             </div>
 
-        }
-            
+        </div>
 
-    </div>*@
+    }
 
 
 </div>

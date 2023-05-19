@@ -1709,6 +1709,19 @@ body {
     height: 200px;
 }
 
+.mainHeaderText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 670px) {
+    .hideMobileHeader {
+        visibility: hidden;
+        display: none;
+    }
+}
+
 .product-Photo img {
     max-width: 100%;
     max-height: 100%;

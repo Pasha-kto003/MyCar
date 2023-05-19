@@ -1,52 +1,48 @@
-﻿@model IEnumerable<ModelsApi.WareHouseApi>
+﻿@using MyCar.Web.Core
+@model IEnumerable<ModelsApi.WareHouseApi>
 
 <div class="container-fluid">
 
-    <div class="row justify-content-center text-center">
-        <div class="col-md-12 col-lg-12">
-            <div class="header mb-5 mt-5">
-                <h1 class="text-white">Оформление заказа</h1>
-            </div>
-        </div>
+    @*<div class="row justify-content-center text-center">
+    <div class="col-md-12 col-lg-12">
+    <div class="header mb-5 mt-5">
+    <h1 class="text-white">Оформление заказа</h1>
     </div>
-
-    <div class="row justify-content-center text-center">
-        <div class="col-md-8 col-lg-6"></div>
-        <div class="col-4 text-center justify-content-center align-content-center">
-            <div class="glass-btn glass-btn-red w-100">
-                <a asp-action="ConfirmOrder" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Оплатить заказ</a>
-            </div>
-        </div>
     </div>
-
+    </div>
+    <div class="row justify-content-center text-center">
+    <div class="col-md-8 col-lg-6"></div>
+    <div class="col-4 text-center justify-content-center align-content-center">
+    <div class="glass-btn glass-btn-red w-100">
+    <a asp-action="ConfirmOrder" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Оплатить заказ</a>
+    </div>
+    </div>
+    </div>
     <div class="row w-100">
-
-        @foreach(var car in @Model.WareHouses)
-        {
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="MySingle-product mt-3 mb-3">
-                    <div class="product-Photo">
-                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar"/></a>
-                    </div>
-                    <div class="product-Details">
-                        <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><h3 class="product-title text-white">@car.SaleCar.Car.CarName</h3></a>
-
-                        <div class="product-addons-Details d-flex justify-content-between">
-                            <div class="product-price">
-                                <h2 class="text-white">@car.SaleCar.FullPrice</h2>
-                            </div>
-                            <div class="product-links">
-                                <a asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.ID"><i class="fas fa-heart"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+    @foreach(var car in @Model.WareHouses)
+    {
+    <div class="col-md-6 col-lg-4 col-xl-3">
+    <div class="MySingle-product mt-3 mb-3">
+    <div class="product-Photo">
+    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar"/></a>
     </div>
-@*
-    <div class="row wow bounceInUp align-items-center justify-content-center">
+    <div class="product-Details">
+    <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-CarName="@car.SaleCar.Car.CarName"><h3 class="product-title text-white">@car.SaleCar.Car.CarName</h3></a>
+    <div class="product-addons-Details d-flex justify-content-between">
+    <div class="product-price">
+    <h2 class="text-white">@car.SaleCar.FullPrice</h2>
+    </div>
+    <div class="product-links">
+    <a asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.ID"><i class="fas fa-heart"></i></a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    }
+    </div>*@
 
+    <div class="row wow bounceInUp align-items-center justify-content-center">
         <section class="main-content">
             <div class="container-fluid">
 
@@ -57,74 +53,72 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="row">
-                        <div class="col-md-8">
+                <div class="row justify-content-center text-center">
+                    <div class="col-md-8 col-lg-6">
+                    </div>
+                    <div class="col-md-4 col-lg-6">
+                        @{
+                            var sum = @Model.Sum(s => s.Price);
+                        }
+                        <h4 class="text-white">Сумма заказа: @sum</h4>
+                    </div>
+                </div>
+                <div class="row justify-content-center text-center">
+                    <div class="col-md-8 col-lg-6">
+                    </div>
+                    <div class="col-md-4 col-lg-6">
+                        <div class="glass-btn glass-btn-red text-center" style="width:200px;">
+                            <a asp-action="ConfirmOrder" asp-controller="Cart" class="stretched-link" style="color: black;">Оплатить заказ</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #171717">
+                    <div class="row" style="background-color: #171717">
+                        <div class="col-md-12">
 
                             @foreach (var car in @Model)
                             {
-                                    <div class="row align-items-center p-4">
+                                <div class="row align-items-center p-4">
 
-                                        <div class="col-4 productCart-Photo d-flex justify-content-center">
-                                            <a href="#"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar"></a>
+                                    <div class="col-4 productCart-Photo d-flex justify-content-center">
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCarId"><img src="~/CarImages/@car.SaleCar.Car.PhotoCar"></a>
+                                    </div>
+
+                                    <div class="col-8 d-flex justify-content-between">
+
+                                        <div class="col m-3">
+                                            <h4 class="row text-white">Наименование авто</h4>
+                                            <h5 class="row text-white">@car.SaleCar.Car.CarName</h5>
                                         </div>
 
-                                        <div class="col-8 d-flex justify-content-between">
+                                        <div class="col m-3">
+                                            <h4 class="row text-white">Стоимость авто:</h4>
+                                            @{
+                                                var price = DiscountCounter.GetDiscount(@car.SaleCar);
+                                                if (price == 0)
+                                                {
+                                                    price = @car.SaleCar.FullPrice;
+                                                }
+                                            }
+                                            <h4 class="row text-white">&euro; @price</h4>
+                                        </div>
 
-                                            <div class="col m-3">
-                                                <h4 class="row ">@car.SaleCar.Car.CarName</h4>
-                                                <h5 class="row">@car.SaleCar.Car.Model.ModelName</h5>
-                                            </div>
-
-                                            <div class="col m-3">
-                                                <h4 class="row">Стоимость комплектации:</h4>
-                                                <h4 class="row">&euro; @car.SaleCar.FullPrice</h4>
-                                            </div>
-
-                                            <div class="col m-3 d-flex justify-content-center  align-items-center">
-                                                <button asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.ID" type="button" class="btn btn-danger">Убрать</button>
-                                            </div>
-
+                                        <div class="col m-3 d-flex justify-content-center align-items-center">
+                                            <button asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.ID" type="button" class="btn btn-danger">Убрать</button>
                                         </div>
 
                                     </div>
 
-                                }
+                                </div>
+                                <hr style="color: white;" />
+                            }
                             }
                         </div>
-
-                        <div class="col-md-4 summary p-4">
-
-                            @*<div><h3 class="fw-bold"><b>Итого: &euro; @Model</b></h3></div>
-                            <hr>
-
-                            <div class="row">
-                                <h4 class="mb-3">Введите промокод</h4>
-                                <input type="text" class="form-control " id="firstName" placeholder="" value="" required="">
-                            </div>*@
-
-                            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                                <div><h5 class="fw-bold">Окончательная цена</h5></div>
-                                <div class="col text-right">Сюда цену</div>
-                            </div>
-
-                            <button type="button" class="btn btn-danger">Очистить корзину</button>
-                            <div class="glass-btn glass-btn-red text-center" style="width:200px;">
-                                <a asp-action="ConfirmOrder" asp-controller="Cart" class="stretched-link" style="color: black;">Оплатить заказ</a>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
 
             </div>
         </section>
-    </div>*@
-
-
-
-    
-
+    </div>
 </div>

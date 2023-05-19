@@ -5,10 +5,6 @@ using ModelsApi;
 using MyCar.Web.Core;
 using Newtonsoft.Json;
 using System.Data;
-using System.Net;
-using System.Web;
-using Microsoft.AspNetCore.Http.Extensions;
-using MyCar.Server.DB;
 
 namespace MyCar.Web.Controllers
 {
@@ -82,66 +78,6 @@ namespace MyCar.Web.Controllers
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
         }
 
-        public async Task<IActionResult> AddOrder(int id)
-        {
-            await GetOrders();
-            List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
-            List<WareHouseApi> orderItems = new List<WareHouseApi>();
-            var car = Cars.FirstOrDefault(s => s.ID == id);
-            var order = Orders.LastOrDefault(s => s.Status.StatusName == "Завершен");
-            //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
-            if(order != null)
-            {
-                WareHouseApi warehouse = new WareHouseApi
-                {
-                    SaleCarId = id,
-                    CountChange = -1,
-                    Discount = 0,
-                    SaleCar = car,
-                    Price = car.FullPrice
-                };
-
-                // Получаем текущий список из Session
-                string json = HttpContext.Session.GetString("OrderItem");
-                if (json != null)
-                    orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
-
-                // Добавляем новый объект в список
-                orderItemsOld.Add(warehouse);
-
-                // Сохраняем список обратно в Session
-                string json1 = JsonConvert.SerializeObject(orderItemsOld);
-                HttpContext.Session.SetString("OrderItem", json1);
-
-                // Получаем текущий список из Session
-                string json2 = HttpContext.Session.GetString("OrderItem");
-                if (json2 != null)
-                    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
-
-
-                //Request.Cookies.TryGetValue("OrderItem", out string answerOld);
-                //if (!string.IsNullOrEmpty(answerOld))
-                //{
-                //   orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(answerOld);
-                //}
-
-                //orderItemsOld.Add(warehouse);
-                //string json = JsonConvert.SerializeObject(orderItemsOld);
-                //Response.Cookies.Append("OrderItem", json, new CookieOptions
-                //{
-                //    Expires = DateTimeOffset.Now.AddDays(1) // устанавливаем время жизни куки на 1 день
-                //});
-
-                //Request.Cookies.TryGetValue("OrderItem", out string answer);
-                //if (!string.IsNullOrEmpty(answer))
-                //{
-                //    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(answer);
-                //}
-
-            }
-            return View("DetailsCart", orderItems);
-        }
-
         public async Task<IActionResult> AddCars(int id)
         {
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
@@ -151,32 +87,39 @@ namespace MyCar.Web.Controllers
 
         public async Task<IActionResult> DetailsCart(string name)
         {
+            List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
+            List<WareHouseApi> orderItems = new List<WareHouseApi>();
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
             Users = await Api.GetListAsync<List<UserApi>>("User");
             var user = Users.FirstOrDefault(s => s.UserName == name);
-            var order = Orders.LastOrDefault(s => s.User.UserName == name && s.Status.StatusName == "Новый");
-            if (order == null)
+            // Получаем текущий список из Session
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+
+            // Получаем текущий список из Session
+            string json2 = HttpContext.Session.GetString("OrderItem");
+            if (json2 != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
+            if (orderItems.Count == 0)
             {
-                return View("Error");
+                return View("CartError");
             }
-            else if (order.WareHouses == null || order.WareHouses.Count == 0)
-            {
-                DeleteOrder(order);
-                return View("Error");
-            }
-            order.WareHouses = Warehouses.Where(s => s.OrderId == order.ID).ToList();
-            return View("DetailsCart", order);
+            return View("DetailsCart", orderItems);
         }
 
         public async Task<IActionResult> DeleteCar(int id)
         {
-            
-
-            List<WareHouseApi> orderItems = new List<WareHouseApi>();
-            
-            return View("DetailsCart", orderItems);
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            var deleteCar = Warehouses.FirstOrDefault(s => s.ID == id);
+            var order = Orders.FirstOrDefault(s => s.ID == deleteCar.OrderId);
+            order.WareHouses.Remove(deleteCar);
+            await DeleteCar(deleteCar);
+            return View("DetailsCart", order);
         }
 
         public async Task<IActionResult> DetailsOrder(int id)
@@ -195,21 +138,60 @@ namespace MyCar.Web.Controllers
             return View("DetailsOrder", order);
         }
 
+        public async Task<IActionResult> AddOrder(int id)
+        {
+            await GetOrders();
+            List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
+            List<WareHouseApi> orderItems = new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            var price = DiscountCounter.GetDiscount(car);
+            if (price == 0)
+            {
+                price = car.FullPrice;
+            }
+            var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+            //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
+            List<OrderApi> thisOrders = Orders.OrderBy(s => s.DateOfOrder).ToList();
+            List<WareHouseApi> WareHouseIns = thisOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(w => w.WareHouses).ToList();
+
+            WareHouseApi warehouse = new WareHouseApi
+            {
+                SaleCarId = id,
+                CountChange = 1,
+                Discount = 0,
+                SaleCar = car,
+                Price = price
+            };
+            // Получаем текущий список из Session
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+
+            // Добавляем новый объект в список
+            orderItemsOld.Add(warehouse);
+
+            // Сохраняем список обратно в Session
+            string json1 = JsonConvert.SerializeObject(orderItemsOld);
+            var des = JsonConvert.DeserializeObject(json1);
+            HttpContext.Session.SetString("OrderItem", json1);
+
+            // Получаем текущий список из Session
+            string json2 = HttpContext.Session.GetString("OrderItem");
+            if (json2 != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
+            return View("DetailsCart", orderItems);
+        }
+
         public async Task<IActionResult> ConfirmOrder()
         {
             await GetOrders();
-            var user = Users.FirstOrDefault(s=> s.UserName == User.Identity.Name);
-            //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
-            var actionType = Types.FirstOrDefault(s => s.ID == 3);
-            var status = Statuses.FirstOrDefault(s => s.ID == 2);
-            //List<WareHouseApi> orderItems = new List<WareHouseApi>();
-            //Request.Cookies.TryGetValue("OrderItem", out string answer);
-            //if (!string.IsNullOrEmpty(answer))
-            //{
-            //    orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(answer);
-            //}
+            var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+            var actionType = Types.FirstOrDefault(s => s.ActionTypeName == "Продажа");
+            var status = Statuses.FirstOrDefault(s => s.StatusName == "Завершен");
             List<WareHouseApi> orderItems = new List<WareHouseApi>();
-            // Получаем текущий список из Session
+
+            Request.Cookies.TryGetValue("OrderItem", out string answer);
+
             string json = HttpContext.Session.GetString("OrderItem");
             if (json != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
@@ -218,7 +200,7 @@ namespace MyCar.Web.Controllers
             {
                 UserId = user.ID,
                 DateOfOrder = DateTime.Now,
-                ActionTypeId = 3,
+                ActionTypeId = 2,
                 StatusId = 2,
                 WareHouses = orderItems,
                 ActionType = actionType,
@@ -226,9 +208,12 @@ namespace MyCar.Web.Controllers
                 User = user
             };
             await CreateOrder(order);
-
-
-            return View("DetailsCart", orderItems);
+            orderItems.Clear();
+            string json1 = JsonConvert.SerializeObject(orderItems);
+            HttpContext.Session.SetString("OrderItem", json1);
+            //EmailSender emailSender = new EmailSender();
+            //emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
+            return View("SuccsessOrder");
         }
 
         public async Task CreateOrder(OrderApi orderApi)

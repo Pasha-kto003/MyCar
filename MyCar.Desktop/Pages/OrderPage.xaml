@@ -20,7 +20,7 @@
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
                 <StackPanel Margin="0 0 10 0">
                     <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
-                    <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                 </StackPanel>
                 <StackPanel Margin="0 0 10 0">
                     <Label Grid.Column="1" FontSize="16" Content="Критерий поиска:"  FontFamily="Century Gothic"/>

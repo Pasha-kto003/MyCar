@@ -23,23 +23,23 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10 20 10 10">
                     <GroupBox Header="Кол-во" Width="Auto"  FontFamily="Century Gothic" FontSize="15">
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding Count}" Height="30" Width="80" FontSize="18" FontFamily="Century Gothic"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Count}" Height="30" Width="80" FontSize="18" FontFamily="Century Gothic"/>
                             <Button Content="+" Command="{Binding AddOne}" Style="{StaticResource WindowCloseButton}" Margin="5 0 0 0" FontSize="16" Width="24" Height="32"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Цена" Width="Auto"  FontFamily="Century Gothic" FontSize="15" Visibility="{Binding PriceVisibility}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding Price, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Price, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Скидка" Width="Auto"  FontFamily="Century Gothic" FontSize="15" Visibility="{Binding DiscountVisibility}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding Discount, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Discount, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Всего" Width="Auto"  FontFamily="Century Gothic" FontSize="15" Visibility="{Binding PriceVisibility}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding Total, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic" IsEnabled="False"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Total, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic" IsEnabled="False"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

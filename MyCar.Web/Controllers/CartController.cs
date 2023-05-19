@@ -210,6 +210,27 @@ namespace MyCar.Web.Controllers
             return View("DetailsCart", orderItems);
         }
 
+        public async Task<IActionResult> UpdateCountWarehouse(int id, int CountChange)
+        {
+            await GetOrders();
+            var orderItems = new List<WareHouseApi>();
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            var wh = orderItems.LastOrDefault(s=> s.SaleCarId == car.ID);
+            car.CountChange = CountChange;
+            wh.CountChange = CountChange;
+            if (IsCanAddInOrder(car) == false)
+            {
+                TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
+                return View("DetailsCarView", car.ID);
+            }
+            await AddOrder(car.ID, car.CountChange);
+            
+            return View("DetailsCart", orderItems);
+        }
+
         public async Task<IActionResult> ConfirmOrder()
         {
             await GetOrders();

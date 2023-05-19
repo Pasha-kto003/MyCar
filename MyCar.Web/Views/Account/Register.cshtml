@@ -8,7 +8,7 @@
                 <div class="validation" asp-validation-summary="ModelOnly"></div>
                 <div class="form-group" style="margin-top: 30px;">
                     @*<h5 class="font-weight-normal" style="color: white; text-align:center; display:flex; justify-content:center;">Введите никнейм</h5><br />*@
-                    <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="Никнейм" style="text-align:center; display:flex; justify-content:center;" width="300px;"/>
+                    <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="Имя пользователя" style="text-align:center; display:flex; justify-content:center;" width="300px;"/>
                     <span asp-validation-for="UserName" class="text-white" />
                 </div>
                 <div class="form-group" style="margin-top: 30px;">
@@ -18,22 +18,22 @@
                 </div>
                 <div class="form-group" style="margin-top: 30px;">
                     <h5 class="font-weight-normal" style="color: white; display:flex; justify-content:center;">Введите пароль</h5><br />
-                    @*<input type="password" id="myInputRegister" class="form-control" placeholder="Введите пароль" asp-for="Password" style="text-align:center; display:flex; justify-content:center; color:white; background-color:transparent; border-top: none; border-bottom-color:white; box-shadow:none; border-left:none; border-right:none;" width="300px;"/>*@
-                    <input type="password" asp-for="Password" name="password" id="password" style="display:flex; justify-content:center; height:30px;"/>
-                    <i class="bi bi-eye-slash-fill" id="togglePassword" style="font-size: 16px; color: rgb(255, 255, 255);"></i>
-                    
+                    <label style="color:white; display:flex; justify-content:center;">
+                        <input type="password" asp-for="Password" name="password" placeholder="Пароль" id="password" style="display:flex; justify-content:center; height:40px; text-align:center; width: 340px;" />
+                        <i class="bi bi-eye-slash-fill" id="togglePassword" style="font-size: 20px; color: black;"></i>
+                    </label>
                     <span asp-validation-for="Password" class="text-white" />
-                    <label style="margin-top:20px; margin-bottom:20px; color:white; display:flex; justify-content:center;">
+@*                    <label style="margin-top:20px; margin-bottom:20px; color:white; display:flex; justify-content:center;">
                         <input type="checkbox" onclick="myFunctionRegister()" class="password-checkbox"/>
                             Показать пароль
-                    </label>
+                    </label>*@
                 </div>
                 <div style="margin-top:30px;">
                     <h5 class="font-weight-normal" style="color: white; display:flex; justify-content:center; text-align:center;">Повторите пароль</h5><br />
                     <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" placeholder="Повторите пароль" style="text-align:center; display:flex; justify-content:center;" width="300px;"/>
                     <span asp-validation-for="ConfirmPassword" class="text-white"/>
                 </div>
-                <div style="margin-top:30px;">
+                <div style="margin-top:50px;">
                     <input type="submit" value="Завершить регистрацию" class="atuin-btn" style="width: 320px; display:flex; justify-content:center; color:white;" role="button" aria-pressed="true" />
                 </div>
             </div>

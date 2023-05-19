@@ -6,18 +6,23 @@
                 <h2 style="color: white; display: flex; justify-content:center;">Вход на сайт</h2>
                 <div class="validation" asp-validation-summary="ModelOnly" style="color:red; font-size: 16px; justify-content:center; display:flex;"></div>
                 <div class="form-group" style="margin-top: 30px;">
-                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Email адрес" style="width: 300px; text-align:center; display:flex; justify-content:center;"/>
+                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Имя пользователя" style="width: 300px; text-align:center; display:flex; justify-content:center;"/>
                     <span asp-validation-for="UserName" class="text-white"/>
                 </div>
                 <div class="form-group" style="margin-top: 50px;">
-                    <input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" style="width: 300px; text-align:center; display:flex; justify-content:center;"/>
+                    <label style="color:white; display:flex; justify-content:center;">
+                        <input type="password" asp-for="Password" name="password" id="password" placeholder="Пароль" style="display:flex; justify-content:center; height:40px; text-align:center; width: 300px;" />
+                        <i class="bi bi-eye-slash-fill" id="togglePassword" style="font-size: 20px; color: black;"></i>
+                    </label>
+                    <span asp-validation-for="Password" class="text-white" />
+                    @*<input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" style="width: 300px; text-align:center; display:flex; justify-content:center;"/>
                     <span asp-validation-for="Password" class="text-white"/>
                     <label style="margin-top:20px; margin-bottom:20px; color:white; display:flex; justify-content:center;">
                         <input type="checkbox" onclick="myFunction()" class="password-checkbox"/>
                             Показать пароль
-                    </label>
+                    </label>*@
                 </div>
-                <div class="form-group" style="margin-bottom:20px; display: flex; justify-content:center;">
+                <div class="form-group" style="margin-bottom:20px; margin-top:50px; display: flex; justify-content:center;">
                     <input class="atuin-btn" id="success" type="submit" role="button" title="Если вы зарегистрированы на этом сайте то просто зайдите под своим логином и паролем" value="Войти" data-toggle="tooltip" data-placement="right"/>  
                 </div>
                 <div class="form-group" style="margin-bottom:20px; display: flex; justify-content:center;">
@@ -29,9 +34,39 @@
                     <a asp-action="EditForgotUser" class="atuin-btn" data-toggle="tooltip" data-placement="left" title="Для изменения пароля нажмите эту кнопку" role="button" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Account">
                         Забыли пароль?
                     </a>
-
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+
+        togglePassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+        });
+
+        // prevent form submit
+        const form = document.querySelector("form");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+        });
+</script>
+
+<script>
+    function myFunctionRegister() {
+    var x = document.getElementById("myInputRegister");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>

@@ -358,25 +358,25 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 {
                                     ViewBag.DiscountCarStylePrice = null;
                                 }
-                                                    <div class="product-price">
-                                                    @if(ViewBag.DiscountCarStylePrice != null)
+                                <div class="product-price">
+                                @if(ViewBag.DiscountCarStylePrice != null)
                                 {
-                                                        <h3 class="text-white">
-                                                            <s class="text-white">
-                                                                @cars.FullPrice
-                                                            </s>
-                                                        </h3>
+                                    <h3 class="text-white">
+                                        <s class="text-white">
+                                            @cars.FullPrice
+                                        </s>
+                                    </h3>
                                 }
                                 else
                                 {
-                                                        <h2 class="text-white">
-                                                            @cars.FullPrice
-                                                        </h2>
+                                    <h2 class="text-white">
+                                        @cars.FullPrice
+                                    </h2>
                                 }
-                                                        <h4 class="text-white">
-                                                            @ViewBag.DiscountCarStylePrice
-                                                        </h4>
-                                                    </div>
+                                    <h4 class="text-white">
+                                        @ViewBag.DiscountCarStylePrice
+                                    </h4>
+                                </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">

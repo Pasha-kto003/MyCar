@@ -14,6 +14,14 @@
     var carColors = carsStyles.Where(s=> s.EquipmentId == @Model.EquipmentId && s.FullName == @Model.FullName);
     var colors = await Api.GetListAsync<List<Color>>("Color");
     var photos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+    //SaleCarApi ChangeColor(int id)
+    //{
+    //    if(id != null || id != 0)
+    //    {
+    //        return styles.FirstOrDefault(s=> s.ID == id);
+    //    }
+    //    return styles.FirstOrDefault(s=> s.ID == id);
+    //}
 }
     <div class="container-fluid mt-5"> 
         <div class="row w-100">
@@ -29,9 +37,9 @@
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                     if(ware.Value <= 0)
                     {
-                                        <h3 class="text-white text-center" style="text-align: center;">
-                                            Отсутствует в продаже
-                                        </h3>
+                                <h3 class="text-white text-center" style="text-align: center;">
+                                    Отсутствует в продаже
+                                </h3>
                     }
                     else
                     {
@@ -39,25 +47,25 @@
                         {
                             ViewBag.DiscountPrice = null;
                         }
-                                        <div class="product-price">
-                                        @if(ViewBag.DiscountPrice != null)
+                            <div class="product-price">
+                            @if(ViewBag.DiscountPrice != null)
                         {
-                                            <h2 class="text-white" style="text-align: center;">
-                                                <s class="text-white">
-                                                    @Model.FullPrice
-                                                </s>
-                                            </h2>
+                                <h2 class="text-white" style="text-align: center;">
+                                    <s class="text-white">
+                                        @Model.FullPrice
+                                    </s>
+                                </h2>
                         }
                         else
                         {
-                                            <h2 class="text-white" style="text-align: center;">
-                                                @Model.FullPrice
-                                            </h2>
+                                <h2 class="text-white" style="text-align: center;">
+                                    @Model.FullPrice
+                                </h2>
                         }
-                                            <h4 class="text-white" style="text-align: center;">
-                                                @ViewBag.DiscountPrice
-                                            </h4>
-                                        </div>
+                                <h4 class="text-white" style="text-align: center;">
+                                    @ViewBag.DiscountPrice
+                                </h4>
+                            </div>
                     }
                     
                 }
@@ -136,7 +144,7 @@
                 
                     <div class="carousel-3d">
                         <figure>
-                            <div><a href="#any"><img src="~/CarImages/@Model.MainPhotoCar" alt="" /></a></div>
+                            <div><a href="#any"><img src="~/CarImages/@Model.Car.PhotoCar" alt="" /></a></div>
                         @foreach(var img in @Model.CarPhotos)
                         {
                             <div><a href="#any"><img src="~/CarImages/@img.PhotoName" alt="" /></a></div>
@@ -295,10 +303,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 </div>
             </div>
         </div>
-    <div class="row w-100 text-white text-center">
-        <hr style="color: white;" class="w-100 mt-5"/>
-    </div>
-    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-1">
+    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5">
         <h3 class="text-white text-center">
             Доступные цвета для @Model.FullName
         </h3>
@@ -326,15 +331,12 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
             </li>
         </ul>
     </div>
-    <div class="row w-100 text-white text-center">
-        <hr style="color: white;" class="w-100 mt-5"/>
-    </div>
     <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
         <h1>Комплектации @Model.Car.CarName</h1>
     </div>
     <div class="row w-100">
         <div class="tabs">
-            @foreach(var cars in styles.Where(s=> s.EquipmentId != @Model.EquipmentId).DistinctBy(s=> s.FullName))
+            @foreach(var cars in styles.Where(s=> s.EquipmentId != @Model.EquipmentId))
             {
                 <div class="tab">
                     <div class="tab-toggle">
@@ -379,10 +381,14 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 </div>
                             }
                         </div>
+                        @{
+                            var carPhotos = photos.Where(s => s.SaleCarId == @cars.ID).ToList();
+                            var photo = carPhotos?.FirstOrDefault(s => s.IsMainPhoto == 1);
+                        }
                         <div class="col-9 justify-content-center">
-                            @if(@cars.MainPhotoCar != null)
+                            @if(photo != null)
                             {
-                                <img src="~/CarImages/@cars.MainPhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                                <img src="~/CarImages/@photo.PhotoName" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
                             }
                             else
                             {
@@ -418,9 +424,6 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
             }
         </div>
     </div>
-    <div class="row w-100 text-white text-center">
-        <hr style="color: white;" class="w-100 mt-5"/>
-    </div>
         <div class="row w-100">
             <h4 style="color: white;">
                 Рекомендованное авто
@@ -432,7 +435,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
                     <div class="corner-box-1-content" style="background-color:#171717">
                         <div class="card-body img-responsive">
-                            <img src="~/CarImages/@cars.MainPhotoCar" style="width:200px; height:150px; position:relative;"/>
+                            <img src="~/CarImages/@cars.Car.PhotoCar" style="width:200px; height:150px; position:relative;"/>
                             <br />
                             <h5 style="color:white;">@cars.Car.CarName</h5>
                             <button class="imageButton">
@@ -446,25 +449,25 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 {
                                     ViewBag.DiscountPrice = null;
                                 }
-                                                <div class="product-price">
-                                                @if(ViewBag.DiscountPrice != null)
+                                <div class="product-price">
+                                @if(ViewBag.DiscountPrice != null)
                                 {
-                                                    <h5 class="text-white">
-                                                        <s class="text-white">
-                                                            @cars.FullPrice
-                                                        </s>
-                                                    </h5>
+                                    <h5 class="text-white">
+                                        <s class="text-white">
+                                            @cars.FullPrice
+                                        </s>
+                                    </h5>
                                 }
                                 else
                                 {
-                                                    <h2 class="text-white">
-                                                        @cars.FullPrice
-                                                    </h2>
+                                    <h2 class="text-white">
+                                        @cars.FullPrice
+                                    </h2>
                                 }
-                                                    <h5 class="text-white">
-                                                        @ViewBag.DiscountPrice
-                                                    </h5>
-                                                </div>
+                                    <h5 class="text-white">
+                                        @ViewBag.DiscountPrice
+                                    </h5>
+                                </div>
                             }
                         </div>
                     </div>
@@ -478,7 +481,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
         <div class="callout-header">Ошибка!!!</div>
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
-            <h4 class="text-white">Превышено максмиальное кол-во покупок данного авто</h4>
+            <p class="text-white">Превышено максмиальное кол-во покупок данного авто</p>
         </div>
     </div>
 }

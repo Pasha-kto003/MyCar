@@ -3,6 +3,9 @@
 @using MyCar.Web.Core;
 @{
     ViewData["Title"] = "Каталог";
+}
+
+@{
     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
 }
 
@@ -303,16 +306,7 @@
     </section>
 
 </div>
-@if (TempData["SearchCountErrorMessage"] != null)
-{
-    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, red, orange) 1;" data-bs-dismiss="alert" role="alert">
-        <div class="callout-header">Ошибка</div>
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        <div class="callout-container">
-            <h4 class="text-white">Ошибка ошибка</h4>
-        </div>
-    </div>
-}
+
 @*@section Scripts{
     <script type="text/javascript">
         function openSuccessModal(strMessage){

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyCar.Desktop.Windows.AddWindows" xmlns:core="clr-namespace:MyCar.Desktop.Core"
         mc:Ignorable="d"
         Title="AddCarSaleWindow" Height="750" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
-    <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}" 
+    <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}"  Background="WhiteSmoke"
                 Panel.ZIndex="2">
         <Grid>
 
@@ -89,7 +89,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <ListBox Grid.Column="0" Background="WhiteSmoke"  HorizontalContentAlignment="Stretch" 
+                <ListBox Grid.Column="0" Background="White"  HorizontalContentAlignment="Stretch" 
                          Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding ThisCarPhotos}" SelectedItem="{Binding SelectedThisPhoto}">
                     <ListBox.ItemsPanel >
                         <ItemsPanelTemplate>

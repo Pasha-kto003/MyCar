@@ -162,37 +162,37 @@
         <Button Grid.Row="2" Style="{StaticResource HyperlinkLikeButton}" Command="{Binding ImportConfig}"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30 10 10 10">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>
+                <TextBlock FontSize="18">
                      <Run Text="Импорт"/>
                 </TextBlock>
-                <Image Margin="3 0 0 0" Width="14" Height="12" Source="/Images/import_64px.png"/>
+                <Image Margin="3 0 0 0" Width="16" Height="14" Source="/Images/import_64px.png"/>
             </StackPanel>
         </Button>
 
         <Button Grid.Row="2" Style="{StaticResource HyperlinkLikeButton}" Command="{Binding ExportConfig}"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="130 10 10 10">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>
+                <TextBlock FontSize="18">
                      <Run Text="Экспорт"/>
                 </TextBlock>
-                <Image Margin="3 0 0 0" Width="14" Height="12" Source="/Images/export_64px.png"/>
+                <Image Margin="3 0 0 0" Width="16" Height="14" Source="/Images/export_64px.png"/>
             </StackPanel>
         </Button>
 
         <Button Style="{StaticResource HyperlinkLikeButton}" Command="{Binding SaveConfig}" Grid.Row="2" HorizontalAlignment="Left" 
                 VerticalAlignment="Bottom" Foreground="ForestGreen" FontSize="14" Margin="225 10 10 10" Grid.Column="0" Opacity="1">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>
+                <TextBlock FontSize="18">
                      <Run Text="Сохранить"/>
                 </TextBlock>
-                <Image Margin="3 0 0 0" Width="16" Height="16" Source="/Images/save_96px.png"/>
+                <Image Margin="2 3 0 0" Width="18" Height="20" Source="/Images/save_96px.png"/>
             </StackPanel>
         </Button>
 
         <Button Grid.Row="2" Style="{StaticResource HyperlinkLikeButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                Margin="10" Grid.Column="1" Command="{Binding Exit}">
+                Margin="10" Grid.Column="1" Command="{Binding Exit}" >
             <StackPanel Orientation="Horizontal">
-                <TextBlock>
+                <TextBlock FontSize="18">
                      <Run Text="Выйти из акаунта"/>
                 </TextBlock>
             </StackPanel>

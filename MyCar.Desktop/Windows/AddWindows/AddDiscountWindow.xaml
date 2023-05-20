@@ -35,12 +35,12 @@
                     <Label Content="Значение скидки" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBox VerticalContentAlignment="Center" Text="{Binding DiscountValue, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Style="{StaticResource ModernTextBox}" VerticalContentAlignment="Center" Text="{Binding DiscountValue, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}"
                              Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" FontSize="16"/>
                     <Label Content="₽" Margin="0 0 0 5" HorizontalContentAlignment="Center" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBox VerticalContentAlignment="Center" Text="{Binding PercentValue, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" FontSize="16"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" VerticalContentAlignment="Center" Text="{Binding PercentValue, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 5" Width="150" HorizontalContentAlignment="Center" FontSize="16"/>
                     <Label Content="%" Margin="0 0 0 5" HorizontalContentAlignment="Center" FontSize="16"/>
                 </StackPanel>
                 <!--<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">

@@ -46,8 +46,8 @@
             </StackPanel>
             <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="5">
                 <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
-                
-                <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+
+                <TextBox Style="{StaticResource ModernTextBox}" Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                 
                 <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Width="180" FontSize="16" ItemsSource="{Binding SearchType}" 
                           SelectedItem="{Binding SelectedSearchType}" Margin="10 0 0 0"/>

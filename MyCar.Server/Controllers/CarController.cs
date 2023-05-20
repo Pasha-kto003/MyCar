@@ -59,10 +59,6 @@ namespace MyCar.Server.Controllers
             if (text != "$")
                 switch (type)
                 {
-                    case "Артикул":
-
-                        CarsApi = CarsApi.Where(s => s.Articul.ToLower().Contains(text)).ToList();
-                        break;
                     case "Модель":
                         CarsApi = CarsApi.Where(s => s.Model.ModelName.ToLower().Contains(text)).ToList();
                         break;

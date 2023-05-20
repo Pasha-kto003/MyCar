@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop"
         mc:Ignorable="d"
-       Title="MyCar" Height="740" Width="1280" 
+       Title="MyCar" Height="800" Width="1300" 
         WindowStartupLocation="CenterScreen" WindowStyle="None"
         AllowsTransparency="True" 
         MinHeight="{Binding WindowMinimumHeight}" MinWidth="{Binding WindowMinimumWidth}">
@@ -266,6 +266,18 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/Images/combo_chart_64px.png" Margin="20 0 0 0"/>
                                 <TextBlock Text="Статистика"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" />
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding ReportPageCommand}">
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/report_file_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Отчеты"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
                             </StackPanel>
                         </RadioButton.Content>

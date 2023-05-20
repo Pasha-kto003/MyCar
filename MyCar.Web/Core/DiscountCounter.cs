@@ -14,22 +14,25 @@ namespace MyCar.Web.Core
             if (saleCar != null)
             {
                 Task.Run(GetList).Wait();
-                var discount = Discounts.FirstOrDefault(s => s.SaleCarId == saleCar.ID);
+                var discount = Discounts.Where(s => s.SaleCarId == saleCar.ID);
                 //var date = DateTime.Now;
-                if (discount != null)
+                foreach(var dis in discount)
                 {
-                    if(date < discount.StartDate || date > discount.EndDate)
-                      return finalPrice = 0;
-                    if(discount.DiscountValue > 0)
+                    if (discount != null)
                     {
-                        finalPrice = saleCar.FullPrice - discount.DiscountValue;
+                        if (date < dis.StartDate || date > dis.EndDate)
+                            return finalPrice = 0;
+                        if (dis.DiscountValue > 0)
+                        {
+                            finalPrice = saleCar.FullPrice - dis.DiscountValue;
+                        }
+                        if (dis.DiscountValue < 0)
+                        {
+                            finalPrice = saleCar.FullPrice;
+                        }
                     }
-                    if(discount.DiscountValue < 0)
-                    {
-                        finalPrice = saleCar.FullPrice;
-                    }
+                    return finalPrice;
                 }
-                return finalPrice;
             }
             return finalPrice;
         }

@@ -1,23 +1,29 @@
 ﻿@model MyCar.Web.Models.LoginModel
-<div class="row" style="justify-content:center; align-items:center; display:block; height:100%; position: fixed; top: 50%; left: 50%; width: 50%; height: auto; margin: -200px 0 0 -25%;">
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<div class="row" style="justify-content:center; align-items:center; display:flex; height:100%; margin-top: 6%; ">
     <div class="container text-center align-middle d-flex justify-content-center">
         <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" >
             <h2 style="color: white;">Вход на сайт</h2>
             <div class="validation" asp-validation-summary="ModelOnly" style="color:red; font-size: 20px; justify-content:center; align-items:center;"></div>
             <div>
                 <div class="form-group" style="margin-top: 30px;">
-                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Email адрес" style="width: 300px; text-align:center;"/>
-                    <span asp-validation-for="UserName" />
+                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Имя пользователя" style="width: 300px; text-align:center; display:flex; justify-content:center;"/>
+                    <span asp-validation-for="UserName" class="text-white"/>
                 </div>
                 <div class="form-group" style="margin-top: 50px;">
-                    <input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" style="width: 300px; text-align:center;"/>
-                    <span asp-validation-for="Password" />
-                    <label style="margin-top:20px; margin-bottom:20px; color:white;">
+                    <label style="color:white; display:flex; justify-content:center;">
+                        <input type="password" asp-for="Password" name="password" id="password" placeholder="Пароль" style="display:flex; justify-content:center; height:40px; text-align:center; width: 300px;" />
+                        <i class="bi bi-eye-slash-fill" id="togglePassword" style="font-size: 20px; color: black;"></i>
+                    </label>
+                    <span asp-validation-for="Password" class="text-white" />
+                    @*<input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" style="width: 300px; text-align:center; display:flex; justify-content:center;"/>
+                    <span asp-validation-for="Password" class="text-white"/>
+                    <label style="margin-top:20px; margin-bottom:20px; color:white; display:flex; justify-content:center;">
                         <input type="checkbox" onclick="myFunction()" class="password-checkbox"/>
                             Показать пароль
-                    </label>
+                    </label>*@
                 </div>
-                <div class="form-group" style="margin-bottom:20px;">
+                <div class="form-group" style="margin-bottom:20px; margin-top:50px; display: flex; justify-content:center;">
                     <input class="atuin-btn" id="success" type="submit" role="button" title="Если вы зарегистрированы на этом сайте то просто зайдите под своим логином и паролем" value="Войти" data-toggle="tooltip" data-placement="right"/>  
                 </div>
                 <div class="form-group" style="margin-bottom:20px;">
@@ -29,62 +35,39 @@
                     <a asp-action="EditForgotUser" class="atuin-btn" data-toggle="tooltip" data-placement="left" title="Для изменения пароля нажмите эту кнопку" role="button" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Account">
                         Забыли пароль?
                     </a>
-
                 </div>
             </div>
         </form>
     </div>
 </div>
-@*<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-<div class="modal-dialog" style="max-width: 700px; width: 700px; background-color: #171717;">
-    <div class="modal-content" style="background-color: #171717;">
-        <div class="modal-header">
-            <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="row row-cols-1 w-100">
-                <div class="col text-white" style="text-align: center;">
-                    Введите свой никнейм
-                </div>
-            </div>
-            <div class="row row-cols-1 w-100">
-                <div class="col">
-                    <form asp-action="EditForgotUser" asp-controller="Account" method="post">
-                        <div class="row-cols-2" style="display: flex; justify-content:center; align-items:center;">
-                            <div class="col" style="display: flex; justify-content:center; align-items:center;">
-                                <input type="text" name="Use" style="justify-content:center; width: 100%;"/>
-                            </div>
-                        </div>
-                        
-                        <div class="row-cols-2 w-100" style="display: flex;">
-                            <div class="col-6">
-                                <div class="glass-btn glass-btn-red">
-                                    <a class="stretched-link">
-                                        <input readonly data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" value="Отмена" style="color: black; text-align:center;">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="glass-btn glass-btn-red">
-                                    <a class="stretched-link">
-                                        <input readonly type="submit" class="stretched-link" value="Поиск" style="color: black; text-align:center;">
-                                    </a>   
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-            <div class="modal-footer">
-                <div class="glass-btn glass-btn-red">
-                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" style="color: black;">Отмена</a>
-                </div>
-                <div class="glass-btn glass-btn-green">
-                    <a asp-action="UpdateCountCar" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
+
+<script>
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+
+        togglePassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+        });
+
+        // prevent form submit
+        const form = document.querySelector("form");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+        });
+</script>
+
+<script>
+    function myFunctionRegister() {
+    var x = document.getElementById("myInputRegister");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>

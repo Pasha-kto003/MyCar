@@ -60,12 +60,24 @@ namespace MyCar.Web.Controllers
 
         public async Task<List<OrderApi>> GetPage(string name)
         {
+            await Task.Run(GetUser);
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            var order = Orders.Where(s => s.User.UserName == name).ToList();
+            var order = Orders;
             foreach (var ord in order)
             {
                 ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
             }
+            var userIsAdmin = Users.FirstOrDefault(s => s.UserName == name);
+            if (userIsAdmin.UserType.TypeName == "Администратор")
+            {
+                return order;
+            }
+            else if (userIsAdmin.UserType.TypeName == "Клиент")
+            {
+                order = Orders.Where(s => s.User.UserName == userIsAdmin.UserName).ToList();
+                return order;
+            }
+            //var order = Orders.Where(s => s.User.UserName == name).ToList();
             return order;
         }
 
@@ -201,12 +213,35 @@ namespace MyCar.Web.Controllers
             if (IsCanAddInOrder(car) == false)
             {
                 TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
-                return View("DetailsCarView", car.ID);
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
             }
             await AddOrder(car.ID, car.CountChange);
             string json = HttpContext.Session.GetString("OrderItem");
             if (json != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            return View("DetailsCart", orderItems);
+        }
+
+        public async Task<IActionResult> UpdateCountWarehouse(int id, int CountChange)
+        {
+            await GetOrders();
+            var orderItems = new List<WareHouseApi>();
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            var wh = orderItems.LastOrDefault(s=> s.SaleCarId == car.ID);
+            car.CountChange = CountChange;
+            wh.CountChange = CountChange;
+            if (IsCanAddInOrder(car) == false)
+            {
+                TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
+            }
+            await EditWareHouse(wh);
+            
             return View("DetailsCart", orderItems);
         }
 
@@ -353,6 +388,11 @@ namespace MyCar.Web.Controllers
         public async Task EditOrder(OrderApi orderApi)
         {
             var order = await Api.PutAsync<OrderApi>(orderApi, "Order");
+        }
+
+        public async Task GetUser()
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
         }
 
         private async Task DeleteCar(WareHouseApi wareHouse)

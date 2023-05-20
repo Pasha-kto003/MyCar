@@ -235,7 +235,7 @@
             >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Авто"
-                                    Binding="{Binding SaleCar.Car.CarName}"
+                                    Binding="{Binding SaleCar.FullName}"
                                     Width="*"
                                     />
                             <DataGridTextColumn Header="Значение в %"

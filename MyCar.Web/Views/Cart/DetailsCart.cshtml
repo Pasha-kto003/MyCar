@@ -71,15 +71,15 @@
                                             <div class="col m-3 text-white">
                                                 <h4 class="row text-white">Кол-во авто</h4>
                                                 <div class="row w-100">
-                                                    <div class="col-4">
+                                                    <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
                                                         <a class="text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">+</a>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
                                                         <h4 class="text-center text-white">
                                                             @car.CountChange
                                                         </h4>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
                                                         <a class="text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">-</a>
                                                     </div>
                                                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -100,7 +100,7 @@
                                                                             <form asp-action="UpdateCountWarehouse" asp-route-id="@car.SaleCarId" asp-controller="Cart" method="post">
                                                                                 <p class="text-danger">@ViewBag.ErrorMes</p>
                                                                                 <div class="row w-100 justify-content-center align-items-center">
-                                                                                    <input type="number" asp-for="@car.SaleCar.CountChange" name="CountChange" min="0" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
+                                                                                    <input type="number" name="CountChange" placeholder="Введите новое кол-во" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
                                                                                 </div>                                               
                                                                                 <div class="row-cols-2 w-100" style="display: flex;">
                                                                                     <div class="col-6">

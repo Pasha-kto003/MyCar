@@ -60,12 +60,24 @@ namespace MyCar.Web.Controllers
 
         public async Task<List<OrderApi>> GetPage(string name)
         {
+            await Task.Run(GetUser);
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            var order = Orders.Where(s => s.User.UserName == name).ToList();
+            var order = Orders;
             foreach (var ord in order)
             {
                 ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
             }
+            var userIsAdmin = Users.FirstOrDefault(s => s.UserName == name);
+            if (userIsAdmin.UserType.TypeName == "Администратор")
+            {
+                return order;
+            }
+            else if (userIsAdmin.UserType.TypeName == "Клиент")
+            {
+                order = Orders.Where(s => s.User.UserName == userIsAdmin.UserName).ToList();
+                return order;
+            }
+            //var order = Orders.Where(s => s.User.UserName == name).ToList();
             return order;
         }
 
@@ -376,6 +388,11 @@ namespace MyCar.Web.Controllers
         public async Task EditOrder(OrderApi orderApi)
         {
             var order = await Api.PutAsync<OrderApi>(orderApi, "Order");
+        }
+
+        public async Task GetUser()
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
         }
 
         private async Task DeleteCar(WareHouseApi wareHouse)

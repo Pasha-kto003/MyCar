@@ -56,7 +56,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 SignalChanged(nameof(selectedCar));
             }
         }
-       public CustomCommand ChooseCars { get; set; }
+
+        public CustomCommand ChooseCars { get; set; }
         public DiscountApi AddDiscountVM { get; set; }
 
         public AddDiscountViewModel(DiscountApi discount)
@@ -89,7 +90,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 AddDiscountVM.SaleCarId = SelectedCar.ID;
                 AddDiscountVM.SaleCar = SelectedCar;
                 AddDiscountVM.DiscountValue = DiscountValue;
-
+                //AddDiscountVM.PercentValue = PercentValue;
                 if (AddDiscountVM.DiscountValue == 0 || AddDiscountVM.DiscountValue == null)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не введено значение скидки" });

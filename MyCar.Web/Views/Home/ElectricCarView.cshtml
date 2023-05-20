@@ -1,11 +1,11 @@
-﻿@model IEnumerable<ModelsApi.SaleCarApi>
+﻿@model IEnumerable<ModelsApi.CarApi>
 
 <div class="container-fluid">
     <div class="row w-100 h-auto" style="position: relative; text-align:center; color: black; font-size: 32px; height: 50px;">
-        <img src="https://electrek.co/wp-content/uploads/sites/3/2020/01/bmw-electrified-models.jpg?quality=82&strip=all&w=1600"/>
+        <img src="/image/LexusList.jpg"/>
         <div class="centered">
             <div class="sign-wrap-4">
-                <div class="sign_word">Эл<span>ек</span>тро<span>к</span>ар<span>ы</span></div>
+                <h1 class="sign_word">Эл<span>ек</span>тро<span>к</span>ар<span>ы</span></h1>
             </div>
         </div>
     </div>
@@ -16,105 +16,166 @@
     </div>
     <div class="row w-100 align-items-center justify-content-center text-center text-white">
         <div class="col-4">
-            <img src="~/image/hybridImage.jpg"/>
+            <h3 class="text-white text-center">
+                Гибриды
+            </h3>
             <div class="text-center text-white">
                 <p>
                     Частично сочетает в себе самозаряжающуюся электрическую трансмиссию и бензиновый двигатель, 
                     что обеспечивает впечатляющую эффективность и мгновенный крутящий момент без подключения к сети.
                 </p>
+                Доступные модели: 
+                @foreach (var car in Model.Where(s=> s.BodyType.TypeName.Contains("Гибрид")))
+                {
+                    <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@car.ID" class="text-white text-center">@car.CarName</a>
+                }
             </div>
         </div>
         <div class="col-4">
-            <img src="~/image/hybridImage.jpg"/>
+            <h3 class="text-white text-center">
+                Заряжаемый от розетки гибрид
+            </h3>
             <div class="text-center text-white">
                 <p>
-                    Частично сочетает в себе самозаряжающуюся электрическую трансмиссию и бензиновый двигатель, 
-                    что обеспечивает впечатляющую эффективность и мгновенный крутящий момент без подключения к сети.
+                    Данные показывают, что 85% поездок в одну сторону составляют 15 миль или менее. 
+                    Данные автомобили сочетает в себе преимущества полностью электрического вождения во время коротких поездок, подобных этим, 
+                    со спокойствием бензинового двигателя во время более длительных поездок.
                 </p>
+                Доступные модели: 
+                @foreach (var car in Model.Where(s=> s.BodyType.TypeName.Contains("Электрокар полный")))
+                {
+                    <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@car.ID" class="text-white text-center">@car.CarName</a>
+                }
             </div>
         </div>
         <div class="col-4">
-            <img src="~/image/hybridImage.jpg"/>
+            <h3 class="text-white text-center">
+                Аккумулятроные электромобили
+            </h3>
             <div class="text-center text-white">
                 <p>
-                    Частично сочетает в себе самозаряжающуюся электрическую трансмиссию и бензиновый двигатель, 
-                    что обеспечивает впечатляющую эффективность и мгновенный крутящий момент без подключения к сети.
+                    Никогда не заполняйте снова. Эти полностью электрические автомобили, работающие от аккумуляторных батарей 
+                    большой дальности действия, обеспечивают головокружительное ускорение, 
+                    головокружительную маневренность полного привода и могут заряжаться от стандартной бытовой розетки GFCI* 
+                    или от установленного высокоскоростного зарядного устройства (уровень 2).
                 </p>
+                Доступные модели: 
+                @foreach (var car in Model.Where(s=> s.BodyType.TypeName.Contains("Акумуляторный электрокар")))
+                {
+                    <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@car.ID" class="text-white text-center">@car.CarName</a>
+                }
             </div>
         </div>
     </div>
-    <div class="row w-100 text-center" style="background-color: #171717">
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Гибридные автомобили</button>
-                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Полностью электронные авто</button>
-            </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent" style="background-color: #171717">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
-                    <div class="container mt-5" style="background-color: #171717">
-                        <div class="row w-100">
-                            @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")))
-                            {
-                                <div class="card col-5 m-5" style="background-color:transparent;">
-                                    <img src="~/CarImages/@car.Car.PhotoCar" class="card-img-top" alt="..." style="height: 340px;"/>
-                                    <div class="card-title" style="color: white;">
-                                        <h3>
-                                            @car.Car.CarName
-                                        </h3>
-                                    </div>
-                                    <div class="card-title" style="color: white;">
-                                        <h3>
-                                            @car.FullPrice
-                                        </h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="glass-btn glass-btn-red" style="justify-content:center;">
-                                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@car.ID" class="stretched-link" style="color: white;">Посмотерть</a>
-                                        </div>
-                                    </div>
+        <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
+        <h2 class="text-center text-white">Линейка электрокаров</h2>
+    </div>
+    <div class="row w-100">
+        <div class="tabs">
+            @foreach(var cars in @Model.Where(s=> s.BodyType.TypeName == "Гибрид" || s.BodyType.TypeName == "Акумуляторный электрокар" || s.BodyType.TypeName == "Электрокар полный"))
+            {
+                <div class="tab">
+                    <div class="tab-toggle">
+                        <span class="tab-name" style="margin-left: 10%; color: white;">@cars.CarName (@cars.BodyType.TypeName)</span>
+                    </div>
+                </div>
+                <div class="Tabscontent">
+                    <div class="row w-100" style="background-image: url('/image/DesertViewBacground.jpg'); height: 320px; background-repeat: no-repeat;">
+                        <div class="col-3 justify-content-center align-items-center mt-5">
+                            <h4 class="text-white text-decoration-underline" style="font-size: 40px;">
+                                @cars.CarName (@cars.BodyType.TypeName)
+                            </h4>
+                            <p class="text-white">
+                                <small>
+                                    Начальная цена от
+                                </small>
+                            </p>
+                            @{
+                                <div class="product-price">
+                                    <h2 class="text-white">
+                                        @cars.CarPrice &#8381
+                                    </h2>
                                 </div>
                             }
                         </div>
+                        <div class="col-9 justify-content-center">
+                            <img src="~/CarImages/@cars.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <div class="col-5">
+                            <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@cars.ID" class="stretched-link" style="color: black;">Искать в каталоге</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <div class="row w-100 h-auto" style="position: relative; text-align:center; color: white; font-size: 32px; height: 50px;">
-                            <img src="https://thedriven.io/wp-content/uploads/2018/10/tesla-model-3.jpg"/>
-                            <div class="centered" style="top: 20%;">
-                                <div class="sign-wrap-4">
-                                    <div class="sign_word">Э<span>л</span>е<span>ктро</span><span>кары</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="container-fluid mt-5" style="background-color: #171717">
-                            <div class="row w-100">
-                                @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")))
-                                {
-                                    <div class="card col-5 m-5" style="background-color:transparent; align-items:center; justify-content:center; text-align:center;">
-                                        <img src="~/CarImages/@car.Car.PhotoCar" class="card-img-top" alt="..." style="height: 340px; width: 500px; justify-content: center;"/>
-                                        <div class="card-title" style="color: white;">
-                                            <h3>
-                                                @car.Car.CarName
-                                            </h3>
-                                        </div>
-                                        <div class="card-title" style="color: white;">
-                                            <h3>
-                                                @car.FullPrice
-                                            </h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="glass-btn glass-btn-red" style="justify-content:center;">
-                                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@car.ID" class="stretched-link" style="color: white;">Посмотерть</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        
-                        </div>
-                    </div>
+            }
         </div>
     </div>
+    @*<div class="row w-100 text-center" style="background-color: #171717">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Гибридные автомобили</button>
+                
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent" style="background-color: #171717">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
+                <div class="container mt-5" style="background-color: #171717">
+                    <div class="row w-100">
+                        @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Гибрид")))
+                        {
+                            <div class="card col-5 m-5" style="background-color:transparent;">
+                                <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px;"/>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarName
+                                    </h3>
+                                </div>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarPrice
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="glass-btn glass-btn-red" style="justify-content:center;">
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@car.ID" class="stretched-link" style="color: white;">Посмотерть</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="container-fluid mt-5" style="background-color: #171717">
+                    <div class="row w-100">
+                        @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Электрокар полный")))
+                        {
+                            <div class="card col-5 m-5" style="background-color:transparent; align-items:center; justify-content:center; text-align:center;">
+                                <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px; width: 500px; justify-content: center;"/>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarName
+                                    </h3>
+                                </div>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarPrice
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="glass-btn glass-btn-red" style="justify-content:center;">
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@car.ID" class="stretched-link" style="color: white;">Посмотерть</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+    </div>*@
 </div>

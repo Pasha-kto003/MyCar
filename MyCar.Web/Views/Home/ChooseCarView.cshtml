@@ -1,0 +1,108 @@
+﻿@using ModelsApi
+@using MyCar.Web.Core
+@model ModelsApi.CarApi
+@{
+    var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+    var saleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+    var sale = saleCars.Where(s=> s.CarId == @Model.ID ).DistinctBy(s=> s.EquipmentId).ToList();
+}
+<div class="container-fluid w-100" style="background-color: #171717;">
+    <div class="row row-cols-1 w-100">
+        <div class="col text-white" style="text-align: center;">
+            <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
+                <h1>Комплектации @Model.CarName</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row w-100">
+        <div class="tabs" style="width: 100%;">
+            @foreach(var cars in sale)
+            {
+                <div class="tab">
+                    <div class="tab-toggle">
+                        <span class="tab-name" style="margin-left: 10%;">@cars.FullName</span>
+                    </div>
+                </div>
+                <div class="Tabscontent">
+                    <div class="row w-100" style="background-image: url('/image/DesertViewBacground.jpg'); height: 320px; background-repeat: no-repeat;">
+                        <div class="col-3 justify-content-center align-items-center mt-5">
+                            <h3 class="text-white text-decoration-underline" style="font-size: 40px;">
+                                @cars.FullName
+                            </h3>
+                            <p class="text-white">
+                                <small>
+                                    Начальная цена от
+                                </small>
+                            </p>
+                            @{
+                                ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
+                                if(ViewBag.DiscountCarStylePrice == 0)
+                                {
+                                    ViewBag.DiscountCarStylePrice = null;
+                                }
+                                        <div class="product-price">
+                                        @if(ViewBag.DiscountCarStylePrice != null)
+                                {
+                                            <h3 class="text-white">
+                                                <s class="text-white">
+                                                    @cars.FullPrice &#8381
+                                                </s>
+                                            </h3>
+                                }
+                                else
+                                {
+                                            <h2 class="text-white">
+                                                @cars.FullPrice &#8381
+                                            </h2>
+                                }
+                                            <h4 class="text-white">
+                                                @ViewBag.DiscountCarStylePrice &#8381
+                                            </h4>
+                                        </div>
+                            }
+                        </div>
+                        <div class="col-9 justify-content-center">
+                            <img src="~/CarImages/@cars.MainPhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                        </div>
+                    </div>
+                    <div class="row w-100">
+                        <div class="col-6">
+                            <h4 class="text-white" style="font-size: 16px;">Ключевые характеристики</h4>
+                            @{
+                                var count = cars.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров"));
+                                var racing = cars.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("0-100"));
+                                var power = cars?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Мощность"));
+                                var v3 = cars?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Объем"));
+                            }
+                            <p class="text-white" style="font-size: 11px;">@v3?.CharacteristicValue-ЛИТРОВЫЙ ДВИГАТЕЛЬ V-@count?.CharacteristicValue МОЩНОСТЬЮ @power?.CharacteristicValue Л.С.</p>
+                            <p class="text-white" style="font-size: 11px;">РАЗГОН ДО 100 км/ч ЗА @racing?.CharacteristicValue СЕКУНДЫ</p>
+                        </div>
+                        <div class="col-6 text-white">
+                            <h3>ЛУЧШИЙ В КЛАССЕ V8</h3>
+                            <p style="font-size: 14px;">@cars.Description</p>
+                        </div>
+                    </div>
+                    <div class="row w-50">
+                        <div class="col-5">
+                            @{
+                                var ware = warehousesCard.Where(s => s.SaleCarId == @cars.ID).ToList().Sum(s=> s.CountChange);
+                                if(ware.Value <= 0)
+                                {
+                                    <div class="glass-btn glass-btn-gray" style="align-items:center; justify-content:center;">
+                                        <a href="#" class="stretched-link" style="color: black;">Отсутствует</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@cars.ID" class="stretched-link" style="color: black;">Посмотреть</a>
+                                    </div>
+                                }
+                            }                            
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

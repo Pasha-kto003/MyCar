@@ -124,6 +124,14 @@ namespace MyCar.Web.Controllers
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
             var user = Users.LastOrDefault(s => s.UserName == registerModel.UserName);
+            if (user.UserType.TypeName == "Администратор")
+            {
+                ModelState.AddModelError("", "Нельзя редактировать админа");
+            }
+            if (user.UserType.TypeName == "Сотрудник")
+            {
+                ModelState.AddModelError("", "Не введен логин");
+            }
             HashCheck.CreatePasswordHash(registerModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.PasswordHash = passwordHash;
             user.SaltHash = passwordSalt;

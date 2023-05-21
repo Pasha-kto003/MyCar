@@ -21,6 +21,14 @@
                         }
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="header mb-5 mt-5">
+                        <a asp-action="Report" class="atuin-btn" asp-route-name="@User.Identity.Name" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Cart">
+                            Регистрация
+                        </a>
+                    </div>
+                        @*<a asp-action="Report" class="btn" asp-controller="Cart" asp-route-name="@User.Identity.Name"></a>*@
+                </div>
             </div>
             <div class="accordion" id="accordionPanelsStayOpenExample" style="background-color: #171717;">
                 @foreach(var ord in @Model)

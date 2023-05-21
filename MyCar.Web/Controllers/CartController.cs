@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Web.Core;
 using Newtonsoft.Json;
+using Spire.Xls;
 using System.Data;
+using System.Diagnostics;
 
 namespace MyCar.Web.Controllers
 {
@@ -14,6 +16,10 @@ namespace MyCar.Web.Controllers
 
         public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
 
+        public DateTime DateStart { get; set; }
+        public DateTime DateFinish { get; set; }
+
+        public int TotalCount = 0;
 
         public List<StatusApi> Statuses { get; set; } = new List<StatusApi>();
 
@@ -61,10 +67,7 @@ namespace MyCar.Web.Controllers
 
         public IActionResult Report(string name)
         {
-            //Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            //CountChangeHistories = await Api.GetListAsync<List<CountChangeHistoryApi>>("CountChangeHistory");
-            //Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            //Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            
             //Task.Run(GetOrder);
             Orders = GetOrder().Result;
             GenerateReport(Orders);
@@ -284,9 +287,9 @@ namespace MyCar.Web.Controllers
 
                 try
                 {
-                    workbook.SaveToFile("text.xls");
+                    workbook.SaveToFile("textUser.xls");
                     Process p = new Process();
-                    p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/text.xls")
+                    p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/textUser.xls")
                     {
                         UseShellExecute = true
                     };
@@ -303,10 +306,10 @@ namespace MyCar.Web.Controllers
         {
             await Task.Run(GetUser);
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            var order = Orders;
+            var order = Orders.Where(s=> s.ActionType.ActionTypeName == "Продажа").ToList();
             foreach (var ord in order)
             {
-                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
+                ord.SumOrder = ord.WareHouses.Sum(s => s.Price * s.CountChange);
             }
             var userIsAdmin = Users.FirstOrDefault(s => s.UserName == name);
             if (userIsAdmin.UserType.TypeName == "Администратор")
@@ -368,7 +371,6 @@ namespace MyCar.Web.Controllers
         {
             List<WareHouseApi> orderItems = new List<WareHouseApi>();
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            List<WareHouseApi> orderItems = new List<WareHouseApi>();
             string json2 = HttpContext.Session.GetString("OrderItem");
             if (json2 != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
@@ -625,6 +627,27 @@ namespace MyCar.Web.Controllers
                 }
             }
             return isAdd;
+        }
+
+        public async Task<List<OrderApi>> GetOrder()
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            return Orders;
+            //CountChangeHistories = await Api.GetListAsync<List<CountChangeHistoryApi>>("CountChangeHistory");
+            //Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            //Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+        }
+
+        public async Task<List<WareHouseApi>> GetWarehouses()
+        {
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            return Warehouses;
+        }
+
+        public async Task<List<CountChangeHistoryApi>> GetHistory()
+        {
+            CountChangeHistories = await Api.GetListAsync<List<CountChangeHistoryApi>>("CountChangeHistory");
+            return CountChangeHistories;
         }
 
         public async Task CreateOrder(OrderApi orderApi)

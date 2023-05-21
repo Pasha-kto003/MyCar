@@ -125,13 +125,16 @@ namespace MyCar.Web.Controllers
 
         public async Task<IActionResult> DeleteCar(int id)
         {
+            List<WareHouseApi> orderItems = new List<WareHouseApi>();
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
             var deleteCar = Warehouses.FirstOrDefault(s => s.ID == id);
             var order = Orders.FirstOrDefault(s => s.ID == deleteCar.OrderId);
             order.WareHouses.Remove(deleteCar);
-            await DeleteCar(deleteCar);
+            string json2 = HttpContext.Session.GetString("OrderItem");
+            if (json2 != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
             return View("DetailsCart", order);
         }
 

@@ -149,39 +149,66 @@ namespace MyCar.Server.DataModels
             return result;
         }
 
+        //public static CarApi GetCar(Car car, MyCar_DBContext dbContext)
+        //{
+        //    var result = (CarApi)car;
+
+        //    var characteristicCars = dbContext.CharacteristicCars
+        //        .Include(cc => cc.Characteristic)
+        //            .ThenInclude(c => c.Unit)
+        //        .Where(cc => cc.CarId == car.Id)
+        //        .Select(cc => (CharacteristicCarApi)cc)
+        //        .ToList();
+
+        //    result.CharacteristicCars = characteristicCars;
+
+        //    var carOptions = dbContext.CharacteristicCars
+        //        .Include(cc => cc.Characteristic)
+        //        .Where(cc => cc.CarId == car.Id)
+        //        .Select(cc => $"{cc.Characteristic.CharacteristicName} {cc.CharacteristicValue}")
+        //        .ToList();
+
+        //    result.CarOptions = string.Join("\n", carOptions);
+
+        //    var modelId = car.ModelId;
+        //    var model = dbContext.Models
+        //        .Include(m => m.Cars)
+        //        .FirstOrDefault(m => m.Id == modelId);
+
+        //    result.Model = (ModelApi)model;
+        //    result.CarMark = model.Mark?.MarkName;
+
+        //    var bodyTypeId = car.TypeId;
+        //    var bodyType = dbContext.BodyTypes.FirstOrDefault(bt => bt.Id == bodyTypeId);
+        //    result.BodyType = (BodyTypeApi)bodyType;
+
+        //    return result;
+        //}
+
         public static CarApi GetCar(Car car, MyCar_DBContext dbContext)
         {
             var result = (CarApi)car;
+            var characteristicsCar = dbContext.CharacteristicCars.Where(t => t.CarId == car.Id).Select(t => (CharacteristicCarApi)t).ToList();
+            foreach (var characeristicCar in characteristicsCar)
+            {
+                characeristicCar.Characteristic = (CharacteristicApi)dbContext.Characteristics.FirstOrDefault(s => s.Id == characeristicCar.CharacteristicId);
+                characeristicCar.Characteristic.Unit = (UnitApi)dbContext.Units.FirstOrDefault(s => s.Id == characeristicCar.Characteristic.UnitId);
 
-            var characteristicCars = dbContext.CharacteristicCars
-                .Include(cc => cc.Characteristic)
-                    .ThenInclude(c => c.Unit)
-                .Where(cc => cc.CarId == car.Id)
-                .Select(cc => (CharacteristicCarApi)cc)
-                .ToList();
+            }
+            result.CharacteristicCars = characteristicsCar;
 
-            result.CharacteristicCars = characteristicCars;
-
-            var carOptions = dbContext.CharacteristicCars
-                .Include(cc => cc.Characteristic)
-                .Where(cc => cc.CarId == car.Id)
-                .Select(cc => $"{cc.Characteristic.CharacteristicName} {cc.CharacteristicValue}")
-                .ToList();
-
-            result.CarOptions = string.Join("\n", carOptions);
-
-            var modelId = car.ModelId;
-            var model = dbContext.Models
-                .Include(m => m.Cars)
-                .FirstOrDefault(m => m.Id == modelId);
-
+            var model = dbContext.Models.FirstOrDefault(t => t.Id == car.ModelId);
             result.Model = (ModelApi)model;
-            result.CarMark = model.Mark?.MarkName;
-
-            var bodyTypeId = car.TypeId;
-            var bodyType = dbContext.BodyTypes.FirstOrDefault(bt => bt.Id == bodyTypeId);
-            result.BodyType = (BodyTypeApi)bodyType;
-
+            var mark = dbContext.MarkCars.FirstOrDefault(i => i.Id == model.MarkId);
+            result.CarMark = mark.MarkName;
+            result.Model.MarkCar = (MarkCarApi)mark;
+            var body = dbContext.BodyTypes.FirstOrDefault(b => b.Id == car.TypeId);
+            result.BodyType = (BodyTypeApi)body;
+            foreach (var characteristic in dbContext.CharacteristicCars.Where(s => s.CarId == car.Id).ToList())
+            {
+                characteristic.Characteristic = dbContext.Characteristics.FirstOrDefault(s => s.Id == characteristic.CharacteristicId);
+                result.CarOptions += $"{characteristic.Characteristic.CharacteristicName} {characteristic.CharacteristicValue} \n";
+            }
             return result;
         }
 
@@ -189,11 +216,25 @@ namespace MyCar.Server.DataModels
         {
             var result = (SaleCarApi)saleCar;
 
-            var mainPhoto = dbContext.CarPhotos.FirstOrDefault(s => s.SaleCarId == saleCar.Id && s.IsMainPhoto == 1);
-            if (mainPhoto != null && mainPhoto.PhotoName != null)
+            var photos = dbContext.CarPhotos.Where(s => s.SaleCarId == saleCar.Id);
+            if (!photos.Any())
             {
-                result.MainPhotoCar = mainPhoto.PhotoName;
+                result.MainPhotoCar = "picture.png";
             }
+            else if(!photos.Where(s=>s.IsMainPhoto == 1).Any())
+            {
+                result.MainPhotoCar = photos.First().PhotoName;
+            }
+            else
+            {
+                result.MainPhotoCar = photos.First(s=>s.IsMainPhoto == 1).PhotoName;
+            }
+
+            //var mainPhoto = dbContext.CarPhotos.FirstOrDefault(s => s.SaleCarId == saleCar.Id && s.IsMainPhoto == 1);
+            //if (mainPhoto != null && mainPhoto.PhotoName != null)
+            //{
+            //    result.MainPhotoCar = mainPhoto.PhotoName;
+            //}
 
             var carPhotos = dbContext.CarPhotos
                 .Where(s => s.SaleCarId == saleCar.Id)

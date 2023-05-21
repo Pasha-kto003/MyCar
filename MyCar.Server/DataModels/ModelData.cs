@@ -4,7 +4,7 @@ using MyCar.Server.DB;
 
 namespace MyCar.Server.DataModels
 {
-    public static class ModelData 
+    public static class ModelData
     {
         //Старый ModelData
         //public static DiscountApi GetDiscount(Discount discount, MyCar_DBContext dbContext)
@@ -348,3 +348,4 @@ namespace MyCar.Server.DataModels
         }
     }
 }
+

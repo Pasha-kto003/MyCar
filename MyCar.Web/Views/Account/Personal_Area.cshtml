@@ -78,7 +78,7 @@
                                     @*<a class="btn btn-info" asp-action="EditUserView" asp-controller="Account" asp-route-id="@Model.ID" target="__blank">Редактировать</a>*@
                                     <input type="submit" class="btn btn-info" value="Редактировать данные" asp-controller="Account" asp-route-id="@Model.ID" asp-action="EditUserView" />
                                 </div>
-                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -119,9 +119,10 @@
                                         <h6 class="mb-0">Общее кол-во покупок на сайте</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        @orders.Count
+                                        @orders.Where(s=> s.UserId == @Model.ID).Count()
                                     </div>
                                 </div>
+                                <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">Сумма ваших заказов</h6>
@@ -151,6 +152,36 @@
                                         }
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Ваш средний чек:</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        @{
+                                            int? check = 0;
+                                            foreach(var ord in userords)
+                                            {
+                                                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
+                                            }
+                                            suma = userords.Sum(s => s.SumOrder);
+                                            check = (int)suma / userords.Count;
+                                            if(suma != 0)
+                                            {
+                                                <div class="col-sm-9 text-secondary">
+                                                    @check.Value &#8381
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-sm-9 text-danger">
+                                                    Отсутствуют
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <hr>
                             </div>
                         </form>
                     </div>

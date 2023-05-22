@@ -36,11 +36,10 @@
   <ItemGroup>
     <PackageReference Include="CoreAdmin" Version="2.7.0" />
     <PackageReference Include="MailKit" Version="4.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
     <PackageReference Include="SmartBreadcrumbs" Version="3.6.1" />
-    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="21.1.41" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <ProjectReference Include="..\ModelsApi\ModelsApi.csproj" />
     <ProjectReference Include="..\MyCar.Server\MyCar.Server.csproj" />

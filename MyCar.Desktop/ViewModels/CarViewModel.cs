@@ -89,7 +89,7 @@ namespace MyCar.Desktop.ViewModels
             Task.Run(GetCarList).Wait();
 
             SearchType = new List<string>();
-            SearchType.AddRange(new string[] { "Артикул", "Модель", "Цена", "Название" });
+            SearchType.AddRange(new string[] { "Модель", "Цена", "Название" });
             selectedSearchType = SearchType.First();
 
             ViewCountRows = new List<string>();

@@ -17,27 +17,27 @@
             </div>
             @foreach (var order in Model)
             {
-                <div class="row" style="background-color: #171717;">
-                    <div class="col-md-12 cartOrder" style="background-color: #171717;">
-                        <div class="titleOrder">
-                            <div class="row">
-                                <div class="col align-self-center text-right text-muted">№ Заказа</div>
-                            </div>
-                        </div>
-
-                        <div class="row border-top border-bottom">
-                            <div class="row main align-items-center">
-                                <div class="col text-center text-white">@order.ID</div>
-
-                                <div class="col text-center text-white">@order.Status.StatusName</div>
-
-                                <div class="col text-center text-white">@order.DateOfOrder</div>
-                                <div class="col text-center text-white">@order.SumOrder</div>
-                                <div class="col text-center text-white">
-                                    <a asp-action="DetailsOrder" asp-controller="Cart" asp-route-id="@order.ID" class="btn btn-primary">Просмотреть</a>
+                   <div class="row" style="background-color: #171717;">
+                        <div class="col-md-12 cartOrder" style="background-color: #171717;">
+                                <div class="titleOrder">
+                                    <div class="row">
+                                        <div class="col align-self-center text-right text-muted">№ Заказа</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+
+                                <div class="row border-top border-bottom">
+                                    <div class="row main align-items-center">
+                                        <div class="col text-center text-white">@order.ID</div>
+                                
+                                        <div class="col text-center text-white">@order.Status.StatusName</div>
+
+                                        <div class="col text-center text-white">@order.DateOfOrder</div>
+                                        <div class="col text-center text-white">@order.SumOrder</div>
+                                        <div class="col text-center text-white">
+                                            <a asp-action="DetailsOrder" asp-controller="Cart" asp-route-id="@order.ID" class="btn btn-primary">Просмотреть</a>
+                                        </div>
+                                    </div>
+                                </div>
 
                         @*<div class="row border-top border-bottom">
                     <div class="row main align-items-center">
@@ -50,34 +50,34 @@
 
                     <div class="col text-center">Дата заказа</div>
 
-                    <div class="col text-center">
-                    <button type="button" class="btn btn-primary">Просмотреть</button>
-                    </div>
-                    </div>
-                    </div>*@
+                                        <div class="col text-center">
+                                            <button type="button" class="btn btn-primary">Просмотреть</button>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        
+                            @*<div class="col-md-4 summary">
+                                <div><h5><b>Summary</b></h5></div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col" style="padding-left:0;">ITEMS 3</div>
+                                    <div class="col text-right">&euro; 132.00</div>
+                                </div>
+                                <form>
+                                    <p>SHIPPING</p>
+                                    <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
+                                    <p>GIVE CODE</p>
+                                    <input id="code" placeholder="Enter your code">
+                                </form>
+                                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                    <div class="col">TOTAL PRICE</div>
+                                    <div class="col text-right">&euro; 137.00</div>
+                                </div>
+                                <button class="btn">CHECKOUT</button>
+                            </div>*@
+                        </div>
 
-                        @*<div class="col-md-4 summary">
-                    <div><h5><b>Summary</b></h5></div>
-                    <hr>
-                    <div class="row">
-                    <div class="col" style="padding-left:0;">ITEMS 3</div>
-                    <div class="col text-right">&euro; 132.00</div>
-                    </div>
-                    <form>
-                    <p>SHIPPING</p>
-                    <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
-                    <p>GIVE CODE</p>
-                    <input id="code" placeholder="Enter your code">
-                    </form>
-                    <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                    <div class="col">TOTAL PRICE</div>
-                    <div class="col text-right">&euro; 137.00</div>
-                    </div>
-                    <button class="btn">CHECKOUT</button>
-                    </div>*@
-                    </div>
-
-                </div>
+                   </div> 
             }
         </div>
     </section>

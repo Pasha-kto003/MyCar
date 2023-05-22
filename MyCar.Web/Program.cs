@@ -28,6 +28,14 @@ builder.Services.AddMvc().AddRazorPagesOptions(options =>
     
 });
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
 {
     options.TagName = "nav";
@@ -37,9 +45,7 @@ builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
     options.ActiveLiClasses = "breadcrumb-item active";
     options.DontLookForDefaultNode = true;
 });
-
 builder.Services.AddSession();
-
 builder.Services.AddSqlServer<MyCar_DBContext>(builder.Configuration.GetConnectionString("Database"));
 builder.Services.AddCoreAdmin("Администратор");//admin panel
 //builder.Services.AddCoreAdmin(new CoreAdminOptions() { IgnoreEntityTypes = new List<Type>() { typeof(CharacteristicCar) } });
@@ -75,6 +81,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "car",
-    pattern: "{controller=Car}/{action=DetailsCarView}/{CarName?}");
+    pattern: "{controller=Car}/{action=DetailsCarView}/{id?}");
+
 
 app.Run();

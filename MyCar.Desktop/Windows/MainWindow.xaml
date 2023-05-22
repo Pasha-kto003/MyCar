@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop"
         mc:Ignorable="d"
-       Title="MyCar" Height="740" Width="1280" 
+       Title="MyCar" Height="800" Width="1300" 
         WindowStartupLocation="CenterScreen" WindowStyle="None"
         AllowsTransparency="True" 
         MinHeight="{Binding WindowMinimumHeight}" MinWidth="{Binding WindowMinimumWidth}">
@@ -127,8 +127,18 @@
             <RowDefinition Height="120"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Background="white" >
-            <StackPanel VerticalAlignment="Center" Orientation="Horizontal" >
+        <Border CornerRadius="10" Margin="5" Padding="5" Style="{StaticResource BorderCard}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="3" Opacity="0.4" ShadowDepth="2" Direction="320" />
+            </Border.Effect>
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="{DynamicResource LightValorantRed}" Offset="1"/>
+                    <GradientStop Color="WhiteSmoke" Offset="0"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid >
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal" >
                     <Rectangle  Width="70" Height="70" RadiusX="15" RadiusY="15" Margin="10 0 10 0" >
                         <Rectangle.Fill>
                             <ImageBrush ImageSource="/Images/user_64px.png" Stretch="UniformToFill" >
@@ -142,8 +152,9 @@
                        FontSize="14" Foreground="{StaticResource DarkGrayBrush}" Width="150" Opacity="0.7"/>
                     </StackPanel>
                 </StackPanel>
-                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Fill="Gray" Height="0.5" Width="220"/>
-        </Grid>
+            </Grid>
+        </Border>
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Fill="Gray" Height="0.5" Width="220" Margin="0 0 0 -10"/>
         <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Width="1" BorderThickness="0.4 0 0 0" >
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0, 1">
@@ -255,6 +266,18 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/Images/combo_chart_64px.png" Margin="20 0 0 0"/>
                                 <TextBlock Text="Статистика"  VerticalAlignment="Center"
+                                       Margin="10 0 0 0" />
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton  Height="60" DockPanel.Dock="Top"
+                             FontSize="20" Foreground="{StaticResource DarkGrayBrush}" 
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding ReportPageCommand}">
+                        <RadioButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/report_file_64px.png" Margin="20 0 0 0"/>
+                                <TextBlock Text="Отчеты"  VerticalAlignment="Center"
                                        Margin="10 0 0 0" />
                             </StackPanel>
                         </RadioButton.Content>

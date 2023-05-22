@@ -13,6 +13,10 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddOrderActionViewModel : BaseViewModel
     {
+        public string LastPriceInfo { get; set; }
+
+        List<DiscountApi> Discounts = new List<DiscountApi>();
+
         List<OrderApi> Orders = new List<OrderApi>();
         public Visibility DiscountVisibility { get; set; } = Visibility.Collapsed;
 
@@ -76,6 +80,21 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             if (actionType.ActionTypeName == "Продажа")
             {
                 DiscountVisibility = Visibility.Visible;
+                Price = wareHouse.SaleCar.FullPrice;
+                var dis = Discounts.FirstOrDefault(d => d.SaleCarId == wareHouse.SaleCarId && d.StartDate <= DateTime.Now && d.EndDate >= DateTime.Now)?.DiscountValue;
+                Discount = dis ?? 0;
+            }
+            if (actionType.ActionTypeName == "Поступление")
+            {
+                List<WareHouseApi> thisWareIns = Orders.OrderByDescending(s=>s.DateOfOrder).Where(o => o.Status.StatusName != "Отменен" && o.ActionType.ActionTypeName == "Поступление")
+                    .SelectMany(w => w.WareHouses)
+                    .Where(s=>s.SaleCarId == wareHouse.SaleCarId).ToList();
+                if (thisWareIns.Count == 0)
+                    LastPriceInfo = $"Последняя цена поступления: (Нет данных) ";
+                else
+                    LastPriceInfo = $"Последняя цена поступления: {thisWareIns.First().Price} ";
+
+
             }
             if (actionType.ActionTypeName == "Списание")
             {
@@ -161,6 +180,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         private async Task GetList()
         {
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            Discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
         }
 
         private void TotalCalculate()

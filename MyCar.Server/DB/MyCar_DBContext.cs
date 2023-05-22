@@ -143,7 +143,7 @@ namespace MyCar.Server.DB
                 entity.Property(e => e.Id).HasColumnName("ID");
                 entity.Property(e => e.DiscountValue).HasColumnType("decimal(18, 0)");
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
                 entity.HasOne(d => d.SaleCar)
                     .WithMany(p => p.Discounts)
@@ -233,6 +233,9 @@ namespace MyCar.Server.DB
                 entity.Property(e => e.Articul)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Description).HasColumnType("text");
+
                 entity.Property(e => e.EquipmentPrice).HasColumnType("money");
                 entity.HasOne(d => d.Car)
                     .WithMany(p => p.SaleCars)

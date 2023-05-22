@@ -1,53 +1,140 @@
 ﻿@using ModelsApi
 @using MyCar.Web.Core
-
+@using System.Text.Json
+@{
+}
 @model ModelsApi.SaleCarApi
 @{
-    ViewData["Title"] = "DetailsCarView";
+    ViewData["Title"] = $"Выбранное авто {Model.FullName}";
+    var carsStyles = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+
+    //другие комплектации авто
+    var styles = carsStyles.Where(s => s.CarId == @Model.CarId).ToList();
+    //другие цвета авто
+    var carColors = carsStyles.Where(s=> s.EquipmentId == @Model.EquipmentId && s.FullName == @Model.FullName);
+    var colors = await Api.GetListAsync<List<Color>>("Color");
+    var photos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+    //SaleCarApi ChangeColor(int id)
+    //{
+    //    if(id != null || id != 0)
+    //    {
+    //        return styles.FirstOrDefault(s=> s.ID == id);
+    //    }
+    //    return styles.FirstOrDefault(s=> s.ID == id);
+    //}
 }
     <div class="container-fluid mt-5"> 
         <div class="row w-100">
-            <div class="col-10">
+            <div class="col-9">
                 <h2 style="color: white;">
                     @Model.Car.CarName
                 </h2>
-                <h4 style="color: white;">Наша платформа шаблонов позволит максимально увеличить доступность вашего инвентаря в Интернете.</h4>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 @{
+                    var warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+                    var ware = warehouses.Where(s => s.SaleCarId == @Model.ID).ToList().Sum(s=> s.CountChange);
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
-                    if(ViewBag.DiscountPrice == 0)
+                    if(ware.Value <= 0)
                     {
-                        ViewBag.DiscountPrice = null;
+                                <h3 class="text-white text-center" style="text-align: center;">
+                                    Отсутствует в продаже
+                                </h3>
                     }
-                    <div class="product-price">
-                        @if(ViewBag.DiscountPrice != null)
+                    else
+                    {
+                        if(ViewBag.DiscountPrice == 0)
                         {
-                            <h2 class="text-white">
-                                <s class="text-white">
-                                    @Model.FullPrice
-                                </s>
-                            </h2>
+                            ViewBag.DiscountPrice = null;
+                        }
+                            <div class="product-price">
+                            @if(ViewBag.DiscountPrice != null)
+                        {
+                                <h2 class="text-white" style="text-align: center;">
+                                    <s class="text-white">
+                                        @Model.FullPrice
+                                    </s>
+                                </h2>
                         }
                         else
                         {
-                            <h2 class="text-white">
-                                @Model.FullPrice
-                            </h2>
+                                <h2 class="text-white" style="text-align: center;">
+                                    @Model.FullPrice
+                                </h2>
                         }
-                        <h4 class="text-white">
-                            @ViewBag.DiscountPrice
-                        </h4>
-                    </div>
+                                <h4 class="text-white" style="text-align: center;">
+                                    @ViewBag.DiscountPrice
+                                </h4>
+                            </div>
+                    }
+                    
                 }
             </div>
         </div>
         <div class="row w-100">
             <div class="col-9"></div>
             <div class="col-3 text-center justify-content-center align-content-center">
-                <div class="glass-btn glass-btn-red w-100">
-                    <a asp-action="AddOrder" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
+            @if(ware.Value <= 0)
+            {
+                <div class="glass-btn glass-btn-gray">
+                    <a href="#url">Отсутсвует</a>
                 </div>
+            }
+            else
+            {
+                <div class="glass-btn glass-btn-red">
+                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="stretched-link" style="color: black;">Приобрести</a>
+                </div>
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="max-width: 700px; width: 700px; background-color: #171717;">
+                        <div class="modal-content" style="background-color: #171717;">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row row-cols-1 w-100">
+                                    <div class="col text-white" style="text-align: center;">
+                                        Кол-во:
+                                    </div>
+                                </div>
+                                <div class="row row-cols-1 w-100">
+                                    <div class="col">
+                                        <form asp-action="UpdateCountCar" asp-route-id="@Model.ID" asp-controller="Cart" method="post">
+                                            <p class="text-danger">@ViewBag.ErrorMes</p>
+                                            <input type="number" min="0" step="1" onkeydown="return false" name="CountChange"/>
+                                            <div class="row-cols-2 w-100" style="display: flex;">
+                                                <div class="col-6">
+                                                    <div class="glass-btn glass-btn-red">
+                                                        <a class="stretched-link">
+                                                            <input readonly data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" value="Отмена" style="color: black; text-align:center;">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="glass-btn glass-btn-red">
+                                                        <a class="stretched-link">
+                                                            <input readonly type="submit" class="stretched-link" value="Приобрести" style="color: black; text-align:center;">
+                                                        </a>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                                @*<div class="modal-footer">
+                                    <div class="glass-btn glass-btn-red">
+                                        <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" style="color: black;">Отмена</a>
+                                    </div>
+                                    <div class="glass-btn glass-btn-green">
+                                        <a asp-action="UpdateCountCar" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
         <div class="row justify-content-center text-center">
@@ -60,7 +147,7 @@
                             <div><a href="#any"><img src="~/CarImages/@Model.Car.PhotoCar" alt="" /></a></div>
                         @foreach(var img in @Model.CarPhotos)
                         {
-                                <div><a href="#any"><img src="~/CarImages/@img.PhotoName" alt="" /></a></div>
+                            <div><a href="#any"><img src="~/CarImages/@img.PhotoName" alt="" /></a></div>
                         }
                         </figure>
                         <nav>
@@ -173,9 +260,31 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 <div class="table-responsive align-items-center justify-content-center">
                     <table class="table">
                         <tbody>
-                        @foreach(var characteristic in @Model.Car.CharacteristicCars)
-                        {
-                            <tr>
+                                <tr>
+                                    <td class="m-lg-5" style="color: white;">
+                                        <b>
+                                            Цвет авто:
+                                        </b>
+                                    </td>
+                                    <td class="m-lg-5">
+                                        @{
+                                            var col = colors.FirstOrDefault(s=> s.Name == @Model.ColorCar).HexCode;
+                                        }
+                                        <div class="square m-2" style="background-color: @col">
+
+                                        </div>
+                                    </td>
+                                    <td class="m-lg-5" style="color: white;">
+                                        @Model.ColorCar
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <tbody>
+                            @foreach(var characteristic in @Model.Car.CharacteristicCars)
+                            {
+                                <tr>
                                     <td class="m-lg-5" style="color: white;">
                                         <b>
                                             @characteristic.Characteristic.CharacteristicName:
@@ -187,87 +296,127 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                     <td class="m-lg-5" style="color: white;">
                                         @characteristic.Characteristic.Unit.UnitName
                                     </td>
-                            </tr>
-                        }
-                    </tbody>
+                                </tr>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5">
+        <h3 class="text-white text-center">
+            Доступные цвета для @Model.FullName
+        </h3>
+    </div>
+    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-2">
+
+        <ul class="slides">
+            @foreach(var colorCar in carColors)
+            {
+                <input type="radio" name="radio-btn" id="img-@colorCar.ID" checked />
+                <li class="slide-container">
+		            <div class="slide">
+                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@colorCar.ID">
+                            <img src="~/CarImages/@colorCar.MainPhotoCar"/>
+                        </a>
+                    </div>
+                </li>
+            }
+            <li class="nav-dots mt-3" style="margin-top: 40px;">
+                @foreach(var colorCar in carColors)
+                {
+                    colorCar.HexColor = colors.FirstOrDefault(s=> s.Name == colorCar.ColorCar).HexCode;
+                    <label for="img-@colorCar.ID" style="background-color: @colorCar.HexColor" class="nav-dot" id="img-dot-1"></label>
+                }
+            </li>
+        </ul>
+    </div>
     <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
         <h1>Комплектации @Model.Car.CarName</h1>
     </div>
     <div class="row w-100">
         <div class="tabs">
-            @foreach(var cars in ViewBag.Cars)
+            @foreach(var cars in styles.Where(s=> s.EquipmentId != @Model.EquipmentId))
             {
                 <div class="tab">
                     <div class="tab-toggle">
-                        <span class="tab-name" style="margin-left: 10%;">@cars.Car.CarName</span>
+                        <span class="tab-name" style="margin-left: 10%;">@cars.FullName</span>
                     </div>
                 </div>
                 <div class="Tabscontent">
                     <div class="row w-100" style="background-image: url('/image/DesertViewBacground.jpg'); height: 320px; background-repeat: no-repeat;">
                         <div class="col-3 justify-content-center align-items-center mt-5">
                             <h3 class="text-white text-decoration-underline" style="font-size: 40px;">
-                                @cars.Car.CarName
+                                @cars.FullName
                             </h3>
                             <p class="text-white">
                                 <small>
                                     Начальная цена от
-                                </small></p>
+                                </small>
+                            </p>
                             @{
-                                ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
-                                if(ViewBag.DiscountPrice == 0)
+                                ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
+                                if(ViewBag.DiscountCarStylePrice == 0)
                                 {
-                                    ViewBag.DiscountPrice = null;
+                                    ViewBag.DiscountCarStylePrice = null;
                                 }
                                 <div class="product-price">
-                                    @if(ViewBag.DiscountPrice != null)
-                                    {
-                                        <h3 class="text-white">
-                                            <s class="text-white">
-                                                @Model.FullPrice
-                                            </s>
-                                        </h3>
-                                    }
-                                    else
-                                    {
-                                        <h2 class="text-white">
-                                            @Model.FullPrice
-                                        </h2>
-                                    }
+                                @if(ViewBag.DiscountCarStylePrice != null)
+                                {
+                                    <h3 class="text-white">
+                                        <s class="text-white">
+                                            @cars.FullPrice
+                                        </s>
+                                    </h3>
+                                }
+                                else
+                                {
+                                    <h2 class="text-white">
+                                        @cars.FullPrice
+                                    </h2>
+                                }
                                     <h4 class="text-white">
-                                        @ViewBag.DiscountPrice
+                                        @ViewBag.DiscountCarStylePrice
                                     </h4>
                                 </div>
-                        }
+                            }
                         </div>
+                        @{
+                            var carPhotos = photos.Where(s => s.SaleCarId == @cars.ID).ToList();
+                            var photo = carPhotos?.FirstOrDefault(s => s.IsMainPhoto == 1);
+                        }
                         <div class="col-9 justify-content-center">
-                            <img src="~/CarImages/@cars.Car.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            @if(photo != null)
+                            {
+                                <img src="~/CarImages/@photo.PhotoName" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            }
+                            else
+                            {
+                                <img src="~/CarImages/@cars.Car.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            }
                         </div>
                     </div>
                     <div class="row w-100">
                         <div class="col-6">
                             <h4 class="text-white" style="font-size: 16px;">Ключевые характеристики</h4>
                             @{
-                                var count = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров"));
-                                var racing = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("0-100"));
-                                var power = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Мощность"));
-                                var v3 = @Model?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Объем"));
+                                var count = cars.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров"));
+                                var racing = cars.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("0-100"));
+                                var power = cars?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Мощность"));
+                                var v3 = cars?.Car.CharacteristicCars.FirstOrDefault(s => s.Characteristic.CharacteristicName.Contains("Объем"));
                             }
                             <p class="text-white" style="font-size: 11px;">@v3?.CharacteristicValue-ЛИТРОВЫЙ ДВИГАТЕЛЬ V-@count?.CharacteristicValue МОЩНОСТЬЮ @power?.CharacteristicValue Л.С.</p>
                             <p class="text-white" style="font-size: 11px;">РАЗГОН ДО 100 км/ч ЗА @racing?.CharacteristicValue СЕКУНДЫ</p>
                         </div>
                         <div class="col-6 text-white">
                             <h3>ЛУЧШИЙ В КЛАССЕ V8</h3>
-                            <p style="font-size: 14px;">Мощный 472-сильный* 5,0-литровый двигатель — это не только единственный безнаддувный двигатель V8 в своем классе*, но и самый мощный двигатель Lexus V8 за всю историю. RC F издает хриплый, специально настроенный звук впуска и выхлопа, когда он кричит до впечатляющей красной черты в 7300 об/мин.</p>
+                            <p style="font-size: 14px;">@cars.Description</p>
                         </div>
                     </div>
                     <div class="row w-50">
                         <div class="col-5">
                             <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
-                                <a asp-action="SearchLexus" asp-controller="Home" class="stretched-link" style="color: black;">Искать в каталоге</a>
+                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@cars.ID" class="stretched-link" style="color: black;">Искать в каталоге</a>
                             </div>
                         </div>
                     </div>
@@ -281,48 +430,67 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
             </h4>
         </div>
         <div class="row w-100">
-                @foreach(var cars in ViewBag.SaleCars)
-                {
-                    <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-                        <div class="corner-box-1-content" style="background-color:#171717">
-                            <div class="card-body img-responsive">
-                                    <img src="~/CarImages/@cars.Car.PhotoCar" style="width:200px; height:150px; position:relative;"/>
-                                    <br />
-                                    <h5 style="color:white;">@cars.Car.CarName</h5>
-                                    <button class="imageButton">
-                                        <h1>
-                                            <a class="imageLink" asp-action="DetailsCarView" asp-route-id="@cars.ID" asp-controller="Car">+</a>
-                                        </h1>
-                                    </button>
-                                    @{
-                                            ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
-                                            if(ViewBag.DiscountPrice == 0)
-                                            {
-                                                ViewBag.DiscountPrice = null;
-                                            }
-                                            <div class="product-price">
-                                                @if(ViewBag.DiscountPrice != null)
-                                                {
-                                                    <h5 class="text-white">
-                                                        <s class="text-white">
-                                                            @Model.FullPrice
-                                                        </s>
-                                                    </h5>
-                                                }
-                                                else
-                                                {
-                                                    <h2 class="text-white">
-                                                        @Model.FullPrice
-                                                    </h2>
-                                                }
-                                                <h5 class="text-white">
-                                                    @ViewBag.DiscountPrice
-                                                </h5>
-                                            </div>
-                                     }
-                            </div>
+            @foreach(var cars in ViewBag.RecommendCars)
+            {
+                <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
+                    <div class="corner-box-1-content" style="background-color:#171717">
+                        <div class="card-body img-responsive">
+                            <img src="~/CarImages/@cars.Car.PhotoCar" style="width:200px; height:150px; position:relative;"/>
+                            <br />
+                            <h5 style="color:white;">@cars.Car.CarName</h5>
+                            <button class="imageButton">
+                                <h1>
+                                    <a class="imageLink" asp-action="DetailsCarView" asp-route-id="@cars.ID" asp-controller="Car">+</a>
+                                </h1>
+                            </button>
+                            @{
+                                ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@cars);
+                                if(ViewBag.DiscountPrice == 0)
+                                {
+                                    ViewBag.DiscountPrice = null;
+                                }
+                                <div class="product-price">
+                                @if(ViewBag.DiscountPrice != null)
+                                {
+                                    <h5 class="text-white">
+                                        <s class="text-white">
+                                            @cars.FullPrice
+                                        </s>
+                                    </h5>
+                                }
+                                else
+                                {
+                                    <h2 class="text-white">
+                                        @cars.FullPrice
+                                    </h2>
+                                }
+                                    <h5 class="text-white">
+                                        @ViewBag.DiscountPrice
+                                    </h5>
+                                </div>
+                            }
                         </div>
                     </div>
-                }
+                </div>
+            }
         </div>
     </div>
+@if (TempData["OrderCountErrorMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Ошибка!!!</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">Превышено максмиальное кол-во покупок данного авто</p>
+        </div>
+    </div>
+}
+
+@*@functions
+{
+    public void ChangeColorCar(int id)
+    {
+        var carsStyles = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+        var styles = carsStyles.Where(s => s.FullName == @Model.FullName).ToList();
+    }
+}*@

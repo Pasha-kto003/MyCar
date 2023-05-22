@@ -14,7 +14,8 @@ namespace MyCar.Server.DB
                 EquipmentId = saleCar.EquipmentId,
                 EquipmentPrice = saleCar.EquipmentPrice,
                 ColorCar = saleCar.ColorCar,
-                MinCount = saleCar.MinCount
+                MinCount = saleCar.MinCount,
+                Description = saleCar.Description
             };
         }
 
@@ -28,7 +29,8 @@ namespace MyCar.Server.DB
                 EquipmentId = saleCar.EquipmentId,
                 EquipmentPrice = saleCar.EquipmentPrice,
                 ColorCar = saleCar.ColorCar,
-                MinCount = saleCar.MinCount
+                MinCount = saleCar.MinCount,
+                Description = saleCar.Description
             };
         }
     }

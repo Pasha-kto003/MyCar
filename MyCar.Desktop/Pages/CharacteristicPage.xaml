@@ -23,7 +23,7 @@
                     <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
                         <StackPanel Margin="0 0 10 0">
                             <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
-                            <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Width="160" Height="25" FontSize="16" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                         </StackPanel>
                         <StackPanel>
                             <Label Grid.Column="1" FontSize="16" Content="Фильтр:"  FontFamily="Century Gothic"/>
@@ -78,7 +78,7 @@
                     <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
                         <StackPanel Margin="0 0 10 0">
                             <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
-                            <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchTextEquipment, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Width="160" Height="25" FontSize="16" Text="{Binding SearchTextEquipment, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                         </StackPanel>
                     </StackPanel>
                     <DataGrid Grid.Row="1"
@@ -131,7 +131,7 @@
                         <StackPanel Grid.Row="0" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" >
                             <StackPanel Margin="0 0 10 0">
                                 <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
-                                <TextBox Width="160" Height="25" FontSize="16" Text="{Binding SearchTextBody, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
+                                <TextBox Style="{StaticResource ModernTextBox}" Width="160" Height="25" FontSize="16" Text="{Binding SearchTextBody, UpdateSourceTrigger=PropertyChanged}"  FontFamily="Century Gothic"/>
                             </StackPanel>
                         </StackPanel>
 
@@ -216,52 +216,6 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Изображение авто" FontSize="15">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                        <RowDefinition Height="50"/>
-                    </Grid.RowDefinitions>
-                    <ListView Grid.Row="1" ItemsSource="{Binding CarPhotos}"  FontSize="16" SelectedItem="{Binding SelectedPhotoCar}"
-                        Background="WhiteSmoke" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" >
-                        <ListView.ItemsPanel >
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Border CornerRadius="10" Background="White" BorderBrush="{StaticResource ValorantRedBrush}" BorderThickness="1">
-                                    <Grid Width="200" Height="250" Background="Transparent" MouseUp="Grid_MouseUp" Margin="15">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="100"/>
-                                        </Grid.RowDefinitions>
-                                        <Image Source="{Binding PhotoName, Converter={core:StringToImageConverter}}" Margin="0 0 0 10"/>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        <ListView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Удалить" Command="{Binding DeletePhotoCar}"/>
-                                <MenuItem Header="Редактировать" Command="{Binding EditPhotoCar}"/>
-                            </ContextMenu>
-                        </ListView.ContextMenu>
-                    </ListView>
-                    <Grid Background="{StaticResource ValorantRedBrush}" Grid.Row="2" >
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Margin="0 0 5 0" Style="{StaticResource AddImageButton}" Width="auto"
-                        Command="{Binding AddPhotoCar}" ToolTip="Добавить">
-                                <Button.Content>
-                                    <Image Source="/Images/add.png" />
-                                </Button.Content>
-                            </Button>
-                        </StackPanel>
-                        <Grid/>
-                    </Grid>
-                </Grid>
-            </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <TextBlock Text="Скидки" FontSize="15"/>
@@ -280,27 +234,39 @@
                   ItemsSource="{Binding Discounts}"
             >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Значение в %"
-                                    Binding="{Binding DiscountValue}"
-                                    Width="*"
-                                    />
-                            <DataGridTextColumn Header="Значение в рублях"
-                                    Binding="{Binding Price}"
-                                    Width="*"
-                                    />
-                            <DataGridTextColumn Header="Дата начала скидки"
-                                    Binding="{Binding StartDate}"
-                                    Width="*"
-                                    />
-                            <DataGridTextColumn Header="Дата конца скидки"
-                                    Binding="{Binding EndDate}"
-                                    Width="*"
-                                    />
                             <DataGridTextColumn Header="Авто"
                                     Binding="{Binding SaleCar.Car.CarName}"
                                     Width="*"
                                     />
+                            <DataGridTextColumn Header="Значение в %"
+                                    Binding="{Binding PercentValue}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Значение в рублях"
+                                    Binding="{Binding DiscountValue}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Начало скидки"
+                                    Binding="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                    Width="*"
+                                    />
+                            <DataGridTextColumn Header="Конец скидки"
+                                    Binding="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                    Width="*"
+                                    />
                         </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{core:MultiDiscountDateToColorConverter}" Mode="TwoWay">
+                                            <Binding Path="StartDate" />
+                                            <Binding Path="EndDate" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowStyle>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Редактировать" Command="{Binding EditDiscount}"/>

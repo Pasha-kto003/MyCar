@@ -3,27 +3,88 @@
     <div class="container text-center align-middle d-flex justify-content-center">
         <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" >
             <h2 style="color: white;">Вход на сайт</h2>
-            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div class="validation" asp-validation-summary="ModelOnly" style="color:red; font-size: 20px; justify-content:center; align-items:center;"></div>
             <div>
                 <div class="form-group" style="margin-top: 30px;">
-                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Email адрес" />
+                    <input type="text"  required="" autofocus="" id="inputEmail" asp-for="UserName" class="form-control" placeholder="Email адрес" style="width: 300px; text-align:center;"/>
                     <span asp-validation-for="UserName" />
                 </div>
-                <div class="form-group" style="margin-top: 50px;" >
-                    <input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" />
+                <div class="form-group" style="margin-top: 50px;">
+                    <input type="password" id="myInput" class="form-control" placeholder="Введите пароль" asp-for="Password" style="width: 300px; text-align:center;"/>
                     <span asp-validation-for="Password" />
                     <label style="margin-top:20px; margin-bottom:20px; color:white;">
                         <input type="checkbox" onclick="myFunction()" class="password-checkbox"/>
                             Показать пароль
                     </label>
                 </div>
-                <div class="form-group" style="margin-bottom:20px; width: 300px;">
+                <div class="form-group" style="margin-bottom:20px;">
                     <input class="atuin-btn" id="success" type="submit" role="button" title="Если вы зарегистрированы на этом сайте то просто зайдите под своим логином и паролем" value="Войти" data-toggle="tooltip" data-placement="right"/>  
                 </div>
-                <a asp-action="Register" class="atuin-btn" data-toggle="tooltip" data-placement="left" title="Для регистрации на нашем сайте нажмите эту кнопку" role="button" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Account">
-                    Регистрация
-                </a>
+                <div class="form-group" style="margin-bottom:20px;">
+                    <a asp-action="Register" class="atuin-btn" data-toggle="tooltip" data-placement="left" title="Для регистрации на нашем сайте нажмите эту кнопку" role="button" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Account">
+                        Регистрация
+                    </a>
+                </div>
+                <div class="form-group" style="margin-bottom:20px;">
+                    <a asp-action="EditForgotUser" class="atuin-btn" data-toggle="tooltip" data-placement="left" title="Для изменения пароля нажмите эту кнопку" role="button" style="align-content:center; text-align:center;" aria-pressed="true" asp-controller="Account">
+                        Забыли пароль?
+                    </a>
+
+                </div>
             </div>
         </form>
     </div>
 </div>
+@*<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog" style="max-width: 700px; width: 700px; background-color: #171717;">
+    <div class="modal-content" style="background-color: #171717;">
+        <div class="modal-header">
+            <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row row-cols-1 w-100">
+                <div class="col text-white" style="text-align: center;">
+                    Введите свой никнейм
+                </div>
+            </div>
+            <div class="row row-cols-1 w-100">
+                <div class="col">
+                    <form asp-action="EditForgotUser" asp-controller="Account" method="post">
+                        <div class="row-cols-2" style="display: flex; justify-content:center; align-items:center;">
+                            <div class="col" style="display: flex; justify-content:center; align-items:center;">
+                                <input type="text" name="Use" style="justify-content:center; width: 100%;"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row-cols-2 w-100" style="display: flex;">
+                            <div class="col-6">
+                                <div class="glass-btn glass-btn-red">
+                                    <a class="stretched-link">
+                                        <input readonly data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" value="Отмена" style="color: black; text-align:center;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="glass-btn glass-btn-red">
+                                    <a class="stretched-link">
+                                        <input readonly type="submit" class="stretched-link" value="Поиск" style="color: black; text-align:center;">
+                                    </a>   
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+            <div class="modal-footer">
+                <div class="glass-btn glass-btn-red">
+                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" style="color: black;">Отмена</a>
+                </div>
+                <div class="glass-btn glass-btn-green">
+                    <a asp-action="UpdateCountCar" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@

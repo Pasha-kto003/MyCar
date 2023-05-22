@@ -135,12 +135,12 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     font-family: 'Roboto', Òahoma, sans-serif;
-    background: #337AB7;
+    background: #ff4655;
     cursor: pointer;
-    border: 2px solid #BFE2FF;
+    border: 2px solid #ff4655b5;
     border-radius: 30px;
     outline: 1px solid;
-    outline-color: #337AB7;
+    outline-color: #ff4655;
     outline-offset: 0px;
     text-shadow: none;
     transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
@@ -165,176 +165,182 @@ body {
     text-align: center;
 }
 
-    .glass-btn a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
-        border-radius: 30px;
-        padding: 0 10px;
-        letter-spacing: 1px;
-        text-decoration: none;
-        text-transform: uppercase;
-        overflow: hidden;
-        color: #fff;
-        font-family: "Roboto", sans-serif;
-        font-weight: bold;
-        font-size: 16px;
-        z-index: 1;
-        transition: 0.5s;
-        backdrop-filter: blur(15px);
-    }
+.glass-btn a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 30px;
+    padding: 0 10px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    color: #fff;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 1;
+    transition: 0.5s;
+    backdrop-filter: blur(15px);
+}
 
-    .glass-btn input {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
-        border-radius: 30px;
-        padding: 0 10px;
-        letter-spacing: 1px;
-        text-decoration: none;
-        text-transform: uppercase;
-        overflow: hidden;
-        color: #fff;
-        font-family: "Roboto", sans-serif;
-        font-weight: bold;
-        font-size: 16px;
-        z-index: 1;
-        transition: 0.5s;
-        backdrop-filter: blur(15px);
-    }
+.glass-btn input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 30px;
+    padding: 0 10px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    color: #fff;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 1;
+    transition: 0.5s;
+    backdrop-filter: blur(15px);
+}
 
-    .glass-btn:hover a {
-        letter-spacing: 3px;
-    }
-    .glass-btn:hover input {
-        letter-spacing: 3px;
-    }
+.glass-btn:hover a {
+    letter-spacing: 3px;
+}
+.glass-btn:hover input {
+    letter-spacing: 3px;
+}
 
-    .glass-btn a:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 50%;
-        height: 100%;
-        background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
-        transform: skewX(45deg) translate(0);
-        transition: 0.5s;
-        filter: blur(0px);
-    }
+.glass-btn a:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+    transform: skewX(45deg) translate(0);
+    transition: 0.5s;
+    filter: blur(0px);
+}
 
-    .glass-btn input:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 50%;
-        height: 100%;
-        background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
-        transform: skewX(45deg) translate(0);
-        transition: 0.5s;
-        filter: blur(0px);
-    }
+.glass-btn input:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+    transform: skewX(45deg) translate(0);
+    transition: 0.5s;
+    filter: blur(0px);
+}
 
-    .glass-btn:hover a:before {
-        transform: skewX(45deg) translate(200px);
-    }
+.glass-btn:hover a:before {
+    transform: skewX(45deg) translate(200px);
+}
 
-    .glass-btn:hover input:before {
-        transform: skewX(45deg) translate(200px);
-    }
+.glass-btn:hover input:before {
+    transform: skewX(45deg) translate(200px);
+}
 
-    .glass-btn a:after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        transition: 0.5s;
-        border-radius: 30px;
-        z-index: -1;
-    }
+.glass-btn a:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transition: 0.5s;
+    border-radius: 30px;
+    z-index: -1;
+}
 
-    .glass-btn input:after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        transition: 0.5s;
-        border-radius: 30px;
-        z-index: -1;
-    }
+.glass-btn input:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transition: 0.5s;
+    border-radius: 30px;
+    z-index: -1;
+}
 
-    .glass-btn:hover a:after {
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-    }
+.glass-btn:hover a:after {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
 
-    .glass-btn:hover input:after {
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-    }
+.glass-btn:hover input:after {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
 
-    .glass-btn:before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: -5px;
-        width: 30px;
-        height: 10px;
-        background: #f00;
-        border-radius: 10px;
-        transition: 0.5s;
-        transition-delay: 0.5s;
-    }
+.glass-btn:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -5px;
+    width: 30px;
+    height: 10px;
+    background: #f00;
+    border-radius: 10px;
+    transition: 0.5s;
+    transition-delay: 0.5s;
+}
 
-    .glass-btn:hover:before {
-        bottom: 0;
-        height: 80%;
-        width: 80%;
-        border-radius: 30px;
-    }
+.glass-btn:hover:before {
+    bottom: 0;
+    height: 80%;
+    width: 80%;
+    border-radius: 30px;
+}
 
-    .glass-btn.glass-btn-red a:after,
-    .glass-btn.glass-btn-red input:after,
-    .glass-btn.glass-btn-red:before {
-        background: #ff4747;
-        box-shadow: 0 0 5px #ff4747, 0 0 15px #ff4747, 0 0 30px #ff4747, 0 0 60px #ff4747;
-    }
+.glass-btn.glass-btn-red a:after,
+.glass-btn.glass-btn-red input:after,
+.glass-btn.glass-btn-red:before {
+    background: #ff4747;
+    box-shadow: 0 0 5px #ff4747, 0 0 15px #ff4747, 0 0 30px #ff4747, 0 0 60px #ff4747;
+}
 
-    .glass-btn.glass-btn-blue a:after,
-    .glass-btn.glass-btn-blue:before {
-        background: #419cec;
-        box-shadow: 0 0 5px #419cec, 0 0 15px #419cec, 0 0 30px #419cec, 0 0 60px #419cec;
-    }
+.glass-btn.glass-btn-blue a:after,
+.glass-btn.glass-btn-blue:before {
+    background: #419cec;
+    box-shadow: 0 0 5px #419cec, 0 0 15px #419cec, 0 0 30px #419cec, 0 0 60px #419cec;
+}
 
-    .glass-btn.glass-btn-green a:after,
-    .glass-btn.glass-btn-green:before {
-        background: #38ba35;
-        box-shadow: 0 0 5px #38ba35, 0 0 15px #38ba35, 0 0 30px #38ba35, 0 0 60px #38ba35;
-    }
+.glass-btn.glass-btn-green a:after,
+.glass-btn.glass-btn-green:before {
+    background: #38ba35;
+    box-shadow: 0 0 5px #38ba35, 0 0 15px #38ba35, 0 0 30px #38ba35, 0 0 60px #38ba35;
+}
+
+.glass-btn.glass-btn-gray a:after,
+.glass-btn.glass-btn-gray:before {
+    background: #71797E;
+    box-shadow: 0 0 5px #71797E, 0 0 15px #71797E, 0 0 30px #71797E, 0 0 60px #71797E;
+}
 
 .glass-button {
     display: inline-block;
@@ -1765,7 +1771,7 @@ body {
 .centered {
     position: absolute;
     top: 50%;
-    left: 0%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }
 
@@ -1934,7 +1940,7 @@ ul.list6b {
 
     .tabs .tab .tab-toggle {
         display: flex;
-        border: 2px solid #D2042D;
+        border: 2px solid #ff4655;
         padding: 4px 40px 4px 0;
         border-radius: 16px;
         margin-bottom: 8px;
@@ -1962,7 +1968,7 @@ ul.list6b {
         font-weight: bold;
         border-radius: 50%;
         background: #171717;
-        border: 3px solid #D2042D;
+        border: 3px solid #ff4655;
         width: 34px;
         height: 34px;
         display: flex;
@@ -2191,7 +2197,7 @@ margin: 20px 0 0;
     border-radius: 15px;
     transition: 390ms;
     transform: translateY(0);
-    display: flex;
+    display: inline;
     flex-direction: row-reverse;
     align-items: center;
     cursor: pointer;
@@ -2299,3 +2305,294 @@ margin: 20px 0 0;
 	box-shadow: inset 0px 0px 4px #ff5623;
 }
 
+.widget {
+    border-radius: 1rem;
+    background-color: #1a222b;
+}
+
+.widget.summary > div:first-child {
+    background-color: #222b33;
+    padding: 1rem;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+.widget.summary > div:first-child i {
+    font-weight: bold;
+}
+
+.widget.income > div:first-child {
+    color: #65da41;
+}
+.widget.expense > div:first-child {
+    color: #ff4e48;
+}
+
+.widget.balance > div:first-child {
+    color: #2aa1ff;
+}
+
+.widget.chart {
+    padding: 5px;
+}
+
+.gradient text {
+    font-family: Tahoma, sans-serif;
+    font-weight: bold;
+    text-anchor: middle;
+    background: #FF0000;
+    background: linear-gradient(to right, #FF0000 0%, #FFFF00 25%, #05C1FF 50%, #FFFF00 75%, #FF0000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sign-wrap-4 {
+    background-color: transparent;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+    .sign-wrap-4 .sign_word {
+        font-size: 40px;
+        font-weight: bold;
+        line-height: 50px;
+        color: #171717;
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #BFE2FF, 0 0 0.5em #BFE2FF, 0 0 0.1em #BFE2FF;
+    }
+
+        .sign-wrap-4 .sign_word span {
+            animation: neon-4 linear infinite 2s;
+        }
+
+@keyframes neon-4 {
+    78% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+
+    79% {
+        color: #ffffff;
+    }
+
+    80% {
+        text-shadow: none;
+    }
+
+    81% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+
+    82% {
+        color: #ffffff;
+        text-shadow: none;
+    }
+
+    83% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+
+    92% {
+        color: #ffffff;
+        text-shadow: none;
+    }
+
+    92.5% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+}
+
+.atuin-nav {
+    height: 80px;
+    top: 0;
+    left: 0;
+    background: #337AB7;
+    width: 100%;
+    font-family: Verdana, sans-serif;
+}
+
+.atuin-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+}
+
+.atuin-nav ul li {
+    margin: 0 10px;
+}
+
+.atuin-nav ul li a {
+    color: #BFE2FF;
+    display: inline-flex;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.atuin-nav ul li a:hover {
+    color: #FFF;
+}
+
+.atuin-nav ul li a.active {
+    border-bottom: 2px solid #FFF;
+    padding-bottom: 6px;
+    color: #FFF;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap');
+.learnMorebtn {
+    font-family: Roboto, sans-serif;
+    font-weight: 0;
+    font-size: 16px;
+    color: #000000;
+    background-color: #ffffff;
+    padding: 10px 30px;
+    border: solid #ffffff 2px;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 1px;
+    transition: 506ms;
+    transform: translateY(0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    text-transform: lowercase;
+}
+
+.learnMorebtn:hover {
+    transition: 506ms;
+    padding: 10px 30px;
+    transform: translateY(-0px);
+    background-color: #000000;
+    color: #ffffff;
+    border: solid 2px #ffffff;
+}
+.square {
+    height: 50px;
+    width: 50px;
+    background-color: #555;
+}
+
+.slides {
+    padding: 0;
+    width: 609px;
+    height: 420px;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+}
+
+    .slides * {
+        user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+
+    .slides input {
+        display: none;
+    }
+
+.slide-container {
+    display: block;
+}
+
+.slide {
+    top: 0;
+    opacity: 0;
+    width: 609px;
+    height: 420px;
+    display: block;
+    position: absolute;
+    transform: scale(0);
+    transition: all .7s ease-in-out;
+}
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+    }
+
+.nav label {
+    width: 80px;
+    height: 100%;
+    display: none;
+    position: absolute;
+    opacity: 0;
+    z-index: 9;
+    cursor: pointer;
+    transition: opacity .2s;
+    color: #FFF;
+    font-size: 156pt;
+    text-align: center;
+    line-height: 380px;
+    font-family: "Open Sans", sans-serif;
+    background-color: rgba(255, 255, 255, .3);
+    text-shadow: 0px 0px 15px rgb(119, 119, 119);
+}
+
+.slide:hover + .nav label {
+    opacity: 0.5;
+}
+
+.nav label:hover {
+    opacity: 1;
+}
+
+.nav .next {
+    right: 0;
+}
+
+input:checked + .slide-container .slide {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 1s ease-in-out;
+}
+
+input:checked + .slide-container .nav label {
+    display: block;
+}
+
+.nav-dots {
+    width: 100%;
+    bottom: 9px;
+    height: auto;
+    display: block;
+    position: absolute;
+    text-align: center;
+}
+
+    .nav-dots .nav-dot {
+        height: 50px;
+        width: 50px;
+        background-color: #555;
+        top: -5px;
+        margin: 0 4px;
+        position: relative;
+        border-radius: 100%;
+        display: inline-block;
+    }
+
+        .nav-dots .nav-dot:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+input#img:checked ~ .nav-dots label#img-dot-1 {
+    background: rgba(0, 0, 0, 0.8);
+}

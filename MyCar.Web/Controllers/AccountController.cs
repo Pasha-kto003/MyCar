@@ -113,6 +113,25 @@ namespace MyCar.Web.Controllers
             var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
 
+        public async Task<IActionResult> EditForgotUser()
+        {
+            RegisterModel registerModel = new RegisterModel();
+            return View("EditPasswordView", registerModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPassword(RegisterModel registerModel)
+        {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            var user = Users.LastOrDefault(s => s.UserName == registerModel.UserName);
+            HashCheck.CreatePasswordHash(registerModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.SaltHash = passwordSalt;
+
+            await ChangeUser(user);
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
@@ -136,6 +155,18 @@ namespace MyCar.Web.Controllers
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
 
             }
+            else if (model.UserName == "" || model.UserName == null)
+            {
+                ModelState.TryAddModelError("", "Не введен логин");
+            }
+            else if (model.Password == "" || model.Password == null)
+            {
+                ModelState.TryAddModelError("", "Не введен пароль");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
             return View(model);
         }
 
@@ -143,12 +174,17 @@ namespace MyCar.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
         {
+            Users = await Api.GetListAsync<List<UserApi>>("User");
             EmailIsValid(model.Email);
             if (EmailIsValid(model.Email) == false)
             {
                 ModelState.AddModelError("", "Данные почты введены неккоректно");
             }
-
+            var user = Users.FirstOrDefault(s=> s.UserName == model.UserName || s.Email == model.Email);
+            if (user != null)
+            {
+                ModelState.AddModelError("", $"Пользователь с именем {model.UserName} уже существует");
+            }
             await CreateUser(model);
             if (UserId != -1)
             {
@@ -204,7 +240,10 @@ namespace MyCar.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
-
+        private async Task ChangeUser(UserApi userApi)
+        {
+            var user = await Api.PutAsync<UserApi>(userApi, "User");
+        }
 
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> Personal_Area(string name)

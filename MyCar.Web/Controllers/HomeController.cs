@@ -11,6 +11,7 @@ using MyCar.Web.Core;
 using MyCar.Web.Core.Paging;
 using MyCar.Web.Models;
 using SmartBreadcrumbs.Attributes;
+using SmartBreadcrumbs.Nodes;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -24,8 +25,15 @@ namespace MyCar.Web.Controllers
         private readonly ILogger<HomeController> _logger;
 
         public List<SaleCarApi> Cars { get; set; }
+        public List<SaleCarApi> FullCars { get; set; }
         public List<MarkCarApi> Marks { get; set; }
         public static List<OrderApi> Orders { get; set; }
+
+        public List<ActionTypeApi> Types { get; set; }
+        public List<StatusApi> Statuses { get; set; }
+        public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
+        public List<OrderApi> Orders = new List<OrderApi>();
+        public List<UserApi> Users { get; set; } = new List<UserApi>();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -44,39 +52,72 @@ namespace MyCar.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DetailsCar(string CarName)
+        public async Task<IActionResult> DetailsCar(int id)
         {
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            var car = cars.FirstOrDefault(s=> s.Car.CarName == CarName);
+            var car = cars.FirstOrDefault(s => s.ID == id);
             var marks = new List<MarkCarApi>();
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            if (id == 0)
+            {
+                ViewBag.Marks = marks;
+                return View("Index", cars);
+            }
             ViewBag.Marks = marks;
-            ViewBag.CarName = car.Car.CarName;
+            ViewBag.ID = car.ID;
+            ViewBag.CarName = car.FullName;
             ViewBag.FullPrice = car.FullPrice;
             ViewBag.PhotoCar = car.Car.PhotoCar;
             return View("Index", cars);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "Marks")]
+        [Breadcrumb(FromAction = "Index", Title = "Марки авто")]
         public async Task<IActionResult> MarkView()
         {
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("MarkView", "Home", "Список марок авто") { Parent = page };
+            ViewData["BreadcrumbNode"] = articlesPage;
             var marks = new List<MarkCarApi>();
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return View("MarkView", marks);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "Users")]
+        [Breadcrumb(FromAction = "Index", Title = "Пользователи")]
         public async Task<IActionResult> UserView()
         {
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("UserView", "Home", "Список пользователей") { Parent = page };
+            ViewData["BreadcrumbNode"] = articlesPage;
             var users = new List<UserApi>();
             users = await Api.GetListAsync<List<UserApi>>("User");
             return View("UserView", users);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        public async Task<IActionResult> DashBoardView()
+        {
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("DashBoardView", "Home", "Статистика") { Parent = page };
+            ViewData["BreadcrumbNode"] = articlesPage;
+            await GetOrders();
+            var price = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Sum(s => s.Price);
+            var ware = Orders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(s => s.WareHouses).Sum(s=> s.Price);
+            ViewBag.SalePrice = price;
+            ViewBag.WareHousePrice = ware;
+            var saleCount = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Count();
+            ViewBag.SaleCount = saleCount;
+            var wareCount = Orders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(s => s.WareHouses).Count();
+            ViewBag.WareHouseCount = wareCount;
+            ViewBag.SaleCarCount = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Count();
+            return View("DashBoardView");
+        }
+
+        [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
         public async Task<IActionResult> GetAuto(int id)
         {
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
+            ViewData["BreadcrumbNode"] = articlesPage;
             var marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             var mark = marks.FirstOrDefault(s => s.ID == id);
             string text = mark.MarkName;
@@ -99,6 +140,11 @@ namespace MyCar.Web.Controllers
         public async Task<IActionResult> LexusGXView()
         {
             return View("LexusGXView");
+        }
+
+        public async Task<IActionResult> FutureCars()
+        {
+            return View("FutureCarView");
         }
 
         public async Task<IActionResult> ToyotaCamryView()
@@ -142,25 +188,26 @@ namespace MyCar.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
         public async Task<IActionResult> CarView()//int? pageNumber
         {
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
+            ViewData["BreadcrumbNode"] = articlesPage;
+            await GetWare();
             List<SaleCarApi> cars;
             List<MarkCarApi> markCars;
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
-            foreach(var car in cars)
-            {
-                GetDiscount(car);
-            }
-            return View("CarView", cars);
+            var fullCars = cars.DistinctBy(s => s.Car.CarName);
+            return View("CarView", fullCars);
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "CarView")]
+        [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
-        public async Task<IActionResult> SearchCar(string SearchString)
+        public async Task<IActionResult> SearchCar(string SearchString, string FilterString, string SortString)
         {
             List<SaleCarApi> cars;
             List<MarkCarApi> markCars;
@@ -169,7 +216,40 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            cars = cars.Where(s => s.Car.CarName.ToLower().Contains(SearchString.ToLower())).ToList();
+            if (SortString == "По умолчанию")
+            {
+                FullCars = cars;
+            }
+            else if (SortString == "По возрастанию")
+            {
+                cars.Sort((x, y) => x.FullPrice.Value.CompareTo(y.FullPrice));
+                FullCars = cars;
+            }
+            else if (SortString == "По убыванию")
+            {
+                cars.Sort((x, y) => y.FullPrice.Value.CompareTo(x.FullPrice));
+                FullCars = cars;
+            }
+            if(SearchString != null || FilterString != "Тип поиска" || filter != "Все")
+            {
+                FullCars = await Api.SearchFilterAsync<List<SaleCarApi>>(FilterString, SearchString, "CarSales", filter);
+                //FullCars = cars.Where(s => s.FullName == SearchString).ToList();
+            }
+            return View("CarView", FullCars);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchLexus()
+        {
+            var models = await Api.GetListAsync<List<ModelApi>>("Model");
+            var text = "RC F";
+            var type = "Модель";
+            var model = models.FirstOrDefault(s => s.ModelName.Contains("RC F"));
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            string filter = "Все";
+            cars = await Api.SearchFilterAsync<List<SaleCarApi>>(text, type, "CarSales", filter);
+            var markCars = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.MarkCars = markCars;
             return View("CarView", cars);
         }
 
@@ -184,19 +264,14 @@ namespace MyCar.Web.Controllers
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return Cars;
         }
+
         private async Task<List<MarkCarApi>> GetMark()
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             return Marks;
         }
 
-        private static async Task<List<OrderApi>> GetOrder()
-        {
-            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            return Orders;
-        }
-
-        private void GetDiscount(SaleCarApi saleCars)
+        private async Task GetWare()
         {
             var date = DateTime.Now;
             if(saleCars != null)
@@ -727,6 +802,17 @@ namespace MyCar.Web.Controllers
             return chart;
 
             return chart;
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+        }
+
+        public async Task GetOrders()
+        {
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            Users = await Api.GetListAsync<List<UserApi>>("User");
+            Statuses = await Api.GetListAsync<List<StatusApi>>("Status");
+            Types = await Api.GetListAsync<List<ActionTypeApi>>("ActionType");
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
         }
     }
 }

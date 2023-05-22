@@ -1,42 +1,37 @@
 ﻿@model MyCar.Web.Models.RegisterModel
 
-<div class="row" style="justify-content:center; align-items:center; display:block; height:100%;">
+<div class="row" style="justify-content:center; align-items:center; display:block; position: fixed; top: 15%; width: 100%; height: auto;">
     <div class="container text-center align-content-center align-items-center d-flex justify-content-center">
         <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
-        <h2>Регистрация</h2>
+        <h2 style="color: white;">Регистрация</h2>
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>
             <div style="margin-top:30px;">
-                <label asp-for="Email" style="color: white;">Введите почту</label><br />
-                <input type="text" required="" autofocus="" id="imputserName" asp-for="Email" class="form-control" placeholder="User" width="300px;"/>
-                <span asp-validation-for="Email" />
+                <h5 class="font-weight-normal" style="color: white; text-align:center;">Введите никнейм</h5><br />
+                <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="Никнейм" style="text-align:center;" width="300px;"/>
+                <span asp-validation-for="UserName" class="text-white" />
             </div>
             <div style="margin-top:30px;">
-                <label asp-for="UserName" style="color: white;">Введите никнейм</label><br />
-                <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="User" width="300px;"/>
-                <span asp-validation-for="UserName" />
+                <h5 class="font-weight-normal" style="color: white; text-align:center;">Введите почтовый адрес</h5><br />
+                <input type="text" required="" autofocus="" id="imputserName" asp-for="Email" class="form-control" placeholder="Почта" style="text-align:center;" width="300px;" />
+                <span asp-validation-for="Email" class="text-white"/>
             </div>
-                <div style="margin-top:30px;">
-                    <label asp-for="Email" style="color: white;">Введите почтовый адрес</label><br />
-                    <input type="text" required="" autofocus="" id="imputserName" asp-for="Email" class="form-control" placeholder="User" width="300px;" />
-                    <span asp-validation-for="Email" />
-                </div>
             <div style="margin-top:30px;">
-                <h5 class="h3 mb-3 font-weight-normal" style="color: white;">Введите пароль</h5>
-                <input type="password" id="password-input" class="form-control" placeholder="Введите пароль" asp-for="Password" width="300px;/>
-                <span asp-validation-for="Password" />
+                <h5 class="font-weight-normal" style="color: white;">Введите пароль</h5>
+                <input type="password" id="myInputRegister" class="form-control" placeholder="Введите пароль" asp-for="Password" style="text-align:center;" width="300px;"/>
+                <span asp-validation-for="Password" class="text-white" />
                 <label style="margin-top:20px; margin-bottom:20px; color:white;">
-                    <input type="checkbox" onclick="myFunction()" class="password-checkbox"/>
+                    <input type="checkbox" onclick="myFunctionRegister()" class="password-checkbox"/>
                         Показать пароль
                 </label>
             </div>
             <div style="margin-top:30px;">
-                <label asp-for="ConfirmPassword" style="color: white;">Повторите пароль</label><br />
-                <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" width="300px;/>
-                <span asp-validation-for="ConfirmPassword" />
+                <h5 class="font-weight-normal" style="color: white; text-align:center;">Повторите пароль</h5><br />
+                <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" placeholder="Повторите пароль" style="text-align:center;" width="300px;"/>
+                <span asp-validation-for="ConfirmPassword" class="text-white"/>
             </div>
             <div style="margin-top:20px;">
-                <input type="submit" value="Регистрация" class="btn btn-primary btn-lg active" style="width: 300px; color:white;" role="button" aria-pressed="true" />
+                <input type="submit" value="Завершить регистрацию" class="atuin-btn" style="width: 320px; color:white;" role="button" aria-pressed="true" />
             </div>
         </div>
     </form>

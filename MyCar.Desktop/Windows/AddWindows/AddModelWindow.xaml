@@ -17,7 +17,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
                     <Label Content="Наименование" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>
-                    <TextBox DataContext="{Binding AddModelVM}" Tag="Модель авто" Text="{Binding ModelName}" Margin="0 5 0 0" FontSize="16"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" DataContext="{Binding AddModelVM}" Tag="Модель авто" Text="{Binding ModelName}" Margin="0 5 0 0" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
                     <Label Content="Марка" Margin="0 0 0 5" Width="200" HorizontalContentAlignment="Center" FontSize="16"/>

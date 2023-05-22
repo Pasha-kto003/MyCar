@@ -121,13 +121,13 @@ namespace MyCar.Web.Controllers
                         sheet.Range[$"B{index}"].Value = order.DateOfOrder.ToString().Substring(0, order.DateOfOrder.ToString().Length - 8);
                         sheet.Range[$"C{index}"].Value = warehouse.SaleCar.Car.CarName.ToString();
 
-                        sheet.Range[$"D{index}"].Value = warehouse.CountChange.ToString();
+                        sheet.Range[$"D{index}"].Value = (warehouse.CountChange * -1).ToString();
                         TotalCount += (int)warehouse.CountChange;
 
                         purchase = (decimal)orders.SelectMany(s => s.WareHouses).FirstOrDefault(s => s.ID == CountChangeHistories?.FirstOrDefault(s => s?.WarehouseOutId == warehouse.ID).WarehouseInId).Price;
                         sheet.Range[$"E{index}"].Value = purchase.ToString();
                         sheet.Range[$"E{index}"].NumberFormat = "0.00 ₽";
-                        TotalPurchasePrice += (decimal)(purchase * warehouse.CountChange);
+                        TotalPurchasePrice += (decimal)(purchase * warehouse.CountChange * -1);
 
                         sheet.Range[$"F{index}"].Value = warehouse.SaleCar.ColorCar.ToString();
                         sheet.Range[$"G{index}"].Value = warehouse.SaleCar.Equipment.NameEquipment.ToString();
@@ -136,20 +136,20 @@ namespace MyCar.Web.Controllers
 
                         sheet.Range[$"I{index}"].Value = warehouse.Price.ToString();
                         sheet.Range[$"I{index}"].NumberFormat = "0.00 ₽";
-                        TotalRawSalePrice += (decimal)(warehouse.Price * warehouse.CountChange);
+                        TotalRawSalePrice += (decimal)(warehouse.Price * warehouse.CountChange * -1);
 
                         sheet.Range[$"J{index}"].Value = warehouse.Discount.ToString();
                         sheet.Range[$"J{index}"].NumberFormat = "0.00 ₽";
 
 
-                        sheet.Range[$"K{index}"].Value = ((warehouse.Price - warehouse.Discount) * warehouse.CountChange).ToString();
+                        sheet.Range[$"K{index}"].Value = ((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1).ToString();
                         sheet.Range[$"K{index}"].NumberFormat = "0.00 ₽";
-                        TotalSalePrice += (decimal)((warehouse.Price - warehouse.Discount) * warehouse.CountChange);
+                        TotalSalePrice += (decimal)((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1);
 
 
                         sheet.Range[$"L{index}"].Value = ((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange).ToString();
                         sheet.Range[$"L{index}"].NumberFormat = "0.00 ₽";
-                        TotalProfit += (decimal)((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange);
+                        TotalProfit += (decimal)((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange * -1);
 
                         sheet.Range[$"M{index}"].Value = order.User.UserName;
 
@@ -309,7 +309,7 @@ namespace MyCar.Web.Controllers
             var order = Orders.Where(s=> s.ActionType.ActionTypeName == "Продажа").ToList();
             foreach (var ord in order)
             {
-                ord.SumOrder = ord.WareHouses.Sum(s => s.Price * s.CountChange);
+                ord.SumOrder = ord.WareHouses.Sum(s => s.Price * s.CountChange * -1);
             }
             var userIsAdmin = Users.FirstOrDefault(s => s.UserName == name);
             if (userIsAdmin.UserType.TypeName == "Администратор")
@@ -342,6 +342,41 @@ namespace MyCar.Web.Controllers
             return View("DetailsCart", order);
         }
 
+        public async Task<IActionResult> EditWare(int id)
+        {
+            var orderItems = new List<WareHouseApi>();
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            var ware = orderItems.FirstOrDefault(s => s.SaleCarId == id);
+            return View("EditCountWareHouse", ware);
+        }
+
+        public async Task<IActionResult> EditCountWareHouse(int id, int CountChangeWare)
+        {
+            await GetOrders();
+            var orderItems = new List<WareHouseApi>();
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            var wh = orderItems.LastOrDefault(s => s.SaleCarId == id);
+            car.CountChange = CountChangeWare;
+            wh.CountChange = CountChangeWare;
+            if (IsCanAddInOrder(car) == false)
+            {
+                TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
+            }
+            await EditWareHouse(wh);
+            string json1 = JsonConvert.SerializeObject(orderItems);
+            var des = JsonConvert.DeserializeObject(json1);
+
+            HttpContext.Session.SetString("OrderItem", json1);
+            return View("DetailsCart", orderItems);
+        }
+
         public async Task<IActionResult> DetailsCart(string name)
         {
             List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
@@ -364,6 +399,7 @@ namespace MyCar.Web.Controllers
             {
                 return View("CartError");
             }
+
             return View("DetailsCart", orderItems);
         }
 
@@ -480,7 +516,7 @@ namespace MyCar.Web.Controllers
             if (json != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
             var car = Cars.FirstOrDefault(s => s.ID == id);
-            var wh = orderItems.LastOrDefault(s=> s.SaleCarId == car.ID);
+            var wh = orderItems.LastOrDefault(s=> s.SaleCarId == id);
             car.CountChange = CountChange;
             wh.CountChange = CountChange;
             if (IsCanAddInOrder(car) == false)
@@ -490,7 +526,10 @@ namespace MyCar.Web.Controllers
                 return View("~/Views/Car/DetailsCarView.cshtml", car);
             }
             await EditWareHouse(wh);
-            
+            string json1 = JsonConvert.SerializeObject(orderItems);
+            var des = JsonConvert.DeserializeObject(json1);
+
+            HttpContext.Session.SetString("OrderItem", json1);
             return View("DetailsCart", orderItems);
         }
 

@@ -1661,14 +1661,6 @@ body {
     filter: brightness(50%);
 }
 
-.value {
-    font-size: 150px;
-    display: block;
-    font-weight: bold;
-    color: #fff;
-
-}
-
 .myHovercard {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
@@ -2605,4 +2597,18 @@ input#img:checked ~ .nav-dots label#img-dot-1 {
 form i {
     margin-left: -25px;
     cursor: pointer;
+}
+
+.countContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #171717;
+}
+
+.value {
+    font-size: 150px;
+    display: block;
+    font-weight: bold;
+    color: #fff;
 }

@@ -1,0 +1,75 @@
+﻿@using MyCar.Web.Core
+@model ModelsApi.WareHouseApi
+@{
+}
+<div class="container-fluid">
+    <div class="row w-100">
+        <h2 class="text-white text-center">Введите новое кол-во покупаемого авто</h2>
+    </div>
+    <div class="row w-100" style="justify-content:center; align-items:center; display:flex; height:100%; margin-top: 6%; ">
+        <form class="justify-content-center align-items-center" style="display: flex; justify-content:center; align-items: center;" asp-action="EditCountWareHouse" asp-route-id="@Model.SaleCarId">
+            <div>
+                <input type="number" max="@Model.SaleCar.Count" name="CountChangeWare" min="0" step="1" onkeydown="return false" class="form-control" placeholder="Новое кол-во" style="width: 200px; text-align:center; display:flex; justify-content:center;"/>
+                <div class="form-group" style="margin-bottom:20px; margin-top:50px; display: flex; justify-content:center;">
+                    <input class="atuin-btn" id="success" type="submit" role="button"/>  
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row w-100">
+        <div class="card" style="background-color: #171717; min-width: 500px;">
+            <div class="row" style="background-color: #171717">
+                <div class="col-md-12">
+                    <div class="row align-items-center p-4">
+
+                        <div class="col-4 productCart-Photo d-flex justify-content-center">
+                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@Model.SaleCarId"><img src="~/CarImages/@Model.SaleCar.MainPhotoCar"></a>
+                        </div>
+
+                        <div class="col-8 d-flex justify-content-between">
+
+                            <div class="col m-3">
+                                <h4 class="row text-white">Наименование авто</h4>
+                                <h5 class="row text-white">@Model.SaleCar.Car.CarName</h5>
+                            </div>
+
+                            <div class="col m-3">
+                                <h4 class="row text-white">Стоимость авто:</h4>
+                                @{
+                                    var price = DiscountCounter.GetDiscount(@Model.SaleCar);
+                                    if(price == 0)
+                                    {
+                                        price = @Model.SaleCar.FullPrice;
+                                    }
+                                }
+                                <h4 class="row text-white">&euro; @price</h4>
+                            </div>
+                            <div class="col m-3 text-white">
+                                <h4 class="row text-white">Старое значение кол-ва</h4>
+                                <div class="row w-100">
+                                    @*<div class="col-4" style="display: flex; justify-content: center; text-align:center;">
+                                        <h4 class="text-center text-white">
+                                            @Model.CountChange
+                                        </h4>
+                                    </div>*@
+                                    <form class="justify-content-center align-items-center" style="display: flex; justify-content:center; align-items: center;" asp-action="EditCountWareHouse" asp-route-id="@Model.SaleCarId">
+                                        <div>
+                                            <input type="number" max="@Model.SaleCar.Count" name="CountChangeWare" min="0" step="1" onkeydown="return false" class="form-control" placeholder="Новое кол-во" style="width: 150px; text-align:center; display:flex; justify-content:center;"/>
+                                            <div class="form-group" style="margin-bottom:20px; margin-top:10px; display: flex; justify-content:center;">
+                                                <input class="atuin-btn" id="success" type="submit" role="button"/>  
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col m-3 d-flex justify-content-center align-items-center">
+                                <a asp-action="" asp-controller="Cart" asp-route-id="@Model.ID" type="button" class="btn btn-danger">Убрать</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="color: white;"/>
+                </div>
+            </div>
+                </div>
+    </div>
+</div>

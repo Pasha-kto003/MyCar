@@ -183,7 +183,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var characteristic in @Model.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
+                                @*@foreach(var characteristic in @Model.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Мощность") ||
                                 s.Characteristic.CharacteristicName.Contains("Объем") || 
                                 s.Characteristic.CharacteristicName.Contains("Вместительность топливного бака") || 
                                 s.Characteristic.CharacteristicName.Contains("Кол-во цилиндров") ))
@@ -196,7 +196,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                             @characteristic.CharacteristicValue
                                         </td>
                                     </tr>
-                                }
+                                }*@
                             </tbody>
                         </table>
                         <table class="table">

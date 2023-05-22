@@ -126,8 +126,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\Charts\" />
-  </ItemGroup>
-
 </Project>

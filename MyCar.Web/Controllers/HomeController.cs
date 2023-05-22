@@ -4,14 +4,17 @@ using ChartJSCore.Plugins.Zoom;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.OpenApi.Validations;
 using ModelsApi;
 using MyCar.Server.DB;
 using MyCar.Web.Core;
+using MyCar.Web.Core.Charts;
 using MyCar.Web.Core.Paging;
 using MyCar.Web.Models;
 using SmartBreadcrumbs.Attributes;
 using SmartBreadcrumbs.Nodes;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -25,14 +28,15 @@ namespace MyCar.Web.Controllers
         private readonly ILogger<HomeController> _logger;
 
         public List<SaleCarApi> Cars { get; set; }
+
+        public static List<CarApi> CarsChart = new List<CarApi>();
         public List<SaleCarApi> FullCars { get; set; }
         public List<MarkCarApi> Marks { get; set; }
-        public static List<OrderApi> Orders { get; set; }
 
         public List<ActionTypeApi> Types { get; set; }
         public List<StatusApi> Statuses { get; set; }
         public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
-        public List<OrderApi> Orders = new List<OrderApi>();
+        public static List<OrderApi> Orders = new List<OrderApi>();
         public List<UserApi> Users { get; set; } = new List<UserApi>();
 
         public HomeController(ILogger<HomeController> logger)
@@ -93,6 +97,18 @@ namespace MyCar.Web.Controllers
             return View("UserView", users);
         }
 
+        public async Task<IActionResult> ShowPartialView(int id)
+        {
+            var Cars = GetCar().Result;
+            Marks = GetMark().Result;
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            ViewBag.MarkCars = Marks;
+
+            
+
+            return PartialView("ChooseCarView", car);
+        }
+
         public async Task<IActionResult> DashBoardView()
         {
             var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
@@ -100,7 +116,7 @@ namespace MyCar.Web.Controllers
             ViewData["BreadcrumbNode"] = articlesPage;
             await GetOrders();
             var price = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Sum(s => s.Price);
-            var ware = Orders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(s => s.WareHouses).Sum(s=> s.Price);
+            var ware = Orders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(s => s.WareHouses).Sum(s => s.Price);
             ViewBag.SalePrice = price;
             ViewBag.WareHousePrice = ware;
             var saleCount = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Count();
@@ -108,6 +124,25 @@ namespace MyCar.Web.Controllers
             var wareCount = Orders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(s => s.WareHouses).Count();
             ViewBag.WareHouseCount = wareCount;
             ViewBag.SaleCarCount = Orders.Where(s => s.ActionType.ActionTypeName == "Продажа").SelectMany(s => s.WareHouses).Count();
+
+            Chart pieChart = GeneratePieChart();// создание круговой диаграммы
+            ViewData["PieChart"] = pieChart;
+
+            //Chart vertBarChart = GenerateVerticalBarChart();// создание вертикальной диаграммы
+            //ViewData["VertBarChart"] = vertBarChart;
+
+            //Chart lineChart = GenerateLineChart();// создание линейной диаграммы
+            //ViewData["LineChart"] = lineChart;
+
+            //Chart horBarChart = GenerateHorizontalBarChart();// создание горизонтальной диаграммы
+            //ViewData["horBarChart"] = horBarChart;
+
+            Chart customLineChart = GenerateCustomLineChart();// создание кастомной диаграммы для окупаемости за год
+            ViewData["customLineChart"] = customLineChart;
+
+            Chart customVerticalBarChart = GenerateCustomVerticalBarChart();// создание кастомной диаграммы для сравнения за 2 выбранных месяца
+            ViewData["customVerticalBarChart"] = customVerticalBarChart;
+
             return View("DashBoardView");
         }
 
@@ -273,50 +308,61 @@ namespace MyCar.Web.Controllers
 
         private async Task GetWare()
         {
-            var date = DateTime.Now;
-            if(saleCars != null)
-            {
-                if(date.DayOfWeek == DayOfWeek.Monday)
-                {
-                    //ViewBag.DiscountPrice = 
-                    if (saleCars.Car.CarMark.Contains("Toyota") || saleCars.Car.CarMark.Contains("Lexus") || saleCars.Car.CarMark.Contains("Honda"))
-                    {
-                        ViewBag.DiscountPrice = saleCars.FullPrice * 10 / 100;
-                    }
-                    else
-                    {
-                        ViewBag.DiscountPrice = "";
-                    }
-                }
-                else if(date.DayOfWeek == DayOfWeek.Tuesday || date.DayOfWeek == DayOfWeek.Friday)
-                {
-                    if (saleCars.Car.CarMark.Contains("Porsche") || saleCars.Car.CarMark.Contains("Audi") || saleCars.Car.CarMark.Contains("Honda"))
-                    {
-                        var diff = saleCars.FullPrice * 10 / 100;
-                        ViewBag.DiscountPrice = saleCars.FullPrice - diff;
-                    }
-                    else
-                    {
-                        ViewBag.DiscountPrice = "";
-                    }
-                }
-                else
-                {
-                    ViewBag.DiscountPrice = "";
-                }
-
-            }
-            
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
         }
+
+        //private async Task GetWare()
+        //{
+        //    var date = DateTime.Now;
+        //    if(saleCars != null)
+        //    {
+        //        if(date.DayOfWeek == DayOfWeek.Monday)
+        //        {
+        //            //ViewBag.DiscountPrice = 
+        //            if (saleCars.Car.CarMark.Contains("Toyota") || saleCars.Car.CarMark.Contains("Lexus") || saleCars.Car.CarMark.Contains("Honda"))
+        //            {
+        //                ViewBag.DiscountPrice = saleCars.FullPrice * 10 / 100;
+        //            }
+        //            else
+        //            {
+        //                ViewBag.DiscountPrice = "";
+        //            }
+        //        }
+        //        else if(date.DayOfWeek == DayOfWeek.Tuesday || date.DayOfWeek == DayOfWeek.Friday)
+        //        {
+        //            if (saleCars.Car.CarMark.Contains("Porsche") || saleCars.Car.CarMark.Contains("Audi") || saleCars.Car.CarMark.Contains("Honda"))
+        //            {
+        //                var diff = saleCars.FullPrice * 10 / 100;
+        //                ViewBag.DiscountPrice = saleCars.FullPrice - diff;
+        //            }
+        //            else
+        //            {
+        //                ViewBag.DiscountPrice = "";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ViewBag.DiscountPrice = "";
+        //        }
+
+        //    }
+
+        //}
 
         #region Круговая диаграмма
         private static Chart GeneratePieChart()
         {
+            List<OrderApi> ordersData = GetOrder().Result;
+            List<CarApi> carsData = GetCars().Result;
+
+            List<double?> datas = ChartsData.GetPieData(ordersData);////////////////////////////////////////
+            List<string?> labels = ChartsData.GetPieDataLabels(ordersData, CarsChart);////////////////////////////////////////
+
             Chart chart = new Chart();
             chart.Type = Enums.ChartType.Pie;
 
             ChartJSCore.Models.Data data = new Data();
-            data.Labels = new List<string>() { "Red", "Blue", "Yellow" };// Названия для легенды
+            data.Labels = labels;// Названия для легенды
 
             PieDataset dataset = new PieDataset()
             {
@@ -324,14 +370,18 @@ namespace MyCar.Web.Controllers
                 BackgroundColor = new List<ChartColor>() {  // цвет при выводе
                         ChartColor.FromHexString("#FF6384"),
                         ChartColor.FromHexString("#36A2EB"),
-                        ChartColor.FromHexString("#FFCE56")
+                        ChartColor.FromHexString("#FFCE56"),
+                        ChartColor.FromHexString("#9966CC"),
+                        ChartColor.FromHexString("#BDECB6"),
                     },
                 HoverBackgroundColor = new List<ChartColor>() { // цвет при наведении
                         ChartColor.FromHexString("#FF6384"),
                         ChartColor.FromHexString("#36A2EB"),
-                        ChartColor.FromHexString("#FFCE56")
+                        ChartColor.FromHexString("#FFCE56"),
+                        ChartColor.FromHexString("#9966CC"),
+                        ChartColor.FromHexString("#BDECB6")
                     },
-                Data = new List<double?>() { 300, 50, 100 }// заполнение данными
+                Data = datas// заполнение данными
             };
 
             data.Datasets = new List<Dataset>();
@@ -666,9 +716,22 @@ namespace MyCar.Web.Controllers
             return chart;
         }
 
+        private static async Task<List<OrderApi>> GetOrder()
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            return Orders;
+        }
+
+        private static async Task<List<CarApi>> GetCars()
+        {
+            CarsChart = await Api.GetListAsync<List<CarApi>>("Car");
+            return CarsChart;
+        }
 
         private static Chart GenerateCustomLineChart()
         {
+            List<double?> datas = ChartsData.GetProfitChartData();// получение прибыли по месяцам в течение года
+
             Chart chart = new Chart();
 
             chart.Type = Enums.ChartType.Line;
@@ -693,7 +756,7 @@ namespace MyCar.Web.Controllers
             yAxis.Display = true;
             yAxis.Title = new Title
             {
-                Text = new List<string> { "Заказы" },
+                Text = new List<string> { "Рубли" },
                 Display = true,
                 Color = ChartColor.FromHexString("#00a550"),
                 Font = new Font()
@@ -710,13 +773,17 @@ namespace MyCar.Web.Controllers
 
             Data data = new Data
             {
-                Labels = new List<string> { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль" }
+                Labels = new List<string> { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" }
             };
+
+            
+            
+            
 
             LineDataset dataset = new LineDataset()
             {
-                Label = "My First dataset",
-                Data = new List<double?> { 65, 59, 80, 81, 56, 55, 40 },
+                Label = "Прибыль по месяцам",
+                Data = datas,
                 //Fill = "true",
                 Tension = .01,
                 BackgroundColor = new List<ChartColor> { ChartColor.FromHexString("#ff2b2b") },
@@ -737,34 +804,34 @@ namespace MyCar.Web.Controllers
                 SpanGaps = false
             };
 
-            LineDataset dataset2 = new LineDataset()
-            {
-                Label = "My First dataset",
-                Data = new List<double?> { 44, 52, 80, 65, 67, 43, 38 },
-                //Fill = "true",
-                Tension = .01,
-                BackgroundColor = new List<ChartColor> { ChartColor.FromHexString("#000080") },
-                BorderColor = new List<ChartColor> { ChartColor.FromHexString("#000080") },
-                BorderCapStyle = "butt",
-                BorderDash = new List<int>(),
-                BorderDashOffset = 0.0,
-                BorderJoinStyle = "miter",
-                PointBorderColor = new List<ChartColor> { ChartColor.FromHexString("#000080") },
-                PointBackgroundColor = new List<ChartColor> { ChartColor.FromHexString("#ffffff") },
-                PointBorderWidth = new List<int> { 1 },
-                PointHoverRadius = new List<int> { 5 },
-                PointHoverBackgroundColor = new List<ChartColor> { ChartColor.FromRgb(75, 192, 192) },
-                PointHoverBorderColor = new List<ChartColor> { ChartColor.FromRgb(220, 220, 220) },
-                PointHoverBorderWidth = new List<int> { 2 },
-                PointRadius = new List<int> { 1 },
-                PointHitRadius = new List<int> { 10 },
-                SpanGaps = false
-            };
+            //LineDataset dataset2 = new LineDataset()
+            //{
+            //    Label = "My First dataset",
+            //    Data = new List<double?> { 44, 52, 80, 65, 67, 43, 38 },
+            //    //Fill = "true",
+            //    Tension = .01,
+            //    BackgroundColor = new List<ChartColor> { ChartColor.FromHexString("#000080") },
+            //    BorderColor = new List<ChartColor> { ChartColor.FromHexString("#000080") },
+            //    BorderCapStyle = "butt",
+            //    BorderDash = new List<int>(),
+            //    BorderDashOffset = 0.0,
+            //    BorderJoinStyle = "miter",
+            //    PointBorderColor = new List<ChartColor> { ChartColor.FromHexString("#000080") },
+            //    PointBackgroundColor = new List<ChartColor> { ChartColor.FromHexString("#ffffff") },
+            //    PointBorderWidth = new List<int> { 1 },
+            //    PointHoverRadius = new List<int> { 5 },
+            //    PointHoverBackgroundColor = new List<ChartColor> { ChartColor.FromRgb(75, 192, 192) },
+            //    PointHoverBorderColor = new List<ChartColor> { ChartColor.FromRgb(220, 220, 220) },
+            //    PointHoverBorderWidth = new List<int> { 2 },
+            //    PointRadius = new List<int> { 1 },
+            //    PointHitRadius = new List<int> { 10 },
+            //    SpanGaps = false
+            //};
 
             data.Datasets = new List<Dataset>
             {
-                dataset,
-                dataset2
+                dataset
+                //dataset2
             };
 
             chart.Data = data;
@@ -800,9 +867,83 @@ namespace MyCar.Web.Controllers
             };
 
             return chart;
+        }
+
+        public async Task<IActionResult> CompareDatas(DateTime dateCompare)
+        {
+
+
+            List<double?> datas = ChartsData.GetProfitCompareMonth(dateCompare);
+
+
+            return View("DashBoardView");
+        }
+
+        private static Chart GenerateCustomVerticalBarChart()
+        {
+            Chart chart = new Chart();
+            chart.Type = Enums.ChartType.Bar;
+
+            List<double?> datas = ChartsData.GetProfitCompareMonth1();//
+
+            chart.Data = new Data()
+            {
+                Datasets = new List<Dataset>()
+                {
+                    {
+                        new VerticalBarDataset()
+                        {
+                            Label = "Текущий месяц",
+                            Data = new List<VerticalBarDataPoint?>()
+                            {
+                                new VerticalBarDataPoint(datas.First().Value, 1)
+                            },
+                            BackgroundColor = new List<ChartColor>
+                            {
+                                ChartColor.FromRgba(255, 99, 132, 0.2)
+                            },
+                            BorderWidth = new List<int>() { 2 },
+                            IndexAxis = "y"
+                        }
+                    },
+                    {
+                        new VerticalBarDataset()
+                        {
+                            Label = "Предыдущий месяц",
+                            Data = new List<VerticalBarDataPoint?>()
+                            {
+                                new VerticalBarDataPoint(datas.Last().Value, 2)
+                            },
+                            BackgroundColor = new List<ChartColor>
+                            {
+                                ChartColor.FromRgba(54, 162, 235, 0.2)
+                            },
+                            BorderWidth = new List<int>() { 2 },
+                            IndexAxis = "y"
+                        }
+                    },
+                    
+                }
+            };
+
+            chart.Options = new Options()
+            {
+                Responsive = true,
+                Plugins = new ChartJSCore.Models.Plugins()
+                {
+                    Legend = new Legend()
+                    {
+                        Position = "right"
+                    },
+                    Title = new Title()
+                    {
+                        Display = true,
+                        Text = new List<string>() { "Сравнение прибыли" }
+                    }
+                }
+            };
 
             return chart;
-            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
         }
 
         public async Task GetOrders()

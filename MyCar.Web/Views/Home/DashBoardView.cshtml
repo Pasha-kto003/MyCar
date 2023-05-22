@@ -1,5 +1,19 @@
-﻿@{
+﻿@using ChartJSCore.Models;
+@{
+    ViewData["Title"] = "Privacy Policy";
+
+    Chart pieChart = (Chart)ViewData["PieChart"];
+    //Chart vertBarChart = (Chart)ViewData["VertBarChart"];
+    //Chart lineChart = (Chart)ViewData["lineChart"];
+    //Chart horBarChart = (Chart)ViewData["horBarChart"];
+    Chart customLineChart = (Chart)ViewData["customLineChart"];
+    Chart customVerticalBarChart = (Chart)ViewData["customVerticalBarChart"];
 }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js" integrity="sha512-klQv6lz2YR+MecyFYMFRuU2eAl8IPRo6zHnsc9n142TJuJHS8CG0ix4Oq9na9ceeg1u5EkBfZsFcV3U7J51iew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 <div class="row mb-4">
     <div class="col-md-6">
@@ -69,6 +83,89 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Топ пять самых продаваемых автомобилей
+                </div>
+                <div class="card-body">
+                    <canvas class="my-4 h-25" id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Сравнения прибыли по месяцам
+                </div>
+                <div class="card-body">
+                    <canvas class="my-4 h-25" id="customVerticalBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        @*<form method="post" asp-action="CompareDatas" asp-controller="Home" >
+        <label for="birthday">Выберите месяц</label>
+        <input type="date" id="dateCompare" name="dateCompare">
+        <input type="submit" action="">
+        </form>*@
+
+        @*<div class="col-sm-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Диаграмма
+                </div>
+                <div class="card-body">
+                    <canvas class="my-4 h-25" id="vertBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Диаграмма для количества
+                </div>
+                <div class="card-body">
+                    <canvas class="my-4 h-25" id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Диаграмма для окупаемости
+                </div>
+                <div class="card-body">
+                    <canvas class="my-4 h-25" id="horBarChart"></canvas>
+                </div>
+            </div>
+        </div>*@
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Диаграмма прибыли за год
+                </div>
+                <div class="card-body">
+                    <canvas class="my-4 h-25" id="customLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 @*<div class="row mb-4">
     <div class="col-md-4">
         <div class="widget chart">
@@ -89,3 +186,15 @@
 
     </div>
 </div>*@
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        @Html.Raw(pieChart.CreateChartCode("pieChart"));
+        @Html.Raw(customLineChart.CreateChartCode("customLineChart"));
+        @Html.Raw(customVerticalBarChart.CreateChartCode("customVerticalBarChart"));
+    </script>
+}
+@*        @Html.Raw(vertBarChart.CreateChartCode("vertBarChart"));
+        @Html.Raw(lineChart.CreateChartCode("lineChart"));
+        @Html.Raw(horBarChart.CreateChartCode("horBarChart"));*@

@@ -109,19 +109,8 @@ namespace MyCar.Web.Controllers
             return View("UserView", users);
         }
 
-        public async Task<IActionResult> ShowPartialView(int id)
-        {
-            var Cars = GetCar().Result;
-            Marks = GetMark().Result;
-            var car = Cars.FirstOrDefault(s => s.ID == id);
-            ViewBag.MarkCars = Marks;
 
-            
-
-            return PartialView("ChooseCarView", car);
-        }
-
-        public async Task<IActionResult> DashBoardView()
+        public async Task<IActionResult> DashBoardView(DateTime dateCompare)
         {
             var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
             var articlesPage = new MvcBreadcrumbNode("DashBoardView", "Home", "Статистика") { Parent = page };
@@ -152,7 +141,7 @@ namespace MyCar.Web.Controllers
             Chart customLineChart = GenerateCustomLineChart();// создание кастомной диаграммы для окупаемости за год
             ViewData["customLineChart"] = customLineChart;
 
-            Chart customVerticalBarChart = GenerateCustomVerticalBarChart();// создание кастомной диаграммы для сравнения за 2 выбранных месяца
+            Chart customVerticalBarChart = GenerateCustomVerticalBarChart(dateCompare);// создание кастомной диаграммы для сравнения за 2 выбранных месяца
             ViewData["customVerticalBarChart"] = customVerticalBarChart;
 
             return View("DashBoardView");
@@ -401,6 +390,7 @@ namespace MyCar.Web.Controllers
             data.Datasets.Add(dataset);                   // добавление данных
 
             chart.Data = data;
+
 
             return chart;
         }
@@ -892,12 +882,12 @@ namespace MyCar.Web.Controllers
             return View("DashBoardView");
         }
 
-        private static Chart GenerateCustomVerticalBarChart()
+        private static Chart GenerateCustomVerticalBarChart(DateTime date)
         {
             Chart chart = new Chart();
             chart.Type = Enums.ChartType.Bar;
 
-            List<double?> datas = ChartsData.GetProfitCompareMonth1();//
+            List<double?> datas = ChartsData.GetProfitCompareMonth(date);//
 
             chart.Data = new Data()
             {

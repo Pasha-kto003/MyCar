@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-        <div class="col-md-6">
+    <div class="col-md-6">
         <div class="d-flex  widget summary balance">
             <div class="d-flex flex-column justify-content-center p-5">
             </div>
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-        <div class="col-md-6">
+    <div class="col-md-6">
         <div class="d-flex  widget summary balance">
             <div class="d-flex flex-column justify-content-center p-5">
             </div>
@@ -84,10 +84,10 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-4">
-            <div class="card mb-4">
+<div class="container ">
+    <div class="row ">
+        <div class="col-8  ">@*align-items-center centered*@
+            <div class="card mb-4 ">
                 <div class="card-header">
                     Топ пять самых продаваемых автомобилей
                 </div>
@@ -97,57 +97,67 @@
             </div>
         </div>
 
-        <div class="col-8">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Сравнения прибыли по месяцам
-                </div>
-                <div class="card-body">
-                    <canvas class="my-4 h-25" id="customVerticalBarChart"></canvas>
-                </div>
-            </div>
-        </div>
 
-        @*<form method="post" asp-action="CompareDatas" asp-controller="Home" >
-        <label for="birthday">Выберите месяц</label>
-        <input type="date" id="dateCompare" name="dateCompare">
-        <input type="submit" action="">
-        </form>*@
 
         @*<div class="col-sm-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Диаграмма
-                </div>
-                <div class="card-body">
-                    <canvas class="my-4 h-25" id="vertBarChart"></canvas>
-                </div>
-            </div>
+        <div class="card mb-4">
+        <div class="card-header">
+        Диаграмма
+        </div>
+        <div class="card-body">
+        <canvas class="my-4 h-25" id="vertBarChart"></canvas>
+        </div>
+        </div>
         </div>
 
         <div class="col-sm-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Диаграмма для количества
-                </div>
-                <div class="card-body">
-                    <canvas class="my-4 h-25" id="lineChart"></canvas>
-                </div>
-            </div>
+        <div class="card mb-4">
+        <div class="card-header">
+        Диаграмма для количества
+        </div>
+        <div class="card-body">
+        <canvas class="my-4 h-25" id="lineChart"></canvas>
+        </div>
+        </div>
         </div>
 
         <div class="col-sm-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Диаграмма для окупаемости
-                </div>
-                <div class="card-body">
-                    <canvas class="my-4 h-25" id="horBarChart"></canvas>
-                </div>
-            </div>
+        <div class="card mb-4">
+        <div class="card-header">
+        Диаграмма для окупаемости
+        </div>
+        <div class="card-body">
+        <canvas class="my-4 h-25" id="horBarChart"></canvas>
+        </div>
+        </div>
         </div>*@
 
 
+
+    </div>
+
+    <div class="row">
+
+        <div class="text-center">
+            <div class="m-4">
+                <form method="post" asp-action="DashBoardView" asp-controller="Home">
+                    <label class="text-white m-1">Выберите месяц </label>
+                    <input type="date" name="dateCompare">
+                    <input class="btn btn-success m-1" value="Сравнить" type="submit">
+                </form>
+            </div>
+
+            <div class="col">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Сравнения прибыли по месяцам
+                    </div>
+                    <div class="card-body">
+                        <canvas class="my-4 h-25" id="customVerticalBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -174,7 +184,7 @@
             </div>
             <ejs-accumulationchart background="#1a222b" id="doughnutchart">
                 <e-accumulation-series-collection>
-                    <e-accumulation-series dataSource="@ViewBag.DoughnutChartData" xName="categoryTitleWithIcon" yName="amount" 
+                    <e-accumulation-series dataSource="@ViewBag.DoughnutChartData" xName="categoryTitleWithIcon" yName="amount"
                     innerRadius="60">
                         <e-accumulationseries-datalabel name="formattedAmount" visible></e-accumulationseries-datalabel>
                     </e-accumulation-series>
@@ -195,6 +205,6 @@
         @Html.Raw(customVerticalBarChart.CreateChartCode("customVerticalBarChart"));
     </script>
 }
-@*        @Html.Raw(vertBarChart.CreateChartCode("vertBarChart"));
+    @*        @Html.Raw(vertBarChart.CreateChartCode("vertBarChart"));
         @Html.Raw(lineChart.CreateChartCode("lineChart"));
         @Html.Raw(horBarChart.CreateChartCode("horBarChart"));*@

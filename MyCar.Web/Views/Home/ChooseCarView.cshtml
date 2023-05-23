@@ -1,15 +1,10 @@
-﻿@model IEnumerable<ModelsApi.SaleCarApi>
-@using ModelsApi
+﻿@using ModelsApi
 @using MyCar.Web.Core
 @model ModelsApi.CarApi
 @{
-    ViewData["Title"] = "Каталог";
-}
-
-@{
     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
     var saleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-    var sale = saleCars.Where(s=> s.CarId == @Model.ID ).DistinctBy(s=> s.EquipmentId).ToList();
+    var sale = saleCars.Where(s => s.CarId == @Model.ID).DistinctBy(s => s.EquipmentId).ToList();
 }
 <div class="container-fluid w-100" style="background-color: #171717;">
     <div class="row row-cols-1 w-100">
@@ -17,17 +12,11 @@
             <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
                 <h1>Комплектации @Model.CarName</h1>
             </div>
-    <section class="main-content">
-        <div class="container">
-            <div class="row justify-content-center text-center">
-                <div class="col-md-8 col-lg-6">
-                    <div class="header mb-5 mt-5">
-                        <h2 class="text-white">Каталог авто</h2>
         </div>
     </div>
     <div class="row w-100">
         <div class="tabs" style="width: 100%;">
-            @foreach(var cars in sale)
+            @foreach (var cars in sale)
             {
                 <div class="tab">
                     <div class="tab-toggle">
@@ -47,42 +36,33 @@
                             </p>
                             @{
                                 ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
-                                if(ViewBag.DiscountCarStylePrice == 0)
+                                if (ViewBag.DiscountCarStylePrice == 0)
                                 {
                                     ViewBag.DiscountCarStylePrice = null;
                                 }
-                                        <div class="product-price">
-                                        @if(ViewBag.DiscountCarStylePrice != null)
-                                {
-                                            <h3 class="text-white">
-                                                <s class="text-white">
-                                                    @cars.FullPrice &#8381
-                                                </s>
-                                            </h3>
-                                }
-                                else
-                                {
-                                            <h2 class="text-white">
+                                <div class="product-price">
+                                    @if (ViewBag.DiscountCarStylePrice != null)
+                                    {
+                                        <h3 class="text-white">
+                                            <s class="text-white">
                                                 @cars.FullPrice &#8381
-                                            </h2>
-                                }
-                                            <h4 class="text-white">
-                                                @ViewBag.DiscountCarStylePrice &#8381
-                                            </h4>
-                                        </div>
-                            }
-
-                                        }
-                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@i.ID" class="btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-left:4px; margin-right:8px; flex-direction: row-reverse;" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                                            </svg>
-                                        </a>
-                                    </div>
+                                            </s>
+                                        </h3>
+                                    }
+                                    else
+                                    {
+                                        <h2 class="text-white">
+                                            @cars.FullPrice &#8381
+                                        </h2>
+                                    }
+                                    <h4 class="text-white">
+                                        @ViewBag.DiscountCarStylePrice &#8381
+                                    </h4>
                                 </div>
+                            }
                         </div>
                         <div class="col-9 justify-content-center">
-                            <img src="~/CarImages/@cars.MainPhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            <img src="~/CarImages/@cars.MainPhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; " />
                         </div>
                     </div>
                     <div class="row w-100">
@@ -101,20 +81,12 @@
                             <h3>ЛУЧШИЙ В КЛАССЕ V8</h3>
                             <p style="font-size: 14px;">@cars.Description</p>
                         </div>
-            <div class="row" id="myDIV">
-                @foreach (var i in Model)
-                {
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="MySingle-product mt-3 mb-3">
-
-                            <div class="product-Photo">
-                                <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@i.ID"><img src="~/CarImages/@i.Car.PhotoCar" /></a>
                     </div>
                     <div class="row w-50">
                         <div class="col-5">
                             @{
-                                var ware = warehousesCard.Where(s => s.SaleCarId == @cars.ID).ToList().Sum(s=> s.CountChange);
-                                if(ware.Value <= 0)
+                                var ware = warehousesCard.Where(s => s.SaleCarId == @cars.ID).ToList().Sum(s => s.CountChange);
+                                if (ware.Value <= 0)
                                 {
                                     <div class="glass-btn glass-btn-gray" style="align-items:center; justify-content:center;">
                                         <a href="#" class="stretched-link" style="color: black;">Отсутствует</a>
@@ -126,55 +98,11 @@
                                         <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@cars.ID" class="stretched-link" style="color: black;">Посмотреть</a>
                                     </div>
                                 }
-
-                            }                            
-
-
-                                    @*<div class="product-links">
-                                <a href="#"><i class="fas fa-heart"></i></a>
-                                <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                </div>*@
-
-                                </div>
-                            </div>
-
-                            @*<div class="part-1">
-                        <ul>
-                        <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                        <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                        <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                        </ul>
+                            }
                         </div>
-
-                        <div class="part-2">
-                        <h3 class="product-title">@i.CarName</h3>
-                        <h3 class="product-title">@i.CarPrice</h3>
-                        </div>*@
-
                     </div>
                 </div>
             }
         </div>
-
     </div>
-    </section>
-
 </div>
-
-@*@section Scripts{
-    <script type="text/javascript">
-        function openSuccessModal(strMessage){
-            var myDiv = document.getElementById("MyModalSuccessAlertBody");
-            myDiv.innerHTML = strMessage;
-            $('#myModalSuccess').modal('show');
-        }
-
-        $(document).ready(function() {
-            var msg = "@TempData["SuccessMessage"]";
-            if (msg)
-                openSuccessModal(msg);
-
-        })
-    </script>
-}*@

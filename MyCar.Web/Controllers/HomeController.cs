@@ -18,13 +18,14 @@ namespace MyCar.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public List<SaleCarApi> Cars { get; set; }
+        public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
         public List<SaleCarApi> FullCars { get; set; }
         public List<MarkCarApi> Marks { get; set; }
 
         public List<CarApi> NewCars { get; set; } = new List<CarApi>();
         public List<CarApi> NewFullCars { get; set; } = new List<CarApi>();
 
+        public List<DiscountApi> Discounts { get; set; } = new List<DiscountApi>();
 
         public List<ActionTypeApi> Types { get; set; }
         public List<StatusApi> Statuses { get; set; }
@@ -198,7 +199,61 @@ namespace MyCar.Web.Controllers
 
         [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
-        public async Task<IActionResult> SearchCar(string SearchString, string FilterString, string SortString)
+        public async Task<IActionResult> DiscountCarView()
+        {
+            DateTime dateTime = DateTime.Now;
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("DiscountCarView", "Home", "Список скидочных авто") { Parent = page };
+            ViewData["BreadcrumbNode"] = articlesPage;
+            await GetWare();
+            NewCars = GetCar().Result;
+            Marks = GetMark().Result;
+            ViewBag.MarkCars = Marks;
+
+            var discounts = GetDiscount().Result.Where(s => s.SaleCarId != 0 && s.EndDate >= dateTime && s.StartDate <= dateTime).Select(s=> s.SaleCar.Car).ToList();
+            if (discounts.Any())
+            {
+                ViewBag.CatalogCar = "Список скидочных авто";
+                return View("CarView", discounts);
+            }
+            ViewBag.CatalogCar = "Каталог авто";
+            return View("DiscountCarView", NewCars);
+        }
+
+        public async Task<IActionResult> Sort(string SortString, string Filterstring, string searchText)
+        {
+            List<CarApi> cars;
+            List<MarkCarApi> markCars;
+            cars = GetCar().Result;
+            markCars = GetMark().Result;
+            ViewBag.MarkCars = markCars;
+            string filter = "Все";
+            if (SortString == "По умолчанию")
+            {
+                cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
+            }
+            else if (SortString == "По возрастанию")
+            {
+                cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
+                cars.Sort((x, y) => x.CarPrice.Value.CompareTo(y.CarPrice));
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
+            }
+            else if (SortString == "По убыванию")
+            {
+                cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
+                cars.Sort((x, y) => y.CarPrice.Value.CompareTo(x.CarPrice));
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
+
+            }
+
+            return View("CarView", NewFullCars);
+        }
+
+        public async Task<IActionResult> SearchCar(string Filterstring, string SearchString, string controller, string FilterController, string SortString)
         {
             List<CarApi> cars;
             List<MarkCarApi> markCars;
@@ -207,26 +262,55 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            if (SortString == "По умолчанию")
+            string searchText = SearchString.ToLower() ?? "";
+            if (searchText != "" && Filterstring != "Тип поиска" && SortString != "" && SortString != null)
+            {
+                cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString, Filterstring, searchText);
+                return View("CarView", NewFullCars);
+            }
+            if (searchText == "" || Filterstring == "Тип поиска" || FilterController == "Все" || SortString != "" || SortString != null)
             {
                 NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString, Filterstring, searchText);
+                return View("CarView", NewFullCars);
             }
-            else if (SortString == "По возрастанию")
+            else
             {
-                cars.Sort((x, y) => x.CarPrice.Value.CompareTo(y.CarPrice));
-                NewFullCars = cars.DistinctBy(s=> s.CarName).ToList();
-            }
-            else if (SortString == "По убыванию")
-            {
-                cars.Sort((x, y) => y.CarPrice.Value.CompareTo(x.CarPrice));
                 NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
             }
-            if(SearchString != null || FilterString != "Тип поиска" || filter != "Все")
+        }
+
+        public async Task<IActionResult> SearchDiscountCar(string Filterstring, string SearchString, string controller, string FilterController, string SortString)
+        {
+            List<CarApi> cars;
+            List<MarkCarApi> markCars;
+            cars = GetCar().Result;
+            markCars = GetMark().Result;
+            ViewBag.MarkCars = markCars;
+            string type = "Авто";
+            string filter = "Все";
+            string searchText = SearchString.ToLower() ?? "";
+            if (searchText != "" && Filterstring != "Тип поиска" && SortString != "" && SortString != null)
             {
-                cars = await Api.SearchFilterAsync<List<CarApi>>(FilterString, SearchString, "Car", filter);
+                cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
                 NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString, Filterstring, searchText);
+                return View("DiscountCarView", NewFullCars);
             }
-            return View("CarView", NewFullCars);
+            if (searchText == "" || Filterstring == "Тип поиска" || FilterController == "Все" || SortString != "" || SortString != null)
+            {
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString, Filterstring, searchText);
+                return View("DiscountCarView", NewFullCars);
+            }
+            else
+            {
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("DiscountCarView", NewFullCars);
+            }
         }
 
         [HttpGet]
@@ -255,6 +339,12 @@ namespace MyCar.Web.Controllers
             return NewCars;
         }
 
+        private async Task<List<SaleCarApi>> GetSale()
+        {
+            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            return Cars;
+        }
+
         private async Task<List<MarkCarApi>> GetMark()
         {
             Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
@@ -264,6 +354,12 @@ namespace MyCar.Web.Controllers
         private async Task GetWare()
         {
             Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+        }
+
+        public async Task<List<DiscountApi>> GetDiscount()
+        {
+            Discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
+            return Discounts;
         }
 
         public async Task GetOrders()

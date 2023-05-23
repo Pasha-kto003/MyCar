@@ -27,9 +27,9 @@
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                     if(ware.Value <= 0)
                     {
-                                <h3 class="text-white text-center" style="text-align: center;">
-                                    Отсутствует в продаже
-                                </h3>
+                                        <h3 class="text-white text-center" style="text-align: center;">
+                                            Отсутствует в продаже
+                                        </h3>
                     }
                     else
                     {
@@ -37,25 +37,25 @@
                         {
                             ViewBag.DiscountPrice = null;
                         }
-                                <div class="product-price">
-                                @if(ViewBag.DiscountPrice != null)
+                                        <div class="product-price">
+                                        @if(ViewBag.DiscountPrice != null)
                         {
-                                    <h2 class="text-white" style="text-align: center;">
-                                        <s class="text-white">
-                                            @Model.FullPrice &#8381
-                                        </s>
-                                    </h2>
+                                            <h2 class="text-white" style="text-align: center;">
+                                                <s class="text-white">
+                                                    @Model.FullPrice &#8381
+                                                </s>
+                                            </h2>
                         }
                         else
                         {
-                                    <h2 class="text-white" style="text-align: center;">
-                                        @Model.FullPrice &#8381
-                                    </h2>
+                                            <h2 class="text-white" style="text-align: center;">
+                                                @Model.FullPrice &#8381
+                                            </h2>
                         }
-                                    <h4 class="text-white" style="text-align: center;">
-                                        @ViewBag.DiscountPrice &#8381
-                                    </h4>
-                                </div>
+                                            <h4 class="text-white" style="text-align: center;">
+                                                @ViewBag.DiscountPrice &#8381
+                                            </h4>
+                                        </div>
                     }
                     
                 }
@@ -92,7 +92,7 @@
                                     <div class="col">
                                         <form asp-action="UpdateCountCar" asp-route-id="@Model.ID" asp-controller="Cart" method="post">
                                             <p class="text-danger">@ViewBag.ErrorMes</p>
-                                            <input type="number" min="0" step="1" onkeydown="return false" max="@Model.Count" name="CountChange" width="200px;"/>
+                                            <input type="number" min="0" step="1" onkeydown="return false" max="@Model.Count" name="CountChange" style="width: 200px; text-align: center;" width="200"/>
                                             <div class="row-cols-2 w-100" style="display: flex;">
                                                 <div class="col-6">
                                                     <div class="glass-btn glass-btn-red">
@@ -350,25 +350,25 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 {
                                     ViewBag.DiscountCarStylePrice = null;
                                 }
-                                        <div class="product-price">
-                                        @if(ViewBag.DiscountCarStylePrice != null)
+                                                <div class="product-price">
+                                                @if(ViewBag.DiscountCarStylePrice != null)
                                 {
-                                            <h3 class="text-white">
-                                                <s class="text-white">
-                                                    @cars.FullPrice &#8381
-                                                </s>
-                                            </h3>
+                                                    <h3 class="text-white">
+                                                        <s class="text-white">
+                                                            @cars.FullPrice &#8381
+                                                        </s>
+                                                    </h3>
                                 }
                                 else
                                 {
-                                            <h2 class="text-white">
-                                                @cars.FullPrice &#8381
-                                            </h2>
+                                                    <h2 class="text-white">
+                                                        @cars.FullPrice &#8381
+                                                    </h2>
                                 }
-                                            <h4 class="text-white">
-                                                @ViewBag.DiscountCarStylePrice &#8381
-                                            </h4>
-                                        </div>
+                                                    <h4 class="text-white">
+                                                        @ViewBag.DiscountCarStylePrice &#8381
+                                                    </h4>
+                                                </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">
@@ -428,25 +428,25 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 {
                                     ViewBag.DiscountPrice = null;
                                 }
-                                        <div class="product-price">
-                                        @if(ViewBag.DiscountPrice != null)
+                                                <div class="product-price">
+                                                @if(ViewBag.DiscountPrice != null)
                                 {
-                                            <h5 class="text-white">
-                                                <s class="text-white">
-                                                    @cars.FullPrice &#8381
-                                                </s>
-                                            </h5>
+                                                    <h5 class="text-white">
+                                                        <s class="text-white">
+                                                            @cars.FullPrice &#8381
+                                                        </s>
+                                                    </h5>
                                 }
                                 else
                                 {
-                                            <h2 class="text-white">
-                                                @cars.FullPrice &#8381
-                                            </h2>
+                                                    <h2 class="text-white">
+                                                        @cars.FullPrice &#8381
+                                                    </h2>
                                 }
-                                            <h5 class="text-white">
-                                                @ViewBag.DiscountPrice &#8381
-                                            </h5>
-                                        </div>
+                                                    <h5 class="text-white">
+                                                        @ViewBag.DiscountPrice &#8381
+                                                    </h5>
+                                                </div>
                             }
                         </div>
                     </div>

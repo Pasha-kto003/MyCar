@@ -469,6 +469,7 @@ namespace MyCar.Web.Controllers
             var carSearch = orderItemsOld.FirstOrDefault(s => s.SaleCarId == id);
             if(carSearch != null)
             {
+                TempData["SaleExistErrorMessage"] = $"Машина: {carSearch.SaleCar.FullName} уже есть в вашей корзине";
                 return View("DetailsCarView", car.ID);
             }
 

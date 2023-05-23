@@ -40,25 +40,25 @@
                                 {
                                     ViewBag.DiscountCarStylePrice = null;
                                 }
-                                        <div class="product-price">
-                                        @if(ViewBag.DiscountCarStylePrice != null)
+                                <div class="product-price">
+                                @if(ViewBag.DiscountCarStylePrice != null)
                                 {
-                                            <h3 class="text-white">
-                                                <s class="text-white">
-                                                    @cars.FullPrice &#8381
-                                                </s>
-                                            </h3>
+                                    <h3 class="text-white">
+                                        <s class="text-white">
+                                            @cars.FullPrice &#8381
+                                        </s>
+                                    </h3>
                                 }
                                 else
                                 {
-                                            <h2 class="text-white">
-                                                @cars.FullPrice &#8381
-                                            </h2>
+                                    <h2 class="text-white">
+                                        @cars.FullPrice &#8381
+                                    </h2>
                                 }
-                                            <h4 class="text-white">
-                                                @ViewBag.DiscountCarStylePrice &#8381
-                                            </h4>
-                                        </div>
+                                    <h4 class="text-white">
+                                        @ViewBag.DiscountCarStylePrice &#8381
+                                    </h4>
+                                </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">

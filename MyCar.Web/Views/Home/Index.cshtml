@@ -9,9 +9,7 @@
     var dateNow = DateTime.Now;
     var users = await Api.GetListAsync<List<UserApi>>("User");
     var validateWarehouse = orders.Where(s=> s.Status.StatusName != "Отменен"
-            && s.ActionType.ActionTypeName == "Продажа"
-            && s.DateOfOrder?.Year == dateNow.Year
-            && s.DateOfOrder?.Month == dateNow.Month).SelectMany(e=> e.WareHouses).ToList();
+            && s.ActionType.ActionTypeName == "Продажа").SelectMany(e=> e.WareHouses).ToList();
             var saleCount = validateWarehouse.GroupBy(car => car.SaleCarId)
             .Select(gr => new
             {
@@ -105,37 +103,13 @@
             <p class="text-white text-center">Количество продаж авто на сайте</p>
         </div>
         <div class="col-4 align-items-center justify-content-center">
-            <h2 class="text-white text-center" style="font-size: 56px;" id="value1">@sumOrd</h2>
+            <h2 class="text-white text-center" style="font-size: 56px;" id="value1">@validateWarehouse.Sum(s=> s.Price)</h2>
             <p class="text-white text-center">Сумма всех продаж</p>
         </div>
         <div class="col-4 align-items-center justify-content-center">
             <h2 class="text-white text-center" style="font-size: 56px;" id="value3">@users.Where(s=> s.UserType.TypeName == "Клиент").Count()</h2>
             <p class="text-white text-center">Количество покупателей</p>
         </div>
-       @* <script>
-            @{
-                var count = users.Where(s=> s.UserType.TypeName == "Клиент");
-            }
-            function animateValue(obj, start, end, duration) {
-                let startTimestamp = null;
-                const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerHTML = Math.floor(progress * (end - start) + start);
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-                };
-                window.requestAnimationFrame(step);
-            }
-
-            const obj = document.getElementById("value");
-            const obj1 = document.getElementById("value1");
-            const obj2 = document.getElementById("value3");
-            animateValue(obj, 0, 150, 5000);
-            animateValue(obj1, 0, 400 000 000, 5000);
-            animateValue(obj2, 0, 29, 5000);
-        </script>*@
     </section>
 
     <div class="row p-3 mt-5 mb-5">
@@ -148,9 +122,9 @@
         <div class="myContainer w-100">
             <img src="/image/landingText.jpg" style="width: 100%;"/>
             <div class="textCenterLeft">
-                <h2>Новое гоночное авто ежедненвно</h2>
+                <h2>Постоянные скидки на авто</h2>
                 <div class="glass-btn glass-btn-red">
-                    <a href="#" style="color: black">Перейти в катлог</a>
+                    <a asp-action="DiscountCarView" asp-controller="Home" style="color: black">Посмотреть</a>
                 </div>
             </div>
             
@@ -205,7 +179,7 @@
     </div>
     <section class="row w-100 text-center">
         <h2 style="color:white;">
-            Рекомендованные авто
+            Топ 3 продоваемых авто на сайте
         </h2>
     </section>
     <div class="row w-100">
@@ -265,10 +239,10 @@
                                     <div class="m-3 d-flex justify-content-center">
                                         <div class="text-center">
                                             <div class="mark-Photo scalePh">
-                                                <a id="#sectionCar" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                                <a id="#sectionCar" asp-action="DetailsCar" asp-controller="Home" asp-fragment="sectioncar" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
                                                 
                                             </div>
-                                            <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
+                                            <a style="text-decoration:none;" asp-action="DetailsCar" asp-fragment="sectioncar" asp-controller="Home" asp-route-id="@car.ID">
                                                 <div class="text-white">@car.Car.Model.ModelName</div>
                                             </a>
                                         </div>
@@ -331,7 +305,7 @@
             </div>
         </div>
     </section>
-    <section action="" class="row mt-5 w-100 align-items-center text-center align-content-center align-items-center justify-content-center" style="height: 455px;">
+    <section action="" id="#sectioncar" class="row mt-5 w-100 align-items-center text-center align-content-center align-items-center justify-content-center" style="height: 455px;">
         <div class="row" style="height: 455px;">
 
             @*Экран главной страницы растягивался из за style="width: 100%; у картинки ниже*@
@@ -506,7 +480,7 @@
         </div>
     </div>
 }
-@if (User.IsInRole("Клиент") && TempData["AllertMessage"] != null)
+@if (User.IsInRole("Клиент") && TempData["ClientMessage"] != null)
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">Привет, @User.Identity.Name</div>

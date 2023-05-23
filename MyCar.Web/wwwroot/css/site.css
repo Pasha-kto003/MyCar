@@ -1736,6 +1736,11 @@ body {
     padding-top: 20px;
 }
 
+.product-addons-Details-default {
+    overflow: hidden;
+    padding-top: 20px;
+}
+
 .product-price {
     font-weight: 300;
     font-size: 0.8rem;
@@ -2612,3 +2617,4 @@ form i {
     font-weight: bold;
     color: #fff;
 }
+

@@ -185,6 +185,13 @@ namespace MyCar.Web.Controllers
 
                         return RedirectToAction("Index", "Home");
                     }
+                    if (Userex.UserType.TypeName == "Клиент")
+                    {
+                        TempData["ClientMessage"] = "You log in as client!!!";
+
+                        return RedirectToAction("Index", "Home");
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -231,6 +238,13 @@ namespace MyCar.Web.Controllers
                 if (Userex.UserType.TypeName == "Администратор")
                 {
                     TempData["AllertMessage"] = "You log in as admin!!!";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (Userex.UserType.TypeName == "Клиент")
+                {
+                    TempData["ClientMessage"] = "You log in as client!!!";
 
                     return RedirectToAction("Index", "Home");
                 }

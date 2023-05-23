@@ -68,6 +68,7 @@ namespace MyCar.Server.DataModels
                 result.Count += ware.CountChange;
             }
             result.Car = GetCar(car, dbContext);
+
             return result;
         }
 

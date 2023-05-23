@@ -895,3 +895,69 @@ EmailSender emailSender = new EmailSender();
             </a>
         }
     </div>
+
+        @*<div class="row w-100 text-center" style="background-color: #171717">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Гибридные автомобили</button>
+                
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent" style="background-color: #171717">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
+                <div class="container mt-5" style="background-color: #171717">
+                    <div class="row w-100">
+                        @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Гибрид")))
+                        {
+                            <div class="card col-5 m-5" style="background-color:transparent;">
+                                <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px;"/>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarName
+                                    </h3>
+                                </div>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarPrice
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="glass-btn glass-btn-red" style="justify-content:center;">
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@car.ID" class="stretched-link" style="color: white;">Посмотерть</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="container-fluid mt-5" style="background-color: #171717">
+                    <div class="row w-100">
+                        @foreach(var car in Model.Where(s=> s.BodyType.TypeName.Contains("Электрокар полный")))
+                        {
+                            <div class="card col-5 m-5" style="background-color:transparent; align-items:center; justify-content:center; text-align:center;">
+                                <img src="~/CarImages/@car.PhotoCar" class="card-img-top" alt="..." style="height: 340px; width: 500px; justify-content: center;"/>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarName
+                                    </h3>
+                                </div>
+                                <div class="card-title" style="color: white;">
+                                    <h3>
+                                        @car.CarPrice
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="glass-btn glass-btn-red" style="justify-content:center;">
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-ID="@car.ID" class="stretched-link" style="color: white;">Посмотерть</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+    </div>*@

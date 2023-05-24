@@ -130,42 +130,20 @@
           </ul>
 
             <form class="col-12 col-lg-auto">
-                <breadcrumb>
+                <breadcrumb class="breadcrumb-1">
+
                 </breadcrumb>
             </form>
       </div>
     </div>
   </header>
         <main role="main" class="pb-3 w-100">
-            @*<div id="myModalSuccess" class="modal fade w-100" style="height: 500px;" role="dialog">
-                <div class="modal-dialog" id="myModalSuccess">
-                    <div class="modal-content" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;">
-                        <div class="modal-header">
-                            <h2>Завершение заказа</h2>
-                             <span class="closebtn" data-bs-dismiss="modal">&times;</span>
-                        </div>
-                        <div id="MyModalSuccessAlertBody" class="modal-body alert alert-success" style="background-color: #171717;">
-                            Ваш заказ успешно завершен
-                        </div>
-                        <div class="modal-footer">
-                            &nbsp;
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-            @*<div id="myModalSuccess" class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
-                <div class="callout-header">Привет, @User.Identity.Name</div>
-                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                <div id="MyModalSuccessAlertBody" class="callout-container">
-                    <p class="text-white">Вы вошли как администратор</p>
-                </div>
-            </div>*@
             @RenderBody()
         </main>
-
-
     <footer class="border-top footer text-muted">
-        
+        <div class="container">
+            &copy; 2022 - MyCar.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
     </footer>
     <script src="~/js/wow.min.js"></script>
               <script>

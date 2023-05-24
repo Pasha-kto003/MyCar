@@ -38,11 +38,18 @@ namespace MyCar.Web.Controllers
             _logger = logger;
         }
 
+        [Route("Home/ShowPartialView/id/{id?}")]
+        [Breadcrumb("ShowPartialView", FromController = typeof(HomeController), FromAction = "CarView")]
         public async Task<IActionResult> ShowPartialView(int id)
         {
             NewCars = GetCar().Result;
             Marks = GetMark().Result;
             var car = NewCars.FirstOrDefault(s=> s.ID == id);
+            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+            var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
+            var articlePage = new MvcBreadcrumbNode("ShowPartialView", "Home", $"Комплектации / {car.CarName}") { Parent = articlesPage };
+            RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.CarName}");
+            ViewData["BreadcrumbNode"] = articlePage;
             ViewBag.MarkCars = Marks;
             return View("ChooseCarView", car);
         }
@@ -253,27 +260,34 @@ namespace MyCar.Web.Controllers
             return View("CarView", NewFullCars);
         }
 
-        public async Task<IActionResult> SearchCar(string Filterstring, string SearchString, string controller, string FilterController, string SortString)
+        public async Task<IActionResult> SearchCar(string? Filterstring, string? SearchString, string? SearchPrice, string? SortString)
         {
             List<CarApi> cars;
             List<MarkCarApi> markCars;
             cars = GetCar().Result;
             markCars = GetMark().Result;
             ViewBag.MarkCars = markCars;
-            string type = "Авто";
-            string filter = "Все";
-            string searchText = SearchString.ToLower() ?? "";
+            string? type = "Авто";
+            string? filter = "Все";
+            string? searchText = SearchString?.ToLower() ?? "";
+            decimal? price = decimal.Parse(SearchPrice);
             if (searchText != "" && Filterstring != "Тип поиска" && SortString != "" && SortString != null)
             {
                 cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
-                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                NewFullCars = cars.Where(s => s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString, Filterstring, searchText);
+                TempData["SearchMessage"] = $"По вашему запросу найдено {NewFullCars.Count} авто";
+                return View("CarView", NewFullCars);
+            }
+            if (searchText == "" || Filterstring == "Тип поиска" || SearchPrice != "" || filter == "Все" || SortString != "" || SortString != null)
+            {
+                NewFullCars = cars.Where(s=> s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
                 await Sort(SortString, Filterstring, searchText);
                 return View("CarView", NewFullCars);
             }
-            if (searchText == "" || Filterstring == "Тип поиска" || FilterController == "Все" || SortString != "" || SortString != null)
+            if(SearchPrice != "")
             {
-                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
-                await Sort(SortString, Filterstring, searchText);
+                NewFullCars = cars.Where(s => s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
                 return View("CarView", NewFullCars);
             }
             else
@@ -283,7 +297,7 @@ namespace MyCar.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> SearchDiscountCar(string Filterstring, string SearchString, string controller, string FilterController, string SortString)
+        public async Task<IActionResult> SearchDiscountCar(string? Filterstring, string? SearchString, string? SearchPrice, string? SortString)
         {
             List<CarApi> cars;
             List<MarkCarApi> markCars;
@@ -292,18 +306,25 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            string searchText = SearchString.ToLower() ?? "";
+            string? searchText = SearchString?.ToLower() ?? "";
+            decimal? price = decimal.Parse(SearchPrice);
             if (searchText != "" && Filterstring != "Тип поиска" && SortString != "" && SortString != null)
             {
                 cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
-                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                NewFullCars = cars.Where(s => s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString, Filterstring, searchText);
+                TempData["SearchMessage"] = $"По вашему запросу найдено {NewFullCars.Count} авто";
+                return View("DiscountCarView", NewFullCars);
+            }
+            if (searchText == "" || Filterstring == "Тип поиска" || filter == "Все" || SortString != "" || SortString != null)
+            {
+                NewFullCars = cars.Where(s => s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
                 await Sort(SortString, Filterstring, searchText);
                 return View("DiscountCarView", NewFullCars);
             }
-            if (searchText == "" || Filterstring == "Тип поиска" || FilterController == "Все" || SortString != "" || SortString != null)
+            if (SearchPrice != "")
             {
-                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
-                await Sort(SortString, Filterstring, searchText);
+                NewFullCars = cars.Where(s => s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
                 return View("DiscountCarView", NewFullCars);
             }
             else

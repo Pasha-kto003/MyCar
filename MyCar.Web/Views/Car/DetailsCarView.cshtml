@@ -27,9 +27,9 @@
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                     if(ware.Value <= 0)
                     {
-                                        <h3 class="text-white text-center" style="text-align: center;">
-                                            Отсутствует в продаже
-                                        </h3>
+                        <h3 class="text-white text-center" style="text-align: center;">
+                            Отсутствует в продаже
+                        </h3>
                     }
                     else
                     {
@@ -37,25 +37,25 @@
                         {
                             ViewBag.DiscountPrice = null;
                         }
-                                        <div class="product-price">
-                                        @if(ViewBag.DiscountPrice != null)
+                        <div class="product-price">
+                        @if(ViewBag.DiscountPrice != null)
                         {
-                                            <h2 class="text-white" style="text-align: center;">
-                                                <s class="text-white">
-                                                    @Model.FullPrice &#8381
-                                                </s>
-                                            </h2>
+                            <h2 class="text-white" style="text-align: center;">
+                                <s class="text-white">
+                                    @Model.FullPrice &#8381
+                                </s>
+                            </h2>
                         }
                         else
                         {
-                                            <h2 class="text-white" style="text-align: center;">
-                                                @Model.FullPrice &#8381
-                                            </h2>
+                            <h2 class="text-white" style="text-align: center;">
+                                @Model.FullPrice &#8381
+                            </h2>
                         }
-                                            <h4 class="text-white" style="text-align: center;">
-                                                @ViewBag.DiscountPrice &#8381
-                                            </h4>
-                                        </div>
+                            <h4 class="text-white" style="text-align: center;">
+                                @ViewBag.DiscountPrice &#8381
+                            </h4>
+                        </div>
                     }
                     
                 }
@@ -131,7 +131,6 @@
             <div class="col-8 align-items-center justify-content-center">
                 <div class="container align-items-center justify-content-center w-100 text-center">
                     @*<img src="~/CarImages/@Model.Car.PhotoCar" width="755" height="450" class="w-50 justify-content-center"/>*@
-                
                     <div class="carousel-3d">
                         <figure>
                             @*<div><a href="#any"><img src="~/CarImages/@Model.Car.PhotoCar" alt="" /></a></div>*@

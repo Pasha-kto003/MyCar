@@ -961,3 +961,44 @@ EmailSender emailSender = new EmailSender();
             </div>
         </div>
     </div>*@
+
+@*@{
+var ware = warehousesCard.Where(s => s.SaleCarId == i.ID).ToList().Sum(s=> s.CountChange);
+//ViewBag.DiscountPrice = DiscountCounter.GetDiscount(i);
+if(ware.Value <= 0)
+{
+        <h4 class="text-white">
+            Отсутствует в продаже
+        </h4>
+        <div class="product-price">
+        </div>
+}
+else
+{
+    if(ViewBag.DiscountPrice == 0)
+    {
+        ViewBag.DiscountPrice = null;
+    }
+    <div class="product-price">
+        @if(ViewBag.DiscountPrice != null)
+    {
+            <h4 class="text-white">
+                <s class="text-white">
+                    @i.CarPrice
+                </s>
+            </h4>
+
+    }
+    else
+    {
+            <h4 class="text-white">
+                @i.CarPrice
+            </h4>
+    }
+        <h4 class="text-white">
+            @ViewBag.DiscountPrice
+        </h4>
+    </div>
+}
+                                        
+}*@

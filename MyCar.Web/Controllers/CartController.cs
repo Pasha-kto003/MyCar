@@ -306,7 +306,7 @@ namespace MyCar.Web.Controllers
         {
             await Task.Run(GetUser);
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            var order = Orders.Where(s=> s.ActionType.ActionTypeName == "Продажа").ToList();
+            var order = Orders.Where(s=> s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").ToList();
             foreach (var ord in order)
             {
                 ord.SumOrder = ord.WareHouses.Sum(s => s.Price * s.CountChange * -1);
@@ -412,10 +412,9 @@ namespace MyCar.Web.Controllers
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
             var deleteCar = orderItems.FirstOrDefault(s => s.SaleCarId == id);
             orderItems.Remove(deleteCar);
-            
+            TempData["SaleDeleteMessageMessage"] = $"Авто {deleteCar.SaleCar.FullName} удалено из вашей корзины";
             string json1 = JsonConvert.SerializeObject(orderItems);
             var des = JsonConvert.DeserializeObject(json1);
-            
             HttpContext.Session.SetString("OrderItem", json1);
             return View("DetailsCart", orderItems);
         }

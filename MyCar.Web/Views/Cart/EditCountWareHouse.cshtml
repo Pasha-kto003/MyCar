@@ -32,19 +32,14 @@
                                         price = @Model.SaleCar.FullPrice;
                                     }
                                 }
-                                <h4 class="row text-white">&euro; @price</h4>
+                                <h4 class="row text-white">@price &#8381</h4>
                             </div>
                             <div class="col m-3 text-white">
-                                <h4 class="row text-white">Старое значение кол-ва</h4>
+                                <h4 class="row text-white">Введите новое количество</h4>
                                 <div class="row w-100">
-                                    @*<div class="col-4" style="display: flex; justify-content: center; text-align:center;">
-                                        <h4 class="text-center text-white">
-                                            @Model.CountChange
-                                        </h4>
-                                    </div>*@
                                     <form class="justify-content-center align-items-center" style="display: flex; justify-content:center; align-items: center;" asp-action="EditCountWareHouse" asp-route-id="@Model.SaleCarId">
                                         <div>
-                                            <input type="number" max="@Model.SaleCar.Count" name="CountChangeWare" min="0" step="1" onkeydown="return false" class="form-control" placeholder="Новое кол-во"
+                                            <input type="number" max="@Model.SaleCar.Count" name="CountChangeWare" min="1" step="1" onkeydown="return false" class="form-control" placeholder="Новое кол-во"
                                             style="width: 150px; margin-left: 21%; text-align:center; display:flex; justify-content:center; background-color:transparent; color: white; border-bottom: solid;  border-color:white;
                                             border-left: none; border-right: none; border-top:none;"/>
                                             <div class="form-group" style="margin-bottom:20px; margin-top:10px; display: flex; justify-content:center;">

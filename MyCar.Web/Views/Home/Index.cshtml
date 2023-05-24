@@ -205,8 +205,8 @@
                 </div>
                 <div class="card-body" style="max-height: 300px;">
                     <h5 class="card-title text-center" style="color: white;">@car.FullName</h5>
-                    <h5 class="card-title text-center" style="color: white;">@car.FullPrice</h5>
-                    <h5 class="card-title text-center" style="color: white;">@popularCar.TotalQuantity</h5>
+                    <h5 class="card-title text-center" style="color: white;">Цена: @car.FullPrice</h5>
+                    <h5 class="card-title text-center" style="color: white;">Кол-во продаж: @popularCar.TotalQuantity</h5>
                     <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
                         <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
                             <a asp-Controller="Car" asp-route-id="@car.ID" asp-action="DetailsCarView" class="stretched-link" style="color: black;">Приобрести</a>
@@ -216,7 +216,6 @@
             </div>
         }
     </div>
-    
     <section class="row w-100 text-center justify-content-center align-items-center">
         <h3 style="color: white;">Выберите свое авто</h3>
         <nav>
@@ -401,14 +400,38 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row w-100 justify-content-center align-items-center text-white text-center">
+    <h2>
+        Есть возможность выбирать цвет для выбранного авто
+    </h2>
+</div>
+<div class="row w-100 justify-content-center align-items-center wow slideInLeft" data-wow-duration="1s" data-wow-delay="1s">
+    <div class="banner-wrapper" id="banner-wrapper">
+        <div class="banner" style="left: 29%;">
+            <div class="banner-content">
+                <img src="/CarImages/MyLexus.png">
+            </div>
+        </div>
+        <div class="banner dev" style="left: 29%;">
+            <div class="banner-content">
+                <img src="/CarImages/MyLexus2.png">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row w-100 justify-content-center align-items-center text-white text-center">
+    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+        <a class="stretched-link" asp-action="CarView" asp-controller="Home" style="color: black;">Смотреть каталог</a>
+    </div>
+</div>
+<div class="row w-100">
     <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
       <div class="container">
 
         <!-- START THE FEATURETTES -->
 
         <hr class="featurette-divider">
-        <div class="tabs3d">
+@*        <div class="tabs3d">
         <div class="tabs3d-control"></div>
         <div class="tabs3d-stage">
             <div class="spinner spinner-left">
@@ -459,7 +482,7 @@
                 </div>            
             </div>
         </div>
-    </div>
+    </div>*@
     <!--  Предзагрузка картинок  -->
     <div style="height: 0; width: 0; overflow: hidden">
         <img src="~/image/MercedesC9.jpg">
@@ -493,6 +516,17 @@
 else
 {
     <div></div>
+}
+
+@if (TempData["RegisterMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Привет, @User.Identity.Name</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">Вы вошли как администратор</p>
+        </div>
+    </div>
 }
 
 @if (TempData["OrderFineMessage"] != null)

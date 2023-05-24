@@ -237,14 +237,14 @@ namespace MyCar.Web.Controllers
 
                 if (Userex.UserType.TypeName == "Администратор")
                 {
-                    TempData["AllertMessage"] = "You log in as admin!!!";
+                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте";
 
                     return RedirectToAction("Index", "Home");
                 }
 
                 if (Userex.UserType.TypeName == "Клиент")
                 {
-                    TempData["ClientMessage"] = "You log in as client!!!";
+                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте";
 
                     return RedirectToAction("Index", "Home");
                 }

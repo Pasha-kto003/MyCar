@@ -1715,6 +1715,18 @@ body {
     height: 200px;
 }
 
+.product-PhotoBuild img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.product-PhotoBuild a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 550px;
+}
+
 .mainHeaderText {
     display: flex;
     align-items: center;
@@ -1757,9 +1769,23 @@ body {
     padding-top: 20px;
 }
 
+.product-addons-DetailsBuild {
+    overflow: hidden;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    align-items: end;
+    justify-content: end;
+}
+
 .product-price {
     font-weight: 300;
     font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.product-priceBuild {
+    font-weight: 400;
+    font-size: 0.9rem;
     margin-right: 5px;
 }
 

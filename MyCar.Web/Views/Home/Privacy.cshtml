@@ -2,18 +2,18 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 
-    Chart pieChart = (Chart)ViewData["PieChart"];
-    Chart vertBarChart = (Chart)ViewData["VertBarChart"];
-    Chart lineChart = (Chart)ViewData["lineChart"];
-    Chart horBarChart = (Chart)ViewData["horBarChart"];
-    Chart customLineChart = (Chart)ViewData["customLineChart"];
+    //Chart pieChart = (Chart)ViewData["PieChart"];
+    //Chart vertBarChart = (Chart)ViewData["VertBarChart"];
+    //Chart lineChart = (Chart)ViewData["lineChart"];
+    //Chart horBarChart = (Chart)ViewData["horBarChart"];
+    //Chart customLineChart = (Chart)ViewData["customLineChart"];
 }
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js" integrity="sha512-klQv6lz2YR+MecyFYMFRuU2eAl8IPRo6zHnsc9n142TJuJHS8CG0ix4Oq9na9ceeg1u5EkBfZsFcV3U7J51iew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+*@
 
 <p>Use this page to detail your site's privacy policy.</p>
 
@@ -85,7 +85,7 @@
 </div>
 
 
-<section class="h-auto w-100">
+@*<section class="h-auto w-100">
     <div class="tabs">
         <div class="tab">
             <div class="tab-toggle">
@@ -136,7 +136,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-sm-6">
                 <div class="card mb-4">
                     <div class="card-header">
@@ -169,9 +169,9 @@
                     </div>
                 </div>
             </div>
-            
 
-            
+
+
         </div>
 
         <div class="row">
@@ -188,9 +188,36 @@
         </div>
 
     </div>
-</section>
+</section>*@
 
-@section Scripts
+<div class="container">
+    <div class="row">
+
+        <div class="MySingle-product d-flex flex-row">
+            <div class="col-5">
+                <div class="product-PhotoBuild">
+                    <a><img src="~/CarImages/1.png" /></a>
+                </div>
+            </div>
+            <div class="col-7 product-Details justify-content-between">
+                <div>
+                    <h3 class="text-white mt-3">Название машины</h3>
+                    <ul>
+                        <li class="text-white ">Характеристика 1></li>
+                    </ul>
+                </div>
+
+                <div class="d-flex product-addons-DetailsBuild mt-auto">
+                    @*mt-auto justify-content-end *@
+                    <h2 class="text-white product-title">90000$</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@section Scripts
     {
     <script type="text/javascript">
         @Html.Raw(pieChart.CreateChartCode("pieChart"));
@@ -199,7 +226,7 @@
         @Html.Raw(horBarChart.CreateChartCode("horBarChart"));
         @Html.Raw(customLineChart.CreateChartCode("customLineChart"));
     </script>
-}
+}*@
 
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.min.js" integrity="sha512-mlz/Fs1VtBou2TrUkGzX4VoGvybkD9nkeXWJm3rle0DPHssYYx4j+8kIS15T78ttGfmOjH0lLaBXGcShaVkdkg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.min.js" integrity="sha512-mlz/Fs1VtBou2TrUkGzX4VoGvybkD9nkeXWJm3rle0DPHssYYx4j+8kIS15T78ttGfmOjH0lLaBXGcShaVkdkg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
 

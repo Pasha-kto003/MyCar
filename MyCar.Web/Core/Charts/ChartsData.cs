@@ -125,7 +125,7 @@ namespace MyCar.Web.Core.Charts
         }
 
 
-        public static List<double?> GetProfitCompareMonth(DateTime dateCompare)// это должен отрабатывать при выборе пользователем месяца для сравнения
+        public static List<double?> GetProfitCompareMonth(DateTime dateCompare)
         {
             List<double?> datas = new List<double?>();
             double profitNow = new();
@@ -133,7 +133,7 @@ namespace MyCar.Web.Core.Charts
             List<OrderApi> ordersData = GetOrder().Result;
             List<WareHouseApi> wareHouseData = GetWareHouse().Result;
 
-            foreach (var item in ordersData.Where(s => s.ActionTypeId == 3 || s.StatusId == 2 || s.DateOfOrder.Value.Month == DateNow.Month))
+            foreach (var item in ordersData.Where(s => s.ActionTypeId == 3 && s.StatusId == 2 && s.DateOfOrder.Value.Month == DateNow.Month && s.DateOfOrder.Value.Year == DateNow.Year))
             {
                 var warehouses = wareHouseData.Where(s => s.OrderId == item.ID).ToList();
                 foreach (var item1 in warehouses)
@@ -143,7 +143,7 @@ namespace MyCar.Web.Core.Charts
             }
             datas.Add(profitNow);
 
-            foreach (var item in ordersData.Where(s => s.ActionTypeId == 3 || s.StatusId == 2 || s.DateOfOrder.Value.Month == dateCompare.Month || s.DateOfOrder.Value.Year == DateNow.Year))
+            foreach (var item in ordersData.Where(s => s.ActionTypeId == 3 && s.StatusId == 2 && s.DateOfOrder.Value.Month == dateCompare.Month && s.DateOfOrder.Value.Year == DateNow.Year))
             {
                 var warehouses = wareHouseData.Where(s => s.OrderId == item.ID).ToList();
                 foreach (var item1 in warehouses)
@@ -157,7 +157,7 @@ namespace MyCar.Web.Core.Charts
             return datas;
         }
 
-        public static List<double?> GetProfitCompareMonth1()// этот должен при открытии страницы отрабатывать по идее
+        public static List<double?> GetProfitCompareMonth1()// это удалю потом
         {
             List<double?> datas = new List<double?>();
             double profitNow = new();

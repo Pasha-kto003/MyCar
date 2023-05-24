@@ -1,8 +1,8 @@
-@model IEnumerable<ModelsApi.CarApi>
+﻿@model IEnumerable<ModelsApi.CarApi>
 @using ModelsApi
 @using MyCar.Web.Core;
 @{
-    ViewData["Title"] = "Каталог";
+    ViewData["Title"] = "Каталог скидочных авто";
 }
 
 @{
@@ -30,11 +30,11 @@
             </div>
 
             <section class="search-sec">
-                <div class="container-fluid">
-                    <form method="get" asp-action="SearchCar" asp-controller="Home">
-                        <div class="row w-100">
+                <div class="container">
+                    <form method="get" asp-action="SearchDiscountCar" asp-controller="Home">
+                        <div class="row">
                             <div class="col-lg-12">
-                                <div class="row w-100">
+                                <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
                                         <input type="text" name="SearchString" class="form-control search-slt" placeholder="Поиск..">
                                     </div>
@@ -61,18 +61,18 @@
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
                                         <button type="submit" class="btn btn-dark wrn-btn">Искать</button>
                                     </div>
-                                </div>
-                                <div class="row w-100">
-                                    <h2 class="text-white text-center">
-                                        Введите желаемую цену
-                                    </h2>
-                                </div>
-                                <div class="row w-100">
-                                    <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
-                                        <input type="range" min="1000000" max="12000000" name="SearchPrice" value="1000000" oninput="rangeValue.innerText = this.value">
+                                    <div class="row w-100">
+                                        <h2 class="text-white text-center">
+                                            Введите желаемую цену
+                                        </h2>
                                     </div>
-                                    <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
-                                        <h3 class="text-white text-center" id="rangeValue">100</h3>
+                                    <div class="row w-100">
+                                        <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
+                                            <input type="range" min="1000000" max="12000000" name="SearchPrice" value="1000000" oninput="rangeValue.innerText = this.value">
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
+                                            <h3 class="text-white text-center" id="rangeValue">100</h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -190,7 +190,47 @@
                                         <h4 class="text-white">
                                             @i.CarPrice
                                         </h4>
-                                        <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@i.ID" class="btn">
+                                        @*@{
+                                            var ware = warehousesCard.Where(s => s.SaleCarId == i.ID).ToList().Sum(s=> s.CountChange);
+                                            //ViewBag.DiscountPrice = DiscountCounter.GetDiscount(i);
+                                            if(ware.Value <= 0)
+                                            {
+                                                    <h4 class="text-white">
+                                                        Отсутствует в продаже
+                                                    </h4>
+                                                    <div class="product-price">
+                                                    </div>
+                                            }
+                                            else
+                                            {
+                                                if(ViewBag.DiscountPrice == 0)
+                                                {
+                                                    ViewBag.DiscountPrice = null;
+                                                }
+                                                <div class="product-price">
+                                                    @if(ViewBag.DiscountPrice != null)
+                                                {
+                                                        <h4 class="text-white">
+                                                            <s class="text-white">
+                                                                @i.CarPrice
+                                                            </s>
+                                                        </h4>
+
+                                                }
+                                                else
+                                                {
+                                                        <h4 class="text-white">
+                                                            @i.CarPrice
+                                                        </h4>
+                                                }
+                                                    <h4 class="text-white">
+                                                        @ViewBag.DiscountPrice
+                                                    </h4>
+                                                </div>
+                                            }
+                                        
+                                        }*@
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@i.ID" class="btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-left:4px; margin-right:8px; flex-direction: row-reverse;" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                                                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                                             </svg>
@@ -245,14 +285,3 @@
     </section>
 
 </div>
-
-@if (TempData["SearchMessage"] != null)
-{
-    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
-        <div class="callout-header">Удаление из корзины</div>
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        <div class="callout-container">
-            <p class="text-white">@TempData["SearchMessage"]</p>
-        </div>
-    </div>
-}

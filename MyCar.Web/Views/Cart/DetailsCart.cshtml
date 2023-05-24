@@ -1,10 +1,11 @@
-﻿@using ModelsApi
+@using ModelsApi
 @using MyCar.Web.Core
 @using Newtonsoft.Json
 @model IEnumerable<ModelsApi.WareHouseApi>
 
 @{
     List<WareHouseApi> orderItems = new List<WareHouseApi>();
+    var ware = @Model.ToList();
 }
 
 <div class="container-fluid">
@@ -25,9 +26,31 @@
                     </div>
                     <div class="col-md-4 col-lg-6">
                         @{
-                            var sum = @Model.Sum(s => s.Price * s.CountChange);
+                            decimal? orderPrice = 0;
+                            var summ = 0;
+                            decimal? warePrice = 0;
+                            foreach(var order in @Model)
+                            {
+                                var discountOrder = DiscountCounter.GetDiscount(order.SaleCar);
+                                if(discountOrder == 0)
+                                {
+                                    discountOrder = order.SaleCar.FullPrice;
+                                    //orderPrice = discountOrder * Model.Sum(s => s.CountChange * -1);
+                                    warePrice = discountOrder * order.CountChange;
+                                }
+                                else
+                                {
+                                    warePrice = discountOrder * order.CountChange;
+                                }
+                                orderPrice += warePrice;
+                            }
+                            <h4 class="text-white text-center">Сумма заказа: @orderPrice Руб.</h4>
+                        }
+                        @{
+                            
+                            var sum = @Model.Sum(s => s.SaleCar.FullPrice  * s.CountChange);
                          }
-                        <h4 class="text-white">Сумма заказа: @sum</h4>
+                        @*<h4 class="text-white">Сумма заказа: @sum</h4>*@
                     </div>
                 </div>
                 <div class="row justify-content-center text-center">
@@ -39,19 +62,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="card" style="background-color: #171717">
+                <div class="card" style="background-color: #171717; min-width: 500px;">
                     <div class="row" style="background-color: #171717">
                         <div class="col-md-12">
                             @foreach (var car in @Model)
                             {
-                                <div class="row align-items-center p-4">
+                                    <div class="row align-items-center p-4">
 
                                         <div class="col-4 productCart-Photo d-flex justify-content-center">
                                             <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCarId"><img src="~/CarImages/@car.SaleCar.MainPhotoCar"></a>
                                         </div>
-
-                                    <div class="col-8 d-flex justify-content-between">
-
+                                        <div class="col-8 d-flex justify-content-between">
                                             <div class="col m-3">
                                                 <h4 class="row text-white">Наименование авто</h4>
                                                 <h5 class="row text-white">@car.SaleCar.Car.CarName</h5>
@@ -66,13 +87,13 @@
                                                         price = @car.SaleCar.FullPrice;
                                                     }
                                                 }
-                                                <h4 class="row text-white">&euro; @price</h4>
+                                                <h4 class="row text-white">@price &#8381</h4>
                                             </div>
                                             <div class="col m-3 text-white">
                                                 <h4 class="row text-white">Кол-во авто</h4>
                                                 <div class="row w-100">
                                                     <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
-                                                        <a class="text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">+</a>
+                                                        <a asp-action="EditWare" asp-controller="Cart" asp-route-id="@car.SaleCarId" class="text-white" >+</a>
                                                     </div>
                                                     <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
                                                         <h4 class="text-center text-white">
@@ -80,7 +101,7 @@
                                                         </h4>
                                                     </div>
                                                     <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
-                                                        <a class="text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">-</a>
+                                                        <a class="text-white" asp-action="EditWare" asp-controller="Cart" asp-route-id="@car.SaleCarId">-</a>
                                                     </div>
                                                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                         <div class="modal-dialog" style="max-width: 700px; width: 700px; background-color: #171717;">
@@ -100,7 +121,8 @@
                                                                             <form asp-action="UpdateCountWarehouse" asp-route-id="@car.SaleCarId" asp-controller="Cart" method="post">
                                                                                 <p class="text-danger">@ViewBag.ErrorMes</p>
                                                                                 <div class="row w-100 justify-content-center align-items-center">
-                                                                                    <input type="number" name="CountChange" placeholder="Введите новое кол-во" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
+                                                                                    <label asp-for="@car.SaleCarId">@car.SaleCarId</label>
+                                                                                    <input type="number" max="@car.SaleCar.Count" name="CountChange" placeholder="Введите новое кол-во" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
                                                                                 </div>                                               
                                                                                 <div class="row-cols-2 w-100" style="display: flex;">
                                                                                     <div class="col-6">
@@ -136,12 +158,11 @@
                                                 </div>
                                             </div>
                                             <div class="col m-3 d-flex justify-content-center align-items-center">
-                                                <button asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.ID" type="button" class="btn btn-danger">Убрать</button>
+                                                <a asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.SaleCarId" type="button" class="btn btn-danger">Убрать</a>
                                             </div>
                                         </div>
                                     </div>
                                     <hr style="color: white;"/>
-                                }
                             }
                         </div>
                     </div>
@@ -150,3 +171,25 @@
         </section>
     </div>
 </div>
+
+@if (TempData["SaleExistErrorMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Ошибка!!!</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">@TempData["SaleExistErrorMessage"]</p>
+        </div>
+    </div>
+}
+
+@if (TempData["SaleDeleteMessageMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Удаление из корзины</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">@TempData["SaleDeleteMessageMessage"]</p>
+        </div>
+    </div>
+}

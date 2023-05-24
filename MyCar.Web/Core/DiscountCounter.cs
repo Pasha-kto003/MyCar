@@ -37,6 +37,36 @@ namespace MyCar.Web.Core
             return finalPrice;
         }
 
+        public static decimal? GetDiscountByOrder(OrderApi order, SaleCarApi saleCar)
+        {
+            var date = order.DateOfOrder;
+            decimal? finalPrice = 0;
+            if (saleCar != null)
+            {
+                Task.Run(GetList).Wait();
+                var discount = Discounts.Where(s => s.SaleCarId == saleCar.ID);
+                //var date = DateTime.Now;
+                foreach (var dis in discount)
+                {
+                    if (discount != null)
+                    {
+                        if (date < dis.StartDate || date > dis.EndDate)
+                            return finalPrice = 0;
+                        if (dis.DiscountValue > 0)
+                        {
+                            finalPrice = saleCar.FullPrice - dis.DiscountValue;
+                        }
+                        if (dis.DiscountValue < 0)
+                        {
+                            finalPrice = saleCar.FullPrice;
+                        }
+                    }
+                    return finalPrice;
+                }
+            }
+            return finalPrice;
+        }
+
         /// <summary>
         /// Метод для получения процента скидки
         /// </summary>

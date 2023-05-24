@@ -1,9 +1,9 @@
 ﻿@model MyCar.Web.Models.RegisterModel
 
-<div class="row" style="justify-content:center; align-items:center; display:flex; margin-top: 6%;">
+<div class="row w-100" style="justify-content:center; align-items:center; display:flex; margin-top: 4%;">
     <div class="container text-center align-content-center align-items-center d-flex justify-content-center">
         <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
-            <div>
+            <div style="display:grid; justify-content:center; align-items:center;">
                 <h2 style="color: white; justify-content:center; align-items:center; display:flex;">Регистрация</h2>
                 <div class="validation" asp-validation-summary="ModelOnly"></div>
                 <div class="form-group" style="margin-top: 30px;">
@@ -40,6 +40,27 @@
         </form>
     </div>
 </div>
+
+<script>
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+
+        togglePassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+        });
+
+        // prevent form submit
+        const form = document.querySelector("form");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+        });
+</script>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -41,6 +41,11 @@ namespace MyCar.Web.Controllers
             return View();
         }
 
+        public IActionResult EditPasswordView()
+        {
+            return View();
+        }
+
         [HttpGet]
         public async Task<IActionResult> UserDetails(int id)
         {
@@ -48,8 +53,6 @@ namespace MyCar.Web.Controllers
             var user = Users.FirstOrDefault(s => s.ID == id);
             return View(user);
         }
-
-
 
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> PersonalArea()
@@ -113,23 +116,56 @@ namespace MyCar.Web.Controllers
             var passport = await Api.PutAsync<PassportApi>(passportapi, "Passport");
         }
 
-        public async Task<IActionResult> EditForgotUser()
-        {
-            RegisterModel registerModel = new RegisterModel();
-            return View("EditPasswordView", registerModel);
-        }
 
         [HttpPost]
-        public async Task<IActionResult> EditPassword(RegisterModel registerModel)
+        public async Task<IActionResult> EditPassword(EditPasswordModel registerModel)
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
             var user = Users.LastOrDefault(s => s.UserName == registerModel.UserName);
-            HashCheck.CreatePasswordHash(registerModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
-            user.PasswordHash = passwordHash;
-            user.SaltHash = passwordSalt;
+            if (ModelState.IsValid)
+            {
+                HashCheck.CreatePasswordHash(registerModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                user.PasswordHash = passwordHash;
+                user.SaltHash = passwordSalt;
 
-            await ChangeUser(user);
-            return RedirectToAction("Index", "Home");
+                await ChangeUser(user);
+                return RedirectToAction("Index", "Home");
+            }
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Такого пользователя не существует");
+            }
+            if (user != null && user.UserType.TypeName == "Администратор")
+            {
+                ModelState.AddModelError("", "Нельзя редактировать этого пользователя");
+            }
+            if (user != null && user.UserType.TypeName == "Сотрудник")
+            {
+                ModelState.AddModelError("", "Нельзя редактировать этого пользователя");
+            }
+            else if (registerModel.UserName == "" || registerModel.UserName == null)
+            {
+                ModelState.TryAddModelError("", "Не введен логин");
+            }
+            else if (registerModel.UserName == "" || registerModel.UserName == null)
+            {
+                ModelState.TryAddModelError("", "Не введен логин");
+            }
+            else if (registerModel.Password == "" || registerModel.Password == null)
+            {
+                ModelState.TryAddModelError("", "Не пароль");
+            }
+            else if (registerModel.ConfirmPassword == "" || registerModel.ConfirmPassword == null)
+            {
+                ModelState.TryAddModelError("", "Повторите свой пароль");
+            }
+            else if (registerModel.ConfirmPassword != registerModel.Password)
+            {
+                ModelState.TryAddModelError("", "Неверный повтор пароля");
+                return View(registerModel);
+            }
+
+            return View("EditPasswordView", registerModel);
         }
 
         [HttpPost]
@@ -149,6 +185,13 @@ namespace MyCar.Web.Controllers
 
                         return RedirectToAction("Index", "Home");
                     }
+                    if (Userex.UserType.TypeName == "Клиент")
+                    {
+                        TempData["ClientMessage"] = "You log in as client!!!";
+
+                        return RedirectToAction("Index", "Home");
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -194,7 +237,14 @@ namespace MyCar.Web.Controllers
 
                 if (Userex.UserType.TypeName == "Администратор")
                 {
-                    TempData["AllertMessage"] = "You log in as admin!!!";
+                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте";
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (Userex.UserType.TypeName == "Клиент")
+                {
+                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте";
 
                     return RedirectToAction("Index", "Home");
                 }

@@ -8,11 +8,11 @@
 <div class="container">
     <div class="main-body">
 
-        <div class="row gutters-sm mt-3">
+        <div class="row w-100 gutters-sm mt-3">
             <div class="tabs" style="min-height: 588.594px;">
                 <div class="tab">
                     <div class="tab-toggle active">
-                        <span class="tab-name" style="margin-left: 10%;">Данные пользователя</span>
+                        <span class="tab-name" style="margin-left: 10%;">Данные пользователя @Model.UserName</span>
                     </div>
                 </div>
                 <div class="Tabscontent active">
@@ -85,7 +85,7 @@
                 </div>
                 <div class="tab">
                     <div class="tab-toggle">
-                        <span class="tab-name" style="margin-left: 10%;">История покупок</span>
+                        <span class="tab-name" style="margin-left: 10%;">История покупок @Model.UserName</span>
                     </div>
                 </div>
                 <div class="Tabscontent">
@@ -98,7 +98,7 @@
                                     </div>
                                     @{
                                         var orders = await Api.GetListAsync<List<OrderApi>>("Order");
-                                        var order = orders.LastOrDefault(s => s.UserId == @Model.ID && s.Status.StatusName == "Новый");
+                                        var order = orders.LastOrDefault(s => s.UserId == @Model.ID && s.Status.StatusName == "Новый" && s.ActionType.ActionTypeName == "Продажа");
                                         if(order != null)
                                         {
                                             <div class="col-sm-9 text-secondary">
@@ -130,7 +130,7 @@
                                     <div class="col-sm-9 text-secondary">
                                         @{
                                             var ords = await Api.GetListAsync<List<OrderApi>>("Order");
-                                            var userords = ords.Where(s => s.UserId == @Model.ID).ToList();
+                                            var userords = ords.Where(s => s.UserId == @Model.ID && s.ActionType.ActionTypeName == "Продажа").ToList();
                                             decimal? suma = 0;
                                             foreach(var ord in userords)
                                             {
@@ -164,9 +164,17 @@
                                             {
                                                 ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
                                             }
-                                            suma = userords.Sum(s => s.SumOrder);
-                                            check = (int)suma / userords.Count;
-                                            if(suma != 0)
+                                            if(userords.Count == 0)
+                                            {
+                                                check = 0;
+                                            }
+                                            if(userords.Count != 0)
+                                            {
+                                                suma = userords.Sum(s => s.SumOrder);
+                                                check = (int)suma / userords.Count;
+                                            }
+                                            
+                                            if(check != 0)
                                             {
                                                 <div class="col-sm-9 text-secondary">
                                                     @check.Value &#8381
@@ -175,7 +183,7 @@
                                             else
                                             {
                                                 <div class="col-sm-9 text-danger">
-                                                    Отсутствуют
+                                                    Средний чек отсутсвует
                                                 </div>
                                             }
                                         }

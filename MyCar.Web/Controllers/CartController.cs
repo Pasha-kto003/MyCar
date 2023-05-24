@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
 using MyCar.Web.Core;
 using Newtonsoft.Json;
+using Spire.Xls;
 using System.Data;
+using System.Diagnostics;
 
 namespace MyCar.Web.Controllers
 {
@@ -14,14 +16,19 @@ namespace MyCar.Web.Controllers
 
         public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
 
+        public DateTime DateStart { get; set; }
+        public DateTime DateFinish { get; set; }
+
+        public int TotalCount = 0;
 
         public List<StatusApi> Statuses { get; set; } = new List<StatusApi>();
 
         public List<UserApi> Users { get; set; } = new List<UserApi>();
 
         public List<ActionTypeApi> Types { get; set; }
-
         public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
+        public List<CountChangeHistoryApi> CountChangeHistories { get; set; } = new List<CountChangeHistoryApi>();
+
         // GET: CartController
         public ActionResult Index()
         {
@@ -58,14 +65,251 @@ namespace MyCar.Web.Controllers
             return View("CartPage", GetPage(name).Result);
         }
 
+        public IActionResult Report(string name)
+        {
+            
+            //Task.Run(GetOrder);
+            Orders = GetOrder().Result;
+            GenerateReport(Orders);
+            return View("CartPage", GetPage(name).Result);
+        }
+
+        public void GenerateReport(List<OrderApi> orders)
+        {
+            decimal TotalPurchasePrice = 0;
+            decimal TotalRawSalePrice = 0;
+            decimal TotalSalePrice = 0;
+            decimal TotalProfit = 0;
+            Warehouses = GetWarehouses().Result;
+            CountChangeHistories = GetHistory().Result;
+            var filterOrders = orders.Where(s=> s.WareHouses.Count != 0 && s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен").ToList();
+            if (User.IsInRole("Администратор"))
+            {
+                var workbook = new Workbook();
+                var sheet = workbook.Worksheets[0];
+                sheet.Range["A1"].Value = "ПРОДАЖИ";
+                sheet.Range["A1:B1"].Merge();
+                sheet.Range["D1"].Value = "С";
+                sheet.Range["E1"].Value = DateStart.ToShortDateString();
+                sheet.Range["F1"].Value = "ПО";
+                sheet.Range["G1"].Value = DateFinish.ToShortDateString();
+                sheet.Range["D1:M1"].Style.HorizontalAlignment = HorizontalAlignType.Center;
+
+                sheet.Range["A3"].Value = "Артикул";
+                sheet.Range["B3"].Value = "Дата";
+                sheet.Range["C3"].Value = "Наименование";
+                sheet.Range["D3"].Value = "Кол-во";
+                sheet.Range["E3"].Value = "Закупочная цена";
+                sheet.Range["F3"].Value = "Цвет";
+                sheet.Range["G3"].Value = "Комплектация";
+                sheet.Range["H3"].Value = "Цена комплектации";
+                sheet.Range["I3"].Value = "Цена продажи";
+                sheet.Range["J3"].Value = "Cкидка";
+                sheet.Range["K3"].Value = "Сумма со скидкой";
+                sheet.Range["L3"].Value = "Прибыль";
+                sheet.Range["M3"].Value = "Покупатель";
+
+                var index = 4;
+
+                foreach (var order in filterOrders)
+                {
+                    foreach(var warehouse in order.WareHouses)
+                    {
+                        decimal purchase = 0;
+
+                        sheet.Range[$"A{index}"].Value = warehouse.SaleCar.Articul.ToString();
+                        sheet.Range[$"B{index}"].Value = order.DateOfOrder.ToString().Substring(0, order.DateOfOrder.ToString().Length - 8);
+                        sheet.Range[$"C{index}"].Value = warehouse.SaleCar.Car.CarName.ToString();
+
+                        sheet.Range[$"D{index}"].Value = (warehouse.CountChange * -1).ToString();
+                        TotalCount += (int)warehouse.CountChange;
+
+                        purchase = (decimal)orders.SelectMany(s => s.WareHouses).FirstOrDefault(s => s.ID == CountChangeHistories?.FirstOrDefault(s => s?.WarehouseOutId == warehouse.ID).WarehouseInId).Price;
+                        sheet.Range[$"E{index}"].Value = purchase.ToString();
+                        sheet.Range[$"E{index}"].NumberFormat = "0.00 ₽";
+                        TotalPurchasePrice += (decimal)(purchase * warehouse.CountChange * -1);
+
+                        sheet.Range[$"F{index}"].Value = warehouse.SaleCar.ColorCar.ToString();
+                        sheet.Range[$"G{index}"].Value = warehouse.SaleCar.Equipment.NameEquipment.ToString();
+                        sheet.Range[$"H{index}"].Value = warehouse.SaleCar.EquipmentPrice.ToString();
+                        sheet.Range[$"H{index}"].NumberFormat = "0.00 ₽";
+
+                        sheet.Range[$"I{index}"].Value = warehouse.Price.ToString();
+                        sheet.Range[$"I{index}"].NumberFormat = "0.00 ₽";
+                        TotalRawSalePrice += (decimal)(warehouse.Price * warehouse.CountChange * -1);
+
+                        sheet.Range[$"J{index}"].Value = warehouse.Discount.ToString();
+                        sheet.Range[$"J{index}"].NumberFormat = "0.00 ₽";
+
+
+                        sheet.Range[$"K{index}"].Value = ((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1).ToString();
+                        sheet.Range[$"K{index}"].NumberFormat = "0.00 ₽";
+                        TotalSalePrice += (decimal)((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1);
+
+
+                        sheet.Range[$"L{index}"].Value = ((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange).ToString();
+                        sheet.Range[$"L{index}"].NumberFormat = "0.00 ₽";
+                        TotalProfit += (decimal)((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange * -1);
+
+                        sheet.Range[$"M{index}"].Value = order.User.UserName;
+
+                        index++;
+                    }
+                }
+
+                sheet.Range[$"A{index}"].Value = "Всего";
+                sheet.Range[$"A{index}:C{index}"].Merge();
+                sheet.Range[$"D{index}"].Value = TotalCount.ToString();
+
+                sheet.Range[$"E{index}"].Value = TotalPurchasePrice.ToString();
+                sheet.Range[$"E{index}"].NumberFormat = "0.00 ₽";
+
+                sheet.Range[$"F{index}:H{index}"].Style.Color = System.Drawing.Color.Gray;
+
+                sheet.Range[$"I{index}"].Value = TotalRawSalePrice.ToString();
+                sheet.Range[$"I{index}"].NumberFormat = "0.00 ₽";
+
+                sheet.Range[$"J{index}"].Style.Color = System.Drawing.Color.Gray;
+
+                sheet.Range[$"K{index}"].Value = TotalSalePrice.ToString();
+                sheet.Range[$"K{index}"].NumberFormat = "0.00 ₽";
+
+                sheet.Range[$"L{index}"].Value = TotalProfit.ToString();
+                sheet.Range[$"L{index}"].NumberFormat = "0.00 ₽";
+
+                sheet.Range[$"A3:M{index}"].BorderInside(LineStyleType.Thin);
+                sheet.Range[$"A3:M{index}"].BorderAround(LineStyleType.Medium);
+
+                sheet.AllocatedRange.AutoFitColumns();
+
+                try
+                {
+                    workbook.SaveToFile("text.xls");
+                    Process p = new Process();
+                    p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/text.xls")
+                    {
+                        UseShellExecute = true
+                    };
+                    p.Start();
+                }
+                catch (Exception ex)
+                {
+                    View("CartError");
+                }
+            }
+            if (User.IsInRole("Клиент"))
+            {
+                var workbook = new Workbook();
+                var sheet = workbook.Worksheets[0];
+                var userOrders = filterOrders.Where(s=> s.User.UserName == User.Identity.Name);
+                sheet.Range["A1"].Value = $"Заказы пользователя: {User.Identity.Name}";
+                sheet.Range["A1:B1"].Merge();
+                sheet.Range["D1"].Value = "С";
+                sheet.Range["E1"].Value = DateStart.ToShortDateString();
+                sheet.Range["F1"].Value = "ПО";
+                sheet.Range["G1"].Value = DateFinish.ToShortDateString();
+                sheet.Range["D1:M1"].Style.HorizontalAlignment = HorizontalAlignType.Center;
+
+                sheet.Range["A3"].Value = "Артикул";
+                sheet.Range["B3"].Value = "Дата";
+                sheet.Range["C3"].Value = "Наименование";
+                sheet.Range["D3"].Value = "Кол-во";
+                sheet.Range["E3"].Value = "Цвет";
+                sheet.Range["F3"].Value = "Комплектация";
+                sheet.Range["G3"].Value = "Цена комплектации";
+                sheet.Range["H3"].Value = "Цена продажи";
+                sheet.Range["I3"].Value = "Cкидка";
+                sheet.Range["J3"].Value = "Сумма со скидкой";
+                sheet.Range["K3"].Value = "Покупатель";
+
+                var index = 4;
+
+                foreach (var order in userOrders)
+                {
+                    foreach (var warehouse in order.WareHouses)
+                    {
+                        decimal purchase = 0;
+
+                        sheet.Range[$"A{index}"].Value = warehouse.SaleCar.Articul.ToString();
+                        sheet.Range[$"B{index}"].Value = order.DateOfOrder.ToString().Substring(0, order.DateOfOrder.ToString().Length - 8);
+                        sheet.Range[$"C{index}"].Value = warehouse.SaleCar.Car.CarName.ToString();
+
+                        sheet.Range[$"D{index}"].Value = warehouse.CountChange.ToString();
+                        TotalCount += (int)warehouse.CountChange;
+
+                        sheet.Range[$"E{index}"].Value = warehouse.SaleCar.ColorCar.ToString();
+                        sheet.Range[$"F{index}"].Value = warehouse.SaleCar.Equipment.NameEquipment.ToString();
+                        sheet.Range[$"G{index}"].Value = warehouse.SaleCar.EquipmentPrice.ToString();
+                        sheet.Range[$"G{index}"].NumberFormat = "0.00 ₽";
+
+                        sheet.Range[$"H{index}"].Value = warehouse.Price.ToString();
+                        sheet.Range[$"H{index}"].NumberFormat = "0.00 ₽";
+                        TotalRawSalePrice += (decimal)(warehouse.Price * warehouse.CountChange * -1);
+
+                        sheet.Range[$"I{index}"].Value = warehouse.Discount.ToString();
+                        sheet.Range[$"I{index}"].NumberFormat = "0.00 ₽";
+
+
+                        sheet.Range[$"J{index}"].Value = ((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1).ToString();
+                        sheet.Range[$"J{index}"].NumberFormat = "0.00 ₽";
+                        TotalSalePrice += (decimal)((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1);
+
+
+                        sheet.Range[$"K{index}"].Value = ((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange).ToString();
+                        sheet.Range[$"K{index}"].NumberFormat = "0.00 ₽";
+                        //TotalProfit += (decimal)((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange);
+
+                        sheet.Range[$"L{index}"].Value = order.User.UserName;
+
+                        index++;
+                    }
+                }
+
+                sheet.Range[$"A{index}"].Value = "Всего";
+                sheet.Range[$"A{index}:C{index}"].Merge();
+                sheet.Range[$"D{index}"].Value = TotalCount.ToString();
+
+                sheet.Range[$"E{index}"].Value = "Сумма: " + TotalRawSalePrice.ToString();
+                sheet.Range[$"E{index}"].NumberFormat = "0.00 ₽";
+
+                sheet.Range[$"F{index}:H{index}"].Style.Color = System.Drawing.Color.Gray;
+
+                sheet.Range[$"I{index}"].Value = TotalRawSalePrice.ToString();
+                sheet.Range[$"I{index}"].NumberFormat = "0.00 ₽";
+
+                sheet.Range[$"J{index}"].Value = TotalSalePrice.ToString();
+                sheet.Range[$"J{index}"].NumberFormat = "0.00 ₽";
+
+                sheet.Range[$"A3:L{index}"].BorderInside(LineStyleType.Thin);
+                sheet.Range[$"A3:L{index}"].BorderAround(LineStyleType.Medium);
+
+                sheet.AllocatedRange.AutoFitColumns();
+
+                try
+                {
+                    workbook.SaveToFile("textUser.xls");
+                    Process p = new Process();
+                    p.StartInfo = new ProcessStartInfo(Environment.CurrentDirectory + "/textUser.xls")
+                    {
+                        UseShellExecute = true
+                    };
+                    p.Start();
+                }
+                catch (Exception ex)
+                {
+                    return;
+                }
+            }
+        }
+
         public async Task<List<OrderApi>> GetPage(string name)
         {
             await Task.Run(GetUser);
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            var order = Orders;
+            var order = Orders.Where(s=> s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").ToList();
             foreach (var ord in order)
             {
-                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
+                ord.SumOrder = ord.WareHouses.Sum(s => s.Price * s.CountChange * -1);
             }
             var userIsAdmin = Users.FirstOrDefault(s => s.UserName == name);
             if (userIsAdmin.UserType.TypeName == "Администратор")
@@ -98,6 +342,41 @@ namespace MyCar.Web.Controllers
             return View("DetailsCart", order);
         }
 
+        public async Task<IActionResult> EditWare(int id)
+        {
+            var orderItems = new List<WareHouseApi>();
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            var ware = orderItems.FirstOrDefault(s => s.SaleCarId == id);
+            return View("EditCountWareHouse", ware);
+        }
+
+        public async Task<IActionResult> EditCountWareHouse(int id, int CountChangeWare)
+        {
+            await GetOrders();
+            var orderItems = new List<WareHouseApi>();
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+            var car = Cars.FirstOrDefault(s => s.ID == id);
+            var wh = orderItems.LastOrDefault(s => s.SaleCarId == id);
+            car.CountChange = CountChangeWare;
+            wh.CountChange = CountChangeWare;
+            if (IsCanAddInOrder(car) == false)
+            {
+                TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
+            }
+            await EditWareHouse(wh);
+            string json1 = JsonConvert.SerializeObject(orderItems);
+            var des = JsonConvert.DeserializeObject(json1);
+
+            HttpContext.Session.SetString("OrderItem", json1);
+            return View("DetailsCart", orderItems);
+        }
+
         public async Task<IActionResult> DetailsCart(string name)
         {
             List<WareHouseApi> orderItemsOld = new List<WareHouseApi>();
@@ -120,19 +399,24 @@ namespace MyCar.Web.Controllers
             {
                 return View("CartError");
             }
+
             return View("DetailsCart", orderItems);
         }
 
         public async Task<IActionResult> DeleteCar(int id)
         {
+            List<WareHouseApi> orderItems = new List<WareHouseApi>();
             Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
-            var deleteCar = Warehouses.FirstOrDefault(s => s.ID == id);
-            var order = Orders.FirstOrDefault(s => s.ID == deleteCar.OrderId);
-            order.WareHouses.Remove(deleteCar);
-            await DeleteCar(deleteCar);
-            return View("DetailsCart", order);
+            string json2 = HttpContext.Session.GetString("OrderItem");
+            if (json2 != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
+            var deleteCar = orderItems.FirstOrDefault(s => s.SaleCarId == id);
+            orderItems.Remove(deleteCar);
+            TempData["SaleDeleteMessageMessage"] = $"Авто {deleteCar.SaleCar.FullName} удалено из вашей корзины";
+            string json1 = JsonConvert.SerializeObject(orderItems);
+            var des = JsonConvert.DeserializeObject(json1);
+            HttpContext.Session.SetString("OrderItem", json1);
+            return View("DetailsCart", orderItems);
         }
 
         public async Task<IActionResult> DetailsOrder(int id)
@@ -184,6 +468,7 @@ namespace MyCar.Web.Controllers
             var carSearch = orderItemsOld.FirstOrDefault(s => s.SaleCarId == id);
             if(carSearch != null)
             {
+                TempData["SaleExistErrorMessage"] = $"Машина: {carSearch.SaleCar.FullName} уже есть в вашей корзине";
                 return View("DetailsCarView", car.ID);
             }
 
@@ -231,7 +516,7 @@ namespace MyCar.Web.Controllers
             if (json != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
             var car = Cars.FirstOrDefault(s => s.ID == id);
-            var wh = orderItems.LastOrDefault(s=> s.SaleCarId == car.ID);
+            var wh = orderItems.LastOrDefault(s=> s.SaleCarId == id);
             car.CountChange = CountChange;
             wh.CountChange = CountChange;
             if (IsCanAddInOrder(car) == false)
@@ -241,7 +526,10 @@ namespace MyCar.Web.Controllers
                 return View("~/Views/Car/DetailsCarView.cshtml", car);
             }
             await EditWareHouse(wh);
-            
+            string json1 = JsonConvert.SerializeObject(orderItems);
+            var des = JsonConvert.DeserializeObject(json1);
+
+            HttpContext.Session.SetString("OrderItem", json1);
             return View("DetailsCart", orderItems);
         }
 
@@ -378,6 +666,27 @@ namespace MyCar.Web.Controllers
                 }
             }
             return isAdd;
+        }
+
+        public async Task<List<OrderApi>> GetOrder()
+        {
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            return Orders;
+            //CountChangeHistories = await Api.GetListAsync<List<CountChangeHistoryApi>>("CountChangeHistory");
+            //Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            //Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+        }
+
+        public async Task<List<WareHouseApi>> GetWarehouses()
+        {
+            Warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+            return Warehouses;
+        }
+
+        public async Task<List<CountChangeHistoryApi>> GetHistory()
+        {
+            CountChangeHistories = await Api.GetListAsync<List<CountChangeHistoryApi>>("CountChangeHistory");
+            return CountChangeHistories;
         }
 
         public async Task CreateOrder(OrderApi orderApi)

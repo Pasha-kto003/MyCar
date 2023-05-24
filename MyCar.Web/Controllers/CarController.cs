@@ -35,8 +35,9 @@ namespace MyCar.Web.Controllers
             var car = Cars.FirstOrDefault(s => s.ID == id);
             var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
             var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
-            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"Выбранное авто / {car.Car.CarName}") { Parent = articlesPage };
-            RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.Car.CarName}");
+            var article = new MvcBreadcrumbNode("ShowPartialView", "Home", $"Комплектации/{car.Car.CarName}") { Parent = articlesPage };
+            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"{car.FullName}") { Parent = article };
+            RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.FullName}");
             ViewData["BreadcrumbNode"] = articlePage;
             ViewData["Title"] = $"CarName - {car.Car.CarName}";
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));

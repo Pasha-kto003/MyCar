@@ -245,7 +245,36 @@ namespace MyCar.Web.Controllers
 
         [Breadcrumb(FromAction = "Index", Title = "Список авто")]
         [HttpGet]
-        public async Task<IActionResult> SearchCar(string SearchString, string FilterString, string SortString)
+        public async Task<IActionResult> Sort(string SortString)
+        {
+            List<CarApi> cars;
+            List<MarkCarApi> markCars;
+            cars = GetCar().Result;
+            markCars = GetMark().Result;
+            ViewBag.MarkCars = markCars;
+            if (SortString == "По умолчанию")
+            {
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
+            }
+            else if (SortString == "По возрастанию")
+            {
+                cars.Sort((x, y) => x.CarPrice.Value.CompareTo(y.CarPrice));
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
+            }
+            else if (SortString == "По убыванию")
+            {
+                cars.Sort((x, y) => y.CarPrice.Value.CompareTo(x.CarPrice));
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
+
+            }
+
+            return View("CarView", NewFullCars);
+        }
+
+        public async Task<IActionResult> SearchCar(string Filterstring, string SearchString, string controller, string FilterController, string SortString)
         {
             List<CarApi> cars;
             List<MarkCarApi> markCars;
@@ -254,26 +283,25 @@ namespace MyCar.Web.Controllers
             ViewBag.MarkCars = markCars;
             string type = "Авто";
             string filter = "Все";
-            if (SortString == "По умолчанию")
+            string searchText = SearchString.ToLower() ?? "";
+            if (searchText != "" && Filterstring != "Тип поиска" && SortString != "" && SortString != null)
+            {
+                cars = await Api.SearchFilterAsync<List<CarApi>>(Filterstring, searchText, "Car", filter);
+                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString);
+                return View("CarView", NewFullCars);
+            }
+            if (searchText == "" || Filterstring == "Тип поиска" || FilterController == "Все" || SortString != "" || SortString != null)
             {
                 NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                await Sort(SortString);
+                return View("CarView", NewFullCars);
             }
-            else if (SortString == "По возрастанию")
+            else
             {
-                cars.Sort((x, y) => x.CarPrice.Value.CompareTo(y.CarPrice));
-                NewFullCars = cars.DistinctBy(s=> s.CarName).ToList();
-            }
-            else if (SortString == "По убыванию")
-            {
-                cars.Sort((x, y) => y.CarPrice.Value.CompareTo(x.CarPrice));
                 NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                return View("CarView", NewFullCars);
             }
-            if(SearchString != null || FilterString != "Тип поиска" || filter != "Все")
-            {
-                cars = await Api.SearchFilterAsync<List<CarApi>>(FilterString, SearchString, "Car", filter);
-                NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
-            }
-            return View("CarView", NewFullCars);
         }
 
         [HttpGet]

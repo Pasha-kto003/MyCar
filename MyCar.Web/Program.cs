@@ -13,6 +13,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
 });
 
+//builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddSession(options =>
+//{
+//    options.IdleTimeout = TimeSpan.FromSeconds(10);
+//    options.Cookie.HttpOnly = true;
+//    options.Cookie.IsEssential = true;
+//});
+
 builder.Services.AddMvc().AddRazorPagesOptions(options =>
 {
     options.Conventions.AddPageRoute("/Account/Login", "");
@@ -60,6 +68,7 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
+//app.UseSession();
 //app.UseCoreAdminCustomUrl("MyCarAdminPanel");// Задание url для админ панели
 
 app.MapDefaultControllerRoute();// admpnl

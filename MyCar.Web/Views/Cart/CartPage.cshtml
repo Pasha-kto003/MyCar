@@ -5,21 +5,21 @@
 }
 
 @{
-    var validateWarehouse = @Model.Where(s=> s.Status.StatusName != "Отменен"
-            && s.ActionType.ActionTypeName == "Продажа").SelectMany(e=> e.WareHouses).ToList();
-            var saleCount = validateWarehouse?.GroupBy(car => car.SaleCarId)
-            .Select(gr => new
-            {
-                CarId = gr.Key,
-                TotalQuantity = gr.Sum(s => s.CountChange * -1),
-                FullPrice = gr.Sum(s=> s.SaleCar.FullPrice)
-            }).
-            OrderByDescending(gr => gr.TotalQuantity);
+    var validateWarehouse = @Model.Where(s => s.Status.StatusName != "Отменен"
+            && s.ActionType.ActionTypeName == "Продажа").SelectMany(e => e.WareHouses).ToList();
+    var saleCount = validateWarehouse?.GroupBy(car => car.SaleCarId)
+    .Select(gr => new
+    {
+        CarId = gr.Key,
+        TotalQuantity = gr.Sum(s => s.CountChange * -1),
+        FullPrice = gr.Sum(s => s.SaleCar.FullPrice)
+    }).
+    OrderByDescending(gr => gr.TotalQuantity);
 }
 
 <div class="row w-100 align-items-center justify-content-center">
     <section class="main-content w-100">
-      <div class="container-fluid">
+        <div class="container-fluid">
             <div class="row justify-content-center text-center">
                 <div class="col-md-8 col-lg-6">
                     <div class="header mb-5 mt-5">
@@ -39,7 +39,7 @@
                             Перевести данные в Excel
                         </a>
                     </div>
-                        @*<a asp-action="Report" class="btn" asp-controller="Cart" asp-route-name="@User.Identity.Name"></a>*@
+                    @*<a asp-action="Report" class="btn" asp-controller="Cart" asp-route-name="@User.Identity.Name"></a>*@
                 </div>
             </div>
             <div class="row justify-content-center text-center">
@@ -47,32 +47,17 @@
                     <div class="header mb-5 mt-5">
                         @{
                             decimal? orderPrice = 0;
-                            foreach(var order in @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа"  && s.Status.StatusName != "Отменен"))
-                            {
-                                foreach(var ware in order.WareHouses)
-                                {
-                                    var discountOrder = DiscountCounter.GetDiscount(ware.SaleCar);
-                                    if(discountOrder == 0)
-                                    {
-                                        order.SumOrder = ware.SaleCar.FullPrice * ware.CountChange * -1;
+                            
 
-                                    }
-                                    else
-                                    {
-                                        order.SumOrder = discountOrder * ware.CountChange * -1;
-                                    }
-                                }
-                            }
-                            
                             orderPrice = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Sum(s => s.SumOrder);
-                            
+
                             //var sumOrd = @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа"  && s.Status.StatusName != "Отменен").Sum(s => s.WareHouses.Sum(s=> s.SaleCar.FullPrice * s.CountChange * -1));
-                            
+
                             var countOrd = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Count();
-                            
+
                             <h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value &#8381</h1>
                         }
-                        
+
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -80,11 +65,11 @@
                         @*<h1 class="text-white text-center">Количество продаж: @validateWarehouse.Count()</h1>*@
                         <h1 class="text-white text-center">Количество продаж: @saleCount.Sum(s=> s.TotalQuantity)</h1>
                     </div>
-                        @*<a asp-action="Report" class="btn" asp-controller="Cart" asp-route-name="@User.Identity.Name"></a>*@
+                    @*<a asp-action="Report" class="btn" asp-controller="Cart" asp-route-name="@User.Identity.Name"></a>*@
                 </div>
             </div>
             <div class="accordion" id="accordionPanelsStayOpenExample" style="background-color: #171717;">
-                @foreach(var ord in @Model)
+                @foreach (var ord in @Model)
                 {
                     <div class="accordion-item" style="background-color: #171717; border: 1px solid #ffffff;">
                         <h2 class="accordion-header align-items-center justify-content-center text-center" id="panelsStayOpen-headingTwo" style="background-color: #171717;">
@@ -97,7 +82,7 @@
                         <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" style="background-color: #171717" aria-labelledby="panelsStayOpen-headingTwo">
                             <div class="accordion-body" style="background-color: #171717">
                                 <div class="row w-100" style="background-color: #171717">
-                                    <div class="px-4 my-5 text-center" style="background-color: #171717">      
+                                    <div class="px-4 my-5 text-center" style="background-color: #171717">
                                         <div class="row p-3 border-bottom" style="background-color: #171717">
                                             <div class="col-4">
                                                 <h2 class="fw-bold" style="color: white;">Заказ номер №@ord.ID</h2>
@@ -144,83 +129,83 @@
                                             </div>
                                         </div>
 
-                                    @foreach(var car in @ord.WareHouses)
-                                    {
-                                        <div class="row flex-lg-row align-items-center  py-5 border-bottom" style="background-color: #171717;">
-                                            <div class="col-10 col-sm-8 col-lg-6">
-                                                <div class="product-Photo">
-                                                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><img src="~/CarImages/@car.SaleCar.MainPhotoCar" /></a>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="row">
-                                                    <div class="col p-5">
-                                                        <div class="row border-bottom">
-                                                            <h2 style="color: white; height:60px;">Марка:</h2>
-                                                        </div>
-                                                        <div class="row border-bottom">
-                                                            <h2 style="color: white;">Наименование:</h2>
-                                                        </div>
-                                                        <div class="row border-bottom">
-                                                            <h2 style="color: white;">Количество:</h2>
-                                                        </div>
-                                                        <div class="row border-bottom">
-                                                            <h2 style="color: white;">Стоимость:</h2>
-                                                        </div>
+                                        @foreach (var car in @ord.WareHouses)
+                                        {
+                                            <div class="row flex-lg-row align-items-center  py-5 border-bottom" style="background-color: #171717;">
+                                                <div class="col-10 col-sm-8 col-lg-6">
+                                                    <div class="product-Photo">
+                                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><img src="~/CarImages/@car.SaleCar.MainPhotoCar" /></a>
                                                     </div>
+                                                </div>
 
-                                                    <div class="col p-5">
-                                                        <div class="row border-bottom">
-                                                            <h2 style="color: white;"><img src="~/MarkImages/@car.SaleCar.Car.Model.MarkCar.MarkPhoto" width="75" height="60"/></h2>
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col p-5">
+                                                            <div class="row border-bottom">
+                                                                <h2 style="color: white; height:60px;">Марка:</h2>
+                                                            </div>
+                                                            <div class="row border-bottom">
+                                                                <h2 style="color: white;">Наименование:</h2>
+                                                            </div>
+                                                            <div class="row border-bottom">
+                                                                <h2 style="color: white;">Количество:</h2>
+                                                            </div>
+                                                            <div class="row border-bottom">
+                                                                <h2 style="color: white;">Стоимость:</h2>
+                                                            </div>
                                                         </div>
-                                                        <div class="row border-bottom">
-                                                            <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><h3 style="color: white;" class="product-title">@car.SaleCar.Car.CarName</h3></a>
-                                                        </div>
-                                                        <div class="row border-bottom">
+
+                                                        <div class="col p-5">
+                                                            <div class="row border-bottom">
+                                                                <h2 style="color: white;"><img src="~/MarkImages/@car.SaleCar.Car.Model.MarkCar.MarkPhoto" width="75" height="60" /></h2>
+                                                            </div>
+                                                            <div class="row border-bottom">
+                                                                <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><h3 style="color: white;" class="product-title">@car.SaleCar.Car.CarName</h3></a>
+                                                            </div>
+                                                            <div class="row border-bottom">
                                                                 @{
                                                                     var wareCount = @car.CountChange * -1;
                                                                 }
-                                                            <h2 style="color: white;">@wareCount</h2>
-                                                        </div>
-                                                        @{
-                                                            var newPrice = DiscountCounter.GetDiscountByOrder(@ord, @car.SaleCar);
-                                                            if(newPrice == 0)
-                                                            {
-                                                                newPrice = null;
-                                                            }
-                                                            <div class="row border-bottom">
-                                                                @if(newPrice != null)
-                                                                {
-                                                                    <h2 class="text-white">
-                                                                        @newPrice &#8381
-                                                                    </h2>
-                                                                    var a = newPrice * wareCount;
-                                                                }
-                                                                else
-                                                                {
-                                                                    <h2 class="text-white">
-                                                                        @car.SaleCar.FullPrice &#8381
-                                                                    </h2>
-                                                                }
+                                                                <h2 style="color: white;">@wareCount</h2>
                                                             </div>
-                                                        }
+                                                            @{
+                                                                var newPrice = DiscountCounter.GetDiscountByOrder(@ord, @car.SaleCar);
+                                                                if (newPrice == 0)
+                                                                {
+                                                                    newPrice = null;
+                                                                }
+                                                                <div class="row border-bottom">
+                                                                    @if (newPrice != null)
+                                                                    {
+                                                                        <h2 class="text-white">
+                                                                            @newPrice &#8381
+                                                                        </h2>
+                                                                        var a = newPrice * wareCount;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <h2 class="text-white">
+                                                                            @car.SaleCar.FullPrice &#8381
+                                                                        </h2>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+
                                                     </div>
 
-                                                 </div>
+                                                </div>
 
                                             </div>
 
-                                        </div>
-
-                                    }
-                                </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 }
             </div>
-      </div>
+        </div>
     </section>
 </div>

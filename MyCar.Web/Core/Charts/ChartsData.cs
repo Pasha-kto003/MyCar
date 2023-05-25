@@ -157,7 +157,7 @@ namespace MyCar.Web.Core.Charts
             return datas;
         }
 
-        public static List<double?> GetProfitCompareMonth1()// это удалю потом
+        public static List<double?> GetProfitCompareMonth1()// это удалить надо
         {
             List<double?> datas = new List<double?>();
             double profitNow = new();

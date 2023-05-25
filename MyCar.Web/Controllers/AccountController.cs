@@ -222,12 +222,20 @@ namespace MyCar.Web.Controllers
             if (EmailIsValid(model.Email) == false)
             {
                 ModelState.AddModelError("", "Данные почты введены неккоректно");
+                return View(model);
+            }
+            if (model.ConfirmPassword.ToString() != model.Password.ToString())
+            {
+                ModelState.AddModelError("", $"Пароли не совпадают");
+                return View(model);
             }
             var user = Users.FirstOrDefault(s=> s.UserName == model.UserName || s.Email == model.Email);
             if (user != null)
             {
                 ModelState.AddModelError("", $"Пользователь с именем {model.UserName} уже существует");
+                return View(model);
             }
+            
             await CreateUser(model);
             if (UserId != -1)
             {

@@ -821,7 +821,7 @@ namespace MyCar.Web.Controllers
             yAxis.Display = true;
             yAxis.Title = new Title
             {
-                Text = new List<string> { "Рубли" },
+                Text = new List<string> { "Доходы, руб." },
                 Display = true,
                 Color = ChartColor.FromHexString("#00a550"),
                 Font = new Font()
@@ -847,7 +847,7 @@ namespace MyCar.Web.Controllers
 
             LineDataset dataset = new LineDataset()
             {
-                Label = "Прибыль по месяцам",
+                Label = "Доход по месяцам",
                 Data = datas,
                 //Fill = "true",
                 Tension = .01,

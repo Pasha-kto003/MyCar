@@ -524,7 +524,7 @@ else
         <div class="callout-header">Привет, @User.Identity.Name</div>
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
-            <p class="text-white">Вы вошли как администратор</p>
+            <p class="text-white">@TempData["RegisterMessage"]</p>
         </div>
     </div>
 }

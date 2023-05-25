@@ -119,19 +119,28 @@
                                             </div>
                                             <div class="col-4">
                                                 <h3 class="fw-bold" style="color: white;">Сумма заказа:</h3>
+                                                @{
+                                                    decimal? mySum = new();
+                                                }
                                                 @foreach (var price in @ord.WareHouses)
                                                 {
+                                                    decimal? sum = 0;
                                                     var discountPrice = DiscountCounter.GetDiscountByOrder(@ord, @price.SaleCar);
-                                                    if(discountPrice == 0)
+                                                    if (discountPrice == 0)
                                                     {
                                                         discountPrice = null;
+                                                        sum = price.Price * price.CountChange * -1;
+                                                        mySum += sum;
+                                                        //ord.SumOrder = sum;
                                                     }
-                                                    @if(discountPrice != null)
+                                                    @if (discountPrice != null)
                                                     {
-                                                        ord.SumOrder = discountPrice * @ord.WareHouses.Sum(s => s.CountChange * -1);
+                                                        sum = discountPrice * price.CountChange * -1;
+                                                        mySum += sum;
+                                                        //ord.SumOrder = sum;
                                                     }
-                                                    <h3 class="fw-bold" style="color: white;">@ord.SumOrder</h3>
                                                 }
+                                                <h3 class="fw-bold" style="color: white;">@mySum</h3>
                                             </div>
                                         </div>
 

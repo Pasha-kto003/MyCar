@@ -222,11 +222,13 @@ namespace MyCar.Web.Controllers
             if (EmailIsValid(model.Email) == false)
             {
                 ModelState.AddModelError("", "Данные почты введены неккоректно");
+                return View(model);
             }
             var user = Users.FirstOrDefault(s=> s.UserName == model.UserName || s.Email == model.Email);
             if (user != null)
             {
                 ModelState.AddModelError("", $"Пользователь с именем {model.UserName} уже существует");
+                return View(model);
             }
             await CreateUser(model);
             if (UserId != -1)
@@ -244,7 +246,7 @@ namespace MyCar.Web.Controllers
 
                 if (Userex.UserType.TypeName == "Клиент")
                 {
-                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте";
+                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте как клиент";
 
                     return RedirectToAction("Index", "Home");
                 }

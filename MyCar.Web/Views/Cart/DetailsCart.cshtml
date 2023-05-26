@@ -1,6 +1,7 @@
 @using ModelsApi
 @using MyCar.Web.Core
 @using Newtonsoft.Json
+@using System.Globalization
 @model IEnumerable<ModelsApi.WareHouseApi>
 
 @{
@@ -44,7 +45,7 @@
                                 }
                                 orderPrice += warePrice;
                             }
-                            <h4 class="text-white text-center">Сумма заказа: @orderPrice Руб.</h4>
+                            <h4 class="text-white text-center">Сумма заказа: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h4>
                         }
                         @{
                             
@@ -87,7 +88,7 @@
                                                         price = @car.SaleCar.FullPrice;
                                                     }
                                                 }
-                                                <h4 class="row text-white">@price &#8381</h4>
+                                                <h4 class="row text-white">@price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h4>
                                             </div>
                                             <div class="col m-3 text-white">
                                                 <h4 class="row text-white">Кол-во авто</h4>

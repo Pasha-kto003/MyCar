@@ -1,5 +1,6 @@
 @using ModelsApi
 @using MyCar.Web.Core
+@using System.Globalization
 @model ModelsApi.CarApi
 @{
     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
@@ -36,7 +37,7 @@
                                             if (count1 is not null)
                                             {
                                                 <li class="text-white ">
-                                                        Количество цилиндров @count1.CharacteristicValue.ToString() @count1.Characteristic.Unit.UnitName;
+                                                    Количество цилиндров @count1.CharacteristicValue.ToString() @count1.Characteristic.Unit.UnitName;
                                                 </li>
                                             }
                                         }
@@ -76,26 +77,30 @@
                                 <div class="d-flex product-addons-DetailsBuild mt-auto">
                                     @*mt-auto justify-content-end *@
                                     @{
-                                        ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
-                                        if (ViewBag.DiscountCarStylePrice == 0)
+                                        var discountPrice = DiscountCounter.GetDiscount(@cars);
+                                        //ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
+                                        if (discountPrice == 0)
                                         {
-                                            ViewBag.DiscountCarStylePrice = null;
+                                            discountPrice = null;
                                         }
-                                        @if (ViewBag.DiscountCarStylePrice != null)
+                                        @if (discountPrice != null)
                                         {
                                             <h2 class="text-white product-title">
                                                 <s class="text-white">
-                                                    @cars.FullPrice &#8381
+                                                    @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                                 </s>
                                             </h2>
                                         }
                                         else
                                         {
-                                            <h2 class="text-white product-title">@cars.FullPrice &#8381</h2>
+                                            <h2 class="text-white product-title">@cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h2>
                                         }
-                                        <h3 class="text-white product-title" style="margin-left: 30px;">
-                                            @ViewBag.DiscountCarStylePrice
-                                        </h3>
+                                        if(discountPrice != null)
+                                        {
+                                            <h3 class="text-white product-title" style="margin-left: 30px;">
+                                                @discountPrice?.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                            </h3>
+                                        }
                                     }
                                     <div class="glass-btn glass-btn-red">
                                         <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@cars.ID" style="color: black">Посмотреть</a>

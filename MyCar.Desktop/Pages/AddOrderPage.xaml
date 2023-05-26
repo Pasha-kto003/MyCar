@@ -42,7 +42,7 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Margin="0 0 0 0">
                 <Rectangle HorizontalAlignment="Stretch"  Fill="Black" Height="0.5" Width="auto" Margin="30 0"/>
-                <Label Content="Все товары" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
+                <Label Content="Все авто" FontFamily="{StaticResource CenturyGothicBold}" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
             </StackPanel>
             <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="5">
                 <Label Content="Поиск:" FontSize="16" FontFamily="Century Gothic"/>
@@ -73,7 +73,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Артикул"
                                     Binding="{Binding Articul}"
-                                    Width="*"
+                                    Width="100"
                                     />
                     <DataGridTextColumn Header="Авто"
                                     Binding="{Binding Car.CarName}"
@@ -86,6 +86,10 @@
                     <DataGridTextColumn Header="Цена комплектации"
                                     Binding="{Binding EquipmentPrice, StringFormat={}{0:N2} ₽}"
                                      MinWidth="100"
+                                    />
+                    <DataGridTextColumn Header="Цвет"
+                                    Binding="{Binding ColorCar}"
+                                     Width="*"
                                     />
                     <DataGridTextColumn Header="Полная цена"
                                     Binding="{Binding FullPrice, StringFormat={}{0:N2} ₽}"
@@ -125,11 +129,19 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Артикул"
                                     Binding="{Binding SaleCar.Articul}"
-                                    Width="*"
+                                    Width="100"
                                     />
                     <DataGridTextColumn Header="Авто"
                                     Binding="{Binding SaleCar.Car.CarName}"
                                     Width="*"
+                                    />
+                    <DataGridTextColumn Header="Комплектация"
+                                    Binding="{Binding SaleCar.Equipment.NameEquipment}"
+                                     Width="*"
+                                    />
+                    <DataGridTextColumn Header="Цвет"
+                                    Binding="{Binding SaleCar.ColorCar}"
+                                     Width="*"
                                     />
                     <DataGridTextColumn Header="Цена"
                                     Binding="{Binding Price, StringFormat={}{0:N2} ₽}"
@@ -141,7 +153,7 @@
                                     />
                     <DataGridTextColumn Header="Кол-во"
                                     Binding="{Binding CountChange}"
-                                    Width="*"
+                                    Width="100"
                                     />
                 </DataGrid.Columns>
                 <DataGrid.ContextMenu>

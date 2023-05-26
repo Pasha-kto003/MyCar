@@ -1,5 +1,6 @@
 ﻿@using ModelsApi
 @using MyCar.Web.Core
+@using System.Globalization
 @model IEnumerable<ModelsApi.SaleCarApi>
 
 @{
@@ -206,7 +207,7 @@
                 </div>
                 <div class="card-body" style="max-height: 300px;">
                     <h5 class="card-title text-center" style="color: white;">@car.FullName</h5>
-                    <h5 class="card-title text-center" style="color: white;">Цена: @car.FullPrice</h5>
+                    <h5 class="card-title text-center" style="color: white;">Цена: @car.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h5>
                     <h5 class="card-title text-center" style="color: white;">Кол-во продаж: @popularCar.TotalQuantity</h5>
                     <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
                         <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">

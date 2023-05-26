@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ModelsApi.CarApi>
 @using ModelsApi
 @using MyCar.Web.Core;
+@using System.Globalization
 @{
     ViewData["Title"] = "Каталог скидочных авто";
 }
@@ -188,7 +189,7 @@
                                     <div class="col-6 text-center align-items-center justify-content-center">
                                         <p class="text-white">Цена авто: </p>
                                         <h4 class="text-white">
-                                            @i.CarPrice
+                                            @i.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                         </h4>
                                         @*@{
                                             var ware = warehousesCard.Where(s => s.SaleCarId == i.ID).ToList().Sum(s=> s.CountChange);
@@ -260,7 +261,7 @@
                                     <h4 class="product-title text-white">Мин. цена авто:</h4>
                                 </div>
                                 <div class="product-addons-Details-default d-flex justify-content-between">
-                                    <h2 class="product-title text-white">@i.CarPrice</h2>
+                                    <h2 class="product-title text-white">@i.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h2>
                                 </div>
                                 <div class="product-addons-Details-default d-flex justify-content-between">
                                     @{

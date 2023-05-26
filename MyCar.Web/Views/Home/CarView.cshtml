@@ -1,6 +1,7 @@
 @model IEnumerable<ModelsApi.CarApi>
 @using ModelsApi
 @using MyCar.Web.Core;
+@using System.Globalization
 @{
     ViewData["Title"] = "Каталог";
 }
@@ -188,7 +189,7 @@
                                     <div class="col-6 text-center align-items-center justify-content-center">
                                         <p class="text-white">Цена авто: </p>
                                         <h4 class="text-white">
-                                            @i.CarPrice
+                                            @i.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                         </h4>
                                         <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@i.ID" class="btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-left:4px; margin-right:8px; flex-direction: row-reverse;" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -210,8 +211,7 @@
 
                             <div class="product-Photo">
                                 <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@i.ID"><img src="~/CarImages/@i.PhotoCar"/></a>
-                            </div>
-                            
+                            </div>              
                             <div class="product-Details">
                                 <a style="text-decoration:none;" asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@i.ID">
                                     <h3 class="product-title text-white">@i.CarName</h3>
@@ -220,7 +220,7 @@
                                     <h4 class="product-title text-white">Мин. цена авто:</h4>
                                 </div>
                                 <div class="product-addons-Details-default d-flex justify-content-between">
-                                    <h2 class="product-title text-white">@i.CarPrice</h2>
+                                    <h2 class="product-title text-white">@i.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h2>
                                 </div>
                                 <div class="product-addons-Details-default d-flex justify-content-between">
                                     @{
@@ -230,7 +230,7 @@
                                         {
                                             message = "На данное авто есть скидки";
                                         }
-                                        }
+                                     }
                                     <small style="text-align:center; color: white;">
                                         @message
                                     </small>

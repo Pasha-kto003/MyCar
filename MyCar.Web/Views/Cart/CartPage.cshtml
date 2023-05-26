@@ -1,4 +1,5 @@
 @using MyCar.Web.Core
+@using System.Globalization
 @model IEnumerable<ModelsApi.OrderApi>
 @{
     ViewData["Title"] = "Корзина";
@@ -55,7 +56,7 @@
 
                             var countOrd = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Count();
 
-                            <h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value &#8381</h1>
+                            <h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h1>
                         }
 
                     </div>
@@ -69,7 +70,7 @@
                 </div>
             </div>
             <div class="accordion" id="accordionPanelsStayOpenExample" style="background-color: #171717;">
-                @foreach (var ord in @Model)
+                @foreach (var ord in @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа"))
                 {
                     <div class="accordion-item" style="background-color: #171717; border: 1px solid #ffffff;">
                         <h2 class="accordion-header align-items-center justify-content-center text-center" id="panelsStayOpen-headingTwo" style="background-color: #171717;">
@@ -125,7 +126,7 @@
                                                         //ord.SumOrder = sum;
                                                     }
                                                 }
-                                                <h3 class="fw-bold" style="color: white;">@mySum</h3>
+                                                <h3 class="fw-bold" style="color: white;">@mySum.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h3>
                                             </div>
                                         </div>
 
@@ -180,12 +181,11 @@
                                                                         <h2 class="text-white">
                                                                             @newPrice &#8381
                                                                         </h2>
-                                                                        var a = newPrice * wareCount;
                                                                     }
                                                                     else
                                                                     {
                                                                         <h2 class="text-white">
-                                                                            @car.SaleCar.FullPrice &#8381
+                                                                            @car.SaleCar.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                                                         </h2>
                                                                     }
                                                                 </div>

@@ -1,6 +1,7 @@
 @using ModelsApi
 @using MyCar.Web.Core
 @using System.Text.Json
+@using System.Globalization
 @model ModelsApi.SaleCarApi
 @{
     ViewData["Title"] = $"Выбранное авто {Model.FullName}";
@@ -12,6 +13,8 @@
     var carColors = carsStyles.Where(s=> s.EquipmentId == @Model.EquipmentId && s.FullName == @Model.FullName);
     var colors = await Api.GetListAsync<List<Color>>("Color");
     var photos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+    var recommendCars = await Api.GetListAsync<List<CarApi>>("Car");
+    var filterRecommend = recommendCars.Where(s => s.Model.MarkId == @Model.Car.Model.MarkId);
 }
     <div class="container-fluid mt-5"> 
         <div class="row w-100">
@@ -24,37 +27,41 @@
                 @{
                     var warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
                     var ware = warehouses.Where(s => s.SaleCarId == @Model.ID).ToList().Sum(s=> s.CountChange);
+                    decimal? discounts = DiscountCounter.GetDiscount(@Model);
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                     if(ware.Value <= 0)
                     {
-                        <h3 class="text-white text-center" style="text-align: center;">
-                            Отсутствует в продаже
-                        </h3>
+                            <h3 class="text-white text-center" style="text-align: center;">
+                                Отсутствует в продаже
+                            </h3>
                     }
                     else
                     {
-                        if(ViewBag.DiscountPrice == 0)
+                        if(discounts == 0)
                         {
-                            ViewBag.DiscountPrice = null;
+                            discounts = null;
                         }
                         <div class="product-price">
-                        @if(ViewBag.DiscountPrice != null)
-                        {
-                            <h2 class="text-white" style="text-align: center;">
-                                <s class="text-white">
-                                    @Model.FullPrice &#8381
-                                </s>
-                            </h2>
-                        }
-                        else
-                        {
-                            <h2 class="text-white" style="text-align: center;">
-                                @Model.FullPrice &#8381
-                            </h2>
-                        }
-                            <h4 class="text-white" style="text-align: center;">
-                                @ViewBag.DiscountPrice &#8381
-                            </h4>
+                            @if(discounts != null)
+                            {
+                                <h2 class="text-white" style="text-align: center;">
+                                    <s class="text-white">
+                                        @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                    </s>
+                                </h2>
+                            }
+                            else
+                            {
+                                <h2 class="text-white" style="text-align: center;">
+                                    @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                </h2>
+                            }
+                            @if(discounts != null)
+                            {
+                                <h4 class="text-white" style="text-align: center;">
+                                    @discounts.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                </h4>
+                            }
                         </div>
                     }
                     
@@ -343,30 +350,34 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                                 </small>
                             </p>
                             @{
+                                var discountCarStylePrice = DiscountCounter.GetDiscount(@cars);
                                 ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
-                                if(ViewBag.DiscountCarStylePrice == 0)
+                                if(discountCarStylePrice == 0)
                                 {
-                                    ViewBag.DiscountCarStylePrice = null;
+                                    discountCarStylePrice = null;
                                 }
-                                                <div class="product-price">
-                                                @if(ViewBag.DiscountCarStylePrice != null)
-                                {
-                                                    <h3 class="text-white">
-                                                        <s class="text-white">
-                                                            @cars.FullPrice &#8381
-                                                        </s>
-                                                    </h3>
-                                }
-                                else
-                                {
-                                                    <h2 class="text-white">
-                                                        @cars.FullPrice &#8381
-                                                    </h2>
-                                }
-                                                    <h4 class="text-white">
-                                                        @ViewBag.DiscountCarStylePrice &#8381
-                                                    </h4>
-                                                </div>
+                                <div class="product-price">
+                                    @if(discountCarStylePrice != null)
+                                    {
+                                        <h3 class="text-white">
+                                            <s class="text-white">
+                                                @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                            </s>
+                                        </h3>
+                                    }
+                                    else
+                                    {
+                                        <h2 class="text-white">
+                                            @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                        </h2>
+                                    }
+                                    @if(discountCarStylePrice != null)
+                                    {
+                                        <h4 class="text-white">
+                                            @discountCarStylePrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                        </h4>
+                                    }
+                                </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">
@@ -407,44 +418,25 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
             </h2>
         </div>
         <div class="row w-100">
-            @foreach(var cars in ViewBag.RecommendCars)
+            @foreach(var cars in filterRecommend)
             {
                 <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
                     <div class="corner-box-1-content" style="background-color:#171717">
                         <div class="card-body img-responsive">
-                            <img src="~/CarImages/@cars.MainPhotoCar" style="width:200px; height:150px; position:relative;"/>
+                            <img src="~/CarImages/@cars.PhotoCar" style="width:200px; height:150px; position:relative;"/>
                             <br />
-                            <h5 style="color:white;">@cars.Car.CarName</h5>
+                            <h5 style="color:white;">@cars.CarName</h5>
                             <button class="imageButton">
                                 <h1>
-                                    <a class="imageLink" asp-action="DetailsCarView" asp-route-id="@cars.ID" asp-controller="Car">+</a>
+                                    <a class="imageLink" asp-action="ShowPartialView" asp-route-id="@cars.ID" asp-controller="Home">+</a>
                                 </h1>
                             </button>
                             @{
-                                ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@cars);
-                                if(ViewBag.DiscountPrice == 0)
-                                {
-                                    ViewBag.DiscountPrice = null;
-                                }
-                                                <div class="product-price">
-                                                @if(ViewBag.DiscountPrice != null)
-                                {
-                                                    <h5 class="text-white">
-                                                        <s class="text-white">
-                                                            @cars.FullPrice &#8381
-                                                        </s>
-                                                    </h5>
-                                }
-                                else
-                                {
-                                                    <h2 class="text-white">
-                                                        @cars.FullPrice &#8381
-                                                    </h2>
-                                }
-                                                    <h5 class="text-white">
-                                                        @ViewBag.DiscountPrice &#8381
-                                                    </h5>
-                                                </div>
+                                <div class="product-price">
+                                    <h2 class="text-white">
+                                        @cars.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                    </h2>
+                                </div>
                             }
                         </div>
                     </div>

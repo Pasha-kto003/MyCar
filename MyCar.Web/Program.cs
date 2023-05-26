@@ -1,5 +1,6 @@
 using DotNetEd.CoreAdmin;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MyCar.Web.Models.Payments;
 using SmartBreadcrumbs.Extensions;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -50,6 +51,8 @@ builder.Services.AddSession();
 //builder.Services.AddCoreAdmin(new CoreAdminOptions() { IgnoreEntityTypes = new List<Type>() { typeof(CharacteristicCar) } });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
 
 //builder.Services.AddControllers().AddNewtonsoftJson(options =>
 //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

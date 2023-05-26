@@ -18,6 +18,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 {
     public class AddMarkViewModel : BaseViewModel
     {
+
         private string searchText = "";
         public string SearchText
         {
@@ -72,24 +73,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             string dir = Environment.CurrentDirectory;
             AddImage = new CustomCommand(() =>
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.InitialDirectory = dir + @"\CarImages\";
-                if (openFileDialog.ShowDialog() == true)
+                MethodResult result = UIManager.AddImage("MarkImages");
+                if (result.IsSuccess)
                 {
-                    try
-                    {
-                        var info = new FileInfo(openFileDialog.FileName);
-                        var newPath = Environment.CurrentDirectory + @"\MarkImages\" + info.Name;
-                        if (!File.Exists(newPath))
-                            File.Copy(openFileDialog.FileName, newPath);
-                        ImageMark = info.Name;
-                        AddMark.MarkPhoto = info.Name;
-                    }
-
-                    catch (Exception e)
-                    {
-                        UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = e.Message });
-                    }
+                    ImageMark = result.Data.ToString();
+                    AddMark.MarkPhoto = result.Data.ToString();
                 }
             });
 

@@ -70,10 +70,11 @@
                                 </div>
                                 <div class="row w-100">
                                     <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
-                                        <input type="range" min="1000000" max="12000000" name="SearchPrice" value="1000000" oninput="rangeValue.innerText = this.value">
+                                        <input type="range" min="100000" max="100000" name="SearchPrice" value="1000000" oninput="rangeValue.innerText = this.value">
                                     </div>
                                     <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
-                                        <h3 class="text-white text-center" id="rangeValue">100</h3>
+                                        <h3 class="text-white text-center" id="rangeValue">
+                                        </h3>
                                     </div>
                                 </div>
                             </div>
@@ -249,7 +250,7 @@
 @if (TempData["SearchMessage"] != null)
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
-        <div class="callout-header">Удаление из корзины</div>
+        <div class="callout-header">Результат поиска</div>
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">@TempData["SearchMessage"]</p>

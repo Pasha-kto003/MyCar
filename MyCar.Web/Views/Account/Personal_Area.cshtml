@@ -5,6 +5,9 @@
 @{
     ViewBag.Title = "О пользователе";
 }
+@{
+    var orders = await Api.GetListAsync<List<OrderApi>>("Order");
+}
 
 <div class="container">
     <div class="main-body">
@@ -98,7 +101,7 @@
                                         <h6 class="mb-0">Активные заказы сейчас:</h6>
                                     </div>
                                     @{
-                                        var orders = await Api.GetListAsync<List<OrderApi>>("Order");
+                                        
                                         var order = orders.LastOrDefault(s => s.UserId == @Model.ID && s.Status.StatusName == "Новый" && s.ActionType.ActionTypeName == "Продажа");
                                         if(order != null)
                                         {
@@ -120,7 +123,7 @@
                                         <h6 class="mb-0">Общее кол-во покупок на сайте</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        @orders.Where(s=> s.UserId == @Model.ID).Count()
+                                        @orders.Where(s=> s.UserId == @Model.ID && s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен").Count()
                                     </div>
                                 </div>
                                 <hr>
@@ -129,44 +132,23 @@
                                         <h6 class="mb-0">Сумма ваших заказов</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-@*                                        @{
-                                            var ords = await Api.GetListAsync<List<OrderApi>>("Order");
-                                            var userords = ords.Where(s => s.UserId == @Model.ID && s.ActionType.ActionTypeName == "Продажа").ToList();
-                                            decimal? suma = 0;
-                                            foreach(var ord in userords)
-                                            {
-                                                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
-                                            }
-                                            suma = userords.Sum(s => s.SumOrder);
-                                            if(suma != 0)
-                                            {
-                                                <div class="col-sm-9 text-secondary">
-                                                    @suma.Value &#8381
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-sm-9 text-danger">
-                                                    Отсутствуют
-                                                </div>
-                                            }
-                                        }*@
                                         @{
                                             decimal? mySum = new();
                                             var ordersUser = await Api.GetListAsync<List<OrderApi>>("Order");
-                                            var filterOrders = ordersUser.Where(s => s.UserId == @Model.ID);
+                                            var filterOrders = ordersUser.Where(s => s.UserId == @Model.ID && s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен");
+                                            decimal? sum = 0;
                                         }
                                         @foreach(var ord in filterOrders)
                                         {
+                                            
                                             @foreach (var price in @ord.WareHouses)
                                             {
-                                                decimal? sum = 0;
+                                                
                                                 var discountPrice = DiscountCounter.GetDiscountByOrder(@ord, @price.SaleCar);
                                                 if (discountPrice == 0)
                                                 {
                                                     discountPrice = null;
                                                     sum = price.Price * price.CountChange * -1;
-                                                    mySum += sum;
                                                     @*<div class="col-sm-9 text-secondary">
                                                         @mySum.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                                     </div>*@
@@ -174,9 +156,12 @@
                                                 @if (discountPrice != null)
                                                 {
                                                     sum = discountPrice * price.CountChange * -1;
-                                                    mySum += sum;
                                                 }
                                             }
+                                        
+                                        }
+                                        @{
+                                            mySum += sum;
                                         }
                                         @if(mySum != 0 || mySum != null)
                                         {
@@ -199,7 +184,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                        @{
-                                            int? check = 0;
+                                            decimal? check = 0;
                                             if(filterOrders.Count() == 0)
                                             {
                                                 check = 0;
@@ -207,7 +192,7 @@
                                             if(filterOrders.Count() != 0)
                                             {
                                                 decimal? suma = mySum;
-                                                check = (int)suma / filterOrders.Count();
+                                                check = suma / filterOrders.Count();
                                             }
                                             
                                             if(check != 0 || check != null)

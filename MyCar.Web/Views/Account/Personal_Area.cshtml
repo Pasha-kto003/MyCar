@@ -1,5 +1,6 @@
 @using ModelsApi
 @using MyCar.Web.Core
+@using System.Globalization
 @model ModelsApi.UserApi
 @{
     ViewBag.Title = "О пользователе";
@@ -128,7 +129,7 @@
                                         <h6 class="mb-0">Сумма ваших заказов</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        @{
+@*                                        @{
                                             var ords = await Api.GetListAsync<List<OrderApi>>("Order");
                                             var userords = ords.Where(s => s.UserId == @Model.ID && s.ActionType.ActionTypeName == "Продажа").ToList();
                                             decimal? suma = 0;
@@ -149,6 +150,45 @@
                                                     Отсутствуют
                                                 </div>
                                             }
+                                        }*@
+                                        @{
+                                            decimal? mySum = new();
+                                            var ordersUser = await Api.GetListAsync<List<OrderApi>>("Order");
+                                            var filterOrders = ordersUser.Where(s => s.UserId == @Model.ID);
+                                        }
+                                        @foreach(var ord in filterOrders)
+                                        {
+                                            @foreach (var price in @ord.WareHouses)
+                                            {
+                                                decimal? sum = 0;
+                                                var discountPrice = DiscountCounter.GetDiscountByOrder(@ord, @price.SaleCar);
+                                                if (discountPrice == 0)
+                                                {
+                                                    discountPrice = null;
+                                                    sum = price.Price * price.CountChange * -1;
+                                                    mySum += sum;
+                                                    @*<div class="col-sm-9 text-secondary">
+                                                        @mySum.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                                    </div>*@
+                                                }
+                                                @if (discountPrice != null)
+                                                {
+                                                    sum = discountPrice * price.CountChange * -1;
+                                                    mySum += sum;
+                                                }
+                                            }
+                                        }
+                                        @if(mySum != 0 || mySum != null)
+                                        {
+                                            <div class="col-sm-9 text-secondary">
+                                                @mySum.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                            </div>
+                                        }
+                                        @if(mySum == 0 || mySum == null)
+                                        {
+                                            <div class="col-sm-9 text-danger">
+                                                Отсутствует
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -158,26 +198,22 @@
                                         <h6 class="mb-0">Ваш средний чек:</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        @{
+                                       @{
                                             int? check = 0;
-                                            foreach(var ord in userords)
-                                            {
-                                                ord.SumOrder = ord.WareHouses.Sum(s => s.Price);
-                                            }
-                                            if(userords.Count == 0)
+                                            if(filterOrders.Count() == 0)
                                             {
                                                 check = 0;
                                             }
-                                            if(userords.Count != 0)
+                                            if(filterOrders.Count() != 0)
                                             {
-                                                suma = userords.Sum(s => s.SumOrder);
-                                                check = (int)suma / userords.Count;
+                                                decimal? suma = mySum;
+                                                check = (int)suma / filterOrders.Count();
                                             }
                                             
-                                            if(check != 0)
+                                            if(check != 0 || check != null)
                                             {
                                                 <div class="col-sm-9 text-secondary">
-                                                    @check.Value &#8381
+                                                    @check.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                                 </div>
                                             }
                                             else

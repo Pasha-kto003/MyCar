@@ -252,7 +252,7 @@ namespace MyCar.Web.Controllers
 
                 if (Userex.UserType.TypeName == "Клиент")
                 {
-                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте";
+                    TempData["RegisterMessage"] = "Вы успешно зарестрировались на сайте как клиент";
 
                     return RedirectToAction("Index", "Home");
                 }

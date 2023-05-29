@@ -26,14 +26,14 @@ namespace MyCar.Web.Models.Payments.Application
         /// <param name="customer">Stripe Customer</param>
         /// <param name="ct">Cancellation Token</param>
         /// <returns>Stripe Customer</returns>
-        public async Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct)
+        public async Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct = new CancellationToken())
         {
             // Set Stripe Token options based on customer data
             TokenCreateOptions tokenOptions = new TokenCreateOptions
             {
                 Card = new TokenCardOptions
                 {
-                    Name = customer.Name,
+                    Name = customer.CreditCard.Name,
                     Number = customer.CreditCard.CardNumber,
                     ExpYear = customer.CreditCard.ExpirationYear,
                     ExpMonth = customer.CreditCard.ExpirationMonth,

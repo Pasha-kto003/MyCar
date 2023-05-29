@@ -4,12 +4,11 @@ using MyCar.Web.Models.Payments.Stripe;
 
 namespace MyCar.Web.Controllers
 {
-    [Route("api/[controller]")]
-    public class StripeController : Controller
+    public class StripesController : Controller
     {
         private readonly IStripeAppService _stripeService;
 
-        public StripeController(IStripeAppService stripeService)
+        public StripesController(IStripeAppService stripeService)
         {
             _stripeService = stripeService;
         }
@@ -17,7 +16,7 @@ namespace MyCar.Web.Controllers
         [HttpPost("customer/add")]
         public async Task<ActionResult<StripeCustomer>> AddStripeCustomer(
             [FromBody] AddStripeCustomer customer,
-            CancellationToken ct)
+            CancellationToken ct = new CancellationToken())
         {
             StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(
                 customer,

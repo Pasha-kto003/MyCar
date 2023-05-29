@@ -3,7 +3,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyCar.Server.DataModels;
 using MyCar.Server.DB;
-using MyCar.Web.Models.Payments;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -38,7 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-builder.Services.AddStripeInfrastructure(builder.Configuration);// Добавление Stripe
+
 
 var app = builder.Build();
 

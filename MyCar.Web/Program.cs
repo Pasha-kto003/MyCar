@@ -45,6 +45,9 @@ builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
     options.ActiveLiClasses = "breadcrumb-item active";
     options.DontLookForDefaultNode = true;
 });
+
+builder.Services.AddStripeInfrastructure(builder.Configuration);// Добавление Stripe
+
 builder.Services.AddSession();
 //builder.Services.AddSqlServer<MyCar_DBContext>(builder.Configuration.GetConnectionString("Database"));
 //builder.Services.AddCoreAdmin("Администратор");//admin panel

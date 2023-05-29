@@ -112,5 +112,6 @@ namespace MyCar.Web.Core
                 var answer = await client.DeleteAsync(server + controller + $"/{value.ID}");
                 return answer.StatusCode == System.Net.HttpStatusCode.OK;
             }
-        }
+            
+    }
 }

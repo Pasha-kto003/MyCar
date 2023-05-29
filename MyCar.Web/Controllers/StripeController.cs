@@ -17,7 +17,7 @@ namespace MyCar.Web.Controllers
         [HttpPost("customer/add")]
         public async Task<ActionResult<StripeCustomer>> AddStripeCustomer(
             [FromBody] AddStripeCustomer customer,
-            CancellationToken ct)
+            CancellationToken ct = new CancellationToken())
         {
             StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(
                 customer,

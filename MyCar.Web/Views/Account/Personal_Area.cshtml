@@ -101,7 +101,6 @@
                                         <h6 class="mb-0">Активные заказы сейчас:</h6>
                                     </div>
                                     @{
-                                        
                                         var order = orders.LastOrDefault(s => s.UserId == @Model.ID && s.Status.StatusName == "Новый" && s.ActionType.ActionTypeName == "Продажа");
                                         if(order != null)
                                         {

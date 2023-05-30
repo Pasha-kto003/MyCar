@@ -1,0 +1,151 @@
+﻿@model ModelsApi.OrderApi
+
+@*<div class="container">
+    <div class="row">
+    </div>*@
+
+
+<div class="container">
+    <main>
+        <div class="py-5 text-center text-white">
+            <h2>Страница с оплатой</h2>
+            <p class="lead">Оплата заказа #@Model.ID</p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-white ">Состав заказа</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    @{
+                        decimal? sum = new();
+                    }
+                    @foreach (var cars in Model.WareHouses)
+                    {
+                        sum += cars.Price;
+                        int? count = cars.CountChange * -1;
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">@cars.SaleCar.FullName</h6>
+                                <h6 class="my-0 mt-2">Количество @count </h6>
+                                @*<small class="text-body-secondary">Brief description</small>*@
+                            </div>
+                            <span class="text-body-secondary">@cars.Price</span>
+                        </li>
+                    }
+                    
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Итого (RUB)</span>
+                        <strong>@sum &#8381;</strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3 text-white">Заполните данные</h4>
+                <form class="needs-validation" novalidate="" asp-controller="Cart" asp-action="PaymentOrder" asp-route-order="@Model" method="post">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="firstName" class="form-label text-white">Имя</label>
+                            <input readonly="readonly" type="text" class="form-control" id="firstName" placeholder="" value="@Model.User.Passport.FirstName" required="">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label text-white">Фамилия</label>
+                            <input readonly="readonly" type="text" class="form-control" id="lastName" placeholder="" value="@Model.User.Passport.LastName" required="">
+                        </div>
+
+                        <div class="col-12">
+                            <label for="username" class="form-label text-white">Username</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text">☺</span>
+                                <input readonly="readonly" type="text" class="form-control" id="username" placeholder="Username" required="" value="@Model.User.UserName">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="email" class="form-label text-white">Email</label>
+                            <input readonly="readonly" value="@Model.User.Email" type="email" class="form-control" id="email" placeholder="you@example.com">
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h4 class="mb-3 text-white">Оплата</h4>
+
+
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="cc-name" class="form-label text-white">Имя держателя</label>
+                            <input class="form-control" id="cc-name" placeholder="" required=""name="cardName">
+                            <small class="text-body-secondary text-white">Находится на карте</small>
+                            <div class="invalid-feedback">
+                                Имя держателя обязательно
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cc-number" class="form-label text-white">Номер карты</label>
+                            <input type="text" class="form-control" id="cc-number" placeholder="" required="" name="cardNumber">
+                            <div class="invalid-feedback">
+                                Номер карты обязателен
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-expiration" class="form-label text-white">Месяц</label>
+                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="" name="cardMonth">
+                            <div class="invalid-feedback">
+                                Срок действия обязателен
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-expiration" class="form-label text-white">Год</label>
+                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="" name="cardYear">
+                            <div class="invalid-feedback">
+                                Срок действия обязателен
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-cvv" class="form-label text-white">CVV</label>
+                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required="" name="cardCVV">
+                            <div class="invalid-feedback">
+                                Секретный код обязателен
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Подтвердить</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+@if (TempData["ErrorPaymentMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Привет, @User.Identity.Name</div>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">@TempData["ErrorPaymentMessage"]</p>
+        </div>
+    </div>
+}
+
+@if (TempData["SuccesPaymentMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Привет, @User.Identity.Name</div>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">@TempData["SuccesPaymentMessage"]</p>
+        </div>
+    </div>
+}

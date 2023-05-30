@@ -105,6 +105,16 @@ namespace MyCar.Desktop.ViewModels
 
             AddCharacteristic = new CustomCommand(() =>
             {
+                if (SelectedCharacteristic == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбранна характеристика авто" });
+                    return;
+                }
+                if (!IsNonNegativeNumber(CharacteristicValue))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Число должно быть не отрицательным" });
+                    return;
+                }
                 bool match = false;
                 foreach (var item in CharacteristicsCar)
                 {
@@ -209,6 +219,19 @@ namespace MyCar.Desktop.ViewModels
             {
                 UIManager.CloseWindow(this);
             });
+        }
+        private bool IsNonNegativeNumber(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return false;
+
+            if (decimal.TryParse(input, out decimal result))
+            {
+                if (result >= 0)
+                    return true;
+            }
+
+            return false;
         }
         private async Task GetList()
         {

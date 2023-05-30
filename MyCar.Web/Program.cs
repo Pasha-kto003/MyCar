@@ -1,5 +1,6 @@
 using DotNetEd.CoreAdmin;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MyCar.Web.Models.Payments;
 using SmartBreadcrumbs.Extensions;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -44,12 +45,17 @@ builder.Services.AddBreadcrumbs(Assembly.GetExecutingAssembly(), options =>
     options.ActiveLiClasses = "breadcrumb-item active";
     options.DontLookForDefaultNode = true;
 });
+
+builder.Services.AddStripeInfrastructure(builder.Configuration);// Добавление Stripe
+
 builder.Services.AddSession();
 //builder.Services.AddSqlServer<MyCar_DBContext>(builder.Configuration.GetConnectionString("Database"));
 //builder.Services.AddCoreAdmin("Администратор");//admin panel
 //builder.Services.AddCoreAdmin(new CoreAdminOptions() { IgnoreEntityTypes = new List<Type>() { typeof(CharacteristicCar) } });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
 
 //builder.Services.AddControllers().AddNewtonsoftJson(options =>
 //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

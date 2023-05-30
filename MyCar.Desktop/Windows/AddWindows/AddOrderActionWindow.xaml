@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyCar.Desktop.Windows.OrderActions"
         mc:Ignorable="d"
-        Title="AddOrderInWindow"  Height="220" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+        Title="AddOrderInWindow"  Height="220" Width="580" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     <Border BorderThickness="3" BorderBrush="{StaticResource ValorantRedBrush}" 
                 Panel.ZIndex="2">
         <Grid Background="WhiteSmoke">
@@ -16,7 +16,7 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel>
                     <Label Content="Внести в заказ:" FontFamily="Century Gothic" FontSize="16"/>
-                    <Rectangle HorizontalAlignment="Stretch" Fill="Gray" Height="0.5" Width="470"/>
+                    <Rectangle HorizontalAlignment="Stretch" Fill="Gray" Height="0.5" Width="550"/>
                     <Label Content="{Binding CarTitle}" Height="25" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="0" Padding="5 1"/>
                     <Label Content="{Binding LastPriceInfo, StringFormat={}{0:N2} ₽}" Height="20" FontFamily="Century Gothic" FontSize="14" Margin="0" Padding="5 1"/>
                 </StackPanel>
@@ -29,17 +29,17 @@
                     </GroupBox>
                     <GroupBox Header="Цена" Width="Auto"  FontFamily="Century Gothic" FontSize="15" Visibility="{Binding PriceVisibility}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Price, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Price, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="135" FontSize="18" FontFamily="Century Gothic"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Скидка" Width="Auto"  FontFamily="Century Gothic" FontSize="15" Visibility="{Binding DiscountVisibility}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Discount, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Discount, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="135" FontSize="18" FontFamily="Century Gothic"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Всего" Width="Auto"  FontFamily="Century Gothic" FontSize="15" Visibility="{Binding PriceVisibility}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Total, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="100" FontSize="18" FontFamily="Century Gothic" IsEnabled="False"/>
+                            <TextBox Style="{StaticResource ModernTextBox}" Text="{Binding Total, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="135" FontSize="18" FontFamily="Century Gothic" IsEnabled="False"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

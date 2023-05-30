@@ -628,19 +628,20 @@ namespace MyCar.Web.Controllers
             CancellationToken ct = new CancellationToken();
             StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
 
-
-            Models.Payments.Stripe.AddStripePayment payment = new AddStripePayment(createdCustomer.CustomerId, user.Email, sb.ToString(),"RUB", totalSum);
-            StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
-            if (createdPayment == null)
+            long dollarSum = totalSum / 80;
+            try
+            {
+                Models.Payments.Stripe.AddStripePayment payment = new AddStripePayment(createdCustomer.CustomerId, user.Email, sb.ToString(), "USD", dollarSum);
+                StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
+            }
+            catch (Exception)
             {
                 TempData["ErrorPaymentMessage"] = "При оплате произошел сбой!";
-                return View("PaymentOrder",order);
+                return View("PaymentOrder", order);
             }
             await EditOrder(order);
 
             orderItems.Clear();
-
-
 
             var marks = new List<MarkCarApi>();
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");

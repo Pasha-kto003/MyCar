@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Spire.Xls;
 using System.Data;
 using System.Diagnostics;
+using System.Text;
 
 namespace MyCar.Web.Controllers
 {
@@ -601,7 +602,7 @@ namespace MyCar.Web.Controllers
             await GetOrders();
             var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
             var actionType = Types.FirstOrDefault(s => s.ActionTypeName == "Продажа");
-            var status = Statuses.FirstOrDefault(s => s.StatusName == "Ожидает оплаты");
+            var status = Statuses.FirstOrDefault(s => s.StatusName == "Завершен");
 
             List<WareHouseApi> orderItems = new List<WareHouseApi>();
             string json = HttpContext.Session.GetString("OrderItem");
@@ -611,15 +612,42 @@ namespace MyCar.Web.Controllers
             order.User = user;
             order.ActionType = actionType;
             order.Status = status;
-            await EditOrder(order);
+            
+
+            decimal? sum = new();
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in orderItems)
+            {
+                sum += item.Price;
+                sb.AppendLine("Машина: " + item.SaleCar.FullName + " Количество: " + item.CountChange * -1);
+            }
+            long totalSum = (long)sum * 100;
 
             Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(cardName, cardNumber, cardYear, cardMonth, cardCVV);
             Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
             CancellationToken ct = new CancellationToken();
             StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
 
-            //orderItems.Clear();
-            return View("PaymentOrder", order);
+
+            Models.Payments.Stripe.AddStripePayment payment = new AddStripePayment(createdCustomer.CustomerId, user.Email, sb.ToString(),"RUB", totalSum);
+            StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
+            if (createdPayment == null)
+            {
+                TempData["ErrorPaymentMessage"] = "При оплате произошел сбой!";
+                return View("PaymentOrder",order);
+            }
+            await EditOrder(order);
+
+            orderItems.Clear();
+
+
+
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.Marks = marks;
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            TempData["SuccesPaymentMessage"] = "Оплата проведена успешно!";
+            return View("~/Views/Home/Index.cshtml", cars);
         }
 
 

@@ -66,7 +66,7 @@ namespace MyCar.Web.Models.Payments.Application
         /// <param name="payment">Stripe Payment</param>
         /// <param name="ct">Cancellation Token</param>
         /// <returns><Stripe Payment/returns>
-        public async Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct)
+        public async Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct = new CancellationToken())
         {
             // Set the options for the payment we would like to create at Stripe
             ChargeCreateOptions paymentOptions = new ChargeCreateOptions

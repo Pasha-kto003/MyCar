@@ -68,102 +68,101 @@
                         <div class="col-md-12">
                             @foreach (var car in @Model)
                             {
-                                    <div class="row align-items-center p-4">
-
-                                        <div class="col-4 productCart-Photo d-flex justify-content-center">
-                                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCarId"><img src="~/CarImages/@car.SaleCar.MainPhotoCar"></a>
+                                <div class="row align-items-center p-4">
+                                    <div class="col-4 productCart-Photo d-flex justify-content-center">
+                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCarId"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.SaleCar.MainPhotoCar })"></a>
+                                    </div>
+                                    <div class="col-8 d-flex justify-content-between">
+                                        <div class="col m-3">
+                                            <h4 class="row text-white">Наименование авто</h4>
+                                            <h5 class="row text-white">@car.SaleCar.Car.CarName</h5>
                                         </div>
-                                        <div class="col-8 d-flex justify-content-between">
-                                            <div class="col m-3">
-                                                <h4 class="row text-white">Наименование авто</h4>
-                                                <h5 class="row text-white">@car.SaleCar.Car.CarName</h5>
-                                            </div>
 
-                                            <div class="col m-3">
-                                                <h4 class="row text-white">Стоимость авто:</h4>
-                                                @{
-                                                    var price = DiscountCounter.GetDiscount(@car.SaleCar);
-                                                    if(price == 0)
-                                                    {
-                                                        price = @car.SaleCar.FullPrice;
-                                                    }
+                                        <div class="col m-3">
+                                            <h4 class="row text-white">Стоимость авто:</h4>
+                                            @{
+                                                var price = DiscountCounter.GetDiscount(@car.SaleCar);
+                                                if(price == 0)
+                                                {
+                                                    price = @car.SaleCar.FullPrice;
                                                 }
-                                                <h4 class="row text-white">@price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h4>
-                                            </div>
-                                            <div class="col m-3 text-white">
-                                                <h4 class="row text-white">Кол-во авто</h4>
-                                                <div class="row w-100">
-                                                    <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
-                                                        <a asp-action="EditWare" asp-controller="Cart" asp-route-id="@car.SaleCarId" class="text-white" >+</a>
-                                                    </div>
-                                                    <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
-                                                        <h4 class="text-center text-white">
-                                                            @car.CountChange
-                                                        </h4>
-                                                    </div>
-                                                    <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
-                                                        <a class="text-white" asp-action="EditWare" asp-controller="Cart" asp-route-id="@car.SaleCarId">-</a>
-                                                    </div>
-                                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" style="max-width: 700px; width: 700px; background-color: #171717;">
-                                                            <div class="modal-content" style="background-color: #171717;">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            }
+                                            <h4 class="row text-white">@price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h4>
+                                        </div>
+                                        <div class="col m-3 text-white">
+                                            <h4 class="row text-white">Кол-во авто</h4>
+                                            <div class="row w-100">
+                                                <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
+                                                    <a asp-action="EditWare" asp-controller="Cart" asp-route-id="@car.SaleCarId" class="text-white" >+</a>
+                                                </div>
+                                                <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
+                                                    <h4 class="text-center text-white">
+                                                        @car.CountChange
+                                                    </h4>
+                                                </div>
+                                                <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
+                                                    <a class="text-white" asp-action="EditWare" asp-controller="Cart" asp-route-id="@car.SaleCarId">-</a>
+                                                </div>
+                                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" style="max-width: 700px; width: 700px; background-color: #171717;">
+                                                        <div class="modal-content" style="background-color: #171717;">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row row-cols-1 w-100">
+                                                                    <div class="col text-white" style="text-align: center;">
+                                                                        Кол-во:
+                                                                    </div> 
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    <div class="row row-cols-1 w-100">
-                                                                        <div class="col text-white" style="text-align: center;">
-                                                                            Кол-во:
-                                                                        </div> 
-                                                                    </div>
-                                                                    <div class="row row-cols-1 w-100">
-                                                                        <div class="col">
-                                                                            <form asp-action="UpdateCountWarehouse" asp-route-id="@car.SaleCarId" asp-controller="Cart" method="post">
-                                                                                <p class="text-danger">@ViewBag.ErrorMes</p>
-                                                                                <div class="row w-100 justify-content-center align-items-center">
-                                                                                    <label asp-for="@car.SaleCarId">@car.SaleCarId</label>
-                                                                                    <input type="number" max="@car.SaleCar.Count" name="CountChange" placeholder="Введите новое кол-во" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
-                                                                                </div>                                               
-                                                                                <div class="row-cols-2 w-100" style="display: flex;">
-                                                                                    <div class="col-6">
-                                                                                        <div class="glass-btn glass-btn-red">
-                                                                                            <a class="stretched-link">
-                                                                                                <input readonly data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" value="Отмена" style="color: black; text-align:center;">
-                                                                                            </a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-6">
-                                                                                        <div class="glass-btn glass-btn-red">
-                                                                                            <a class="stretched-link">
-                                                                                                <input readonly type="submit" class="stretched-link" value="Приобрести" style="color: black; text-align:center;">
-                                                                                            </a>   
-                                                                                        </div>
+                                                                <div class="row row-cols-1 w-100">
+                                                                    <div class="col">
+                                                                        <form asp-action="UpdateCountWarehouse" asp-route-id="@car.SaleCarId" asp-controller="Cart" method="post">
+                                                                            <p class="text-danger">@ViewBag.ErrorMes</p>
+                                                                            <div class="row w-100 justify-content-center align-items-center">
+                                                                                <label asp-for="@car.SaleCarId">@car.SaleCarId</label>
+                                                                                <input type="number" max="@car.SaleCar.Count" name="CountChange" placeholder="Введите новое кол-во" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
+                                                                            </div>                                               
+                                                                            <div class="row-cols-2 w-100" style="display: flex;">
+                                                                                <div class="col-6">
+                                                                                    <div class="glass-btn glass-btn-red">
+                                                                                        <a class="stretched-link">
+                                                                                            <input readonly data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" value="Отмена" style="color: black; text-align:center;">
+                                                                                        </a>
                                                                                     </div>
                                                                                 </div>
-                                                                            </form>
-                                                                        </div>
+                                                                                <div class="col-6">
+                                                                                    <div class="glass-btn glass-btn-red">
+                                                                                        <a class="stretched-link">
+                                                                                            <input readonly type="submit" class="stretched-link" value="Приобрести" style="color: black; text-align:center;">
+                                                                                        </a>   
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
-                                                                    @*<div class="modal-footer">
-                                                                        <div class="glass-btn glass-btn-red">
-                                                                            <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" style="color: black;">Отмена</a>
-                                                                        </div>
-                                                                        <div class="glass-btn glass-btn-green">
-                                                                            <a asp-action="UpdateCountCar" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
-                                                                        </div>
-                                                                    </div>*@
-                                                                </div>
+                                                            </div>
+                                                                @*<div class="modal-footer">
+                                                                    <div class="glass-btn glass-btn-red">
+                                                                        <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-bs-dismiss="modal" class="stretched-link" style="color: black;">Отмена</a>
+                                                                    </div>
+                                                                    <div class="glass-btn glass-btn-green">
+                                                                        <a asp-action="UpdateCountCar" asp-controller="Cart" asp-route-id="@Model.ID" class="stretched-link" style="color: black;">Приобрести</a>
+                                                                    </div>
+                                                                </div>*@
                                                             </div>
                                                         </div>
-                                                </div>
-                                            </div>
-                                            <div class="col m-3 d-flex justify-content-center align-items-center">
-                                                <a asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.SaleCarId" type="button" class="btn btn-danger">Убрать</a>
+                                                    </div>
                                             </div>
                                         </div>
+                                        <div class="col m-3 d-flex justify-content-center align-items-center">
+                                            <a asp-action="DeleteCar" asp-controller="Cart" asp-route-id="@car.SaleCarId" type="button" class="btn btn-danger">Убрать</a>
+                                        </div>
                                     </div>
-                                    <hr style="color: white;"/>
+                                </div>
+                                <hr style="color: white;"/>
                             }
                         </div>
                     </div>

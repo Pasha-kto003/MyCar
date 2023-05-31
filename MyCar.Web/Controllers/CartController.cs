@@ -70,7 +70,6 @@ namespace MyCar.Web.Controllers
 
         public IActionResult Report(string name)
         {
-            
             //Task.Run(GetOrder);
             Orders = GetOrder().Result;
             GenerateReport(Orders);
@@ -324,7 +323,6 @@ namespace MyCar.Web.Controllers
                 order = Orders.Where(s => s.User.UserName == userIsAdmin.UserName).ToList();
                 return order;
             }
-            //var order = Orders.Where(s => s.User.UserName == name).ToList();
             return order;
         }
 
@@ -578,11 +576,6 @@ namespace MyCar.Web.Controllers
             };
 
             await CreateOrder(order);
-
-            //Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(user.UserName, "4242424242424242", "2027", "10", "999");
-            //Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
-            //CancellationToken ct = new CancellationToken();
-            //StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
 
             //orderItems.Clear();
             string json1 = JsonConvert.SerializeObject(orderItems);

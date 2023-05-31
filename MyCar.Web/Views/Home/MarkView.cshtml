@@ -1,29 +1,9 @@
-﻿@model IEnumerable<ModelsApi.MarkCarApi>
+﻿@using MyCar.Web.Core
+@using System.Drawing
+@model IEnumerable<ModelsApi.MarkCarApi>
 @{
     ViewData["Title"] = "Marks";
 }
-
-@*<div class="container">
-    <div class="row">
-        <section class="grid">
-            @foreach(var mark in Model)
-            {
-                <article class="grid-item">
-                <div class="image">
-                <img src="~/MarkImages/@mark.MarkPhoto" width="200" height="250"/>
-                </div>
-                <div class="info">
-                <h2>@mark.MarkName</h2>
-                <div class="button-wrap">
-                <a class="atuin-btn" asp-controller="Home" asp-action="GetAuto" asp-route-id="@mark.ID">Каталог авто</a>
-                </div>
-                </div>
-                </article>   
-            }
-         
-        </section>
-    </div>
-</div>*@
 
 <div class="row w-100 wow bounceInUp align-items-center justify-content-center">
 
@@ -43,28 +23,25 @@
             {
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div class="MySingle-product mt-3 mb-3">
-
                         <div class="product-Photo">
-                            <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="~/MarkImages/@i.MarkPhoto" /></a>
+                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.MarkPhoto })" /></a>
                         </div>
 
-                        <div class="product-Details">
-                            <a style="text-decoration:none;" asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><h3 class="product-title text-center text-white">@i.MarkName</h3></a>
-                            @*<h2 class="product-title text-white">@i.CarName</h2>*@
+                            <div class="product-Details">
+                                <a style="text-decoration:none;" asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><h3 class="product-title text-center text-white">@i.MarkName</h3></a>
+                                @*<h2 class="product-title text-white">@i.CarName</h2>*@
 
-                            @*<div class="product-addons-Details d-flex justify-content-between">*@
+                                @*<div class="product-addons-Details d-flex justify-content-between">*@
 
-                                @*<div class="product-price">
-                                    <h2 class="text-white">@i.CarPrice</h2>
-                                </div>*@
-                                <div class="button-wrap text-center">
-                                    <a class="atuin-btn" asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID">Каталог авто</a>
-                                </div>
+                                    @*<div class="product-price">
+                                        <h2 class="text-white">@i.CarPrice</h2>
+                                    </div>*@
+                                    <div class="button-wrap text-center">
+                                        <a class="atuin-btn" asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID">Каталог авто</a>
+                                    </div>
 
-                            @*</div>*@
-                        </div>
-
-
+                                @*</div>*@
+                            </div>
                     </div>
                 </div>
             }

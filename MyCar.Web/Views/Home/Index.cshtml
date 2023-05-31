@@ -82,7 +82,7 @@
 
                         <div class="m-3 d-flex justify-content-center">
                             <div class="mark-Photo">
-                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="~/MarkImages/@i.MarkPhoto" /></a>
+                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.MarkPhoto })" /></a>
                             </div>
                         </div>
 
@@ -208,7 +208,7 @@
             var car = @Model.FirstOrDefault(s=> s.ID == popularCar.CarId);
             <div class="card col-4" style="background-color: #171717; min-height: 460px;" >
                 <div class="PhotoScale">
-                    <img src="/CarImages/@car.MainPhotoCar" class="card-img-top">
+                    <img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.MainPhotoCar })" class="card-img-top">
                 </div>
                 <div class="card-body" style="max-height: 300px;">
                     <h5 class="card-title text-center" style="color: white;">@car.FullName</h5>
@@ -245,7 +245,7 @@
                                     <div class="m-3 d-flex justify-content-center">
                                         <div class="text-center">
                                             <div class="mark-Photo scalePh">
-                                                <a id="#sectionCar" asp-action="DetailsCar" asp-controller="Home" asp-fragment="sectioncar" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                                <a id="#sectionCar" asp-action="DetailsCar" asp-controller="Home" asp-fragment="sectioncar" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
                                                 
                                             </div>
                                             <a style="text-decoration:none;" asp-action="DetailsCar" asp-fragment="sectioncar" asp-controller="Home" asp-route-id="@car.ID">
@@ -273,7 +273,7 @@
                                 <div class="m-3 d-flex justify-content-center">
                                     <div class="text-center">
                                         <div class="mark-Photo scalePh">
-                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
                                         </div>
                                         <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                             <div class="text-white">@car.Car.Model.ModelName</div>
@@ -295,7 +295,7 @@
                                 <div class="m-3 d-flex justify-content-center">
                                     <div class="text-center">
                                         <div class="mark-Photo scalePh">
-                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="~/CarImages/@car.Car.PhotoCar"/></a>
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
                                         </div>
                                         <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                             <div class="text-white">@car.Car.Model.ModelName</div>
@@ -327,7 +327,7 @@
                 </div>
             </div>
             <div class="col-7 position-relative text-center justify-content-center align-items-center" >
-                <img src="~/CarImages/@ViewBag.PhotoCar" style="bottom:50%;max-height:420px;max-width:750px;" />
+                <img src="@Url.Action("DisplayImage", "Home", new { photoName = @ViewBag.PhotoCar })" style="bottom:50%;max-height:420px;max-width:750px;" />
             </div>
         </div>
     </section>

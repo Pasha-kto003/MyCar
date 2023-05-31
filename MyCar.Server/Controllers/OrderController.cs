@@ -128,6 +128,7 @@ namespace MyCar.Server.Controllers
             var order = (Order)editOrder;
             //var cross = dbContext.Warehouses.FirstOrDefault(s=> s.OrderId == id);
             var oldOrder = await dbContext.Orders.FindAsync(id);
+            order.Status = dbContext.Statuses.FirstOrDefault(s=> s.Id == editOrder.StatusId);
             if(oldOrder == null)
             {
                 return NotFound();

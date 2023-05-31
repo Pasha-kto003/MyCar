@@ -5,30 +5,30 @@
 
 @{
     ViewData["Title"] = "Главная страница";
-    var models = Model.Where(s=> s.Car.BodyType.TypeName.Contains("Седан"));
+    var models = Model.Where(s => s.Car.BodyType.TypeName.Contains("Седан"));
     var orders = await Api.GetListAsync<List<OrderApi>>("Order");
     var dateNow = DateTime.Now;
     var users = await Api.GetListAsync<List<UserApi>>("User");
-    var validateWarehouse = orders.Where(s=> s.Status.StatusName != "Отменен"
-            && s.ActionType.ActionTypeName == "Продажа").SelectMany(e=> e.WareHouses).ToList();
-            var saleCount = validateWarehouse.GroupBy(car => car.SaleCarId)
-            .Select(gr => new
-            {
-                CarId = gr.Key,
-                TotalQuantity = gr.Sum(s => s.CountChange * -1),
-                FullPrice = gr.Sum(s=> s.SaleCar.FullPrice)
-            }).
-            OrderByDescending(gr => gr.TotalQuantity);
+    var validateWarehouse = orders.Where(s => s.Status.StatusName != "Отменен"
+            && s.ActionType.ActionTypeName == "Продажа").SelectMany(e => e.WareHouses).ToList();
+    var saleCount = validateWarehouse.GroupBy(car => car.SaleCarId)
+    .Select(gr => new
+    {
+        CarId = gr.Key,
+        TotalQuantity = gr.Sum(s => s.CountChange * -1),
+        FullPrice = gr.Sum(s => s.SaleCar.FullPrice)
+    }).
+    OrderByDescending(gr => gr.TotalQuantity);
 
 }
 
 <div class="container-fluid">
-    <div class="slider" id="slider" style="margin: 0px;"> 
+    <div class="slider" id="slider" style="margin: 0px;">
         <div class="slider-content" id="slider-content">
             <div class="sl-img">
-                <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg"/></div>
+                <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg" /></div>
                 <div class="sl-img-item" data-id="2"><img src="/image/sliderPhoto2.jpg" /></div>
-                <div class="sl-img-item" data-id="3"><img src="/image/sliderPhoto3.jpg"/></div>
+                <div class="sl-img-item" data-id="3"><img src="/image/sliderPhoto3.jpg" /></div>
             </div>
             <div class="sl-text">
                 <div class="sl-text-item sl-text-item-active" data-id="1">
@@ -95,12 +95,25 @@
 
     </section>
     @{
-        var count = users.Where(s=> s.UserType.TypeName == "Клиент");
-        var sumOrd = @orders.Where(s=> s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен");
+        var count = users.Where(s => s.UserType.TypeName == "Клиент");
+        var sumOrd = @orders.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен");
         decimal? sum = 0;
-        foreach(var order in sumOrd)
+        
+        foreach (var order in sumOrd)
         {
-            sum += order.WareHouses.Where(s=> s.Price != 0 && s.CountChange != 0).Sum(s => s.Price * s.CountChange * -1);
+            foreach (var ware in order.WareHouses)
+            {
+                var discountOrder = DiscountCounter.GetDiscount(ware.SaleCar);
+                if (discountOrder == 0)
+                {
+                    sum += ware.SaleCar.FullPrice * ware.CountChange * -1;
+
+                }
+                else
+                {
+                    sum += discountOrder * ware.CountChange * -1;
+                }
+            }
         }
 
     }
@@ -110,7 +123,7 @@
             <p class="text-white text-center">Количество продаж авто на сайте</p>
         </div>
         <div class="col-4 align-items-center justify-content-center">
-            <h2 class="text-white text-center" style="font-size: 56px;" id="value1">@sum</h2>
+            <h2 class="text-white text-center" style="font-size: 56px;" id="value1">@sum.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h2>
             <p class="text-white text-center">Сумма всех продаж</p>
         </div>
         <div class="col-4 align-items-center justify-content-center">
@@ -125,16 +138,16 @@
         </div>
     </div>
 
-    <section class="w-100" >
+    <section class="w-100">
         <div class="myContainer w-100">
-            <img src="/image/landingText.jpg" style="width: 100%;"/>
+            <img src="/image/landingText.jpg" style="width: 100%;" />
             <div class="textCenterLeft">
                 <h2>Постоянные скидки на авто</h2>
                 <div class="glass-btn glass-btn-red">
                     <a asp-action="DiscountCarView" asp-controller="Home" style="color: black">Посмотреть</a>
                 </div>
             </div>
-            
+
         </div>
     </section>
 
@@ -167,7 +180,7 @@
 
                 <div class="justify-content-center">
                     <h4 class="p3 text-white " style="margin-bottom: 7%;">О нас</h4>
-                    <a href="#"> 
+                    <a href="#">
                         <img src="/image/sectionPhoto1.png" style="max-width: 8rem; " />
                     </a>
                 </div>
@@ -203,10 +216,10 @@
         }
     </div>
     <div class="row w-100 align-items-center align-content-center justify-content-center">
-        @foreach(var popularCar in bestCars)
+        @foreach (var popularCar in bestCars)
         {
-            var car = @Model.FirstOrDefault(s=> s.ID == popularCar.CarId);
-            <div class="card col-4" style="background-color: #171717; min-height: 460px;" >
+            var car = @Model.FirstOrDefault(s => s.ID == popularCar.CarId);
+            <div class="card col-4" style="background-color: #171717; min-height: 460px;">
                 <div class="PhotoScale">
                     <img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.MainPhotoCar })" class="card-img-top">
                 </div>
@@ -237,7 +250,7 @@
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="background-color: #171717">
                 <div class="container mt-5" style="background-color: #171717">
                     <div class="row w-100">
-                        @foreach(var car in models.ToList().OrderBy(s=> s.FullPrice).Take(10))
+                        @foreach (var car in models.ToList().OrderBy(s => s.FullPrice).Take(10))
                         {
                             @if (car.Car.BodyType.TypeName.Contains("Седан"))
                             {
@@ -261,13 +274,13 @@
                             }
                         }
                     </div>
-                        
+
                 </div>
             </div>
             <div class="tab-pane fade show" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab" style="background-color: #171717">
                 <div class="container mt-5" style="background-color: #171717">
                     <div class="row w-100">
-                        @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Гибрид")).ToList().OrderBy(s=> s.FullPrice).Take(10))
+                        @foreach (var car in Model.Where(s => s.Car.BodyType.TypeName.Contains("Гибрид")).ToList().OrderBy(s => s.FullPrice).Take(10))
                         {
                             <div class="col">
                                 <div class="m-3 d-flex justify-content-center">
@@ -280,16 +293,16 @@
                                         </a>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         }
                     </div>
-                        
+
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="container-fluid mt-5" style="background-color: #171717">
                     <div class="row w-100">
-                        @foreach(var car in Model.Where(s=> s.Car.BodyType.TypeName.Contains("Электрокар полный")).OrderBy(s=> s.FullPrice).Take(10))
+                        @foreach (var car in Model.Where(s => s.Car.BodyType.TypeName.Contains("Электрокар полный")).OrderBy(s => s.FullPrice).Take(10))
                         {
                             <div class="col-5">
                                 <div class="m-3 d-flex justify-content-center">
@@ -303,10 +316,10 @@
                                     </div>
                                 </div>
 
-                            </div> 
+                            </div>
                         }
                     </div>
-                        
+
                 </div>
             </div>
         </div>
@@ -339,7 +352,7 @@
     <section class="row row-cols-2 w-100 mt-5" style="height: 500px;">
         <div class="col h-100">
             <div class="wow bounceInUp" style="background-image: url('/image/toyotacamryBg.jpg'); width:100%; height: 100%; background-position:center; object-fit: cover;">
-                <div class="text-wp">    
+                <div class="text-wp">
                     <div class="text-bg">
                         <div class="text-bg-2">
                             <h1>New Toyota Camry</h1>
@@ -348,12 +361,12 @@
                             </a>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
         </div>
         <div class="col h-100">
             <div class="wow slideInRight" style="background-image: url('/image/RCF.jpg'); width:100%; height: 100%; background-position:center;">
-                <div class="text-wp">    
+                <div class="text-wp">
                     <div class="text-bg">
                         <div class="text-bg-2">
                             <h1>Lexus RCF</h1>
@@ -362,7 +375,7 @@
                             </a>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
         </div>
     </section>
@@ -375,136 +388,136 @@
                 Подробнее
             </a>
         </div>
-        <img src="https://electrek.co/wp-content/uploads/sites/3/2020/11/Tesla-hero-Supercharger-charging.jpg?quality=82&strip=all&w=1600" width="100%" height="100%"/>
+        <img src="https://electrek.co/wp-content/uploads/sites/3/2020/11/Tesla-hero-Supercharger-charging.jpg?quality=82&strip=all&w=1600" width="100%" height="100%" />
     </div>
-<div class="row w-100 row-cols-3 align-items-center mt-5">
-    <div class="card col-6" style="background-color: #171717">
-        <div class="PhotoScale">
-            <img src="~/image/2023-porsche-taycan.jpg" class="card-img-top">
-        </div>
+    <div class="row w-100 row-cols-3 align-items-center mt-5">
+        <div class="card col-6" style="background-color: #171717">
+            <div class="PhotoScale">
+                <img src="~/image/2023-porsche-taycan.jpg" class="card-img-top">
+            </div>
 
-        <div class="card-body">
-            <h4 class="card-text text-center" style="color: white;">Линейка электрокаров.</h4>
-            <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
-                <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
-                    <a class="stretched-link" asp-action="ElectricCarView" asp-controller="Home" style="color: black;">Посмотреть</a>
+            <div class="card-body">
+                <h4 class="card-text text-center" style="color: white;">Линейка электрокаров.</h4>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" asp-action="ElectricCarView" asp-controller="Home" style="color: black;">Посмотреть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card col-6" style="background-color: #171717;">
+            <div class="PhotoScale">
+                <img src="~/image/Lexus electric saloon.jpg" class="card-img-top">
+            </div>
+
+            <div class="card-body">
+                <h4 class="card-text text-center" style="color: white;">Будущие электрокары.</h4>
+                <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
+                    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                        <a class="stretched-link" asp-action="FutureCars" asp-controller="Home" style="color: black;">Приобрести</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card col-6" style="background-color: #171717;">
-        <div class="PhotoScale">
-            <img src="~/image/Lexus electric saloon.jpg" class="card-img-top">
-        </div>
-
-        <div class="card-body">
-            <h4 class="card-text text-center" style="color: white;">Будущие электрокары.</h4>
-            <div class="text-center" style="align-items:center; align-content:center; justify-content:center;">
-                <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
-                    <a class="stretched-link" asp-action="FutureCars" asp-controller="Home" style="color: black;">Приобрести</a>
+    <div class="row w-100 justify-content-center align-items-center text-white text-center">
+        <h2>
+            Есть возможность выбирать цвет для выбранного авто
+        </h2>
+    </div>
+    <div class="row w-100 justify-content-center align-items-center wow slideInLeft" data-wow-duration="1s" data-wow-delay="1s">
+        <div class="banner-wrapper" id="banner-wrapper">
+            <div class="banner" style="left: 29%;">
+                <div class="banner-content">
+                    <img src="/CarImages/MyLexus.png">
+                </div>
+            </div>
+            <div class="banner dev" style="left: 29%;">
+                <div class="banner-content">
+                    <img src="/CarImages/MyLexus2.png">
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row w-100 justify-content-center align-items-center text-white text-center">
-    <h2>
-        Есть возможность выбирать цвет для выбранного авто
-    </h2>
-</div>
-<div class="row w-100 justify-content-center align-items-center wow slideInLeft" data-wow-duration="1s" data-wow-delay="1s">
-    <div class="banner-wrapper" id="banner-wrapper">
-        <div class="banner" style="left: 29%;">
-            <div class="banner-content">
-                <img src="/CarImages/MyLexus.png">
-            </div>
-        </div>
-        <div class="banner dev" style="left: 29%;">
-            <div class="banner-content">
-                <img src="/CarImages/MyLexus2.png">
-            </div>
+    <div class="row w-100 justify-content-center align-items-center text-white text-center">
+        <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+            <a class="stretched-link" asp-action="CarView" asp-controller="Home" style="color: black;">Смотреть каталог</a>
         </div>
     </div>
-</div>
-<div class="row w-100 justify-content-center align-items-center text-white text-center">
-    <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
-        <a class="stretched-link" asp-action="CarView" asp-controller="Home" style="color: black;">Смотреть каталог</a>
-    </div>
-</div>
-<div class="row w-100">
-    <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
-      <div class="container">
+    <div class="row w-100">
+        <section class="wow slideInLeft" data-wow-duration="2s" data-wow-delay="2s">
+            <div class="container">
 
-        <!-- START THE FEATURETTES -->
+                <!-- START THE FEATURETTES -->
 
-        <hr class="featurette-divider">
-@*        <div class="tabs3d">
-        <div class="tabs3d-control"></div>
-        <div class="tabs3d-stage">
-            <div class="spinner spinner-left">
+                <hr class="featurette-divider">
+                @*        <div class="tabs3d">
+                <div class="tabs3d-control"></div>
+                <div class="tabs3d-stage">
+                <div class="spinner spinner-left">
                 <div class="spinner-face" data-bg="#2b4356" data-menu="Sauber-Mercedes C9">
-                    <div class="content">
-                        <div class="content-left">
-                            <img src="~/image/MercedesC9.jpg" width="650px;" height="460px;"/>
-                            <div class="content-title">
-                                <div>Mercedes C9</div>
-                            </div>
-                        </div>
-                        <div class="content-right">
-                            <div class="content-main">
-                                <p>C9 был развитием предыдущей конструкции Sauber C8 с сохранением монокока .он в основном состоял из алюминия, хотя и был значительно жестче и с множеством других улучшений. Задняя подвеска была изменена с вертикально расположенных пружинно-демпферных блоков, расположенных над коробкой передач, на горизонтальную компоновку, выровненную с продольной осью автомобиля. Аэродинамические изменения включали перемещение комбинации масляно-водяного радиатора в носовую часть автомобиля, что позволило использовать модифицированную разделительную пластину. 
-                                В соответствии с изменением положения радиаторов большие воздуховоды NACA были удалены из верхней части дверных порогов. Задняя палуба была значительно перепрофилирована, а заднее крыло теперь устанавливалось исключительно на центральной опоре. Аэродинамически автомобиль имел две конфигурации: одну для спринтерских гонок и версию с низким сопротивлением для 5,8-километровой трассы Mulsanne Straight в Ле-Мане. 
-                                В спринтерской конфигурации он производил 2222,1 кг (4899 фунтов) прижимной силы на скорости 320 км / ч (200 миль в час) при 555,7 кг (1225 фунтов) сопротивления. Конфигурация спринтерской схемы имела отношение L / D 4: 1, а версия с низким сопротивлением - около 3: 
-                                1. Ранние двигатели снова были подготовлены швейцарским специалистом по двигателям Хайни Мадером, хотя теперь известно, что это было прикрытием для участия Mercedes в проекте позже. Он был постепенно облегчен за счет использования нового коленчатого вала, более эффективных турбокомпрессоров KKK и блока без гильзы. Это была полунапряженная часть шасси с сухим картером . Не было никаких специальных квалификационных двигателей, и при давлении наддува 2,2 бар он, как говорили, имел мощность «почти 800 л.с. (811 л.с., 597 кВт)». 
-                                Максимальный гоночный наддув составлял 1,9 бар. 
-                                Максимальное число оборотов в минуту составляло 7000, но гонщики обычно держались на уровне 6500 во время гонок. Кривая крутящего момента была почти одинаковой в диапазоне от 3000 до 6000 об/мин, что давало двигателю достаточную гибкость. [2]Двигатель сохранил поперечный коленчатый вал, а порядок зажигания был 1-5-4-8-6-3-7-2. Более поздние двигатели M119HL поставлялись с завода двигателей Mercedes в Унтертюркхайме , которым руководил Герман Хирет. 
-                                Добавление 16 клапанных головок в 1989 году увеличило мощность примерно на 20 л.с. (20 л.с., 15 кВт) до примерно 720 л.с. (730 л.с., 537 кВт) при 1,6 бар и 7000 об/мин. 
-                                Повышение топливной экономичности означало, что абсолютная мощность также может быть увеличена с чуть менее 800 л.с. при давлении наддува 2,2 бара до примерно 820 л.с. (831 л.с., 611 кВт).</p>
-                                <p class="content-autor">Автор</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>                
+                <div class="content">
+                <div class="content-left">
+                <img src="~/image/MercedesC9.jpg" width="650px;" height="460px;"/>
+                <div class="content-title">
+                <div>Mercedes C9</div>
+                </div>
+                </div>
+                <div class="content-right">
+                <div class="content-main">
+                <p>C9 был развитием предыдущей конструкции Sauber C8 с сохранением монокока .он в основном состоял из алюминия, хотя и был значительно жестче и с множеством других улучшений. Задняя подвеска была изменена с вертикально расположенных пружинно-демпферных блоков, расположенных над коробкой передач, на горизонтальную компоновку, выровненную с продольной осью автомобиля. Аэродинамические изменения включали перемещение комбинации масляно-водяного радиатора в носовую часть автомобиля, что позволило использовать модифицированную разделительную пластину.
+                В соответствии с изменением положения радиаторов большие воздуховоды NACA были удалены из верхней части дверных порогов. Задняя палуба была значительно перепрофилирована, а заднее крыло теперь устанавливалось исключительно на центральной опоре. Аэродинамически автомобиль имел две конфигурации: одну для спринтерских гонок и версию с низким сопротивлением для 5,8-километровой трассы Mulsanne Straight в Ле-Мане.
+                В спринтерской конфигурации он производил 2222,1 кг (4899 фунтов) прижимной силы на скорости 320 км / ч (200 миль в час) при 555,7 кг (1225 фунтов) сопротивления. Конфигурация спринтерской схемы имела отношение L / D 4: 1, а версия с низким сопротивлением - около 3:
+                1. Ранние двигатели снова были подготовлены швейцарским специалистом по двигателям Хайни Мадером, хотя теперь известно, что это было прикрытием для участия Mercedes в проекте позже. Он был постепенно облегчен за счет использования нового коленчатого вала, более эффективных турбокомпрессоров KKK и блока без гильзы. Это была полунапряженная часть шасси с сухим картером . Не было никаких специальных квалификационных двигателей, и при давлении наддува 2,2 бар он, как говорили, имел мощность «почти 800 л.с. (811 л.с., 597 кВт)».
+                Максимальный гоночный наддув составлял 1,9 бар.
+                Максимальное число оборотов в минуту составляло 7000, но гонщики обычно держались на уровне 6500 во время гонок. Кривая крутящего момента была почти одинаковой в диапазоне от 3000 до 6000 об/мин, что давало двигателю достаточную гибкость. [2]Двигатель сохранил поперечный коленчатый вал, а порядок зажигания был 1-5-4-8-6-3-7-2. Более поздние двигатели M119HL поставлялись с завода двигателей Mercedes в Унтертюркхайме , которым руководил Герман Хирет.
+                Добавление 16 клапанных головок в 1989 году увеличило мощность примерно на 20 л.с. (20 л.с., 15 кВт) до примерно 720 л.с. (730 л.с., 537 кВт) при 1,6 бар и 7000 об/мин.
+                Повышение топливной экономичности означало, что абсолютная мощность также может быть увеличена с чуть менее 800 л.с. при давлении наддува 2,2 бара до примерно 820 л.с. (831 л.с., 611 кВт).</p>
+                <p class="content-autor">Автор</p>
+                </div>
+                </div>
+                </div>
+                </div>
                 <div class="spinner-face" data-bg="#353f49" data-menu="Mazda 787B">
-                    <div class="content">
-                        <div class="content-left">
-                            <img src="~/image/MazdaGroupC.jpg" width="650px;" height="460px;"/>
-                            <div class="content-title">
-                                <div>Mazda 787B</div>
-                            </div>
-                        </div>
-                        <div class="content-right">
-                            <div class="content-main">
-                                <p>Mazda 787 и ее производная 787B — это спортивные прототипы гоночных автомобилей группы C, которые были разработаны японским производителем автомобилей Mazda для использования в чемпионате мира по спортивным автомобилям , всеяпонском чемпионате по спортивным прототипам и гонках « 24 часа Ле-Мана» с 1990 по 1991 год. объединив смесь правил Международной федерации спортивных автомобилей (FISA) группы C с правилами GTP Международной ассоциации автоспорта (IMSA) , 787-е были последними роторными двигателями Ванкеля. 
-                                Гоночные автомобили для участия в чемпионатах мира и Японии с двигателем Mazda R26B.
-                                Хотя моделям 787 и 787B не хватало скорости на одном круге участников чемпионата мира, таких как Mercedes-Benz , Jaguar и Porsche , а также участников чемпионата Японии Nissan и Toyota , модели 787 обладали надежностью, которая позволяла им бороться за свои соответствующие чемпионаты. 
-                                Надежность автомобилей в конечном итоге окупилась в 1991 году, когда 787B, управляемый Джонни Гербертом , Фолькером Вайдлером и Бертраном Гашо , одержал победу в гонке «24 часа Ле-Мана» 1991 года . 
-                                По состоянию на 2021 год это остается единственной победой автомобиля без поршневого двигателя .дизайн. 
-                                Это была первая победа японского производителя и единственная такая победа до победы Toyota в гонке «24 часа Ле-Мана» 2018 года .
-                            </p>
-                                <p class="content-autor">Автор</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>            
+                <div class="content">
+                <div class="content-left">
+                <img src="~/image/MazdaGroupC.jpg" width="650px;" height="460px;"/>
+                <div class="content-title">
+                <div>Mazda 787B</div>
+                </div>
+                </div>
+                <div class="content-right">
+                <div class="content-main">
+                <p>Mazda 787 и ее производная 787B — это спортивные прототипы гоночных автомобилей группы C, которые были разработаны японским производителем автомобилей Mazda для использования в чемпионате мира по спортивным автомобилям , всеяпонском чемпионате по спортивным прототипам и гонках « 24 часа Ле-Мана» с 1990 по 1991 год. объединив смесь правил Международной федерации спортивных автомобилей (FISA) группы C с правилами GTP Международной ассоциации автоспорта (IMSA) , 787-е были последними роторными двигателями Ванкеля.
+                Гоночные автомобили для участия в чемпионатах мира и Японии с двигателем Mazda R26B.
+                Хотя моделям 787 и 787B не хватало скорости на одном круге участников чемпионата мира, таких как Mercedes-Benz , Jaguar и Porsche , а также участников чемпионата Японии Nissan и Toyota , модели 787 обладали надежностью, которая позволяла им бороться за свои соответствующие чемпионаты.
+                Надежность автомобилей в конечном итоге окупилась в 1991 году, когда 787B, управляемый Джонни Гербертом , Фолькером Вайдлером и Бертраном Гашо , одержал победу в гонке «24 часа Ле-Мана» 1991 года .
+                По состоянию на 2021 год это остается единственной победой автомобиля без поршневого двигателя .дизайн.
+                Это была первая победа японского производителя и единственная такая победа до победы Toyota в гонке «24 часа Ле-Мана» 2018 года .
+                </p>
+                <p class="content-autor">Автор</p>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>*@
+                <!--  Предзагрузка картинок  -->
+                <div style="height: 0; width: 0; overflow: hidden">
+                    <img src="~/image/MercedesC9.jpg">
+                    <img src="image-n.jpg">
+                </div>
             </div>
-        </div>
-    </div>*@
-    <!--  Предзагрузка картинок  -->
-    <div style="height: 0; width: 0; overflow: hidden">
-        <img src="~/image/MercedesC9.jpg">
-        <img src="image-n.jpg">
-    </div>    
+        </section>
     </div>
-    </section>
-</div>
 </div>
 
 @if (User.IsInRole("Администратор") && TempData["AllertMessage"] != null)
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">Привет, @User.Identity.Name</div>
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">Вы вошли как администратор</p>
         </div>
@@ -514,7 +527,7 @@
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">Привет, @User.Identity.Name</div>
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">Вы вошли как пользователь</p>
         </div>
@@ -529,7 +542,7 @@ else
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">Привет, @User.Identity.Name</div>
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">@TempData["RegisterMessage"]</p>
         </div>
@@ -540,32 +553,43 @@ else
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">@User.Identity.Name</div>
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">Ваш заказ завершен!</p>
         </div>
     </div>
 }
 
+@if (TempData["SuccesPaymentMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Привет, @User.Identity.Name</div>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">@TempData["SuccesPaymentMessage"]</p>
+        </div>
+    </div>
+}
+
 @section Scripts{
     <script type="text/javascript">
-        function openSuccessModal(strMessage){
+        function openSuccessModal(strMessage) {
             var myDiv = document.getElementById("MyModalSuccessAlertBody");
             myDiv.innerHTML = strMessage;
             $('#myModalSuccess').modal('show');
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             var msg = "@TempData["SuccessMessage"]";
             if (msg)
                 openSuccessModal(msg);
         })
 
-                window.setTimeout(function () {
-    $(".callout").fadeTo(500, 0).slideUp(500, function () {
-        $(this).remove();
-    });
-}, 4000);
+        window.setTimeout(function () {
+            $(".callout").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
 
     </script>
 }

@@ -9,6 +9,15 @@ namespace MyCar.Server.DataModels
     {
         public static void Initialize(MyCar_DBContext context)
         {
+            if (!Directory.Exists(Path.Combine(AppContext.BaseDirectory, "Images")))
+            {
+                Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, "Images"));
+            }
+            if (!File.Exists(Path.Combine(AppContext.BaseDirectory, "Images", "picture.png")))
+            {
+                File.Copy(Path.Combine(Environment.CurrentDirectory, "picture.png"), Path.Combine(AppContext.BaseDirectory, "Images", "picture.png"));
+            }
+
             if (!context.Statuses.Any())
             {
                 var statuses = new[]

@@ -140,9 +140,9 @@ namespace MyCar.Desktop.ViewModels
                 }
             });
 
-            AddImage = new CustomCommand(() =>
+            AddImage = new CustomCommand(async() =>
             {
-                MethodResult result = UIManager.AddImage("CarImages");
+                MethodResult result = await UIManager.AddImageAsync();
                 if (result.IsSuccess)
                 {
                     ImageCar = result.Data.ToString();

@@ -6,15 +6,19 @@ using MyCar.Desktop.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace MyCar.Desktop.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
+        byte[] bytes = new byte[0];
+        public BitmapImage Image { get; set; } = new BitmapImage();
         public OrderColor SelectedOrderColor { get; set; }
         public ObservableCollection<OrderColor> OrderColors { get; set; }
         public ColorValue SelectedColorValue { get; set; }
@@ -32,7 +36,7 @@ namespace MyCar.Desktop.ViewModels
             Exit = new CustomCommand(() =>
             {
                 AuthWindow authWindow = new AuthWindow();
-                authWindow.Show(); 
+                authWindow.Show();
                 Configuration.CurrentUser = null;
                 Configuration.CloseMainWindow();
             });
@@ -53,7 +57,7 @@ namespace MyCar.Desktop.ViewModels
             });
             AddColorValue = new CustomCommand(() =>
             {
-                ColorValues.Add(new ColorValue { DownValue = 0, UpValue = 0});
+                ColorValues.Add(new ColorValue { DownValue = 0, UpValue = 0 });
             });
             RemoveColorValue = new CustomCommand(() =>
             {
@@ -61,6 +65,7 @@ namespace MyCar.Desktop.ViewModels
                 ColorValues.Remove(SelectedColorValue);
             });
         }
+
         private void Update()
         {
             if (Configuration.GetConfiguration().ColorValues == null)

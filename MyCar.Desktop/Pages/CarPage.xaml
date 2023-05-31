@@ -51,7 +51,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Image Source="{Binding PhotoCar, Converter={core:StringToImageConverter}}" Margin="0 0 0 10"/>
+                            <Image Source="{Binding AsyncValue}" DataContext="{Binding PhotoCar,Converter={core:AsyncImageConverter}}" Margin="0 0 0 10"/>
                             <TextBlock Text="{Binding Model.ModelName}" FontSize="18" Grid.Row="1" FontWeight="DemiBold" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding CarMark}" FontSize="18" Grid.Row="2" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding BodyType.TypeName, StringFormat= Кузов: {0}}" FontSize="18" Grid.Row="3" />

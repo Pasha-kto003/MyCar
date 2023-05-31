@@ -49,11 +49,24 @@ namespace MyCar.Server.DataModels
         public static SaleCarApi SaleGet(SaleCar saleCar, MyCar_DBContext dbContext)
         {
             var result = (SaleCarApi)saleCar;
-            var mainPhoto = dbContext.CarPhotos.FirstOrDefault(s => s.SaleCarId == saleCar.Id && s.IsMainPhoto == 1);
-            if (mainPhoto != null && mainPhoto.PhotoName != null)
+            var photos = dbContext.CarPhotos.Where(s => s.SaleCarId == saleCar.Id);
+            if (!photos.Any())
             {
-                result.MainPhotoCar = mainPhoto.PhotoName;
+                result.MainPhotoCar = "picture.png";
             }
+            else if (!photos.Where(s => s.IsMainPhoto == 1).Any())
+            {
+                result.MainPhotoCar = photos.First().PhotoName;
+            }
+            else
+            {
+                result.MainPhotoCar = photos.First(s => s.IsMainPhoto == 1).PhotoName;
+            }
+            //var mainPhoto = dbContext.CarPhotos.FirstOrDefault(s => s.SaleCarId == saleCar.Id && s.IsMainPhoto == 1);
+            //if (mainPhoto != null && mainPhoto.PhotoName != null)
+            //{
+            //    result.MainPhotoCar = mainPhoto.PhotoName;
+            //}
             var carPhotos = dbContext.CarPhotos.Where(s => s.SaleCarId == saleCar.Id).Select(t => (CarPhotoApi)t).ToList();
             result.CarPhotos = carPhotos;
             var equipment = dbContext.Equipment.FirstOrDefault(s => s.Id == saleCar.EquipmentId);

@@ -11,7 +11,7 @@
     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
     var saleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
     var discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
-    var discountCar = discounts.Where(s => s.SaleCarId != 0 && s.EndDate >= dateTime && s.StartDate <= dateTime).Select(s=> s.SaleCar.Car).ToList();
+    var discountCar = discounts.Where(s => s.SaleCarId != 0 && dateTime >= s.StartDate && dateTime <= s.EndDate).Select(s=> s.SaleCar.Car).ToList();
 }
 
 <div class="row w-100 align-items-center justify-content-center">
@@ -68,14 +68,14 @@
                                         Введите желаемую цену
                                     </h2>
                                 </div>
-                                    <div class="row w-100">
-                                        <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
-                                            <input type="range" min="1000000" max="12000000" name="SearchPrice" value="1000000" oninput="rangeValue.innerText = this.value">
-                                        </div>
-                                        <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
-                                            <h3 class="text-white text-center" id="rangeValue">100</h3>
-                                        </div>
+                                <div class="row w-100">
+                                    <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
+                                        <input type="range" min="1000000" max="12000000" name="SearchPrice" value="1000000" oninput="rangeValue.innerText = this.value">
                                     </div>
+                                    <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
+                                        <h3 class="text-white text-center" id="rangeValue">100</h3>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>

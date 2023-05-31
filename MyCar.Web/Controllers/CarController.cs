@@ -20,6 +20,9 @@ namespace MyCar.Web.Controllers
         }
 
         public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
+        public List<CarApi> NewCars { get; set; } = new List<CarApi>();
+        public List<MarkCarApi> Marks { get; set; } = new List<MarkCarApi>();
+
         // GET: CarController
         public ActionResult Index()
         {
@@ -35,7 +38,7 @@ namespace MyCar.Web.Controllers
             var car = Cars.FirstOrDefault(s => s.ID == id);
             var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
             var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
-            var article = new MvcBreadcrumbNode("ShowPartialView", "Home", $"Комплектации/{car.Car.CarName}") { Parent = articlesPage };
+            var article = new MvcBreadcrumbNode("ShowPartialView", "Home", $"{car.Car.CarName}") { Parent = articlesPage };
             var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"{car.FullName}") { Parent = article };
             RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.FullName}");
             ViewData["BreadcrumbNode"] = articlePage;
@@ -67,7 +70,11 @@ namespace MyCar.Web.Controllers
             return View("DetailsCarView", car);
         }
 
-        
+        private async Task<List<MarkCarApi>> GetMark()
+        {
+            Marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            return Marks;
+        }
 
         [HttpGet]
         public IActionResult CartView()

@@ -11,7 +11,7 @@
     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
     var saleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
     var discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
-    var discountCar = discounts.Where(s => s.SaleCarId != 0 && s.EndDate >= dateTime && s.StartDate <= dateTime).Select(s=> s.SaleCar.Car).ToList();
+    var discountCar = discounts.Where(s => s.SaleCarId != 0 && dateTime >= s.StartDate && dateTime <= s.EndDate).Select(s=> s.SaleCar.Car).ToList();
 }
 
 <div class="row w-100 align-items-center justify-content-center">
@@ -249,7 +249,7 @@
 @if (TempData["SearchMessage"] != null)
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
-        <div class="callout-header">Удаление из корзины</div>
+        <div class="callout-header">Результат поиска</div>
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">@TempData["SearchMessage"]</p>

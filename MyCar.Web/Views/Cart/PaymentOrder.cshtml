@@ -23,7 +23,7 @@
                     }
                     @foreach (var cars in Model.WareHouses)
                     {
-                        sum += cars.Price;
+                        sum += cars.Price * cars.CountChange * -1;
                         int? count = cars.CountChange * -1;
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>

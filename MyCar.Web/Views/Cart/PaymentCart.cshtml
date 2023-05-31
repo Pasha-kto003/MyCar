@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-7 col-lg-8">
                 <h4 class="mb-3 text-white">Заполните данные</h4>
-                <form class="needs-validation" novalidate="" asp-controller="Cart" asp-action="PaymentOrder" asp-route-order="@Model" method="post">
+                <form class="needs-validation" novalidate="" asp-controller="Cart" asp-action="PaymentOrder" asp-route-Id="@Model.ID" method="post">
                     <div class="row g-3">
                         <div class="col-sm-6">
                             <label for="firstName" class="form-label text-white">Имя</label>
@@ -96,7 +96,8 @@
 
                         <div class="col-md-3">
                             <label for="cc-expiration" class="form-label text-white">Месяц</label>
-                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="" name="cardMonth">
+                            @*<input type="number" min="1" max="12" step="1"  class="form-control" id="cc-expiration"  name="cardMonth">*@
+                            <input type="number" min="1" step="1" onkeydown="return false" max="12" value="1" name="cardMonth" style="width: 200px; text-align: center;" width="200" />
                             <div class="invalid-feedback">
                                 Срок действия обязателен
                             </div>
@@ -104,7 +105,8 @@
 
                         <div class="col-md-3">
                             <label for="cc-expiration" class="form-label text-white">Год</label>
-                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="" name="cardYear">
+                            @*<input type="datetime" class="form-control" id="datepicker" placeholder="" required="" name="cardYear">*@
+                            <input type="number" min="2023" step="1" onkeydown="return false" max="2099" value="2023" name="cardYear" style="width: 200px; text-align: center;" width="200" />
                             <div class="invalid-feedback">
                                 Срок действия обязателен
                             </div>
@@ -112,7 +114,7 @@
 
                         <div class="col-md-3">
                             <label for="cc-cvv" class="form-label text-white">CVV</label>
-                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required="" name="cardCVV">
+                            <input type="text"  id="cc-cvv" placeholder="" required="" maxlength="3" name="cardCVV" style="width: 200px; text-align: center;" width="200">
                             <div class="invalid-feedback">
                                 Секретный код обязателен
                             </div>
@@ -139,13 +141,4 @@
     </div>
 }
 
-@if (TempData["SuccesPaymentMessage"] != null)
-{
-    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
-        <div class="callout-header">Привет, @User.Identity.Name</div>
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        <div class="callout-container">
-            <p class="text-white">@TempData["SuccesPaymentMessage"]</p>
-        </div>
-    </div>
-}
+

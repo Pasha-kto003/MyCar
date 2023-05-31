@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsApi;
+using MyCar.Server.DB;
 using MyCar.Web.Core;
 using MyCar.Web.Models.Payments.Contracts;
 using MyCar.Web.Models.Payments.Stripe;
@@ -579,6 +580,7 @@ namespace MyCar.Web.Controllers
 
             await CreateOrder(order);
 
+            
             //Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(user.UserName, "4242424242424242", "2027", "10", "999");
             //Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
             //CancellationToken ct = new CancellationToken();
@@ -587,68 +589,92 @@ namespace MyCar.Web.Controllers
             //orderItems.Clear();
             string json1 = JsonConvert.SerializeObject(orderItems);
             HttpContext.Session.SetString("OrderItem", json1);
-
+            
             EmailSender emailSender = new EmailSender();
             emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
             var marks = new List<MarkCarApi>();
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             ViewBag.Marks = marks;
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             //TempData["OrderFineMessage"] = $"Ваш заказ завершен";
-            return View("PaymentOrder", order);
+            return View("~/Views/Home/Index.cshtml", cars);
         }
 
-        public async Task<IActionResult> PaymentOrder(OrderApi order, string cardName, string cardNumber, string cardMonth, string cardYear, string cardCVV)
+        public async Task<IActionResult> Payment(int Id)
         {
             await GetOrders();
             var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
             var actionType = Types.FirstOrDefault(s => s.ActionTypeName == "Продажа");
             var status = Statuses.FirstOrDefault(s => s.StatusName == "Завершен");
-
-            List<WareHouseApi> orderItems = new List<WareHouseApi>();
-            string json = HttpContext.Session.GetString("OrderItem");
-            if (json != null)
-                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
-            order.WareHouses = orderItems;
+            var order = Orders.FirstOrDefault(s => s.ID == Id);
             order.User = user;
             order.ActionType = actionType;
             order.Status = status;
+            order.StatusId = status.ID;
+            if (order == null)
+            {
+                TempData["OrderMessage"] = "Такого заказа не существует!";
+                return View("CartPage", Orders);
+            }
+            return View("PaymentCart", order);
+        }
+
+        public async Task<IActionResult> PaymentOrder(int Id, string cardName, string cardNumber, string cardMonth, string cardYear, string cardCVV)
+        {
+            if(Id != 0)
+            {
+                await GetOrders();
+                var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
+                var actionType = Types.FirstOrDefault(s => s.ActionTypeName == "Продажа");
+                var status = Statuses.FirstOrDefault(s => s.StatusName == "Завершен");
+
+                var order = Orders.FirstOrDefault(s => s.ID == Id);
             
+                decimal? sum = new();
+                StringBuilder sb = new StringBuilder();
+                foreach (var item in order?.WareHouses)
+                {
+                    sum += item.Price;
+                    sb.AppendLine("Машина: " + item.SaleCar.FullName + " Количество: " + item.CountChange * -1);
+                }
+                long totalSum = (long)sum * 100;
 
-            decimal? sum = new();
-            StringBuilder sb = new StringBuilder();
-            foreach (var item in orderItems)
-            {
-                sum += item.Price;
-                sb.AppendLine("Машина: " + item.SaleCar.FullName + " Количество: " + item.CountChange * -1);
+                Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(cardName, cardNumber, cardYear, cardMonth, cardCVV);
+                Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
+                CancellationToken ct = new CancellationToken();
+                StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
+
+                long dollarSum = totalSum / 80;
+                try
+                {
+                    Models.Payments.Stripe.AddStripePayment payment = new AddStripePayment(createdCustomer.CustomerId, user.Email, sb.ToString(), "USD", dollarSum);
+                    StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
+                    order.Status = status;
+                    order.StatusId = status.ID;
+                }
+                catch (Exception)
+                {
+                    TempData["ErrorPaymentMessage"] = "При оплате произошел сбой!";
+                    return View("PaymentOrder", order);
+                }
+            
+                await EditOrder(order);
+
+                //orderItems.Clear();
+
+                var marks = new List<MarkCarApi>();
+                marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+                ViewBag.Marks = marks;
+                var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+                TempData["SuccesPaymentMessage"] = "Оплата проведена успешно!";
+                return View("~/Views/Home/Index.cshtml", cars);
             }
-            long totalSum = (long)sum * 100;
-
-            Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(cardName, cardNumber, cardYear, cardMonth, cardCVV);
-            Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
-            CancellationToken ct = new CancellationToken();
-            StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
-
-            long dollarSum = totalSum / 80;
-            try
-            {
-                Models.Payments.Stripe.AddStripePayment payment = new AddStripePayment(createdCustomer.CustomerId, user.Email, sb.ToString(), "USD", dollarSum);
-                StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
-            }
-            catch (Exception)
+            else
             {
                 TempData["ErrorPaymentMessage"] = "При оплате произошел сбой!";
+                var order = Orders.FirstOrDefault(s => s.ID == Id);
                 return View("PaymentOrder", order);
             }
-            await EditOrder(order);
-
-            orderItems.Clear();
-
-            var marks = new List<MarkCarApi>();
-            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-            ViewBag.Marks = marks;
-            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            TempData["SuccesPaymentMessage"] = "Оплата проведена успешно!";
-            return View("~/Views/Home/Index.cshtml", cars);
         }
 
 

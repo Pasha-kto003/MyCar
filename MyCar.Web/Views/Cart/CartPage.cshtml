@@ -48,9 +48,24 @@
                     <div class="header mb-5 mt-5">
                         @{
                             decimal? orderPrice = 0;
-                            
+                            foreach (var order in @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен"))
+                            {
+                                foreach (var ware in order.WareHouses)
+                                {
+                                    var discountOrder = DiscountCounter.GetDiscount(ware.SaleCar);
+                                    if (discountOrder == 0)
+                                    {
+                                        orderPrice += ware.SaleCar.FullPrice * ware.CountChange * -1;
 
-                            orderPrice = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Sum(s => s.SumOrder);
+                                    }
+                                    else
+                                    {
+                                        orderPrice += discountOrder * ware.CountChange * -1;
+                                    }
+                                }
+                            }
+
+                            //orderPrice = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Sum(s => s.WareHouses.Sum(s=> s.Price));
 
                             //var sumOrd = @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа"  && s.Status.StatusName != "Отменен").Sum(s => s.WareHouses.Sum(s=> s.SaleCar.FullPrice * s.CountChange * -1));
 
@@ -70,7 +85,7 @@
                 </div>
             </div>
             <div class="accordion" id="accordionPanelsStayOpenExample" style="background-color: #171717;">
-                @foreach (var ord in @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен"))
+                @foreach (var ord in @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен" || s.Status.StatusName == "Ожидает оплаты"))
                 {
                     <div class="accordion-item" style="background-color: #171717; border: 1px solid #ffffff;">
                         <h2 class="accordion-header align-items-center justify-content-center text-center" id="panelsStayOpen-headingTwo" style="background-color: #171717;">
@@ -96,7 +111,16 @@
                                                         Заказ оплачен
                                                     </h3>
                                                 }
-                                                else
+                                                @if (ord.Status.StatusName == "Ожидает оплаты")
+                                                {
+                                                    <h3 class="display-5 fw-bold text-danger">
+                                                        Ожидает оплаты
+                                                    </h3>
+                                                    <div class="glass-btn glass-btn-red">
+                                                        <a asp-action="Payment" asp-controller="Cart" asp-route-id="@ord.ID" style="color: black">Оплатить</a>
+                                                    </div>
+                                                }
+                                                @if(ord.Status.StatusName == "Новый")
                                                 {
                                                     <h3 class="display-5 fw-bold text-danger">
                                                         Заказ не оплачен

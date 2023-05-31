@@ -31,9 +31,9 @@
                     ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                     if(ware.Value <= 0)
                     {
-                            <h3 class="text-white text-center" style="text-align: center;">
-                                Отсутствует в продаже
-                            </h3>
+                        <h3 class="text-white text-center" style="text-align: center;">
+                            Отсутствует в продаже
+                        </h3>
                     }
                     else
                     {
@@ -142,7 +142,7 @@
                         <figure>
                         @foreach(var img in @Model.CarPhotos)
                         {
-                            <div><a href="#any"><img src="~/CarImages/@img.PhotoName" alt="" /></a></div>
+                            <div><a href="#any"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @img.PhotoName })" alt="" /></a></div>
                         }
                         </figure>
                         <nav>
@@ -312,7 +312,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 <li class="slide-container">
 		            <div class="slide">
                         <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@colorCar.ID">
-                            <img src="~/CarImages/@colorCar.MainPhotoCar"/>
+                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @colorCar.MainPhotoCar })"/>
                         </a>
                     </div>
                 </li>
@@ -381,7 +381,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                             }
                         </div>
                         <div class="col-9 justify-content-center">
-                            <img src="~/CarImages/@cars.MainPhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.MainPhotoCar })" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
                         </div>
                     </div>
                     <div class="row w-100">
@@ -423,7 +423,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
                 <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
                     <div class="corner-box-1-content" style="background-color:#171717">
                         <div class="card-body img-responsive">
-                            <img src="~/CarImages/@cars.PhotoCar" style="width:200px; height:150px; position:relative;"/>
+                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.PhotoCar })" style="width:200px; height:150px; position:relative;"/>
                             <br />
                             <h5 style="color:white;">@cars.CarName</h5>
                             <button class="imageButton">
@@ -454,12 +454,3 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
         </div>
     </div>
 }
-
-@*@functions
-{
-    public void ChangeColorCar(int id)
-    {
-        var carsStyles = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-        var styles = carsStyles.Where(s => s.FullName == @Model.FullName).ToList();
-    }
-}*@

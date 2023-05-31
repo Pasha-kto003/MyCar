@@ -132,6 +132,13 @@ namespace MyCar.Web.Controllers
             return View("UserView", users);
         }
 
+        public async Task<IActionResult> DisplayImage(string photoName)
+        {
+            byte[] imageData = await Api.GetImage<byte[]>($"{photoName}", "Image");
+
+            return File(imageData, "image/png");
+        }
+
         public async Task<IActionResult> DashBoardView(DateTime dateCompare)
         {
             var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");

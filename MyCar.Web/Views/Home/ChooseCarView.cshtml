@@ -25,7 +25,7 @@
                         <div class="MySingle-product d-flex flex-row">
                             <div class="col-5">
                                 <div class="product-PhotoBuild">
-                                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@cars.ID"><img src="~/CarImages/@cars.MainPhotoCar"/></a>
+                                    <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@cars.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.MainPhotoCar })"/></a>
                                 </div>
                             </div>
                             <div class="col-7 product-Details justify-content-between">

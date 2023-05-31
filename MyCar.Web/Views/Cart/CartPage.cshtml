@@ -68,9 +68,7 @@
                             //orderPrice = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Sum(s => s.WareHouses.Sum(s=> s.Price));
 
                             //var sumOrd = @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа"  && s.Status.StatusName != "Отменен").Sum(s => s.WareHouses.Sum(s=> s.SaleCar.FullPrice * s.CountChange * -1));
-
                             var countOrd = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Count();
-
                             <h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h1>
                         }
 
@@ -135,7 +133,7 @@
                                                 @foreach (var price in @ord.WareHouses)
                                                 {
                                                     decimal? sum = 0;
-                                                    var discountPrice = DiscountCounter.GetDiscountByOrder(@ord, @price.SaleCar);
+                                                    var discountPrice = DiscountCounter.GetDiscount(@price.SaleCar);
                                                     if (discountPrice == 0)
                                                     {
                                                         discountPrice = null;
@@ -159,7 +157,7 @@
                                             <div class="row flex-lg-row align-items-center  py-5 border-bottom" style="background-color: #171717;">
                                                 <div class="col-10 col-sm-8 col-lg-6">
                                                     <div class="product-Photo">
-                                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><img src="~/CarImages/@car.SaleCar.MainPhotoCar" /></a>
+                                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.SaleCar.MainPhotoCar })" /></a>
                                                     </div>
                                                 </div>
 
@@ -182,7 +180,7 @@
 
                                                         <div class="col p-5">
                                                             <div class="row border-bottom">
-                                                                <h2 style="color: white;"><img src="~/MarkImages/@car.SaleCar.Car.Model.MarkCar.MarkPhoto" width="75" height="60" /></h2>
+                                                                <h2 style="color: white;"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.SaleCar.Car.Model.MarkCar.MarkPhoto })" width="75" height="60" /></h2>
                                                             </div>
                                                             <div class="row border-bottom">
                                                                 <a style="text-decoration:none;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><h3 style="color: white;" class="product-title">@car.SaleCar.Car.CarName</h3></a>
@@ -215,13 +213,9 @@
                                                                 </div>
                                                             }
                                                         </div>
-
                                                     </div>
-
                                                 </div>
-
                                             </div>
-
                                         }
                                     </div>
                                 </div>

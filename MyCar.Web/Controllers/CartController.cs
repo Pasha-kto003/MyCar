@@ -71,7 +71,6 @@ namespace MyCar.Web.Controllers
 
         public IActionResult Report(string name)
         {
-            
             //Task.Run(GetOrder);
             Orders = GetOrder().Result;
             GenerateReport(Orders);
@@ -325,7 +324,6 @@ namespace MyCar.Web.Controllers
                 order = Orders.Where(s => s.User.UserName == userIsAdmin.UserName).ToList();
                 return order;
             }
-            //var order = Orders.Where(s => s.User.UserName == name).ToList();
             return order;
         }
 

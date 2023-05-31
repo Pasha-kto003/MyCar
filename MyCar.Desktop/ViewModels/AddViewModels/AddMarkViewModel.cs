@@ -71,9 +71,9 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
             ImageMark = AddMark.MarkPhoto;
 
             string dir = Environment.CurrentDirectory;
-            AddImage = new CustomCommand(() =>
+            AddImage = new CustomCommand(async() =>
             {
-                MethodResult result = UIManager.AddImage("MarkImages");
+                MethodResult result = await UIManager.AddImageAsync();
                 if (result.IsSuccess)
                 {
                     ImageMark = result.Data.ToString();

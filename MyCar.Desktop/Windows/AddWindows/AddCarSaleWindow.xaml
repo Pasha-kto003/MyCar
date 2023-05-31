@@ -104,7 +104,7 @@
                             <Border x:Name="border">
                                 <Grid Width="150" Height="150" Background="Transparent" Margin="5">
                                     <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">-->
-                                    <Image Source="{Binding PhotoName, ConverterParameter=SaleCarImages, Converter={core:StringToImageConverter}}" Width="150" Height="150"/>
+                                    <Image Source="{Binding AsyncValue}" DataContext="{Binding PhotoName,Converter={core:AsyncImageConverter}}" Width="150" Height="150"/>
                                     <!--</StackPanel>-->
                                 </Grid>
                             </Border>

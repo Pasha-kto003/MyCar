@@ -3,6 +3,7 @@ using MyCar.Desktop.Core.UI;
 using MyCar.Desktop.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -109,6 +110,39 @@ namespace MyCar.Desktop.Core
             var str = JsonSerializer.Serialize(value, typeof(T));
             var answer = await client.DeleteAsync(server + controller + $"/{value.ID}");
             return answer.StatusCode == System.Net.HttpStatusCode.OK;
+        }
+
+        public static async Task<T> GetImage<T>(string imageName, string controller)
+        {
+            var response = await client.GetAsync(server + controller + $"/images/{imageName}");
+            if (response.IsSuccessStatusCode)
+            {
+                var imageBytes = await response.Content.ReadAsByteArrayAsync();
+                return (T)(object)imageBytes;
+            }
+            else
+            {
+                return default(T);
+            }
+        }
+
+        public static async Task<string> SaveImage(FileInfo fileInfo, string controller)
+        {
+                var formData = new MultipartFormDataContent();
+                var fileContent = new StreamContent(fileInfo.OpenRead());
+                formData.Add(fileContent, "file", fileInfo.Name);
+
+                var response = await client.PostAsync(server + controller + "/images", formData);
+                if (response.IsSuccessStatusCode)
+                {
+                    var fileName = await response.Content.ReadAsStringAsync();
+                    return fileName;
+                }
+                else
+                {
+                    // Обработка ошибки сохранения файла на сервере
+                    return null;
+                }
         }
     }
 }

@@ -127,8 +127,7 @@ namespace MyCar.Server.Controllers.Jwt
 
         private bool FindUser(string username)
         {
-            var result =  dbContext.Users.FirstOrDefault(s=> s.UserName == username);
-            if (result == null)
+            if (!dbContext.Users.Any(s => s.UserName == username))
             {
                 return false;
             }

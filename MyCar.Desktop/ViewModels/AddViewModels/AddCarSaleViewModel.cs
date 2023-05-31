@@ -124,12 +124,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             AddPhotoCar = new CustomCommand(async () =>
             {
-                MethodResult result = UIManager.AddImage("SaleCarImages");
+                MethodResult result = await UIManager.AddImageAsync();
                 if (result.IsSuccess)
                 {
-                    CarPhotoApi carPhoto = new CarPhotoApi { PhotoName = result.Data.ToString(), SaleCarId = AddSaleVM.ID, ID = 0, IsMainPhoto = 0};
+                    CarPhotoApi carPhoto = new CarPhotoApi { PhotoName = result.Data.ToString(), SaleCarId = AddSaleVM.ID, ID = 0, IsMainPhoto = 0 };
                     ThisCarPhotos.Add(carPhoto);
-                    //await EditPhoto(carPhoto);
                 }
             });
 

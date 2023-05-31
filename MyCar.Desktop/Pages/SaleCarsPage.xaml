@@ -60,7 +60,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="{Binding Articul, StringFormat= Арт.{0}}" FontSize="18" Grid.Row="0" FontWeight="DemiBold" HorizontalAlignment="Left"/>
-                                <Image Source="{Binding MainPhotoCar, ConverterParameter=SaleCarImages, Converter={core:StringToImageConverter}}" Margin="10" Grid.Row="1"/>
+                                <Image Source="{Binding AsyncValue}" DataContext="{Binding MainPhotoCar,Converter={core:AsyncImageConverter}}" Margin="10" Grid.Row="1"/>
                             </Grid>
 
                             <TextBlock Text="{Binding Car.CarName}" Margin="5" FontSize="18" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0"/>

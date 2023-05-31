@@ -13,7 +13,7 @@
                     <div class="row align-items-center p-4">
 
                         <div class="col-4 productCart-Photo d-flex justify-content-center">
-                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@Model.SaleCarId"><img src="~/CarImages/@Model.SaleCar.MainPhotoCar"></a>
+                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@Model.SaleCarId"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @Model.SaleCar.MainPhotoCar })"></a>
                         </div>
 
                         <div class="col-8 d-flex justify-content-between">

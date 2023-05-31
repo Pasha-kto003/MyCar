@@ -91,15 +91,15 @@
                                 </small>
                             </p>
                             @{
-                                    <div class="product-price">
-                                        <h2 class="text-white">
-                                            @cars.CarPrice &#8381
-                                        </h2>
-                                    </div>
+                                <div class="product-price">
+                                    <h2 class="text-white">
+                                        @cars.CarPrice &#8381
+                                    </h2>
+                                </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">
-                            <img src="~/CarImages/@cars.PhotoCar" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.PhotoCar })" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
                         </div>
                     </div>
                     <div class="row w-50">
@@ -206,7 +206,7 @@
             <div class="col">
                 <div class="m-3 d-flex justify-content-center">
                     <div class="mark-Photo">
-                        <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="~/CarImages/@i.PhotoCar" /></a>
+                        <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.PhotoCar })" /></a>
                     </div>
                 </div>
             </div>

@@ -88,7 +88,7 @@
                                     <div class="col">
                                         <div class="m-3 d-flex justify-content-center">
                                             <div class="mark-Photo">
-                                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="~/MarkImages/@i.MarkPhoto" /></a>
+                                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.MarkPhoto })" /></a>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@
                     <div class="card mb-3" style="max-width: 100%; background-color: #171717;">
                         <div class="row g-0">
                             <div class="col-md-2">
-                                <img src="~/CarImages/@i.PhotoCar" width="200px" height="150px" class="img-fluid rounded-start">
+                                <img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.PhotoCar })" width="200px" height="150px" class="img-fluid rounded-start">
                             </div>
                             <div class="col-md-6">
                                 <div class="card-body">
@@ -184,7 +184,7 @@
                             <div class="col-md-4">
                                 <div class="row align-items-center justify-content-center">
                                     <div class="h-100 col-6 text-center" style="align-items: center;">
-                                        <img src="~/MarkImages/@i.Model.MarkCar.MarkPhoto" width="75px" height="75px" class="img-fluid rounded-start" style="justify-content:center;">
+                                        <img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.Model.MarkCar.MarkPhoto })" width="75px" height="75px" class="img-fluid rounded-start" style="justify-content:center;">
                                     </div>
                                     <div class="col-6 text-center align-items-center justify-content-center">
                                         <p class="text-white">Цена авто: </p>
@@ -210,7 +210,7 @@
                         <div class="MySingle-product mt-3 mb-3">
 
                             <div class="product-Photo">
-                                <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@i.ID"><img src="~/CarImages/@i.PhotoCar"/></a>
+                                <a asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.PhotoCar })"/></a>
                             </div>              
                             <div class="product-Details">
                                 <a style="text-decoration:none;" asp-action="ShowPartialView" asp-controller="Home" asp-route-id="@i.ID">

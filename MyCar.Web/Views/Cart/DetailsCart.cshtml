@@ -122,7 +122,7 @@
                                                                             <p class="text-danger">@ViewBag.ErrorMes</p>
                                                                             <div class="row w-100 justify-content-center align-items-center">
                                                                                 <label asp-for="@car.SaleCarId">@car.SaleCarId</label>
-                                                                                <input type="number" max="@car.SaleCar.Count" name="CountChange" placeholder="Введите новое кол-во" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
+                                                                                <input type="number" min="1" max="@car.SaleCar.Count" name="CountChange" placeholder="Введите новое кол-во" step="1" onkeydown="return false" style="width: 200px; justify-content:center;"/>
                                                                             </div>                                               
                                                                             <div class="row-cols-2 w-100" style="display: flex;">
                                                                                 <div class="col-6">

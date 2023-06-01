@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ModelsApi;
 using MyCar.Server.DB;
 using MyCar.Web.Core;
@@ -17,7 +18,7 @@ namespace MyCar.Web.Controllers
     public class CartController : Controller
     {
         public List<OrderApi> Orders = new List<OrderApi>();
-
+        public List<OrderApi> SearchOrders = new List<OrderApi>();
         public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
 
         public DateTime DateStart { get; set; }
@@ -66,7 +67,16 @@ namespace MyCar.Web.Controllers
         public IActionResult CartPage(string name)
         {
             name = User.Identity.Name;
+            
             return View("CartPage", GetPage(name).Result);
+        }
+
+        public async Task<IActionResult> SearchOrder(string FilterString)
+        {
+            string name = User.Identity.Name;
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+            SearchOrders = Orders.Where(s => s.Status.StatusName.Contains(FilterString)).ToList();
+            return View("CartPage", SearchOrders);
         }
 
         public IActionResult Report(string name)
@@ -317,6 +327,8 @@ namespace MyCar.Web.Controllers
             var userIsAdmin = Users.FirstOrDefault(s => s.UserName == name);
             if (userIsAdmin.UserType.TypeName == "Администратор")
             {
+                var users = await Api.GetListAsync<List<UserApi>>("User");
+                ViewBag.Users = order.Where(s => s.UserId != 0).Select(s => s.User);
                 return order;
             }
             else if (userIsAdmin.UserType.TypeName == "Клиент")
@@ -324,6 +336,7 @@ namespace MyCar.Web.Controllers
                 order = Orders.Where(s => s.User.UserName == userIsAdmin.UserName).ToList();
                 return order;
             }
+            
             return order;
         }
 

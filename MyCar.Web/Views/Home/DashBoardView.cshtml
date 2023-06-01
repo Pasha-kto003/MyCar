@@ -1,4 +1,6 @@
 ﻿@using ChartJSCore.Models;
+@using ModelsApi
+@using MyCar.Web.Core
 @{
     ViewData["Title"] = "Privacy Policy";
 
@@ -8,16 +10,26 @@
     //Chart horBarChart = (Chart)ViewData["horBarChart"];
     Chart customLineChart = (Chart)ViewData["customLineChart"];
     Chart customVerticalBarChart = (Chart)ViewData["customVerticalBarChart"];
+    var orders = await Api.GetListAsync<List<OrderApi>>("Order");
+    var filterOrders = orders.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен" || s.Status.StatusName == "Ожидает оплаты");
+    var filterOrdersIn = orders.Where(s => s.ActionType.ActionTypeName == "Поступление" && s.Status.StatusName == "Завершен" || s.Status.StatusName == "Ожидает оплаты");
+    var validateWarehouse = orders.Where(s => s.Status.StatusName != "Отменен"
+            && s.ActionType.ActionTypeName == "Продажа").SelectMany(e => e.WareHouses).ToList();
+    var saleCount = validateWarehouse.GroupBy(car => car.SaleCarId)
+    .Select(gr => new
+    {
+        CarId = gr.Key,
+        TotalQuantity = gr.Sum(s => s.CountChange * -1),
+        FullPrice = gr.Sum(s => s.SaleCar.FullPrice)
+    }).
+    OrderByDescending(gr => gr.TotalQuantity);
 }
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js" integrity="sha512-klQv6lz2YR+MecyFYMFRuU2eAl8IPRo6zHnsc9n142TJuJHS8CG0ix4Oq9na9ceeg1u5EkBfZsFcV3U7J51iew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <div class="container-fluid">
-
-
 <div class="row mb-4 ">
     <div class="col-md-6">
         <div class="d-flex  widget summary income">
@@ -49,7 +61,14 @@
             </div>
             <div class="d-flex flex-column m-auto py-3">
                 <span class="lead text-white">Количество продаж</span>
-                <h1 class="display-6 fw-bold text-white">@ViewBag.SaleCount</h1>
+                @{
+                    decimal? countOrder = 0;
+                    @foreach (var ord in filterOrders)
+                    {
+                        countOrder += ord.WareHouses.Sum(s => s.CountChange * -1);
+                    }
+                    <h1 class="display-6 fw-bold text-white">@countOrder</h1>
+                }
             </div>
         </div>
     </div>
@@ -59,19 +78,33 @@
             </div>
             <div class="d-flex flex-column m-auto py-3">
                 <span class="lead text-white">Количество поступлений</span>
-                <h1 class="display-6 fw-bold text-white">@ViewBag.WareHouseCount</h1>
+                @{
+                    decimal? countOrderIn = 0;
+                    @foreach (var ord in filterOrdersIn)
+                    {
+                        countOrder += ord.WareHouses.Sum(s => s.CountChange);
+                    }
+                    <h1 class="display-6 fw-bold text-white">@countOrderIn</h1>
+                }
             </div>
         </div>
     </div>
 </div>
 <div class="row mb-4">
     <div class="col-md-6">
-        <div class="d-flex  widget summary balance">
+        <div class="d-flex widget summary balance">
             <div class="d-flex flex-column justify-content-center p-5">
             </div>
             <div class="d-flex flex-column m-auto py-3">
-                <span class="lead text-white">Машин продано</span>
-                <h1 class="display-6 fw-bold text-white">@ViewBag.SaleCarCount</h1>
+                <span class="lead text-white">Стоимость продаж</span>
+                @{
+                    decimal? sumOrder = 0;
+                    @foreach (var ord in filterOrders)
+                    {
+                        sumOrder += ord.WareHouses.Sum(s => s.Price * s.CountChange * -1);
+                    }
+                    <h1 class="display-6 fw-bold text-white">@sumOrder</h1>
+                }
             </div>
         </div>
     </div>
@@ -80,125 +113,73 @@
             <div class="d-flex flex-column justify-content-center p-5">
             </div>
             <div class="d-flex flex-column m-auto py-3">
-                <span class="lead text-white">Машин поступило</span>
-                <h1 class="display-6 fw-bold text-white">@ViewBag.CarCount</h1>
+                <span class="lead text-white">Стоимость покупок</span>
+                @{
+                    decimal? sumOrderIn = 0;
+                    @foreach (var ord in filterOrdersIn)
+                    {
+                        sumOrderIn += ord.WareHouses.Sum(s => s.Price * s.CountChange);
+                    }
+                    <h1 class="display-6 fw-bold text-white">@sumOrderIn</h1>
+                }
             </div>
         </div>
     </div>
 </div>
 
-<div class="container ">
-    <div class="row justify-content-center">
-        <div class="col-8  ">
-            <div class="card mb-4 ">
-                <div class="card-header">
-                    Топ пять самых продаваемых автомобилей
-                </div>
-                <div class="card-body">
-                    <canvas class="my-4 h-25" id="pieChart"></canvas>
+    <div class="container ">
+        <div class="row justify-content-center">
+            <div class="col-8  ">
+                <div class="card mb-4 ">
+                    <div class="card-header">
+                        Топ пять самых продаваемых автомобилей
+                    </div>
+                    <div class="card-body">
+                        <canvas class="my-4 h-25" id="pieChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <div class="row">
 
+            <div class="text-center">
+                <div class="m-4">
+                    <form method="post" asp-action="DashBoardView" asp-controller="Home">
+                        <label class="text-white m-1">Выберите месяц </label>
+                        <input type="date" name="dateCompare">
+                        <input class="btn btn-success m-1" value="Сравнить" type="submit">
+                    </form>
+                </div>
 
-        @*<div class="col-sm-6">
-        <div class="card mb-4">
-        <div class="card-header">
-        Диаграмма
-        </div>
-        <div class="card-body">
-        <canvas class="my-4 h-25" id="vertBarChart"></canvas>
-        </div>
-        </div>
-        </div>
-
-        <div class="col-sm-6">
-        <div class="card mb-4">
-        <div class="card-header">
-        Диаграмма для количества
-        </div>
-        <div class="card-body">
-        <canvas class="my-4 h-25" id="lineChart"></canvas>
-        </div>
-        </div>
-        </div>
-
-        <div class="col-sm-6">
-        <div class="card mb-4">
-        <div class="card-header">
-        Диаграмма для окупаемости
-        </div>
-        <div class="card-body">
-        <canvas class="my-4 h-25" id="horBarChart"></canvas>
-        </div>
-        </div>
-        </div>*@
-
-
-
-    </div>
-
-    <div class="row">
-
-        <div class="text-center">
-            <div class="m-4">
-                <form method="post" asp-action="DashBoardView" asp-controller="Home">
-                    <label class="text-white m-1">Выберите месяц </label>
-                    <input type="date" name="dateCompare">
-                    <input class="btn btn-success m-1" value="Сравнить" type="submit">
-                </form>
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Сравнения прибыли по месяцам
+                        </div>
+                        <div class="card-body">
+                            <canvas class="my-4 h-25" id="customVerticalBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+        </div>
+
+        <div class="row">
             <div class="col">
                 <div class="card mb-4">
                     <div class="card-header">
-                        Сравнения прибыли по месяцам
+                        Диаграмма прибыли за год
                     </div>
                     <div class="card-body">
-                        <canvas class="my-4 h-25" id="customVerticalBarChart"></canvas>
+                        <canvas class="my-4 h-25" id="customLineChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
-
-    <div class="row">
-        <div class="col">
-            <div class="card mb-4">
-                <div class="card-header">
-                    Диаграмма прибыли за год
-                </div>
-                <div class="card-body">
-                    <canvas class="my-4 h-25" id="customLineChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-@*<div class="row mb-4">
-    <div class="col-md-4">
-        <div class="widget chart">
-            <div class="p-4">
-                <h5 class="fw-bold">Sales</h5>
-            </div>
-            <ejs-accumulationchart background="#1a222b" id="doughnutchart">
-                <e-accumulation-series-collection>
-                    <e-accumulation-series dataSource="@ViewBag.DoughnutChartData" xName="categoryTitleWithIcon" yName="amount"
-                    innerRadius="60">
-                        <e-accumulationseries-datalabel name="formattedAmount" visible></e-accumulationseries-datalabel>
-                    </e-accumulation-series>
-                </e-accumulation-series-collection>
-            </ejs-accumulationchart>
-        </div>
-    </div>
-    <div class="col-md-8">
-
-    </div>
-</div>*@
 </div>
 
 @section Scripts

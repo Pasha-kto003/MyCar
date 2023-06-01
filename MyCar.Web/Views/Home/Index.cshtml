@@ -85,10 +85,8 @@
                                 <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.MarkPhoto })" /></a>
                             </div>
                         </div>
-
                     </div>
                 }
-
             </div>
 
         </div>
@@ -98,7 +96,6 @@
         var count = users.Where(s => s.UserType.TypeName == "Клиент");
         var sumOrd = @orders.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен");
         decimal? sum = 0;
-        
         foreach (var order in sumOrd)
         {
             foreach (var ware in order.WareHouses)
@@ -107,7 +104,6 @@
                 if (discountOrder == 0)
                 {
                     sum += ware.SaleCar.FullPrice * ware.CountChange * -1;
-
                 }
                 else
                 {
@@ -258,10 +254,10 @@
                                     <div class="m-3 d-flex justify-content-center">
                                         <div class="text-center">
                                             <div class="mark-Photo scalePh">
-                                                <a id="#sectionCar" asp-action="DetailsCar" asp-controller="Home" asp-fragment="sectioncar" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
+                                                <a id="#sectionCar" asp-action="ChooseCarView" asp-controller="Home" asp-fragment="sectioncar" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
                                                 
                                             </div>
-                                            <a style="text-decoration:none;" asp-action="DetailsCar" asp-fragment="sectioncar" asp-controller="Home" asp-route-id="@car.ID">
+                                            <a style="text-decoration:none;" asp-action="ChooseCarView" asp-fragment="sectioncar" asp-controller="Home" asp-route-id="@car.ID">
                                                 <div class="text-white">@car.Car.Model.ModelName</div>
                                             </a>
                                         </div>

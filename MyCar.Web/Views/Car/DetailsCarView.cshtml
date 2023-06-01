@@ -99,7 +99,7 @@
                                     <div class="col">
                                         <form asp-action="UpdateCountCar" asp-route-id="@Model.ID" asp-controller="Cart" method="post">
                                             <p class="text-danger">@ViewBag.ErrorMes</p>
-                                            <input type="number" min="0" step="1" onkeydown="return false" max="@Model.Count" name="CountChange" style="width: 200px; text-align: center;" width="200"/>
+                                            <input type="number" min="1" step="1" onkeydown="return false" max="@Model.Count" name="CountChange" style="width: 200px; text-align: center;" width="200"/>
                                             <div class="row-cols-2 w-100" style="display: flex;">
                                                 <div class="col-6">
                                                     <div class="glass-btn glass-btn-red">

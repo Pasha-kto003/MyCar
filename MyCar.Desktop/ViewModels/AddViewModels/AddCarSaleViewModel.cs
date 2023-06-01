@@ -111,7 +111,8 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     Equipment = saleCar.Equipment,
                     EquipmentPrice = saleCar.EquipmentPrice,
                     ColorCar = saleCar.ColorCar,
-                    MinCount = saleCar.MinCount
+                    MinCount = saleCar.MinCount,
+                    Description = saleCar.Description,
                 };
                 Get();
                 SaleCars.RemoveAll(s => s.ID == AddSaleVM.ID);

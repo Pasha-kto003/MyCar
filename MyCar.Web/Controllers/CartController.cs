@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ModelsApi;
 using MyCar.Server.DB;
 using MyCar.Web.Core;
@@ -17,7 +18,7 @@ namespace MyCar.Web.Controllers
     public class CartController : Controller
     {
         public List<OrderApi> Orders = new List<OrderApi>();
-
+        public List<OrderApi> SearchOrders = new List<OrderApi>();
         public List<SaleCarApi> Cars { get; set; } = new List<SaleCarApi>();
 
         public DateTime DateStart { get; set; }
@@ -66,7 +67,26 @@ namespace MyCar.Web.Controllers
         public IActionResult CartPage(string name)
         {
             name = User.Identity.Name;
+            
             return View("CartPage", GetPage(name).Result);
+        }
+
+        public async Task<IActionResult> SearchOrder(string FilterString)
+        {
+            string name = User.Identity.Name;
+            if (User.IsInRole("Администратор"))
+            {
+                Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+                SearchOrders = Orders.Where(s => s.Status.StatusName.Contains(FilterString)).ToList();
+                return View("CartPage", SearchOrders);
+            }
+            if (User.IsInRole("Клиент"))
+            {
+                Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+                SearchOrders = Orders.Where(s => s.Status.StatusName.Contains(FilterString) && s.User.UserName.Contains(name)).ToList();
+                return View("CartPage", SearchOrders);
+            }
+            return View("CartPage", SearchOrders);
         }
 
         public IActionResult Report(string name)
@@ -317,6 +337,8 @@ namespace MyCar.Web.Controllers
             var userIsAdmin = Users.FirstOrDefault(s => s.UserName == name);
             if (userIsAdmin.UserType.TypeName == "Администратор")
             {
+                var users = await Api.GetListAsync<List<UserApi>>("User");
+                ViewBag.Users = order.Where(s => s.UserId != 0).Select(s => s.User);
                 return order;
             }
             else if (userIsAdmin.UserType.TypeName == "Клиент")
@@ -324,6 +346,7 @@ namespace MyCar.Web.Controllers
                 order = Orders.Where(s => s.User.UserName == userIsAdmin.UserName).ToList();
                 return order;
             }
+            
             return order;
         }
 
@@ -497,6 +520,12 @@ namespace MyCar.Web.Controllers
             var orderItems = new List<WareHouseApi>();
             var car = Cars.FirstOrDefault(s=> s.ID == id);
             car.CountChange = CountChange;
+            if(CountChange == 0)
+            {
+                TempData["OrderCountErrorMessage"] = "Количество покупаемого авто не должно быть равно 0";
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
+            }
             if (IsCanAddInOrder(car) == false)
             {
                 TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";

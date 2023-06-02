@@ -19,7 +19,5 @@ namespace MyCar.Web.Models
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         [Required(ErrorMessage = "Не указан повторно пароль")]
         public string ConfirmPassword { get; set; }
-
-        
     }
 }

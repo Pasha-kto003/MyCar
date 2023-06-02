@@ -1,3 +1,4 @@
+@using ModelsApi
 @using MyCar.Web.Core
 @using System.Globalization
 @model IEnumerable<ModelsApi.OrderApi>
@@ -16,6 +17,8 @@
         FullPrice = gr.Sum(s => s.SaleCar.FullPrice)
     }).
     OrderByDescending(gr => gr.TotalQuantity);
+    var users = new List<UserApi>();
+    var statuses = await Api.GetListAsync<List<StatusApi>>("Status");
 }
 
 <div class="row w-100 align-items-center justify-content-center">
@@ -43,16 +46,34 @@
                     @*<a asp-action="Report" class="btn" asp-controller="Cart" asp-route-name="@User.Identity.Name"></a>*@
                 </div>
             </div>
+            <div class="row w-100">
+                <form method="get" asp-action="SearchOrder" asp-controller="Cart">
+                    <div class="row w-100">
+                        <div class="col-lg-12">
+                            <div class="row w-100" style="display:flex; justify-content:center; align-items:center;">
+                                <select name="FilterString" class="form-control search-slt" style="width: 300px;">
+                                    @foreach(var status in statuses)
+                                    {
+                                        <option value="@status.StatusName">@status.StatusName</option>
+                                    }
+                                    <option hidden>Тип фильтрации</option>
+                                </select>
+                                <button type="submit" class="btn btn-dark wrn-btn" style="width: 300px;">Искать</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div class="row justify-content-center text-center">
                 <div class="col-md-8 col-lg-6">
                     <div class="header mb-5 mt-5">
                         @{
                             decimal? orderPrice = 0;
-                            foreach (var order in @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен"))
+                            foreach (var order in @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Ожидает оплаты"))
                             {
                                 foreach (var ware in order.WareHouses)
                                 {
-                                    var discountOrder = DiscountCounter.GetDiscount(ware.SaleCar);
+                                    var discountOrder = DiscountCounter.GetDiscountByOrder(order, ware.SaleCar);
                                     if (discountOrder == 0)
                                     {
                                         orderPrice += ware.SaleCar.FullPrice * ware.CountChange * -1;
@@ -64,12 +85,41 @@
                                     }
                                 }
                             }
+                            //decimal? orderUserPrice = 0;
+                            //var userOrder = Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Завершен" && s.Status.StatusName == "Ожидает оплаты").ToList();
+                            //if(userOrder.Count != 0 || userOrder != null)
+                            //{
+                            //    foreach(var ordUser in userOrder)
+                            //    {
+                            //        foreach (var ware in ordUser.WareHouses)
+                            //        {
+                            //            var discountUserOrder = DiscountCounter.GetDiscount(ware.SaleCar);
+                            //            if (discountUserOrder == 0)
+                            //            {
+                            //                orderUserPrice += ware.SaleCar.FullPrice * ware.CountChange * -1;
 
-                            //orderPrice = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Sum(s => s.WareHouses.Sum(s=> s.Price));
-
-                            //var sumOrd = @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа"  && s.Status.StatusName != "Отменен").Sum(s => s.WareHouses.Sum(s=> s.SaleCar.FullPrice * s.CountChange * -1));
-                            var countOrd = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен").Count();
-                            <h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h1>
+                            //            }
+                            //            else
+                            //            {
+                            //                orderUserPrice += discountUserOrder * ware.CountChange * -1;
+                            //            }
+                            //        }
+                            //    }
+                            //}
+                            //if(userOrder.Count == 0)
+                            //{
+                            //    orderUserPrice = orderPrice;
+                            //}
+                            var countOrd = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Ожидает оплаты").Count();
+                            //<h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h1>
+                            if (User.IsInRole("Администратор"))
+                            {
+                                <h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h1>
+                            }
+                            if (User.IsInRole("Клиент"))
+                            {
+                                <h1 class="text-white text-center">Сумма ваших покупок: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h1>
+                            }
                         }
 
                     </div>
@@ -77,7 +127,26 @@
                 <div class="col-md-4">
                     <div class="header mb-5 mt-5">
                         @*<h1 class="text-white text-center">Количество продаж: @validateWarehouse.Count()</h1>*@
-                        <h1 class="text-white text-center">Количество продаж: @saleCount.Sum(s=> s.TotalQuantity)</h1>
+                        @*<h1 class="text-white text-center">Количество продаж: @saleCount.Sum(s=> s.TotalQuantity)</h1>*@
+                        @{
+                            //var wareCountSale = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Ожидает оплаты").Select(s => s.WareHouses).ToList();
+                            int? wareCountSale = 0;
+                            foreach(var orderSale in @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Ожидает оплаты"))
+                            {
+                                foreach(var wh in orderSale.WareHouses)
+                                {
+                                    wareCountSale += wh.CountChange * -1;
+                                }
+                            }
+                            if (User.IsInRole("Администратор"))
+                            {
+                                <h1 class="text-white text-center">Количество проданных авто: @wareCountSale</h1>
+                            }
+                            if (User.IsInRole("Клиент"))
+                            {
+                                <h1 class="text-white text-center">Количество купленных авто: @wareCountSale</h1>
+                            }
+                        }
                     </div>
                     @*<a asp-action="Report" class="btn" asp-controller="Cart" asp-route-name="@User.Identity.Name"></a>*@
                 </div>

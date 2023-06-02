@@ -134,35 +134,37 @@ namespace MyCar.Web.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("", "Такого пользователя не существует");
+                return View("EditPasswordView", registerModel);
             }
             if (user != null && user.UserType.TypeName == "Администратор")
             {
                 ModelState.AddModelError("", "Нельзя редактировать этого пользователя");
+                return View("EditPasswordView", registerModel);
             }
             if (user != null && user.UserType.TypeName == "Сотрудник")
             {
                 ModelState.AddModelError("", "Нельзя редактировать этого пользователя");
+                return View("EditPasswordView", registerModel);
             }
             else if (registerModel.UserName == "" || registerModel.UserName == null)
             {
                 ModelState.TryAddModelError("", "Не введен логин");
-            }
-            else if (registerModel.UserName == "" || registerModel.UserName == null)
-            {
-                ModelState.TryAddModelError("", "Не введен логин");
+                return View("EditPasswordView", registerModel);
             }
             else if (registerModel.Password == "" || registerModel.Password == null)
             {
-                ModelState.TryAddModelError("", "Не пароль");
+                ModelState.TryAddModelError("", "Не введен пароль");
+                return View("EditPasswordView", registerModel);
             }
             else if (registerModel.ConfirmPassword == "" || registerModel.ConfirmPassword == null)
             {
                 ModelState.TryAddModelError("", "Повторите свой пароль");
+                return View("EditPasswordView", registerModel);
             }
             else if (registerModel.ConfirmPassword != registerModel.Password)
             {
                 ModelState.TryAddModelError("", "Неверный повтор пароля");
-                return View(registerModel);
+                return View("EditPasswordView", registerModel);
             }
 
             return View("EditPasswordView", registerModel);
@@ -201,14 +203,17 @@ namespace MyCar.Web.Controllers
             else if (model.UserName == "" || model.UserName == null)
             {
                 ModelState.TryAddModelError("", "Не введен логин");
+                return View(model);
             }
             else if (model.Password == "" || model.Password == null)
             {
                 ModelState.TryAddModelError("", "Не введен пароль");
+                return View(model);
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                return View(model);
             }
             return View(model);
         }
@@ -222,6 +227,11 @@ namespace MyCar.Web.Controllers
             if (EmailIsValid(model.Email) == false)
             {
                 ModelState.AddModelError("", "Данные почты введены неккоректно");
+                return View(model);
+            }
+            if(model.Password == null || model.Password == "")
+            {
+                ModelState.AddModelError("", "Пароль не введен");
                 return View(model);
             }
             if (model.ConfirmPassword.ToString() != model.Password.ToString())

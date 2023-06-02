@@ -1,6 +1,6 @@
 ﻿@model MyCar.Web.Models.RegisterModel
 
-<div class="row w-100" style="justify-content:center; align-items:center; display:flex; margin-top: 4%;">
+<div class="row w-100" style="justify-content:center; align-items:center; display:flex; margin-top: 3%;">
     <div class="container text-center align-content-center align-items-center d-flex justify-content-center">
         <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
             <div style="display:grid; justify-content:center; align-items:center;">
@@ -8,34 +8,30 @@
                 <div class="validation" asp-validation-summary="ModelOnly" style="color:red; font-size: 16px; justify-content:center; align-items:center;"></div>
             </div>
             <div style="display:grid; justify-content:center; align-items:center;">
-                <div class="form-group" style="margin-top: 30px;">
+                <div class="form-group" style="margin-top: 20px;">
                     <h5 class="font-weight-normal" style="color: white; text-align:center; display:flex; justify-content:center;">Введите никнейм</h5><br />
                     <input type="text" required="" autofocus="" id="imputserName" asp-for="UserName" class="form-control" placeholder="Имя пользователя" style="text-align:center; display:flex; justify-content:center;" width="300px;"/>
                     <span asp-validation-for="UserName" class="text-white" />
                 </div>
-                <div class="form-group" style="margin-top: 30px;">
+                <div class="form-group" style="margin-top: 20px;">
                     <h5 class="font-weight-normal" style="color: white; text-align:center; display:flex; justify-content:center;">Введите почтовый адрес</h5><br />
                     <input type="text" required="" autofocus="" id="imputserName" asp-for="Email" class="form-control" placeholder="Почта" style="text-align:center; display:flex; justify-content:center;" width="300px;" />
                     <span asp-validation-for="Email" class="text-white"/>
                 </div>
-                <div class="form-group" style="margin-top: 30px;">
+                <div class="form-group" style="margin-top: 20px;">
                     <h5 class="font-weight-normal" style="color: white; display:flex; justify-content:center;">Введите пароль</h5><br />
                     <label style="color:white; display:flex; justify-content:center;">
                         <input type="password" asp-for="Password" name="password" placeholder="Пароль" id="password" style="display:flex; justify-content:center; height:40px; text-align:center; width: 340px;" />
                         <i class="bi bi-eye-slash-fill" id="togglePassword" style="font-size: 20px; color: black;"></i>
                     </label>
                     <span asp-validation-for="Password" class="text-white" />
-@*                    <label style="margin-top:20px; margin-bottom:20px; color:white; display:flex; justify-content:center;">
-                        <input type="checkbox" onclick="myFunctionRegister()" class="password-checkbox"/>
-                            Показать пароль
-                    </label>*@
                 </div>
-                <div style="margin-top:30px;">
+                <div style="margin-top:20px;">
                     <h5 class="font-weight-normal" style="color: white; display:flex; justify-content:center; text-align:center;">Повторите пароль</h5><br />
                     <input class="form-control" asp-for="ConfirmPassword" id="exampleInputPassword1" placeholder="Повторите пароль" style="text-align:center; display:flex; justify-content:center;" width="300px;"/>
                     <span asp-validation-for="ConfirmPassword" class="text-white"/>
                 </div>
-                <div style="margin-top:50px; justify-content: center; align-items: center; display: flex;">
+                <div style="margin-top:30px; justify-content: center; align-items: center; display: flex;">
                     <input type="submit" value="Завершить регистрацию" class="atuin-btn" style="width: 320px; display:flex; justify-content:center; color:white;" role="button" aria-pressed="true" />
                 </div>
             </div>

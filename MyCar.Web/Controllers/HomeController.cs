@@ -312,7 +312,7 @@ namespace MyCar.Web.Controllers
             return View("CarView", NewFullCars);
         }
 
-        public async Task<IActionResult> SearchCar(string? Filterstring, string? SearchString, string? SearchPrice, string? SortString)
+        public async Task<IActionResult> SearchCar(string? Filterstring, string? SearchString, string? SearchPrice, string? SortString, int? MarkId)
         {
             List<CarApi> cars;
             List<MarkCarApi> markCars;
@@ -335,16 +335,19 @@ namespace MyCar.Web.Controllers
             {
                 NewFullCars = cars.Where(s=> s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
                 await Sort(SortString, Filterstring, searchText);
+                TempData["SearchMessage"] = $"По вашему запросу найдено {NewFullCars.Count} авто";
                 return View("CarView", NewFullCars);
             }
             if(SearchPrice != "")
             {
                 NewFullCars = cars.Where(s => s.CarPrice >= price).DistinctBy(s => s.CarName).ToList();
+                TempData["SearchMessage"] = $"По вашему запросу найдено {NewFullCars.Count} авто";
                 return View("CarView", NewFullCars);
             }
             else
             {
                 NewFullCars = cars.DistinctBy(s => s.CarName).ToList();
+                TempData["SearchMessage"] = $"По вашему запросу найдено ничего не было найдено";
                 return View("CarView", NewFullCars);
             }
         }

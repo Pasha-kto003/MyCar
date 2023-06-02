@@ -32,18 +32,7 @@
                             decimal? warePrice = 0;
                             foreach(var order in @Model)
                             {
-                                var discountOrder = DiscountCounter.GetDiscount(order.SaleCar);
-                                if(discountOrder == 0)
-                                {
-                                    discountOrder = order.SaleCar.FullPrice;
-                                    //orderPrice = discountOrder * Model.Sum(s => s.CountChange * -1);
-                                    warePrice = discountOrder * order.CountChange;
-                                }
-                                else
-                                {
-                                    warePrice = discountOrder * order.CountChange;
-                                }
-                                orderPrice += warePrice;
+                                orderPrice += order.Price * order.CountChange;
                             }
                             <h4 class="text-white text-center">Сумма заказа: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h4>
                         }

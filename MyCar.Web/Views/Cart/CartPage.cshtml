@@ -73,43 +73,19 @@
                             {
                                 foreach (var ware in order.WareHouses)
                                 {
-                                    var discountOrder = DiscountCounter.GetDiscountByOrder(order, ware.SaleCar);
-                                    if (discountOrder == 0)
-                                    {
-                                        orderPrice += ware.SaleCar.FullPrice * ware.CountChange * -1;
+                                    //var discountOrder = DiscountCounter.GetDiscountByOrder(order, ware.SaleCar);
+                                    //if (discountOrder == 0)
+                                    //{
+                                    //    orderPrice += ware.SaleCar.FullPrice * ware.CountChange * -1;
 
-                                    }
-                                    else
-                                    {
-                                        orderPrice += discountOrder * ware.CountChange * -1;
-                                    }
+                                    //}
+                                    //else
+                                    //{
+                                    //    orderPrice += discountOrder * ware.CountChange * -1;
+                                    //}
+                                    orderPrice += ware.Price * ware.CountChange * -1;
                                 }
                             }
-                            //decimal? orderUserPrice = 0;
-                            //var userOrder = Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Завершен" && s.Status.StatusName == "Ожидает оплаты").ToList();
-                            //if(userOrder.Count != 0 || userOrder != null)
-                            //{
-                            //    foreach(var ordUser in userOrder)
-                            //    {
-                            //        foreach (var ware in ordUser.WareHouses)
-                            //        {
-                            //            var discountUserOrder = DiscountCounter.GetDiscount(ware.SaleCar);
-                            //            if (discountUserOrder == 0)
-                            //            {
-                            //                orderUserPrice += ware.SaleCar.FullPrice * ware.CountChange * -1;
-
-                            //            }
-                            //            else
-                            //            {
-                            //                orderUserPrice += discountUserOrder * ware.CountChange * -1;
-                            //            }
-                            //        }
-                            //    }
-                            //}
-                            //if(userOrder.Count == 0)
-                            //{
-                            //    orderUserPrice = orderPrice;
-                            //}
                             var countOrd = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Ожидает оплаты").Count();
                             //<h1 class="text-white text-center">Общая сумма всех заказов: @orderPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h1>
                             if (User.IsInRole("Администратор"))
@@ -202,7 +178,7 @@
                                                 @foreach (var price in @ord.WareHouses)
                                                 {
                                                     decimal? sum = 0;
-                                                    var discountPrice = DiscountCounter.GetDiscount(@price.SaleCar);
+                                                    @*var discountPrice = DiscountCounter.GetDiscount(@price.SaleCar);
                                                     if (discountPrice == 0)
                                                     {
                                                         discountPrice = null;
@@ -215,7 +191,9 @@
                                                         sum = discountPrice * price.CountChange * -1;
                                                         mySum += sum;
                                                         //ord.SumOrder = sum;
-                                                    }
+                                                    }*@
+                                                    sum = price.Price * price.CountChange * -1;
+                                                    mySum += sum;
                                                 }
                                                 <h3 class="fw-bold" style="color: white;">@mySum.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h3>
                                             </div>
@@ -267,18 +245,13 @@
                                                                     newPrice = null;
                                                                 }
                                                                 <div class="row border-bottom">
-                                                                    @if (newPrice != null)
-                                                                    {
+                                                                    
                                                                         <h2 class="text-white">
-                                                                            @newPrice &#8381
+                                                                            @car.Price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                                                         </h2>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <h2 class="text-white">
-                                                                            @car.SaleCar.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                                        </h2>
-                                                                    }
+                                                                    
+
+                                                                    
                                                                 </div>
                                                             }
                                                         </div>

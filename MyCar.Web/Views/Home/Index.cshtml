@@ -551,7 +551,7 @@ else
         <div class="callout-header">@User.Identity.Name</div>
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
-            <p class="text-white">Ваш заказ завершен!</p>
+            <p class="text-white">@TempData["OrderFineMessage"]</p>
         </div>
     </div>
 }

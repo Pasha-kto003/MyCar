@@ -254,8 +254,8 @@
                                     <div class="m-3 d-flex justify-content-center">
                                         <div class="text-center">
                                             <div class="mark-Photo scalePh">
-                                                <a id="#sectionCar" asp-action="ChooseCarView" asp-controller="Home" asp-fragment="sectioncar" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
-                                                
+                                                <a id="#sectionCar" asp-action="DetailsCar" asp-controller="Home" asp-fragment="sectioncar" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })" /></a>
+
                                             </div>
                                             <a style="text-decoration:none;" asp-action="ChooseCarView" asp-fragment="sectioncar" asp-controller="Home" asp-route-id="@car.ID">
                                                 <div class="text-white">@car.Car.Model.ModelName</div>
@@ -282,7 +282,7 @@
                                 <div class="m-3 d-flex justify-content-center">
                                     <div class="text-center">
                                         <div class="mark-Photo scalePh">
-                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })" /></a>
                                         </div>
                                         <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                             <div class="text-white">@car.Car.Model.ModelName</div>
@@ -304,7 +304,7 @@
                                 <div class="m-3 d-flex justify-content-center">
                                     <div class="text-center">
                                         <div class="mark-Photo scalePh">
-                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })" /></a>
                                         </div>
                                         <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                             <div class="text-white">@car.Car.Model.ModelName</div>
@@ -320,22 +320,26 @@
             </div>
         </div>
     </section>
-    <section action="" id="#sectioncar" class="row mt-5 w-100 align-items-center text-center align-content-center align-items-center justify-content-center" style="height: 455px;">
-        <div class="row" style="height: 455px; background-image: url('/image/Screenshot_1.png')">
+    <section action="" id="#sectioncar" class="row mt-5 w-100 align-items-center text-center align-content-center align-items-center justify-content-center">
+        <div class="row" style="height: 455px; background-image: url('/image/Screenshot_1.png'); background-position:center; background-repeat:no-repeat;">
 
             @*Экран главной страницы растягивался из за style="width: 100%; у картинки ниже*@
             @*<img src="~/image/DesertViewBacground.jpg" style="width: 95%; position:absolute; background-position:center; background-repeat:no-repeat; max-height:455px; margin-right: 20px; padding-right: 40px;"/>*@
             <div id="sectionCar" class="col-5 position-relative text-center justify-content-center align-items-center" style="top:30%;">
-                <h2 class="text-white text-decoration-underline text-uppercase">@ViewBag.CarName</h2>
-                <small class="text-white">Начальная цена от</small>
+                <div class="row w-100">
+                    <h2 class="text-white text-decoration-underline text-uppercase">@ViewBag.CarName</h2>
+                </div>
+                <div class="row w-100">
+                    <small class="text-white">Начальная цена от</small>
+                </div>
                 <h3 class="text-white">@ViewBag.FullPrice &#8381</h3>
                 <div class="glass-btn glass-btn-red">
-                    <a asp-action="DetailsCar" asp-controller="Car" asp-route-id="@ViewBag.ID">
+                    <a asp-action="ChooseCarView" asp-controller="Car" asp-route-id="@ViewBag.ID">
                         Купить
                     </a>
                 </div>
             </div>
-            <div class="col-7 position-relative text-center justify-content-center align-items-center" >
+            <div class="col-7 position-relative text-center justify-content-center align-items-center">
                 <img src="@Url.Action("DisplayImage", "Home", new { photoName = @ViewBag.PhotoCar })" style="bottom:50%;max-height:420px;max-width:750px;" />
             </div>
         </div>

@@ -74,8 +74,18 @@ namespace MyCar.Web.Controllers
         public async Task<IActionResult> SearchOrder(string FilterString)
         {
             string name = User.Identity.Name;
-            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
-            SearchOrders = Orders.Where(s => s.Status.StatusName.Contains(FilterString)).ToList();
+            if (User.IsInRole("Администратор"))
+            {
+                Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+                SearchOrders = Orders.Where(s => s.Status.StatusName.Contains(FilterString)).ToList();
+                return View("CartPage", SearchOrders);
+            }
+            if (User.IsInRole("Клиент"))
+            {
+                Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+                SearchOrders = Orders.Where(s => s.Status.StatusName.Contains(FilterString) && s.User.UserName.Contains(name)).ToList();
+                return View("CartPage", SearchOrders);
+            }
             return View("CartPage", SearchOrders);
         }
 
@@ -510,6 +520,12 @@ namespace MyCar.Web.Controllers
             var orderItems = new List<WareHouseApi>();
             var car = Cars.FirstOrDefault(s=> s.ID == id);
             car.CountChange = CountChange;
+            if(CountChange == 0)
+            {
+                TempData["OrderCountErrorMessage"] = "Количество покупаемого авто не должно быть равно 0";
+                ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
+                return View("~/Views/Car/DetailsCarView.cshtml", car);
+            }
             if (IsCanAddInOrder(car) == false)
             {
                 TempData["OrderCountErrorMessage"] = "Превышено максмиальное кол-во покупок данного авто";

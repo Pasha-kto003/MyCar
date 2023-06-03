@@ -386,6 +386,11 @@ namespace MyCar.Web.Controllers
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
             var car = Cars.FirstOrDefault(s => s.ID == id);
             var wh = orderItems.LastOrDefault(s => s.SaleCarId == id);
+            if(CountChangeWare == 0)
+            {
+                TempData["OrderCountErrorMessage"] = "Количество купленного авто не может быть равно 0";
+                return View("DetailsCart", orderItems);
+            }
             car.CountChange = CountChangeWare;
             wh.CountChange = CountChangeWare;
             if (IsCanAddInOrder(car) == false)

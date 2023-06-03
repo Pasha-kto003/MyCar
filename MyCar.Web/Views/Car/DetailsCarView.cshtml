@@ -10,68 +10,68 @@
     //другие комплектации авто
     var styles = carsStyles.Where(s => s.CarId == @Model.CarId).ToList();
     //другие цвета авто
-    var carColors = carsStyles.Where(s=> s.EquipmentId == @Model.EquipmentId && s.FullName == @Model.FullName);
+    var carColors = carsStyles.Where(s => s.EquipmentId == @Model.EquipmentId && s.FullName == @Model.FullName);
     var colors = await Api.GetListAsync<List<Color>>("Color");
     var photos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
     var recommendCars = await Api.GetListAsync<List<CarApi>>("Car");
     var filterRecommend = recommendCars.Where(s => s.Model.MarkId == @Model.Car.Model.MarkId);
 }
-    <div class="container-fluid mt-5"> 
-        <div class="row w-100">
-            <div class="col-9">
-                <h2 style="color: white;">
-                    @Model.FullName
-                </h2>
-            </div>
-            <div class="col-3">
-                @{
-                    var warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
-                    var ware = warehouses.Where(s => s.SaleCarId == @Model.ID).ToList().Sum(s=> s.CountChange);
-                    decimal? discounts = DiscountCounter.GetDiscount(@Model);
-                    ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
-                    if(ware.Value <= 0)
-                    {
-                                <h3 class="text-white text-center" style="text-align: center;">
-                                    Отсутствует в продаже
-                                </h3>
-                    }
-                    else
-                    {
-                        if(discounts == 0)
-                        {
-                            discounts = null;
-                        }
-                                <div class="product-price">
-                                    @if(discounts != null)
-                            {
-                                        <h2 class="text-white" style="text-align: center;">
-                                            <s class="text-white">
-                                                @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                            </s>
-                                        </h2>
-                            }
-                            else
-                            {
-                                        <h2 class="text-white" style="text-align: center;">
-                                            @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                        </h2>
-                            }
-                                    @if(discounts != null)
-                            {
-                                        <h4 class="text-white" style="text-align: center;">
-                                            @discounts.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                        </h4>
-                            }
-                                </div>
-                    }
-                    
-                }
-            </div>
+<div class="container-fluid mt-5">
+    <div class="row w-100">
+        <div class="col-9">
+            <h2 style="color: white;">
+                @Model.FullName
+            </h2>
         </div>
-        <div class="row w-100">
-            <div class="col-9"></div>
-            <div class="col-3 text-center justify-content-center align-content-center">
-            @if(ware.Value <= 0)
+        <div class="col-3">
+            @{
+                var warehouses = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
+                var ware = warehouses.Where(s => s.SaleCarId == @Model.ID).ToList().Sum(s => s.CountChange);
+                decimal? discounts = DiscountCounter.GetDiscount(@Model);
+                ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
+                if (ware.Value <= 0)
+                {
+                    <h3 class="text-white text-center" style="text-align: center;">
+                        Отсутствует в продаже
+                    </h3>
+                }
+                else
+                {
+                    if (discounts == 0)
+                    {
+                        discounts = null;
+                    }
+                    <div class="product-price">
+                        @if (discounts != null)
+                        {
+                            <h2 class="text-white" style="text-align: center;">
+                                <s class="text-white">
+                                    @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                </s>
+                            </h2>
+                        }
+                        else
+                        {
+                            <h2 class="text-white" style="text-align: center;">
+                                @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                            </h2>
+                        }
+                        @if (discounts != null)
+                        {
+                            <h4 class="text-white" style="text-align: center;">
+                                @discounts.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                            </h4>
+                        }
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+    <div class="row w-100">
+        <div class="col-9"></div>
+        <div class="col-3 text-center justify-content-center align-content-center">
+            @if (ware.Value <= 0)
             {
                 <div class="glass-btn glass-btn-gray">
                     <a href="#url">Отсутсвует</a>
@@ -99,7 +99,7 @@
                                     <div class="col">
                                         <form asp-action="UpdateCountCar" asp-route-id="@Model.ID" asp-controller="Cart" method="post">
                                             <p class="text-danger">@ViewBag.ErrorMes</p>
-                                            <input type="number" min="1" step="1" onkeydown="return false" max="@Model.Count" name="CountChange" style="width: 200px; text-align: center;" width="200"/>
+                                            <input type="number" min="1" step="1" onkeydown="return false" max="@Model.Count" name="CountChange" style="width: 200px; text-align: center;" width="200" />
                                             <div class="row-cols-2 w-100" style="display: flex;">
                                                 <div class="col-6">
                                                     <div class="glass-btn glass-btn-red">
@@ -112,7 +112,7 @@
                                                     <div class="glass-btn glass-btn-red">
                                                         <a class="stretched-link">
                                                             <input readonly type="submit" class="stretched-link" value="Приобрести" style="color: black; text-align:center;">
-                                                        </a>   
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -231,71 +231,70 @@
                             </thead>
                             <tbody>
 
-                                @foreach(var characteristic in @Model.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Высота 2") ||
-                                s.Characteristic.CharacteristicName.Contains("Длина") || s.Characteristic.CharacteristicName.Contains("Колесная база")))
-                                {
-                                    <tr>
-                                        <td style="color: white;">
-                                            @characteristic.Characteristic.CharacteristicName:
-                                        </td>
-                                        <td style="color: white;">
-                                            @characteristic.CharacteristicValue
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
-                </div>
-            </div>
-            <div class="col-4 align-items-center justify-content-center text-center" style="height: 100%;">
-                <div class="table-responsive align-items-center justify-content-center">
-                    <table class="table">
-                        <tbody>
-                                <tr>
-                                    <td class="m-lg-5" style="color: white;">
-                                        <b>
-                                            Цвет авто:
-                                        </b>
-                                    </td>
-                                    <td class="m-lg-5">
-                                        @{
-                                            var col = colors?.FirstOrDefault(s=> s.Name == @Model.ColorCar).HexCode;
-                                        }
-                                        <div class="square m-2" style="background-color: @col">
-
-                                        </div>
-                                    </td>
-                                    <td class="m-lg-5" style="color: white;">
-                                        @Model.ColorCar
-                                    </td>
-                                </tr>
-                        </tbody>
-                    </table>
-                    <table class="table">
-                        <tbody>
-                            @foreach(var characteristic in @Model.Car.CharacteristicCars)
+                            @foreach (var characteristic in @Model.Car.CharacteristicCars.Where(s => s.Characteristic.CharacteristicName.Contains("Высота 2") ||
+                            s.Characteristic.CharacteristicName.Contains("Длина") || s.Characteristic.CharacteristicName.Contains("Колесная база")))
                             {
                                 <tr>
-                                    <td class="m-lg-5" style="color: white;">
-                                        <b>
-                                            @characteristic.Characteristic.CharacteristicName:
-                                        </b>
+                                    <td style="color: white;">
+                                        @characteristic.Characteristic.CharacteristicName:
                                     </td>
-                                    <td class="m-lg-5" style="color: white;">
+                                    <td style="color: white;">
                                         @characteristic.CharacteristicValue
-                                    </td>
-                                    <td class="m-lg-5" style="color: white;">
-                                        @characteristic.Characteristic.Unit.UnitName
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
             </div>
         </div>
+        <div class="col-4 align-items-center justify-content-center text-center" style="height: 100%;">
+            <div class="table-responsive align-items-center justify-content-center">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td class="m-lg-5" style="color: white;">
+                                <b>
+                                    Цвет авто:
+                                </b>
+                            </td>
+                            <td class="m-lg-5">
+                                @{
+                                    var col = colors?.FirstOrDefault(s => s.Name == @Model.ColorCar).HexCode;
+                                }
+                                <div class="square m-2" style="background-color: @col">
+                                </div>
+                            </td>
+                            <td class="m-lg-5" style="color: white;">
+                                @Model.ColorCar
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <tbody>
+                        @foreach (var characteristic in @Model.Car.CharacteristicCars)
+                        {
+                            <tr>
+                                <td class="m-lg-5" style="color: white;">
+                                    <b>
+                                        @characteristic.Characteristic.CharacteristicName:
+                                    </b>
+                                </td>
+                                <td class="m-lg-5" style="color: white;">
+                                    @characteristic.CharacteristicValue
+                                </td>
+                                <td class="m-lg-5" style="color: white;">
+                                    @characteristic.Characteristic.Unit.UnitName
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5">
         <h3 class="text-white text-center">
             Доступные цвета для @Model.FullName
@@ -304,21 +303,21 @@
     <div class="row w-100 text-white text-center justify-content-center align-items-center mt-2">
 
         <ul class="slides">
-            @foreach(var colorCar in carColors)
+            @foreach (var colorCar in carColors)
             {
                 <input type="radio" name="radio-btn" id="img-@colorCar.ID" checked />
                 <li class="slide-container">
-		            <div class="slide">
+                    <div class="slide">
                         <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@colorCar.ID">
-                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @colorCar.MainPhotoCar })"/>
+                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @colorCar.MainPhotoCar })" />
                         </a>
                     </div>
                 </li>
             }
             <li class="nav-dots mt-3" style="margin-top: 40px;">
-                @foreach(var colorCar in carColors)
+                @foreach (var colorCar in carColors)
                 {
-                    colorCar.HexColor = colors.FirstOrDefault(s=> s.Name == colorCar.ColorCar).HexCode;
+                    colorCar.HexColor = colors.FirstOrDefault(s => s.Name == colorCar.ColorCar).HexCode;
                     <label for="img-@colorCar.ID" style="background-color: @colorCar.HexColor" class="nav-dot" id="img-dot-1"></label>
                 }
             </li>
@@ -329,7 +328,7 @@
     </div>
     <div class="row w-100">
         <div class="tabs">
-            @foreach(var cars in styles.Where(s=> s.EquipmentId != @Model.EquipmentId))
+            @foreach (var cars in styles.Where(s => s.EquipmentId != @Model.EquipmentId))
             {
                 <div class="tab">
                     <div class="tab-toggle">
@@ -350,36 +349,36 @@
                             @{
                                 var discountCarStylePrice = DiscountCounter.GetDiscount(@cars);
                                 ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(@cars);
-                                if(discountCarStylePrice == 0)
+                                if (discountCarStylePrice == 0)
                                 {
                                     discountCarStylePrice = null;
                                 }
-                                        <div class="product-price">
-                                            @if(discountCarStylePrice != null)
+                                <div class="product-price">
+                                    @if (discountCarStylePrice != null)
                                     {
-                                                <h3 class="text-white">
-                                                    <s class="text-white">
-                                                        @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                    </s>
-                                                </h3>
+                                        <h3 class="text-white">
+                                            <s class="text-white">
+                                                @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                            </s>
+                                        </h3>
                                     }
                                     else
                                     {
-                                                <h2 class="text-white">
-                                                    @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                </h2>
+                                        <h2 class="text-white">
+                                            @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                        </h2>
                                     }
-                                            @if(discountCarStylePrice != null)
+                                    @if (discountCarStylePrice != null)
                                     {
-                                                <h4 class="text-white">
-                                                    @discountCarStylePrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                </h4>
+                                        <h4 class="text-white">
+                                            @discountCarStylePrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                        </h4>
                                     }
-                                        </div>
+                                </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">
-                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.MainPhotoCar })" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; "/>
+                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.MainPhotoCar })" style="position: relative; width: 60%; height: 100%; background-position: center; margin-left:30%; " />
                         </div>
                     </div>
                     <div class="row w-100">
@@ -410,43 +409,43 @@
             }
         </div>
     </div>
-        <div class="row w-100 text-center justify-content-center align-items-center">
-            <h2 style="color: white;">
-                Рекомендованное авто
-            </h2>
-        </div>
-        <div class="row w-100">
-            @foreach(var cars in filterRecommend)
-            {
-                <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
-                    <div class="corner-box-1-content" style="background-color:#171717">
-                        <div class="card-body img-responsive">
-                            <img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.PhotoCar })" style="width:200px; height:150px; position:relative;"/>
-                            <br />
-                            <h5 style="color:white;">@cars.CarName</h5>
-                            <button class="imageButton">
-                                <h1>
-                                    <a class="imageLink" asp-action="ShowPartialView" asp-route-id="@cars.ID" asp-controller="Home">+</a>
-                                </h1>
-                            </button>
-                            @{
-                                <div class="product-price">
-                                    <h2 class="text-white">
-                                        @cars.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                    </h2>
-                                </div>
-                            }
-                        </div>
+    <div class="row w-100 text-center justify-content-center align-items-center">
+        <h2 style="color: white;">
+            Рекомендованное авто
+        </h2>
+    </div>
+    <div class="row w-100">
+        @foreach (var cars in filterRecommend)
+        {
+            <div style=" width: 300px; height: 300px; margin-top: 10px; background-color:#171717;">
+                <div class="corner-box-1-content" style="background-color:#171717">
+                    <div class="card-body img-responsive">
+                        <img src="@Url.Action("DisplayImage", "Home", new { photoName = @cars.PhotoCar })" style="width:200px; height:150px; position:relative;" />
+                        <br />
+                        <h5 style="color:white;">@cars.CarName</h5>
+                        <button class="imageButton">
+                            <h1>
+                                <a class="imageLink" asp-action="ShowPartialView" asp-route-id="@cars.ID" asp-controller="Home">+</a>
+                            </h1>
+                        </button>
+                        @{
+                            <div class="product-price">
+                                <h2 class="text-white">
+                                    @cars.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                </h2>
+                            </div>
+                        }
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
+</div>
 @if (TempData["OrderCountErrorMessage"] != null)
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
         <div class="callout-header">Ошибка!!!</div>
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">@TempData["OrderCountErrorMessage"]</p>
         </div>

@@ -11,8 +11,8 @@
     Chart customLineChart = (Chart)ViewData["customLineChart"];
     Chart customVerticalBarChart = (Chart)ViewData["customVerticalBarChart"];
     var orders = await Api.GetListAsync<List<OrderApi>>("Order");
-    var filterOrders = orders.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен" || s.Status.StatusName == "Ожидает оплаты");
-    var filterOrdersIn = orders.Where(s => s.ActionType.ActionTypeName == "Поступление" && s.Status.StatusName == "Завершен" || s.Status.StatusName == "Ожидает оплаты");
+    var filterOrders = orders.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Завершен");
+    var filterOrdersIn = orders.Where(s => s.ActionType.ActionTypeName == "Поступление" && s.Status.StatusName == "Новый");
     var validateWarehouse = orders.Where(s => s.Status.StatusName != "Отменен"
             && s.ActionType.ActionTypeName == "Продажа").SelectMany(e => e.WareHouses).ToList();
     var saleCount = validateWarehouse.GroupBy(car => car.SaleCarId)
@@ -30,7 +30,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js" integrity="sha512-klQv6lz2YR+MecyFYMFRuU2eAl8IPRo6zHnsc9n142TJuJHS8CG0ix4Oq9na9ceeg1u5EkBfZsFcV3U7J51iew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <div class="container-fluid">
-<div class="row mb-4 ">
+@*<div class="row mb-4 ">
     <div class="col-md-6">
         <div class="d-flex  widget summary income">
             <div class="d-flex flex-column justify-content-center p-5">
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 <div class="row mb-4">
     <div class="col-md-6">
         <div class="d-flex  widget summary balance">
@@ -82,7 +82,7 @@
                     decimal? countOrderIn = 0;
                     @foreach (var ord in filterOrdersIn)
                     {
-                        countOrder += ord.WareHouses.Sum(s => s.CountChange);
+                        countOrderIn += ord.WareHouses.Sum(s => s.CountChange);
                     }
                     <h1 class="display-6 fw-bold text-white">@countOrderIn</h1>
                 }

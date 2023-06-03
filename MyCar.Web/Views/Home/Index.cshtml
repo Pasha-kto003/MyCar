@@ -282,7 +282,7 @@
                                 <div class="m-3 d-flex justify-content-center">
                                     <div class="text-center">
                                         <div class="mark-Photo scalePh">
-                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })" /></a>
                                         </div>
                                         <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                             <div class="text-white">@car.Car.Model.ModelName</div>
@@ -304,7 +304,7 @@
                                 <div class="m-3 d-flex justify-content-center">
                                     <div class="text-center">
                                         <div class="mark-Photo scalePh">
-                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })"/></a>
+                                            <a asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.Car.PhotoCar })" /></a>
                                         </div>
                                         <a style="text-decoration:none;" asp-action="DetailsCar" asp-controller="Home" asp-route-id="@car.ID">
                                             <div class="text-white">@car.Car.Model.ModelName</div>
@@ -339,7 +339,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-7 position-relative text-center justify-content-center align-items-center" >
+            <div class="col-7 position-relative text-center justify-content-center align-items-center">
                 <img src="@Url.Action("DisplayImage", "Home", new { photoName = @ViewBag.PhotoCar })" style="bottom:50%;max-height:420px;max-width:750px;" />
             </div>
         </div>
@@ -555,7 +555,7 @@ else
         <div class="callout-header">@User.Identity.Name</div>
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
-            <p class="text-white">Ваш заказ завершен!</p>
+            <p class="text-white">@TempData["OrderFineMessage"]</p>
         </div>
     </div>
 }

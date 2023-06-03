@@ -611,24 +611,18 @@ namespace MyCar.Web.Controllers
             };
 
             await CreateOrder(order);
-
             
-            //Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(user.UserName, "4242424242424242", "2027", "10", "999");
-            //Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
-            //CancellationToken ct = new CancellationToken();
-            //StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
-
-            //orderItems.Clear();
+            orderItems.Clear();
             string json1 = JsonConvert.SerializeObject(orderItems);
             HttpContext.Session.SetString("OrderItem", json1);
-            
+
             EmailSender emailSender = new EmailSender();
             emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
             var marks = new List<MarkCarApi>();
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             ViewBag.Marks = marks;
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
-            //TempData["OrderFineMessage"] = $"Ваш заказ завершен";
+            TempData["OrderFineMessage"] = $"Ваш заказ ожидает оплаты";
             return View("~/Views/Home/Index.cshtml", cars);
         }
 

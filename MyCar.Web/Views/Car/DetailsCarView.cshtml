@@ -83,7 +83,7 @@
                     <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="stretched-link" style="color: black;">Приобрести</a>
                 </div>
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog" style="min-width: 700px; width: 10000px; background-color: #171717;">
+                    <div class="modal-dialog" style="min-width: 700px; width: 1000px; background-color: #171717;">
                         <div class="modal-content" style="background-color: #171717;">
                             <div class="modal-header">
                                 <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
@@ -142,7 +142,7 @@
                             <figure>
                                 @foreach(var img in @Model.CarPhotos)
                                 {
-                                    <div><a href="#any"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @img.PhotoName })" alt="" style="width: 500px; height: 400px;"/></a></div>
+                                    <div><a href="#any"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @img.PhotoName })" alt="" style="width: 600px; height: 420px;"/></a></div>
                                 }
                             </figure>
                             <nav>
@@ -162,10 +162,7 @@
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="color: white;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus tincidunt aliquam. Aliquam gravida massa at sem vulputate interdum et vel eros. Maecenas eros enim, tincidunt vel turpis vel, dapibus tempus nulla. Donec vel nulla dui. Pellentesque sed ante sed ligula hendrerit condimentum. Suspendisse rhoncus fringilla ipsum quis porta. Morbi tincidunt viverra pharetra.
-Vestibulum vel mauris et odio lobortis laoreet eget eu magna. Proin mauris erat, luctus at nulla ut, lobortis mattis magna. Morbi a arcu lacus. Maecenas tristique velit vitae nisi consectetur, in mattis diam sodales. Mauris sagittis sem mattis justo bibendum, a eleifend dolor facilisis. Mauris nec pharetra tortor, ac aliquam felis. Nunc pretium erat sed quam consectetur fringilla.
-Aliquam ultricies nunc porta metus interdum mollis. Donec porttitor libero augue, vehicula tincidunt lectus placerat a. Sed tincidunt dolor non sem dictum dignissim. Nulla vulputate orci felis, ac ornare purus ultricies a. Fusce euismod magna orci, sit amet aliquam turpis dignissim ac. In at tortor at ligula pharetra sollicitudin. Sed tincidunt, purus eget laoreet elementum, felis est pharetra ante, tincidunt feugiat libero enim sed risus.
-Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent cursus varius odio, non faucibus dui. Nunc vehicula lectus sed velit suscipit aliquam vitae eu ipsum. Curabitur hendrerit magna a quam semper, at tristique mauris gravida. Donec consequat elementum lorem, ac luctus ligula. Quisque viverra fringilla mi vel aliquam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="color: white;">@Model.Description</div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <table class="table">
                             <thead>
@@ -451,7 +448,7 @@ Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ips
         <div class="callout-header">Ошибка!!!</div>
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
-            <p class="text-white">Превышено максмиальное кол-во покупок данного авто</p>
+            <p class="text-white">@TempData["OrderCountErrorMessage"]</p>
         </div>
     </div>
 }

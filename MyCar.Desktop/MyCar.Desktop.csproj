@@ -7,7 +7,6 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Images\car.ico</ApplicationIcon>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Fonts\centurygothic.ttf" />
     <None Remove="Fonts\centurygothic_bold.ttf" />

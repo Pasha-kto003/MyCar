@@ -175,7 +175,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 }
                 if (!CheckUnique())
                     return;
-
+                if (AddSaleVM.EquipmentPrice < 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Цена не может быть отрицательной!" });
+                    return;
+                }
                 AddSaleVM.EquipmentId = SelectedEquipment.ID;
                 AddSaleVM.Equipment = SelectedEquipment;
                 AddSaleVM.CarId = SelectedCar.ID;

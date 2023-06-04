@@ -29,7 +29,10 @@ namespace ModelsApi
         {
             get => Car.CarName + " " + Equipment?.NameEquipment;
         }
-
+        public string? FullNameWithColor
+        {
+            get => Car.CarName + " " + Equipment?.NameEquipment + " " + "(" + ColorCar + ")";
+        }
         /// <summary>
         /// Свойство для подсчета на сайте 
         /// </summary>

@@ -192,45 +192,44 @@
                                 }*@
                             </tbody>
                         </table>
-                        <table class="table">
-                            <thead>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="color: white; width: 60%">
+                                    Скоростные характеристики
+                                </th>
+                                <th style="color: white; width: 40%">
+                                    Ед. измерения
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var characteristic in @Model.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Макс. Скорость") ||
+                            s.Characteristic.CharacteristicName.Contains("0-100")))
+                            {
                                 <tr>
-                                    <th style="color: white; width: 60%">
-                                        Скоростные характеристики
-                                    </th>
-                                    <th style="color: white; width: 40%">
-                                        Ед. измерения
-                                    </th>
+                                    <td style="color: white;">
+                                        @characteristic.Characteristic.CharacteristicName:
+                                    </td>
+                                    <td style="color: white;">
+                                        @characteristic.CharacteristicValue
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach(var characteristic in @Model.Car.CharacteristicCars.Where(s=> s.Characteristic.CharacteristicName.Contains("Макс. Скорость") ||
-                                s.Characteristic.CharacteristicName.Contains("0-100")))
-                                {
-                                    <tr>
-                                        <td style="color: white;">
-                                            @characteristic.Characteristic.CharacteristicName:
-                                        </td>
-                                        <td style="color: white;">
-                                            @characteristic.CharacteristicValue
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th style="color: white; width: 60%">
-                                        Кузовные характеристики
-                                    </th>
-                                    <th style="color: white; width: 40%">
-                                        Ед. измерения
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
+                            }
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="color: white; width: 60%">
+                                    Кузовные характеристики
+                                </th>
+                                <th style="color: white; width: 40%">
+                                    Ед. измерения
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             @foreach (var characteristic in @Model.Car.CharacteristicCars.Where(s => s.Characteristic.CharacteristicName.Contains("Высота 2") ||
                             s.Characteristic.CharacteristicName.Contains("Длина") || s.Characteristic.CharacteristicName.Contains("Колесная база")))
                             {

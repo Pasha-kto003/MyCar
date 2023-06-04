@@ -610,6 +610,11 @@ namespace MyCar.Web.Controllers
                 User = user
             };
 
+            if(order.WareHouses == null)
+            {
+
+            }
+
             await CreateOrder(order);
             
             orderItems.Clear();

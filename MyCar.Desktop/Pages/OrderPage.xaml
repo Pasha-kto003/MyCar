@@ -87,6 +87,13 @@
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding Status.StatusName}" Value="Ожидает оплаты">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <Binding Path="Status.StatusName" Converter="{core:StatusToColorConverter}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>

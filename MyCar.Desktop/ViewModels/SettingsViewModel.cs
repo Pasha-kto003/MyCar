@@ -78,6 +78,7 @@ namespace MyCar.Desktop.ViewModels
                         new OrderColor{ Status = "Новый", Color = "#00FFFFFF" },
                         new OrderColor{ Status = "Завершен", Color = "#00FFFFFF" },
                         new OrderColor{ Status = "Отменен", Color = "#00FFFFFF" },
+                        new OrderColor{ Status = "Ожидает оплаты", Color = "#00FFFFFF" },
                     };
             else
                 OrderColors = new ObservableCollection<OrderColor>(Configuration.GetConfiguration().OrderColors);

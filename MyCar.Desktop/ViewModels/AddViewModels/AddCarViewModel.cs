@@ -112,7 +112,7 @@ namespace MyCar.Desktop.ViewModels
                 }
                 if (!IsNonNegativeNumber(CharacteristicValue))
                 {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Число должно быть не отрицательным" });
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не верное число!" });
                     return;
                 }
                 bool match = false;
@@ -178,6 +178,11 @@ namespace MyCar.Desktop.ViewModels
                 if (Cars.Exists(s=>s.ModelId == SelectedModel.ID))
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Выбранная модель уже используется!" });
+                    return;
+                }
+                if (AddCarVM.CarPrice < 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Цена не может быть отрицательной!" });
                     return;
                 }
                 AddCarVM.ModelId = SelectedModel.ID;

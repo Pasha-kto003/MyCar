@@ -12,6 +12,8 @@
     var saleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
     var discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
     var discountCar = discounts.Where(s => s.SaleCarId != 0 && dateTime >= s.StartDate && dateTime <= s.EndDate).Select(s=> s.SaleCar.Car).ToList();
+    var marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+    var filterMark = Model.Where(s => s.Model.MarkId != 0).Select(s => s.Model.MarkCar).ToList();
 }
 
 <div class="row w-100 align-items-center justify-content-center">
@@ -40,15 +42,11 @@
                                         <input type="text" name="SearchString" class="form-control search-slt" placeholder="Поиск..">
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                      @*<select name="SortString">
-                                            <option value="Цена авто">Цена авто</option>
-                                            <option value="Авто">Авто</option>
-                                        </select>*@
                                         <select name="FilterString" class="form-control search-slt">
                                             <option hidden>Тип поиска</option>
                                             <option value="Цена">Цена авто</option>
                                             <option value="Название">Название</option>
-                                            <option value="Модель">Модель</option>
+                                            <option value="Марка">Марка авто</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
@@ -73,29 +71,13 @@
                                         <input type="range" min="1000000" max="12000000" name="SearchPrice" value="1000000" oninput="rangeValue.innerText = this.value">
                                     </div>
                                     <div class="col-md-6 col-sm-12 p-0 justify-content-center align-items-center" style="justify-content:center; align-items:center; display:flex;">
-                                        <h3 class="text-white text-center" id="rangeValue">100</h3>
+                                        <h3 class="text-white text-center" id="rangeValue">1000000</h3>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
                     </form>
-                    <section class="main-content mb-5 mt-5">
-                        <div class="container">
-                            <div class="row row-cols-6">
-                                @foreach (var i in ViewBag.MarkCars)
-                                {
-                                    <div class="col">
-                                        <div class="m-3 d-flex justify-content-center">
-                                            <div class="mark-Photo">
-                                                <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.MarkPhoto })" /></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </section>
                 </div>
              </section>
              <section class="row form-check form-switch text-center" style="align-items: center; justify-content: center;">

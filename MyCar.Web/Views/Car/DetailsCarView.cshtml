@@ -83,7 +83,7 @@
                     <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="stretched-link" style="color: black;">Приобрести</a>
                 </div>
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog" style="min-width: 700px; width: 10000px; background-color: #171717;">
+                    <div class="modal-dialog" style="min-width: 700px; width: 1000px; background-color: #171717;">
                         <div class="modal-content" style="background-color: #171717;">
                             <div class="modal-header">
                                 <h5 class="modal-title text-white text-center" id="staticBackdropLabel">Введите нужное вам количество авто</h5>
@@ -488,7 +488,7 @@
         <div class="callout-header">Ошибка!!!</div>
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
-            <p class="text-white">Превышено максмиальное кол-во покупок данного авто</p>
+            <p class="text-white">@TempData["OrderCountErrorMessage"]</p>
         </div>
     </div>
 }

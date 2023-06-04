@@ -312,7 +312,7 @@ namespace MyCar.Web.Controllers
             return View("CarView", NewFullCars);
         }
 
-        public async Task<IActionResult> SearchCar(string? Filterstring, string? SearchString, string? SearchPrice, string? SortString, int? MarkId)
+        public async Task<IActionResult> SearchCar(string? Filterstring, string? SearchString, string? SearchPrice, string? SortString)
         {
             List<CarApi> cars;
             List<MarkCarApi> markCars;

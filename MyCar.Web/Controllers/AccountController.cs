@@ -86,7 +86,6 @@ namespace MyCar.Web.Controllers
             }
         }
 
-        
         public async Task<IActionResult> UpdateMethod(UserApi newUser)
         {
             Users = await Api.GetListAsync<List<UserApi>>("User");
@@ -197,7 +196,7 @@ namespace MyCar.Web.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", "Такого пользователя нет на сайте");
 
             }
             else if (model.UserName == "" || model.UserName == null)

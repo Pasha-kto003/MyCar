@@ -1002,3 +1002,20 @@ else
 }
                                         
 }*@
+
+<section class="main-content mb-5 mt-5">
+    <div class="container">
+        <div class="row row-cols-6">
+            @foreach (var i in ViewBag.MarkCars)
+            {
+                <div class="col">
+                    <div class="m-3 d-flex justify-content-center">
+                        <div class="mark-Photo">
+                            <a asp-controller="Home" asp-action="GetAuto" asp-route-id="@i.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @i.MarkPhoto })" /></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

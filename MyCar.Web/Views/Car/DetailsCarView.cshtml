@@ -31,9 +31,9 @@
                 ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                 if (ware.Value <= 0)
                 {
-                                        <h3 class="text-white text-center" style="text-align: center;">
-                                            Отсутствует в продаже
-                                        </h3>
+                                            <h3 class="text-white text-center" style="text-align: center;">
+                                                Отсутствует в продаже
+                                            </h3>
                 }
                 else
                 {
@@ -41,28 +41,28 @@
                     {
                         discounts = null;
                     }
-                                        <div class="product-price">
-                                            @if (discounts != null)
+                                            <div class="product-price">
+                                                @if (discounts != null)
                         {
-                                                <h2 class="text-white" style="text-align: center;">
-                                                    <s class="text-white">
-                                                        @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                    </s>
-                                                </h2>
+                                                    <h2 class="text-white" style="text-align: center;">
+                                                        <s class="text-white">
+                                                            @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                                        </s>
+                                                    </h2>
                         }
                         else
                         {
-                                                <h2 class="text-white" style="text-align: center;">
-                                                    @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                </h2>
+                                                    <h2 class="text-white" style="text-align: center;">
+                                                        @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                                    </h2>
                         }
-                                            @if (discounts != null)
+                                                @if (discounts != null)
                         {
-                                                <h4 class="text-white" style="text-align: center;">
-                                                    @discounts.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                </h4>
+                                                    <h4 class="text-white" style="text-align: center;">
+                                                        @discounts.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                                    </h4>
                         }
-                                        </div>
+                                            </div>
                 }
 
             }
@@ -74,7 +74,7 @@
             @if (ware.Value <= 0)
             {
                 <div class="glass-btn glass-btn-gray">
-                    <a href="#url">Отсутсвует</a>
+                    <a href="#url">Отсутсвует в продаже</a>
                 </div>
             }
             else
@@ -171,37 +171,17 @@
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
-
-                    @*<div class="carousel-3d">
-                    <figure>
-                    @foreach (var img in @Model.CarPhotos)
-                    {
-                    @*<div class="product-PhotoBuild"><a href="#any"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @img.PhotoName })" alt=""  /></a></div>
-                    <div class="product-PhotoBuild"><a href="#any"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @img.PhotoName })" alt="" style="width: 600px; height: 420px;" /></a></div>
-                    }
-                    </figure>
-                    <nav>
-                    <button class="nav prev"> < </button>
-                    <button class="nav next"> > </button>
-                    </nav>
-                    </div>
-                    </div>*@
-                    @*<img src="~/CarImages/@Model.Car.PhotoCar" width="755" height="450" class="w-50 justify-content-center"/>*@
                 </div>
                 <br />
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Описание авто</button>
                         <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Технические характеристики</button>
-                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Место положение авто</button>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="color: white;">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus tincidunt aliquam. Aliquam gravida massa at sem vulputate interdum et vel eros. Maecenas eros enim, tincidunt vel turpis vel, dapibus tempus nulla. Donec vel nulla dui. Pellentesque sed ante sed ligula hendrerit condimentum. Suspendisse rhoncus fringilla ipsum quis porta. Morbi tincidunt viverra pharetra.
-                        Vestibulum vel mauris et odio lobortis laoreet eget eu magna. Proin mauris erat, luctus at nulla ut, lobortis mattis magna. Morbi a arcu lacus. Maecenas tristique velit vitae nisi consectetur, in mattis diam sodales. Mauris sagittis sem mattis justo bibendum, a eleifend dolor facilisis. Mauris nec pharetra tortor, ac aliquam felis. Nunc pretium erat sed quam consectetur fringilla.
-                        Aliquam ultricies nunc porta metus interdum mollis. Donec porttitor libero augue, vehicula tincidunt lectus placerat a. Sed tincidunt dolor non sem dictum dignissim. Nulla vulputate orci felis, ac ornare purus ultricies a. Fusce euismod magna orci, sit amet aliquam turpis dignissim ac. In at tortor at ligula pharetra sollicitudin. Sed tincidunt, purus eget laoreet elementum, felis est pharetra ante, tincidunt feugiat libero enim sed risus.
-                        Sed at leo sit amet mi bibendum aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent cursus varius odio, non faucibus dui. Nunc vehicula lectus sed velit suscipit aliquam vitae eu ipsum. Curabitur hendrerit magna a quam semper, at tristique mauris gravida. Donec consequat elementum lorem, ac luctus ligula. Quisque viverra fringilla mi vel aliquam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        @Model.Description
                     </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <table class="table">
@@ -342,7 +322,6 @@
         </h3>
     </div>
     <div class="row w-100 text-white text-center justify-content-center align-items-center mt-2">
-
         <ul class="slides">
             @foreach (var colorCar in carColors)
             {
@@ -352,6 +331,13 @@
                         <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@colorCar.ID">
                             <img src="@Url.Action("DisplayImage", "Home", new { photoName = @colorCar.MainPhotoCar })" />
                         </a>
+                        <div class="row w-100 justify-content-center align-items-center mb-5">
+                            <button class="learnMorebtn" style="width: 200px; justify-content:center; align-items:center;" asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@colorCar.ID">
+                                <b>
+                                    Посмотреть
+                                </b>
+                            </button>
+                        </div>
                     </div>
                 </li>
             }
@@ -364,7 +350,8 @@
             </li>
         </ul>
     </div>
-    <div class="row w-100 text-white text-center justify-content-center align-items-center mt-5" style="font-size: 24px;">
+
+    <div class="row w-100 text-white text-center justify-content-center align-items-center" style="font-size: 24px; margin-top: 100px;">
         <h2>Комплектации @Model.Car.CarName</h2>
     </div>
     <div class="row w-100">
@@ -394,28 +381,28 @@
                                 {
                                     discountCarStylePrice = null;
                                 }
-                                                    <div class="product-price">
-                                                        @if (discountCarStylePrice != null)
+                                    <div class="product-price">
+                                        @if (discountCarStylePrice != null)
                                     {
-                                                            <h3 class="text-white">
-                                                                <s class="text-white">
-                                                                    @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                                </s>
-                                                            </h3>
+                                            <h3 class="text-white">
+                                                <s class="text-white">
+                                                    @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                                </s>
+                                            </h3>
                                     }
                                     else
                                     {
-                                                            <h2 class="text-white">
-                                                                @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                            </h2>
+                                            <h2 class="text-white">
+                                                @cars.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                            </h2>
                                     }
-                                                        @if (discountCarStylePrice != null)
+                                        @if (discountCarStylePrice != null)
                                     {
-                                                            <h4 class="text-white">
-                                                                @discountCarStylePrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                            </h4>
+                                            <h4 class="text-white">
+                                            @discountCarStylePrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                        </h4>
                                     }
-                                                    </div>
+                                    </div>
                             }
                         </div>
                         <div class="col-9 justify-content-center">
@@ -470,11 +457,11 @@
                             </h1>
                         </button>
                         @{
-                                                <div class="product-price">
-                                                    <h2 class="text-white">
-                                                        @cars.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                    </h2>
-                                                </div>
+                                <div class="product-price">
+                                    <h2 class="text-white">
+                                        @cars.CarPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                    </h2>
+                                </div>
                         }
                     </div>
                 </div>

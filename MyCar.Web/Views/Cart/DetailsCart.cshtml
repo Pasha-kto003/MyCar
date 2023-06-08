@@ -63,23 +63,34 @@
                                     </div>
                                     <div class="col-8 d-flex justify-content-between">
                                         <div class="col m-3">
-                                            <h4 class="row text-white">Наименование авто</h4>
-                                            <h5 class="row text-white">@car.SaleCar.Car.CarName</h5>
+                                            <div class="row w-100 justify-content-center align-items-center text-center">
+                                                <h4 class="text-white">Наименование авто</h4>    
+                                            </div>            
+                                            <div class="row w-100 justify-content-center align-items-center text-center">
+                                                <h5 class="text-white">@car.SaleCar.Car.CarName</h5>
+                                            </div>
                                         </div>
 
                                         <div class="col m-3">
-                                            <h4 class="row text-white text-center">Стоимость авто:</h4>
-                                            @{
-                                                var price = DiscountCounter.GetDiscount(@car.SaleCar);
-                                                if(price == 0)
-                                                {
-                                                    price = @car.SaleCar.FullPrice;
+                                            <div class="row w-100 justify-content-center align-items-center text-center">
+                                                <h4 class="text-white text-center">Стоимость авто:</h4>
+                                                @{
+                                                    var price = DiscountCounter.GetDiscount(@car.SaleCar);
+                                                    if(price == 0)
+                                                    {
+                                                        price = @car.SaleCar.FullPrice;
+                                                    }
                                                 }
-                                            }
-                                            <h4 class="row text-white text-center">@price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h4>
+                                            </div>
+                                            <div class="row w-100 justify-content-center align-items-center text-center">
+                                                <h4 class="text-white text-center">@price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381</h4>
+                                            </div>
+                                            
                                         </div>
                                         <div class="col m-3 text-white">
-                                            <h4 class="row text-white">Кол-во авто</h4>
+                                            <div class="row w-100 justify-content-center align-items-center text-center">
+                                                <h4 class="text-white">Кол-во авто</h4>
+                                            </div>                               
                                             <div class="row w-100">
                                                 <div class="col-4" style="display: flex; justify-content: center; text-align:center;">
                                                     <a asp-action="EditWare" asp-controller="Cart" asp-route-id="@car.SaleCarId" class="text-white" >+</a>

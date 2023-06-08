@@ -20,7 +20,7 @@ namespace MyCar.Web.Core
                 {
                     if (discount != null)
                     {
-                        if (date < dis.StartDate && date > dis.EndDate)
+                        if (date < dis.StartDate.Date || date > dis.EndDate.Date)
                             return finalPrice = 0;
                         if (dis.DiscountValue > 0)
                         {

@@ -35,8 +35,6 @@
                             <span class="text-body-secondary">@cars.Price.Value.ToString("N",  CultureInfo.InvariantCulture)</span>
                         </li>
                     }
-                    
-
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Итого (RUB)</span>
                         <strong>@sum.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381;</strong>
@@ -120,8 +118,18 @@
                     </div>
 
                     <hr class="my-4">
-
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">Подтвердить</button>
+                    <div class="row justify-content-center align-items-center text-center">
+                        <div class="col-6 justify-content-center align-items-center text-center">
+                            <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                                <a style="width: 200px;" class="stretched-link" asp-controller="Cart" asp-route-id="@Model.ID" asp-action="CancelOrder">Отменить</a>
+                            </div>
+                        </div>
+                        <div class="col-6 justify-content-center align-items-center text-center">
+                            <div class="glass-btn glass-btn-red" style="align-items:center; justify-content:center;">
+                                <input style="width: 200px;" class="stretched-link" value="Оплатить" type="submit"/>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

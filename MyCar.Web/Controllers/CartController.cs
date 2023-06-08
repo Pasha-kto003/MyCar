@@ -598,6 +598,20 @@ namespace MyCar.Web.Controllers
                 User = user
             };
 
+            var marks = new List<MarkCarApi>();
+            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+            ViewBag.Marks = marks;
+            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+
+            if (order.WareHouses == null || order.WareHouses.Count == 0)
+            {
+                orderItems.Clear();
+                string json4 = JsonConvert.SerializeObject(orderItems);
+                HttpContext.Session.SetString("OrderItem", json4);
+                TempData["OrderFineMessage"] = $"Что-то пошло не так";
+                return View("~/Views/Home/Index.cshtml", cars);
+            }
+
             await CreateOrder(order);
             
             orderItems.Clear();
@@ -606,10 +620,7 @@ namespace MyCar.Web.Controllers
 
             EmailSender emailSender = new EmailSender();
             emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
-            var marks = new List<MarkCarApi>();
-            marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
-            ViewBag.Marks = marks;
-            var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            
             TempData["OrderFineMessage"] = $"Ваш заказ ожидает оплаты";
             return View("~/Views/Home/Index.cshtml", cars);
         }

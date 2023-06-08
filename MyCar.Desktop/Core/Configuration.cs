@@ -36,6 +36,7 @@ namespace MyCar.Desktop.Core
                         new OrderColor{ Status = "Новый", Color = "#00FFFFFF" },
                         new OrderColor{ Status = "Завершен", Color = "#00FFFFFF" },
                         new OrderColor{ Status = "Отменен", Color = "#00FFFFFF" },
+                        new OrderColor{ Status = "Ожидает оплаты", Color = "#00FFFFFF" },
                     };
                 return config;
             }
@@ -100,6 +101,7 @@ namespace MyCar.Desktop.Core
             new OrderColor{ Status = "Новый", Color = "#00FFFFFF" },
             new OrderColor{ Status = "Завершен", Color = "#00FFFFFF" },
             new OrderColor{ Status = "Отменен", Color = "#00FFFFFF" },
+            new OrderColor{ Status = "Ожидает оплаты", Color = "#00FFFFFF" },
         };
     }
     public class ColorValue

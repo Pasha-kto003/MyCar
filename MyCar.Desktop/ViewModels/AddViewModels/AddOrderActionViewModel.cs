@@ -76,7 +76,7 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
         {
             Task.Run(GetList).Wait();
 
-            CarTitle = wareHouse.SaleCar.Car.CarName + $" ({wareHouse.SaleCar.Equipment.NameEquipment})";
+            CarTitle = wareHouse.SaleCar.Car.CarName + $" ({wareHouse.SaleCar.Equipment.NameEquipment})" + $" ({wareHouse.SaleCar.ColorCar})";
             if (actionType.ActionTypeName == "Продажа")
             {
                 DiscountVisibility = Visibility.Visible;

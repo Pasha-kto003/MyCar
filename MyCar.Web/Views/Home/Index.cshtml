@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Главная страница";
     var models = Model.Where(s => s.Car.BodyType.TypeName.Contains("Седан"));
+    var bodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
     var orders = await Api.GetListAsync<List<OrderApi>>("Order");
     var dateNow = DateTime.Now;
     var users = await Api.GetListAsync<List<UserApi>>("User");

@@ -17,14 +17,14 @@ namespace MyCar.Server.DataModels
             {
                 File.Copy(Path.Combine(Environment.CurrentDirectory, "picture.png"), Path.Combine(AppContext.BaseDirectory, "Images", "picture.png"));
             }
-
             if (!context.Statuses.Any())
             {
                 var statuses = new[]
                 {
                     new Status { StatusName = "Новый" },
                     new Status { StatusName = "Завершен" },
-                    new Status { StatusName = "Отменен" }
+                    new Status { StatusName = "Отменен" },
+                    new Status { StatusName = "Ожидает оплаты" }
                 };
 
                 context.Statuses.AddRange(statuses);

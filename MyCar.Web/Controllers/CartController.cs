@@ -40,8 +40,6 @@ namespace MyCar.Web.Controllers
             return View();
         }
 
-        // GET: CartController/Details/5
-
         // GET: CartController/Create
         public ActionResult Create()
         {
@@ -97,6 +95,10 @@ namespace MyCar.Web.Controllers
             return View("CartPage", GetPage(name).Result);
         }
 
+        /// <summary>
+        /// Отчет по продажам
+        /// </summary>
+        /// <param name="orders"></param>
         public void GenerateReport(List<OrderApi> orders)
         {
             decimal TotalPurchasePrice = 0;
@@ -433,6 +435,9 @@ namespace MyCar.Web.Controllers
             return View("DetailsCart", orderItems);
         }
 
+        /// <summary>
+        /// Удаление машины из корзины
+        /// </summary>
         public async Task<IActionResult> DeleteCar(int id)
         {
             List<WareHouseApi> orderItems = new List<WareHouseApi>();
@@ -465,6 +470,9 @@ namespace MyCar.Web.Controllers
             return View("DetailsOrder", order);
         }
 
+        /// <summary>
+        /// Добавление авто в корзину
+        /// </summary>
         public async Task<IActionResult> AddOrder(int id, int? id2)
         {
             await GetOrders();
@@ -507,6 +515,9 @@ namespace MyCar.Web.Controllers
             return View("DetailsCart", orderItems);
         }
 
+        /// <summary>
+        /// Переход и изменения кол-ва товара в заказе
+        /// </summary>
         public async Task<IActionResult> UpdateCountCar(int id, int CountChange)
         {
             await GetOrders();
@@ -532,6 +543,9 @@ namespace MyCar.Web.Controllers
             return View("DetailsCart", orderItems);
         }
 
+        /// <summary>
+        /// Последующее изменение кол-ва товара заказа
+        /// </summary>
         public async Task<IActionResult> UpdateCountWarehouse(int id, int CountChange)
         {
             await GetOrders();
@@ -563,6 +577,11 @@ namespace MyCar.Web.Controllers
         {
             _stripeService = stripeService;
         }
+
+        /// <summary>
+        /// Завершение заказа
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> ConfirmOrder()
         {
             await GetOrders();
@@ -625,6 +644,9 @@ namespace MyCar.Web.Controllers
             return View("~/Views/Home/Index.cshtml", cars);
         }
 
+        /// <summary>
+        /// Переход на оплату заказа
+        /// </summary>
         public async Task<IActionResult> Payment(int Id)
         {
             await GetOrders();
@@ -644,6 +666,9 @@ namespace MyCar.Web.Controllers
             return View("PaymentCart", order);
         }
 
+        /// <summary>
+        /// Оплата заказа
+        /// </summary>
         public async Task<IActionResult> PaymentOrder(int Id, string cardName, string cardNumber, string cardMonth, string cardYear, string cardCVV)
         {
             if(Id != 0)
@@ -702,7 +727,24 @@ namespace MyCar.Web.Controllers
             }
         }
 
-
+        public async Task<IActionResult> CancelOrder(int id)
+        {
+            await GetOrders();
+            string userName = User.Identity.Name;
+            var deleteOrder = Orders.FirstOrDefault(s => s.ID == id);
+            if(deleteOrder != null)
+            {
+                deleteOrder.StatusId = Statuses.FirstOrDefault(s => s.StatusName == "Отменен").ID;
+                await EditOrder(deleteOrder);
+                TempData["CancelMessage"] = $"Заказ №{deleteOrder.ID} отменен";
+                return View("CartPage", GetPage(userName).Result);
+            }
+            else
+            {
+                TempData["CancelMessage"] = $"Заказ №{deleteOrder.ID} невозможно отменить";
+                return View("CartPage", GetPage(userName).Result);
+            }
+        }
 
         //public async Task CustomerAdd(AddStripeCustomer customer)
         //{
@@ -720,6 +762,10 @@ namespace MyCar.Web.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Проверка на историю поступлений
+        /// </summary>
         private void OrderItemsFill(List<WareHouseApi> orderItems)
         {
             //выбираем не отмененные заказы

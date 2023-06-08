@@ -477,10 +477,8 @@ namespace MyCar.Web.Controllers
                 price = car.FullPrice;
             }
             var user = Users.FirstOrDefault(s => s.UserName == User.Identity.Name);
-            //var warehouses = Warehouses.Where(s => s.OrderId == null || s.OrderId == 0).ToList();
             List<OrderApi> thisOrders = Orders.OrderBy(s => s.DateOfOrder).ToList();
-            List<WareHouseApi> WareHouseIns = thisOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(w => w.WareHouses).ToList();
-            
+            List<WareHouseApi> WareHouseIns = thisOrders.Where(s => s.ActionType.ActionTypeName == "Поступление").SelectMany(w => w.WareHouses).ToList();      
             WareHouseApi warehouse = new WareHouseApi
             {
                 SaleCarId = id,
@@ -493,26 +491,16 @@ namespace MyCar.Web.Controllers
             string json = HttpContext.Session.GetString("OrderItem");
             if (json != null)
                 orderItemsOld = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
-
-            //проверка на схожие авто
             var carSearch = orderItemsOld.FirstOrDefault(s => s.SaleCarId == id);
             if(carSearch != null)
             {
                 TempData["SaleExistErrorMessage"] = $"Машина: {carSearch.SaleCar.FullName} уже есть в вашей корзине";
                 return View("DetailsCarView", car.ID);
             }
-
-            //проверка на количество
-            
-            // Добавляем новый объект в список
             orderItemsOld.Add(warehouse);
-
-            // Сохраняем список обратно в Session
             string json1 = JsonConvert.SerializeObject(orderItemsOld);
             var des = JsonConvert.DeserializeObject(json1);
             HttpContext.Session.SetString("OrderItem", json1);
-
-            // Получаем текущий список из Session
             string json2 = HttpContext.Session.GetString("OrderItem");
             if (json2 != null)
                 orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json2) ?? new List<WareHouseApi>();
@@ -609,11 +597,6 @@ namespace MyCar.Web.Controllers
                 Status = status,
                 User = user
             };
-
-            if(order.WareHouses == null)
-            {
-
-            }
 
             await CreateOrder(order);
             

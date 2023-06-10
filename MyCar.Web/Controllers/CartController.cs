@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using Spire.Xls;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace MyCar.Web.Controllers
@@ -546,6 +548,9 @@ namespace MyCar.Web.Controllers
         /// <summary>
         /// Последующее изменение кол-ва товара заказа
         /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="CountChange">кол-во</param>
+        /// <returns>return View("DetailsCart", orderItems);</returns>
         public async Task<IActionResult> UpdateCountWarehouse(int id, int CountChange)
         {
             await GetOrders();
@@ -627,7 +632,7 @@ namespace MyCar.Web.Controllers
                 orderItems.Clear();
                 string json4 = JsonConvert.SerializeObject(orderItems);
                 HttpContext.Session.SetString("OrderItem", json4);
-                TempData["OrderFineMessage"] = $"Что-то пошло не так";
+                TempData["OrderFineMessage"] = $"Что-то пошло не так с вашим заказом";
                 return View("~/Views/Home/Index.cshtml", cars);
             }
 
@@ -637,9 +642,6 @@ namespace MyCar.Web.Controllers
             string json1 = JsonConvert.SerializeObject(orderItems);
             HttpContext.Session.SetString("OrderItem", json1);
 
-            EmailSender emailSender = new EmailSender();
-            emailSender.SendEmailAsync(order.User.UserName, order.User.Email, "Пользователь купил авто", "Пользователь купил авто");
-            
             TempData["OrderFineMessage"] = $"Ваш заказ ожидает оплаты";
             return View("~/Views/Home/Index.cshtml", cars);
         }
@@ -689,25 +691,36 @@ namespace MyCar.Web.Controllers
                 }
                 long totalSum = (long)sum * 100;
 
-                Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(cardName, cardNumber, cardYear, cardMonth, cardCVV);
-                Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
-                CancellationToken ct = new CancellationToken();
-                StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
-
                 long dollarSum = totalSum / 80;
                 try
                 {
+                    Models.Payments.Stripe.AddStripeCard card = new Models.Payments.Stripe.AddStripeCard(cardName, cardNumber, cardYear, cardMonth, cardCVV);
+                    Models.Payments.Stripe.AddStripeCustomer customer = new Models.Payments.Stripe.AddStripeCustomer(user.Email, user.UserName, card);
+                    CancellationToken ct = new CancellationToken();
+                    StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
                     Models.Payments.Stripe.AddStripePayment payment = new AddStripePayment(createdCustomer.CustomerId, user.Email, sb.ToString(), "USD", dollarSum);
                     StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
                     order.Status = status;
                     order.StatusId = status.ID;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    TempData["ErrorPaymentMessage"] = "При оплате произошел сбой!";
-                    return View("PaymentOrder", order);
+                    TempData["ErrorPaymentMessage"] = $"При оплате произошел сбой! {ex.Message}\n {ex.TargetSite}";
+                    var url = @"http://stackoverflow.com/search?q=[c%23]+" + ex.Message.Replace(" ", "%20");
+                    ErrorExeption.OpenUrl(url);
+                    return View("PaymentCart", order);
                 }
-            
+
+                var sumOrder = order.WareHouses.Sum(s => s.CountChange * s.Price);
+                var sumInRub = sumOrder.Value.ToString("N", CultureInfo.InvariantCulture) + "&#8381";
+                EmailSender emailSender = new EmailSender();
+                StringBuilder namesOrder = new StringBuilder();
+                foreach (var names in order.WareHouses)
+                {
+                    namesOrder.Append($"{names.SaleCar.FullName}\n");
+                }
+                emailSender.SendEmailAsync(order.User.UserName, order.User.Email, $"Пользователь: {User.Identity.Name} совершил покупку", $"Пользователь: {User.Identity.Name} совершил покупку на сумму {sumInRub}\n Состав заказа: {namesOrder}");
+
                 await EditOrder(order);
 
                 //orderItems.Clear();
@@ -721,9 +734,12 @@ namespace MyCar.Web.Controllers
             }
             else
             {
-                TempData["ErrorPaymentMessage"] = "При оплате произошел сбой!";
-                var order = Orders.FirstOrDefault(s => s.ID == Id);
-                return View("PaymentOrder", order);
+                var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+                var marks = new List<MarkCarApi>();
+                marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
+                ViewBag.Marks = marks;
+                TempData["SuccesPaymentMessage"] = "Сбой при заказе";
+                return View("~/Views/Home/Index.cshtml", cars);
             }
         }
 

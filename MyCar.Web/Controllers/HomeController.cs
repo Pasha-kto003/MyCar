@@ -12,6 +12,7 @@ using MyCar.Web.Core;
 using MyCar.Web.Core.Charts;
 using MyCar.Web.Core.Paging;
 using MyCar.Web.Models;
+using Newtonsoft.Json;
 using SmartBreadcrumbs.Attributes;
 using SmartBreadcrumbs.Nodes;
 using System.Collections.Generic;
@@ -65,27 +66,18 @@ namespace MyCar.Web.Controllers
             return View("ChooseCarView", car);
         }
 
-        //[Breadcrumb("ShowPartialView", FromController = typeof(CarController), FromAction = "DetailsCarView")]
-        //public async Task<IActionResult> ShowPartialView(string name)
-        //{
-        //    NewCars = GetCar().Result;
-        //    Marks = GetMark().Result;
-        //    var car = NewCars.FirstOrDefault(s => s.CarName == name);
-        //    var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
-        //    var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
-        //    var articlePage = new MvcBreadcrumbNode("ShowPartialView", "Home", $"Комплектации / {car.CarName}") { Parent = articlesPage };
-        //    RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.CarName}");
-        //    ViewData["BreadcrumbNode"] = articlePage;
-        //    ViewBag.MarkCars = Marks;
-        //    return View("ChooseCarView", car);
-        //}
-
         [Authorize(Roles = "Администратор, Клиент")]
         public async Task<IActionResult> Index()
         {
             var marks = new List<MarkCarApi>();          
             marks = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             ViewBag.Marks = marks;
+            var orderItems = new List<WareHouseApi>();
+            string json = HttpContext.Session.GetString("OrderItem");
+            if (json != null)
+                orderItems = JsonConvert.DeserializeObject<List<WareHouseApi>>(json) ?? new List<WareHouseApi>();
+
+            ViewBag.CountCart = orderItems.Count;
             var cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             return View("Index", cars);
         }

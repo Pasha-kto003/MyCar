@@ -36,21 +36,24 @@ namespace MyCar.Web.Controllers
         {
             Cars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             var car = Cars.FirstOrDefault(s => s.ID == id);
-            var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
-            var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
-            var article = new MvcBreadcrumbNode("ShowPartialView", "Home", $"{car.Car.CarName}") { Parent = articlesPage };
-            var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"{car.FullName}") { Parent = article };
-            RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.FullName}");
-            ViewData["BreadcrumbNode"] = articlePage;
+            try
+            {
+                var page = new MvcBreadcrumbNode("Index", "Home", "Главная страница");
+                var articlesPage = new MvcBreadcrumbNode("CarView", "Home", "Список авто") { Parent = page };
+                var article = new MvcBreadcrumbNode("ShowPartialView", "Home", $"{car.Car.CarName}") { Parent = articlesPage };
+                var articlePage = new MvcBreadcrumbNode("DetailsCarView", "Car", $"{car.FullName}") { Parent = article };
+                RouteAttribute route = new RouteAttribute($"/Car/DetailsCarView/CarName/{car.FullName}");
+                ViewData["BreadcrumbNode"] = articlePage;
+            }
+            catch (Exception ex)
+            {
+                TempData["BreadCrumbsErrorMessage"] = "Что то пошло не так!";
+                return NotFound();
+            }  
             ViewData["Title"] = $"CarName - {car.Car.CarName}";
             ViewBag.SaleCars = Cars.Where(s=> s.Car.CarMark.Contains(car.Car.CarMark));
             ViewBag.RecommendCars = Cars.Where(s => s.Car.CarMark.Contains(car.Car.CarMark) && s.ID != car.ID);
             ViewBag.Cars = Cars.Where(s=> s.Car.ModelId == car.Car.ModelId);
-            //foreach(SaleCarApi carStyle in ViewBag.Cars)
-            //{
-            //    ViewBag.DiscountCarStylePrice = DiscountCounter.GetDiscount(carStyle);
-            //    ViewBag.FullPrice = carStyle.FullPrice;
-            //}
             ViewBag.DiscountPrice = DiscountCounter.GetDiscount(car);
             return View(car);
         }

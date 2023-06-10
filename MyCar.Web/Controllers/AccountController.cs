@@ -100,6 +100,13 @@ namespace MyCar.Web.Controllers
                 user.Passport.Number = newUser.Passport.Number;
                 user.Passport.DateEnd = newUser.Passport.DateEnd;
                 user.Passport.DateStart = newUser.Passport.DateStart;
+                var errorUser = Users.FirstOrDefault(s => s.ID != user.ID && s.UserName == user.UserName);
+                if (errorUser != null)
+                {
+                    TempData["SameUserError"] = $"Пользователь с никнеймом {errorUser.UserName} уже существует";
+                    return View("Personal_Area", user);
+                }
+
                 UserEdit(user, user.Passport);
                 Authenticate(user);
                 return RedirectToAction("Index", "Home");

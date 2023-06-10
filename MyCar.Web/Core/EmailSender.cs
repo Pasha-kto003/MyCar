@@ -10,9 +10,9 @@ namespace MyCar.Web.Core
             System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
             mail.To.Add("lukovnikov.pasha@gmail.com");
             mail.From = new MailAddress("lukovnikov.pasha@gmail.com", "Email head", System.Text.Encoding.UTF8);
-            mail.Subject = "This mail is send from asp.net application";
+            mail.Subject = subject;
             mail.SubjectEncoding = System.Text.Encoding.UTF8;
-            mail.Body = "This is Email Body Text";
+            mail.Body = message;
             mail.BodyEncoding = System.Text.Encoding.UTF8;
             mail.IsBodyHtml = true;
             mail.Priority = MailPriority.High;

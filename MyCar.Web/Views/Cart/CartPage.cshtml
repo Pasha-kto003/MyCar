@@ -153,6 +153,9 @@
                                                     <h3 class="display-5 fw-bold text-success">
                                                         Заказ оплачен
                                                     </h3>
+                                                    <div class="glass-btn glass-btn-red">
+                                                        <a asp-action="DetailsOrder" asp-controller="Cart" asp-route-id="@ord.ID" style="color: black">Посмотреть заказ</a>
+                                                    </div>
                                                 }
                                                 @if (ord.Status.StatusName == "Ожидает оплаты")
                                                 {
@@ -168,6 +171,9 @@
                                                     <h3 class="display-5 fw-bold text-danger">
                                                         Заказ не оплачен
                                                     </h3>
+                                                    <div class="glass-btn glass-btn-red">
+                                                        <a asp-action="DetailsOrder" asp-controller="Cart" asp-route-id="@ord.ID" style="color: black">Посмотреть заказ</a>
+                                                    </div>
                                                 }
                                             </div>
                                             <div class="col-4">
@@ -178,20 +184,6 @@
                                                 @foreach (var price in @ord.WareHouses)
                                                 {
                                                     decimal? sum = 0;
-                                                    @*var discountPrice = DiscountCounter.GetDiscount(@price.SaleCar);
-                                                    if (discountPrice == 0)
-                                                    {
-                                                        discountPrice = null;
-                                                        sum = price.Price * price.CountChange * -1;
-                                                        mySum += sum;
-                                                        //ord.SumOrder = sum;
-                                                    }
-                                                    @if (discountPrice != null)
-                                                    {
-                                                        sum = discountPrice * price.CountChange * -1;
-                                                        mySum += sum;
-                                                        //ord.SumOrder = sum;
-                                                    }*@
                                                     sum = price.Price * price.CountChange * -1;
                                                     mySum += sum;
                                                 }
@@ -207,7 +199,6 @@
                                                         <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@car.SaleCar.ID"><img src="@Url.Action("DisplayImage", "Home", new { photoName = @car.SaleCar.MainPhotoCar })" /></a>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-lg-6">
                                                     <div class="row">
                                                         <div class="col p-5">
@@ -245,13 +236,9 @@
                                                                     newPrice = null;
                                                                 }
                                                                 <div class="row border-bottom">
-                                                                    
-                                                                        <h2 class="text-white">
-                                                                            @car.Price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                                        </h2>
-                                                                    
-
-                                                                    
+                                                                    <h2 class="text-white">
+                                                                        @car.Price.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                                                    </h2>
                                                                 </div>
                                                             }
                                                         </div>

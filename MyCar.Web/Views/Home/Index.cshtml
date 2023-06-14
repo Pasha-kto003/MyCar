@@ -19,64 +19,65 @@
         TotalQuantity = gr.Sum(s => s.CountChange * -1),
         FullPrice = gr.Sum(s => s.SaleCar.FullPrice)
     }).
-    OrderByDescending(gr => gr.TotalQuantity);
+    OrderByDescending(gr => gr.TotalQuantity).Take(3);;
 
 }
 
 <div class="container-fluid">
-    <div class="slider" id="slider" style="margin: 0px;">
-        <div class="slider-content" id="slider-content">
-            <div class="sl-img">
-                <div class="sl-img-item sl-img-item-active" data-id="1"><img src="/image/sliderPhoto1.jpg" /></div>
-                <div class="sl-img-item" data-id="2"><img src="/image/sliderPhoto2.jpg" /></div>
-                <div class="sl-img-item" data-id="3"><img src="/image/sliderPhoto3.jpg" /></div>
-            </div>
-            <div class="sl-text">
-                <div class="sl-text-item sl-text-item-active" data-id="1">
-                    <div class="sl-text-item-head">
-                        <h3>Mersedez-350 sl</h3>
-                    </div>
-                    <div class="sl-text-item-info">
-                        <p>Национальный Парк Йеллоустоун</p>
-                    </div>
-                </div>
-                <div class="sl-text-item" data-id="2">
-                    <div class="sl-text-item-head">
-                        <h3>Mersedez Group-C</h3>
-                    </div>
-                    <div class="sl-text-item-info">
-                        <p>Мальдивские Острова</p>
-                    </div>
-                </div>
-                <div class="sl-text-item" data-id="3">
-                    <div class="sl-text-item-head">
-                        <h3>Toyota Camry</h3>
-                    </div>
-                    <div class="sl-text-item-info">
-                        <p>Шотландия</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="slider__nav" style="height: 900px;">
-            <div class="sl-nav-arrows">
-                <div class="sl-nav-arrow sl-nav-arrow-left" id="left">Лево</div>
-                <div class="sl-nav-arrow sl-nav-arrow-right" id="right">Право</div>
-            </div>
-            <div class="sl-nav-dots" id="sl-nav-dots">
-                <div class="sl-nav-dot sl-nav-dot-active" data-id="1"></div>
-                <div class="sl-nav-dot" data-id="2"></div>
-                <div class="sl-nav-dot" data-id="3"></div>
-            </div>
+    <div class="row w-100 mt-5">
+        <div class="slr">    
+            <ul id="sls">
+                <li class="sl">
+                    <div class="sl-partial sl-left"><img src="/image/sliderPhoto1.jpg"/></div>
+                    <div class="sl-partial sl-right"><img src="/image/sliderPhoto2.jpg"/></div>
+                    <div class="sl-text" style="position:relative;">
+                        <div class="sl-title">Заголовок слайдера</div> 
+                        <div class="sl-data">Описание слайдера</div> 
+                        <a href="#url" class="sl-read">Подробнее</a> 
+                    </div>   
+                </li>
+                <!-- Еще слайды -->
+                <li class="sl">
+                    <div class="sl-partial sl-left"><img src="/image/sliderPhoto1.jpg"/></div>
+                    <div class="sl-partial sl-right"><img src="/image/sliderPhoto1.jpg"/></div>
+                    <div class="sl-text" style="position:relative;">
+                        <div class="sl-title">Заголовок слайдера</div> 
+                        <div class="sl-data">Описание слайдера</div> 
+                        <a href="#url" class="sl-read">Подробнее</a> 
+                    </div>  
+                </li>
+            </ul>
+            <svg class="sl-btn sl-prev" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g transform="translate(8.500000, 8.500000) scale(-1, 1) translate(-8.500000, -8.500000)">
+                    <polygon class="sl-btn-pl" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596"></polygon>
+                    <polygon class="sl-btn-pl-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596"></polygon>
+                    <path d="M-1.48029737e-15,0.56157424 L-1.48029737e-15,16.1929159 L9.708,8.33860465 L-2.66453526e-15,0.56157424 L-1.48029737e-15,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z"></path>
+                </g>
+            </svg>
+            <svg class="sl-btn sl-next" viewBox="-1 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g>
+                    <polygon class="sl-btn-pl" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596"></polygon>
+                    <polygon class="sl-btn-pl-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596"></polygon>
+                    <path d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z"></path>
+                </g>
+            </svg>
+            <ul class="sl-select">
+                <li class="selector"></li>
+                <!-- Еще селекторы -->
+                <li class="selector"></li>
+            </ul>
         </div>
     </div>
+    
 
     <section class="main-content mb-5 mt-5">
-
         <div class="container">
-
+            <div class="row w-100">
+                <h3 class="text-white text-center">
+                    Марки авто, представленные в каталоге
+                </h3>
+            </div>
             <div class="row row-cols-6">
-
                 @foreach (var i in ViewBag.Marks)
                 {
                     <div class="col">
@@ -89,9 +90,7 @@
                     </div>
                 }
             </div>
-
         </div>
-
     </section>
     @{
         var count = users.Where(s => s.UserType.TypeName == "Клиент");

@@ -711,7 +711,7 @@ namespace MyCar.Web.Controllers
                     return View("PaymentCart", order);
                 }
 
-                var sumOrder = order.WareHouses.Sum(s => s.CountChange * s.Price);
+                var sumOrder = order.WareHouses.Sum(s => s.CountChange * s.Price * -1);
                 var sumInRub = sumOrder.Value.ToString("N", CultureInfo.InvariantCulture) + "&#8381";
                 EmailSender emailSender = new EmailSender();
                 StringBuilder namesOrder = new StringBuilder();
@@ -743,6 +743,11 @@ namespace MyCar.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Отмена заказа
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Отменит заказ и вернет страницу всех заказов</returns>
         public async Task<IActionResult> CancelOrder(int id)
         {
             await GetOrders();

@@ -705,7 +705,7 @@ namespace MyCar.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["ErrorPaymentMessage"] = $"При оплате произошел сбой! {ex.Message}\n {ex.TargetSite}";
+                    TempData["ErrorPaymentMessage"] = $"При оплате произошел сбой! Введите корректные данные";
                     var url = @"http://stackoverflow.com/search?q=[c%23]+" + ex.Message.Replace(" ", "%20");
                     ErrorExeption.OpenUrl(url);
                     return View("PaymentCart", order);

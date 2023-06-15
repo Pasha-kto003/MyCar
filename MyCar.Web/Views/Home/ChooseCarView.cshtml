@@ -6,6 +6,9 @@
     var warehousesCard = await Api.GetListAsync<List<WareHouseApi>>("Warehouse");
     var saleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
     var sale = saleCars.Where(s=> s.CarId == @Model.ID ).DistinctBy(s=> s.EquipmentId).ToList();
+    var orders = await Api.GetListAsync<List<OrderApi>>("Order");
+    var validateWarehouse = orders.Where(s => s.Status.StatusName != "Отменен").SelectMany(e => e.WareHouses).ToList();
+    var ware = validateWarehouse.Where(s => s.SaleCarId == @Model.ID).ToList().Sum(s => s.CountChange);
 }
 <div class="container-fluid w-100" style="background-color: #171717;">
     <div class="row row-cols-1 w-100">
@@ -102,9 +105,18 @@
                                             </h3>
                                         }
                                     }
-                                    <div class="glass-btn glass-btn-red">
-                                        <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@cars.ID" style="color: black">Посмотреть</a>
-                                    </div>
+                                    @if (ware.Value <= 0)
+                                    {
+                                        <div class="glass-btn glass-btn-gray">
+                                            <a href="#url">Отсутсвует в продаже</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="glass-btn glass-btn-red">
+                                            <a asp-action="DetailsCarView" asp-controller="Car" asp-route-id="@cars.ID" style="color: black">Посмотреть</a>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>

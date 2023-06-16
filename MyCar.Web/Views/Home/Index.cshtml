@@ -565,7 +565,7 @@ else
 @if (TempData["SuccesPaymentMessage"] != null)
 {
     <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
-        <div class="callout-header">Привет, @User.Identity.Name</div>
+        <div class="callout-header">@User.Identity.Name, поздравляем с покупкой на сайте!</div>
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <div class="callout-container">
             <p class="text-white">@TempData["SuccesPaymentMessage"]</p>

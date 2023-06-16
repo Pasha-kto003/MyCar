@@ -284,5 +284,15 @@
 
         </div>
     </section>
-
 </div>
+
+@if (TempData["SearchMessage"] != null)
+{
+    <div class="callout bg-gradient" style="background-color: #171717; border: 5px solid; border-radius:10px; border-image: linear-gradient(45deg, purple, orange) 1;" data-bs-dismiss="alert" role="alert">
+        <div class="callout-header">Результат поиска</div>
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="callout-container">
+            <p class="text-white">@TempData["SearchMessage"]</p>
+        </div>
+    </div>
+}

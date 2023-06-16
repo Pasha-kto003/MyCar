@@ -73,6 +73,12 @@ namespace MyCar.Web.Controllers
 
         public async Task<IActionResult> SearchOrder(string FilterString)
         {
+            if(FilterString == null || FilterString == "Тип фильтрации")
+            {
+                TempData["SearchError"] = "По вашему запросу ничего не найдено";
+                Orders = await Api.GetListAsync<List<OrderApi>>("Order");
+                return View("CartPage", Orders);
+            }
             string name = User.Identity.Name;
             if (User.IsInRole("Администратор"))
             {

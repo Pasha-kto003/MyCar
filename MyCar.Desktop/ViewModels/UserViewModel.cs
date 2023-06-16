@@ -1,5 +1,7 @@
 ﻿using ModelsApi;
 using MyCar.Desktop.Core;
+using MyCar.Desktop.Core.UI;
+using MyCar.Desktop.ViewModels.Dialogs;
 using MyCar.Desktop.Windows;
 using System;
 using System.Collections.Generic;
@@ -121,6 +123,11 @@ namespace MyCar.Desktop.ViewModels
 
             AddUser = new CustomCommand(() =>
             {
+                if (Configuration.CurrentUser.UserType.TypeName != "Администратор")
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "У вас недостаточно прав" });
+                    return;
+                }
                 AddUser edituser = new AddUser();
                 edituser.ShowDialog();
                 Task.Run(GetUserList);
@@ -128,6 +135,11 @@ namespace MyCar.Desktop.ViewModels
 
             EditUser = new CustomCommand(() =>
             {
+                if (Configuration.CurrentUser.UserType.TypeName != "Администратор")
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "У вас недостаточно прав" });
+                    return;
+                }    
                 if (SelectedUser == null || SelectedUser.ID == 0) return;
                 AddUser edituser = new AddUser(SelectedUser);
                 edituser.ShowDialog();
@@ -136,6 +148,11 @@ namespace MyCar.Desktop.ViewModels
 
             EditPassword = new CustomCommand(() =>
             {
+                if (Configuration.CurrentUser.UserType.TypeName != "Администратор")
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "У вас недостаточно прав" });
+                    return;
+                }
                 if (SelectedUser == null || SelectedUser.ID == 0) return;
                 EditPasswordWindow editpass = new EditPasswordWindow(SelectedUser);
                 editpass.ShowDialog();

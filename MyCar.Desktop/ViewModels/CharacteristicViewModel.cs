@@ -135,14 +135,27 @@ namespace MyCar.Desktop.ViewModels
         public CustomCommand DeleteDiscount { get; set; }
         #endregion
 
+        public List<CharacteristicCarApi> CharacteristicCars { get; set; } = new List<CharacteristicCarApi>();
+
+        public List<SaleCarApi> SaleCars { get; set; } = new List<SaleCarApi>();
+        public List<CarApi> Cars { get; set; } = new List<CarApi>();
+
         public CustomCommand AddType { get; set; }
         public CustomCommand EditType { get; set; }
+        public CustomCommand DeleteType { get; set; }
+
+
         public CustomCommand AddCharacteristic { get; set; }
         public CustomCommand EditCharacteristic { get; set; }
+        public CustomCommand DeleteCharacteristic { get; set; }
+
         public CustomCommand AddUnit { get; set; }
         public CustomCommand EditUnit { get; set; }
+        public CustomCommand DeleteUnit { get; set; }
+
         public CustomCommand AddEquipment { get; set; }
         public CustomCommand EditEquipment { get; set; }
+        public CustomCommand DeleteEquipment { get; set; }
 
         public CharacteristicViewModel()
         { 
@@ -186,10 +199,43 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(GetCharacteristic).Wait();
             });
 
+            DeleteCharacteristic = new CustomCommand(async() =>
+            {
+                if (SelectedCharacteristic == null || SelectedCharacteristic.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана характеристика для редактирования" });
+                    return;
+                }
+                if (CharacteristicCars.Any(s=>s.CharacteristicId == SelectedCharacteristic.ID))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Характеристика связана с другой сущностью!" });
+                    return;
+                }
+                await DeleteCharacteristicAsync(SelectedCharacteristic);
+                Task.Run(GetCharacteristic).Wait();
+            });
+
             AddUnit = new CustomCommand(() =>
             {
                 AddUnitWindow addUnit = new AddUnitWindow();
                 addUnit.ShowDialog();
+                Task.Run(GetUnit).Wait();
+                Task.Run(GetCharacteristic).Wait();
+            });
+
+            DeleteUnit = new CustomCommand(async() =>
+            {
+                if (SelectedUnit == null || SelectedUnit.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана ед. измерения" });
+                    return;
+                }
+                if (Characteristics.Any(s=>s.UnitId == SelectedUnit.ID))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Единица связана с другой сущностью!" });
+                    return;
+                }
+                await DeleteUnitAsync(SelectedUnit);
                 Task.Run(GetUnit).Wait();
                 Task.Run(GetCharacteristic).Wait();
             });
@@ -210,6 +256,17 @@ namespace MyCar.Desktop.ViewModels
                 }
                 AddDiscountWindow addDiscount = new AddDiscountWindow(SelectedDiscount);
                 addDiscount.ShowDialog();
+                Task.Run(GetDiscount).Wait();
+            });
+
+            DeleteDiscount = new CustomCommand(async() =>
+            {
+                if (SelectedDiscount == null || SelectedDiscount.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана скидка" });
+                    return;
+                }
+                await DeleteDiscountAsync(SelectedDiscount);
                 Task.Run(GetDiscount).Wait();
             });
 
@@ -245,6 +302,22 @@ namespace MyCar.Desktop.ViewModels
                 Task.Run(GetEquipment).Wait();
             });
 
+            DeleteEquipment = new CustomCommand(async () =>
+            {
+                if (SelectedEquipment == null || SelectedEquipment.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана комплектация для редактирования" });
+                    return;
+                }
+                if (SaleCars.Any(s=>s.EquipmentId == SelectedEquipment.ID))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Комплектация связана с другой сущностью!" });
+                    return;
+                }
+                await DeleteEquipmentAsync(SelectedEquipment);
+                Task.Run(GetEquipment).Wait();
+            });
+
             AddType = new CustomCommand(() =>
             {
                 AddBodyTypeWindow addBodyType = new AddBodyTypeWindow();
@@ -266,15 +339,39 @@ namespace MyCar.Desktop.ViewModels
                     Task.Run(GetBodyTypes).Wait();
                 }
             });
+
+            DeleteType = new CustomCommand(async () =>
+            {
+                if (SelectedBodyType == null || SelectedBodyType.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран тип кузова!" });
+                    return;
+                }
+                if (Cars.Any(s=>s.TypeId == SelectedBodyType.ID))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Тип кузова связана с другой сущностью!" });
+                    return;
+                }
+                await DeleteBodyTypeAsync(SelectedBodyType);
+                Task.Run(GetBodyTypes).Wait();
+            });
         }
 
         #region Characteristic
+
+        private async Task DeleteCharacteristicAsync(CharacteristicApi characteristic)
+        {
+            var ch = await Api.DeleteAsync<CharacteristicApi>(characteristic, "Characteristic");
+        }
         private async Task GetCharacteristic()
         {
             UnitFilter = await Api.GetListAsync<List<UnitApi>>("Unit");
             UnitFilter.Add(new UnitApi { UnitName = "Все" });
             selectedUnitFilter = UnitFilter.Last();
+            CharacteristicCars = await Api.GetListAsync<List<CharacteristicCarApi>>("CharacteristicCar");
             Characteristics = await Api.GetListAsync<List<CharacteristicApi>>("Characteristic");
+            SaleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
+            Cars = await Api.GetListAsync<List<CarApi>>("Car");
             FullTypes = Characteristics;       
         }
         private void UpdateList()
@@ -295,6 +392,11 @@ namespace MyCar.Desktop.ViewModels
         }
         #endregion
         #region GetDiscount
+
+        private async Task DeleteDiscountAsync(DiscountApi discount)
+        {
+            var di = await Api.DeleteAsync<DiscountApi>(discount, "Discount");
+        }
         private async Task GetDiscount()
         {
             Discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
@@ -317,8 +419,13 @@ namespace MyCar.Desktop.ViewModels
         }
 
         #endregion
-        
+
         #region Equipment
+        private async Task DeleteEquipmentAsync(EquipmentApi equipment)
+        {
+            var eq = await Api.DeleteAsync<EquipmentApi>(equipment, "Equipment");
+        }
+        
         private async Task GetEquipment()
         {
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
@@ -343,9 +450,14 @@ namespace MyCar.Desktop.ViewModels
         #endregion
 
         #region BodyTypes
+
+        private async Task DeleteBodyTypeAsync(BodyTypeApi bodyTypeApi)
+        {
+            var bt = await Api.DeleteAsync<BodyTypeApi>(bodyTypeApi, "BodyType");
+        }
         public async Task GetBodyTypes()
         {
-            BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyTYpe");
+            BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             FullBodyTypes = BodyTypes;
             SignalChanged(nameof(BodyTypes));
         }
@@ -371,6 +483,10 @@ namespace MyCar.Desktop.ViewModels
         private async Task GetUnit()
         {
             Units = await Api.GetListAsync<List<UnitApi>>("Unit");
+        }
+        private async Task DeleteUnitAsync(UnitApi unit)
+        {
+           var un = await Api.DeleteAsync<UnitApi>(unit, "Unit");
         }
         #endregion
     }

@@ -64,7 +64,9 @@ namespace MyCar.Desktop.ViewModels
         public List<CarApi> Cars { get; set; } = new List<CarApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
         public List<EquipmentApi> EquipmentFilter { get; set; } = new List<EquipmentApi>();
-
+        public List<DiscountApi> Discounts { get; set; } = new List<DiscountApi>();
+        public List<WareHouseApi> Warehouses { get; set; } = new List<WareHouseApi>();
+        public List<OrderApi> Orders { get; set; } = new List<OrderApi>();
         public SaleCarApi SelectedSale { get; set; }
 
         public CustomCommand AddSale { get; set; }
@@ -114,6 +116,28 @@ namespace MyCar.Desktop.ViewModels
                 editCar.ShowDialog();
                 Task.Run(GetSales);
             });
+
+            DeleteSale = new CustomCommand(async () =>
+            {
+                if (SelectedSale == null || SelectedSale.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран автомобиль!" });
+                    return;
+                }
+               
+                if (Discounts.Any(s => s.SaleCarId == SelectedSale.ID) || CarPhotos.Any(s => s.SaleCarId == SelectedSale.ID))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Авто связано с другими сущностями!" });
+                    return;
+                }
+                if (Orders.SelectMany(a => a.WareHouses.Where(s => s.SaleCarId == SelectedSale.ID)).Count() != 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Авто учавствовало в заказах!" });
+                    return;
+                }
+                await DeleteSaleCarAsync(SelectedSale);
+                Task.Run(GetSales);
+            });
         }
 
         public async Task GetSales()
@@ -122,9 +146,14 @@ namespace MyCar.Desktop.ViewModels
             Cars = await Api.GetListAsync<List<CarApi>>("Car");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
             CarPhotos = await Api.GetListAsync<List<CarPhotoApi>>("CarPhoto");
+            Discounts = await Api.GetListAsync<List<DiscountApi>>("Discount");
+            Orders = await Api.GetListAsync<List<OrderApi>>("Order");
             FullSales = SalesCar;
         }
-
+        private async Task DeleteSaleCarAsync(SaleCarApi saleCar)
+        {
+            var sc = await Api.DeleteAsync<SaleCarApi>(saleCar, "CarSales");
+        }
         public void UpdateList()
         {
             SalesCar = searchResult;

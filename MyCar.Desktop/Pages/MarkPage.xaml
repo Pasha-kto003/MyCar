@@ -56,6 +56,7 @@
                     <MenuItem Header="Редактировать модель" Command="{Binding EditModel}"/>
                     <MenuItem Header="Редактировать марку" Command="{Binding EditMark}"/>
                     <MenuItem Header="Удалить" Command="{Binding DeleteMark}"/>
+                    <MenuItem Header="Удалить модель" Command="{Binding DeleteModel}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

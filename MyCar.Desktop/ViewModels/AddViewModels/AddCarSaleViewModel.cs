@@ -169,6 +169,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана комплектация!" });
                     return;
                 }
+                if (AddSaleVM.EquipmentPrice.ToString() == "" || AddSaleVM.Articul == null || AddSaleVM.Articul.ToString() == "" || AddSaleVM.MinCount == null || AddSaleVM.MinCount.ToString() == "" || SelectedCarColor == null)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Заполнены не все поля!" });
+                    return;
+                }
                 if (SelectedCarColor != null)
                 {
                     AddSaleVM.ColorCar = SelectedCarColor.Name;
@@ -178,6 +183,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                 if (AddSaleVM.EquipmentPrice < 0)
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Цена не может быть отрицательной!" });
+                    return;
+                }
+                if (AddSaleVM.MinCount < 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Количество не может быть отрицательным!" });
                     return;
                 }
                 AddSaleVM.EquipmentId = SelectedEquipment.ID;

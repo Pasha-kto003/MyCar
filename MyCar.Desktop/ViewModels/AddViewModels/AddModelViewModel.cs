@@ -50,6 +50,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбрана марка!" });
                     return;
                 }
+                if (AddModelVM.ModelName == null || AddModelVM.ModelName == "")
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Заполнены не все поля!" });
+                    return;
+                }
                 AddModelVM.MarkId = SelectedMark.ID;
                 if (AddModelVM.ID == 0)
                 {

@@ -117,6 +117,11 @@ namespace MyCar.Desktop.ViewModels.AddViewModels
 
             Save = new CustomCommand(async () =>
             {
+                if (AddMark.MarkName == null || AddMark.MarkName == "")
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Заполнены не все поля!" });
+                    return;
+                }
                 foreach (var mark in Marks)
                 {
                     if (mark.MarkName == AddMark.MarkName && mark.ID == 0)

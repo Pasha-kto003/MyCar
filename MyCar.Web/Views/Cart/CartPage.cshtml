@@ -73,17 +73,18 @@
                             {
                                 foreach (var ware in order.WareHouses)
                                 {
-                                    //var discountOrder = DiscountCounter.GetDiscountByOrder(order, ware.SaleCar);
-                                    //if (discountOrder == 0)
-                                    //{
-                                    //    orderPrice += ware.SaleCar.FullPrice * ware.CountChange * -1;
-
-                                    //}
-                                    //else
-                                    //{
-                                    //    orderPrice += discountOrder * ware.CountChange * -1;
-                                    //}
                                     orderPrice += ware.Price * ware.CountChange * -1;
+                                }
+                            }
+                            var filterOrder = @Model.Where(s=> s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName == "Ожидает оплаты");
+                            if(filterOrder.Count() == @Model.Count())
+                            {
+                                foreach(var filter in filterOrder)
+                                {
+                                    foreach (var ware in filter.WareHouses)
+                                    {
+                                        orderPrice += ware.Price * ware.CountChange * -1;
+                                    }
                                 }
                             }
                             var countOrd = @Model.Where(s => s.ActionType.ActionTypeName == "Продажа" && s.Status.StatusName != "Отменен" && s.Status.StatusName != "Ожидает оплаты").Count();
@@ -112,6 +113,16 @@
                                 foreach(var wh in orderSale.WareHouses)
                                 {
                                     wareCountSale += wh.CountChange * -1;
+                                }
+                            }
+                            if(filterOrder.Count() == @Model.Count())
+                            {
+                                foreach(var filter in filterOrder)
+                                {
+                                    foreach (var ware in filter.WareHouses)
+                                    {
+                                        wareCountSale += ware.CountChange * -1;
+                                    }
                                 }
                             }
                             if (User.IsInRole("Администратор"))

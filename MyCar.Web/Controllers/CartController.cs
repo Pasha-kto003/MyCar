@@ -174,7 +174,7 @@ namespace MyCar.Web.Controllers
                         TotalSalePrice += (decimal)((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1);
 
 
-                        sheet.Range[$"L{index}"].Value = ((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange).ToString();
+                        sheet.Range[$"L{index}"].Value = ((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange * -1).ToString();
                         sheet.Range[$"L{index}"].NumberFormat = "0.00 ₽";
                         TotalProfit += (decimal)((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange * -1);
 
@@ -246,8 +246,9 @@ namespace MyCar.Web.Controllers
                 sheet.Range["G3"].Value = "Цена комплектации";
                 sheet.Range["H3"].Value = "Цена продажи";
                 sheet.Range["I3"].Value = "Cкидка";
-                sheet.Range["J3"].Value = "Сумма со скидкой";
-                sheet.Range["K3"].Value = "Покупатель";
+                sheet.Range["J3"].Value = "Сумма";
+                sheet.Range["K3"].Value = "Сумма со скидкой";
+                sheet.Range["L3"].Value = "Покупатель";
 
                 var index = 4;
 
@@ -261,7 +262,7 @@ namespace MyCar.Web.Controllers
                         sheet.Range[$"B{index}"].Value = order.DateOfOrder.ToString().Substring(0, order.DateOfOrder.ToString().Length - 8);
                         sheet.Range[$"C{index}"].Value = warehouse.SaleCar.Car.CarName.ToString();
 
-                        sheet.Range[$"D{index}"].Value = warehouse.CountChange.ToString();
+                        sheet.Range[$"D{index}"].Value = (warehouse.CountChange * -1).ToString();
                         TotalCount += (int)warehouse.CountChange;
 
                         sheet.Range[$"E{index}"].Value = warehouse.SaleCar.ColorCar.ToString();
@@ -282,7 +283,7 @@ namespace MyCar.Web.Controllers
                         TotalSalePrice += (decimal)((warehouse.Price - warehouse.Discount) * warehouse.CountChange * -1);
 
 
-                        sheet.Range[$"K{index}"].Value = ((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange).ToString();
+                        sheet.Range[$"K{index}"].Value = ((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange * -1).ToString();
                         sheet.Range[$"K{index}"].NumberFormat = "0.00 ₽";
                         //TotalProfit += (decimal)((warehouse.Price - warehouse.Discount - purchase) * warehouse.CountChange);
 

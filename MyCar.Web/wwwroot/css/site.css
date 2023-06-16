@@ -2672,4 +2672,269 @@ form i {
 }
 
 
+.slr {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background-color: #171717;
+    background-image: url('bg.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin: 20px 0;
+}
+
+    .slr ul {
+        list-style: none;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+#sls .sl {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+    #sls .sl .sl-text {
+        position: absolute;
+        margin: 70px 30px;
+        bottom: 0;
+        z-index: 2;
+        padding: 20px;
+        background: rgba(0,0,0,0.4);
+        transform: translateY(200%);
+        transition: all 400ms ease-in-out;
+    }
+
+    #sls .sl.sl-active .sl-text {
+        transform: translateY(0);
+        transition-delay: 0.3s;
+    }
+
+    #sls .sl .sl-text .sl-title {
+        font-size: 26px;
+        line-height: 30px;
+        color: #FFF;
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    #sls .sl .sl-text .sl-data {
+        font-size: 16px;
+        line-height: 22px;
+        color: #FFF;
+        margin-bottom: 20px;
+    }
+
+    #sls .sl .sl-text .sl-read {
+        display: inline-flex;
+        text-decoration: none;
+        position: relative;
+        font-size: 16px;
+        line-height: 20px;
+        padding: 8px 30px;
+        color: #FFF;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-family: 'Roboto', sans-serif;
+        background: #337AB7;
+        cursor: pointer;
+    }
+
+        #sls .sl .sl-text .sl-read:hover,
+        #sls .sl .sl-text .sl-read:active,
+        #sls .sl .sl-text .sl-read:focus {
+            color: #FFF;
+        }
+
+        #sls .sl .sl-text .sl-read:after,
+        #sls .sl .sl-text .sl-read:before {
+            position: absolute;
+            height: 4px;
+            left: 50%;
+            background: #337AB7;
+            bottom: -8px;
+            content: "";
+            transition: all 280ms ease-in-out;
+            width: 0;
+        }
+
+        #sls .sl .sl-text .sl-read:before {
+            top: -8px;
+        }
+
+        #sls .sl .sl-text .sl-read:hover:after,
+        #sls .sl .sl-text .sl-read:hover:before,
+        #sls .sl .sl-text .sl-read:active:after,
+        #sls .sl .sl-text .sl-read:active:before,
+        #sls .sl .sl-text .sl-read:focus:after,
+        #sls .sl .sl-text .sl-read:focus:before {
+            width: 100%;
+            left: 0;
+        }
+
+    #sls .sl .sl-partial {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        transition: transform 1s ease-in-out;
+    }
+
+        #sls .sl .sl-partial img {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease-in-out;
+        }
+
+    #sls .sl .sl-left {
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        clip-path: polygon(0 0, 2% 0, 100% 98%, 100% 100%, 0 100%);
+    }
+
+        #sls .sl .sl-left img {
+            top: 0;
+            right: 0;
+        }
+
+    #sls .sl .sl-right {
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+        clip-path: polygon(0 2%, 0 0, 100% 0, 100% 100%, 98% 100%);
+    }
+
+        #sls .sl .sl-right img {
+            top: 0;
+            left: 0;
+        }
+
+    #sls .sl.sl-active .sl-partial,
+    #sls .sl.sl-active .sl-partial img {
+        transform: translateX(0);
+    }
+
+.slr .sl-btn {
+    position: absolute;
+    top: 40px;
+    right: 140px;
+    z-index: 100;
+    height: 50px;
+    width: 50px;
+    z-index: 100;
+    cursor: pointer;
+    overflow: visible;
+}
+
+    .slr .sl-btn.sl-next {
+        right: 50px;
+    }
+
+    .slr .sl-btn polygon,
+    .slr .sl-btn path {
+        transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        fill: #FFF;
+    }
+
+    .slr .sl-btn:hover polygon,
+    .slr .sl-btn:hover path {
+        transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+        fill: #FFF;
+    }
+
+    .slr .sl-btn:hover .sl-btn-pl {
+        animation: sl-btn-anim 1s cubic-bezier(0.2, 1, 0.3, 1) infinite;
+    }
+
+    .slr .sl-btn:hover .sl-btn-pl-fixed {
+        animation: sl-btn-fixed-anim 1s cubic-bezier(0.2, 1, 0.3, 1) infinite;
+    }
+
+.sl-select {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    z-index: 100;
+    display: flex;
+}
+
+    .sl-select li {
+        position: relative;
+        cursor: pointer;
+        margin: 0 8px;
+    }
+
+    .sl-select .selector {
+        height: 24px;
+        width: 24px;
+        border: 2px solid white;
+        background-color: transparent;
+        transition: background-color 0.5s ease-in-out;
+    }
+
+        .sl-select .selector.sl-current {
+            background-color: #BFE2FF;
+        }
+
+@keyframes sl-btn-anim {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    5% {
+        transform: translateX(-0.1rem);
+    }
+
+    100% {
+        transform: translateX(1rem);
+        opacity: 0;
+    }
+}
+
+@keyframes sl-btn-fixed-anim {
+    5% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width:767px) {
+    #sls .sl .sl-text {
+        position: absolute;
+        width: 100%;
+        margin: 70px 0;
+        bottom: 0;
+        z-index: 2;
+        padding: 20px;
+    }
+
+    #sls .sl .sl-text .sl-title {
+        font-size: 22px;
+        line-height: 26px;
+        margin-bottom: 10px;
+    }
+
+    #sls .sl .sl-text .sl-data {
+        font-size: 13px;
+        line-height: 18px;
+        margin-bottom: 10px;
+    }
+}
+
 

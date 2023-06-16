@@ -20,6 +20,9 @@
                         <h3 class="display-5 fw-bold text-success">
                             Заказ оплачен
                         </h3>
+                        <div class="glass-btn glass-btn-red">
+                            <a asp-action="ReportPDF" asp-controller="Cart" asp-route-id="@Model.ID" style="color: black">Посмотреть заказ</a>
+                        </div>
                     }
                     else
                     {

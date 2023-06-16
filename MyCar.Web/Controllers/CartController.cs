@@ -665,6 +665,11 @@ namespace MyCar.Web.Controllers
                 TempData["OrderMessage"] = "Такого заказа не существует!";
                 return View("CartPage", Orders);
             }
+            if(user.Passport.FirstName == "" || user.Passport.FirstName == "" || user.Passport.Patronimyc == "")
+            {
+                TempData["UserErrorMessage"] = "Для оплаты, введите свои паспортные данные";
+                return View("~/Views/Account/Personal_Area.cshtml", user);
+            }
             return View("PaymentCart", order);
         }
 
@@ -705,13 +710,13 @@ namespace MyCar.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["ErrorPaymentMessage"] = $"При оплате произошел сбой! {ex.Message}\n {ex.TargetSite}";
+                    TempData["ErrorPaymentMessage"] = $"При оплате произошел сбой! Введите корректные данные";
                     var url = @"http://stackoverflow.com/search?q=[c%23]+" + ex.Message.Replace(" ", "%20");
                     ErrorExeption.OpenUrl(url);
                     return View("PaymentCart", order);
                 }
 
-                var sumOrder = order.WareHouses.Sum(s => s.CountChange * s.Price);
+                var sumOrder = order.WareHouses.Sum(s => s.CountChange * s.Price * -1);
                 var sumInRub = sumOrder.Value.ToString("N", CultureInfo.InvariantCulture) + "&#8381";
                 EmailSender emailSender = new EmailSender();
                 StringBuilder namesOrder = new StringBuilder();
@@ -743,6 +748,11 @@ namespace MyCar.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Отмена заказа
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Отменит заказ и вернет страницу всех заказов</returns>
         public async Task<IActionResult> CancelOrder(int id)
         {
             await GetOrders();

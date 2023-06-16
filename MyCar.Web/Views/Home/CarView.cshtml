@@ -16,7 +16,7 @@
     var filterMark = Model.Where(s => s.Model.MarkId != 0).Select(s => s.Model.MarkCar).ToList();
 }
 
-<div class="row w-100 align-items-center justify-content-center">
+<div class="row w-100 align-items-center justify-content-center preloader">
     <div class="row" style="background-image: url('/image/bg_13.jpg'); height: 184px; justify-content: center; align-items: center; text-align:center;">
         <h3 class="text-center text-white" style="justify-content: center;">
             Каталог авто
@@ -222,10 +222,8 @@
                     </div>
                 }
             </div>
-
         </div>
     </section>
-
 </div>
 
 @if (TempData["SearchMessage"] != null)

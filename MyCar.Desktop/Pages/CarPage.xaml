@@ -62,8 +62,8 @@
             </ListView.ItemTemplate>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Удалить" Command="{Binding DeleteCar}"/>
                     <MenuItem Header="Редактировать" Command="{Binding EditCar}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DeleteCar}"/>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

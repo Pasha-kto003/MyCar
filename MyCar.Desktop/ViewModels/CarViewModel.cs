@@ -65,6 +65,7 @@ namespace MyCar.Desktop.ViewModels
         public List<MarkCarApi> MarkCars { get; set; } = new List<MarkCarApi>();
         public List<BodyTypeApi> BodyTypes { get; set; } = new List<BodyTypeApi>();
         public List<EquipmentApi> Equipments { get; set; } = new List<EquipmentApi>();
+        public List<SaleCarApi> SaleCars { get; set; } = new List<SaleCarApi>();
 
         int paginationPageIndex = 0;
         private string searchCountRows;
@@ -136,11 +137,31 @@ namespace MyCar.Desktop.ViewModels
             {
                 if (SelectedCar == null || SelectedCar.ID == 0)
                 {
-                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран автомобиль для редактирования" });
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран автомобиль для редактирования!" });
                     return;
                 }
                 AddCarWindow window = new AddCarWindow(SelectedCar);
                 window.ShowDialog();
+                Task.Run(GetCarList);
+            });
+            DeleteCar = new CustomCommand(async() =>
+            {
+                if (SelectedCar == null || SelectedCar.ID == 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Не выбран автомобиль!" });
+                    return;
+                }
+                if (SaleCars.Any(s=>s.CarId == SelectedCar.ID))
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Авто связано с другими сущностями!" });
+                    return;
+                }
+                if (SelectedCar.CharacteristicCars.Count != 0)
+                {
+                    UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Авто связано с другими сущностями!" });
+                    return;
+                }
+                await DeleteCarAsync(SelectedCar);
                 Task.Run(GetCarList);
             });
         }
@@ -169,9 +190,14 @@ namespace MyCar.Desktop.ViewModels
             MarkCars = await Api.GetListAsync<List<MarkCarApi>>("MarkCar");
             BodyTypes = await Api.GetListAsync<List<BodyTypeApi>>("BodyType");
             Equipments = await Api.GetListAsync<List<EquipmentApi>>("Equipment");
+            SaleCars = await Api.GetListAsync<List<SaleCarApi>>("CarSales");
             FullCars = Cars;
         }
-
+        private async Task DeleteCarAsync(CarApi car)
+        {
+            var ch = await Api.DeleteAsync<CarApi>(car, "Car");
+        }
+       
         public void InitPagination()
         {
             SearchCountRows = $"Найдено записей: {searchResult.Count} из {FullCars.Count()}";

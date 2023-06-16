@@ -68,7 +68,6 @@
                             <ListBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Редактировать" Command="{Binding EditModel}"/>
-                                    <MenuItem Header="Удалить" Command="{Binding DeleteModel}"/>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                         </ListBox>

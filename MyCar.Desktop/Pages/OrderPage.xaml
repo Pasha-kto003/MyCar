@@ -135,7 +135,6 @@
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Редактировать" Command="{Binding EditOrder}"/>
-                    <MenuItem Header="Удалить" Command="{Binding DeleteOrder}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

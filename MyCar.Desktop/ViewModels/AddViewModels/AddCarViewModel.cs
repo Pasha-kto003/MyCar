@@ -170,7 +170,7 @@ namespace MyCar.Desktop.ViewModels
 
             Save = new CustomCommand(async () =>
             {
-                if (SelectedModel == null || SelectedBodyType == null)
+                if (SelectedModel == null || SelectedBodyType == null || AddCarVM.CarPrice.ToString() == "")
                 {
                     UIManager.ShowErrorMessage(new MessageBoxDialogViewModel { Message = "Заполнены не все поля!" });
                     return;

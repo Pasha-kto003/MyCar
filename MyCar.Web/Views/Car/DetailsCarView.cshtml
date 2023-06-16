@@ -31,9 +31,9 @@
                 ViewBag.DiscountPrice = DiscountCounter.GetDiscount(@Model);
                 if (ware.Value <= 0)
                 {
-                                            <h3 class="text-white text-center" style="text-align: center;">
-                                                Отсутствует в продаже
-                                            </h3>
+                    <h3 class="text-white text-center" style="text-align: center;">
+                        Отсутствует в продаже
+                    </h3>
                 }
                 else
                 {
@@ -41,28 +41,28 @@
                     {
                         discounts = null;
                     }
-                                            <div class="product-price">
-                                                @if (discounts != null)
+                    <div class="product-price">
+                        @if (discounts != null)
                         {
-                                                    <h2 class="text-white" style="text-align: center;">
-                                                        <s class="text-white">
-                                                            @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                        </s>
-                                                    </h2>
+                            <h2 class="text-white" style="text-align: center;">
+                                <s class="text-white">
+                                    @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                                </s>
+                            </h2>
                         }
                         else
                         {
-                                                    <h2 class="text-white" style="text-align: center;">
-                                                        @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                    </h2>
+                            <h2 class="text-white" style="text-align: center;">
+                                @Model.FullPrice.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                            </h2>
                         }
-                                                @if (discounts != null)
+                        @if (discounts != null)
                         {
-                                                    <h4 class="text-white" style="text-align: center;">
-                                                        @discounts.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
-                                                    </h4>
+                            <h4 class="text-white" style="text-align: center;">
+                                @discounts.Value.ToString("N",  CultureInfo.InvariantCulture) &#8381
+                            </h4>
                         }
-                                            </div>
+                    </div>
                 }
 
             }

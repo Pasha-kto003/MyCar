@@ -665,6 +665,11 @@ namespace MyCar.Web.Controllers
                 TempData["OrderMessage"] = "Такого заказа не существует!";
                 return View("CartPage", Orders);
             }
+            if(user.Passport.FirstName == "" || user.Passport.FirstName == "" || user.Passport.Patronimyc == "")
+            {
+                TempData["UserErrorMessage"] = "Для оплаты, введите свои паспортные данные";
+                return View("~/Views/Account/Personal_Area.cshtml", user);
+            }
             return View("PaymentCart", order);
         }
 

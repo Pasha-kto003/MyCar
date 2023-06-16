@@ -8,7 +8,6 @@
     var sale = saleCars.Where(s=> s.CarId == @Model.ID ).DistinctBy(s=> s.EquipmentId).ToList();
     var orders = await Api.GetListAsync<List<OrderApi>>("Order");
     var validateWarehouse = orders.Where(s => s.Status.StatusName != "Отменен").SelectMany(e => e.WareHouses).ToList();
-    var ware = validateWarehouse.Where(s => s.SaleCarId == @Model.ID).ToList().Sum(s => s.CountChange);
 }
 <div class="container-fluid w-100" style="background-color: #171717;">
     <div class="row row-cols-1 w-100">
@@ -104,6 +103,9 @@
                                                 @discountPrice?.ToString("N",  CultureInfo.InvariantCulture) &#8381
                                             </h3>
                                         }
+                                    }
+                                    @{
+                                        var ware = validateWarehouse.Where(s => s.SaleCarId == @cars.ID).ToList().Sum(s => s.CountChange);
                                     }
                                     @if (ware.Value <= 0)
                                     {
